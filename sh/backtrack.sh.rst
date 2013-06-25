@@ -1,2 +1,2 @@
 - apt-get install language-selector-qt
-- 
+- lshw -C network
