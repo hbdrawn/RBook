@@ -19,4 +19,6 @@ Go语言要求：简单、可读、可维护性
 APIs 
 8. 了解自己的需求
 9. 保持包的独立性：使用接口
-10. 
+10. 避免在方法中内置并发，应该在主线程中触发并发：go func(){}()放在主线程
+11. 使用gorutime来管理状态：使用chan或内嵌chan的struct来与goruntime通讯
+12. 避免goruntime的死锁问题：缓存的chan及quit chan
