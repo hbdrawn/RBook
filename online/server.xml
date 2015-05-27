@@ -55,7 +55,7 @@
 
     <!--The connectors can use a shared executor, you can define one or more named thread pools-->
     <Executor name="tomcatThreadPool" namePrefix="qiandao-exec-"
-        maxThreads="600" minSpareThreads="50"/>
+        maxThreads="6000" minSpareThreads="100"/>
 
 
     <!-- A "Connector" represents an endpoint by which requests are received

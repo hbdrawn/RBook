@@ -1,1 +1,1 @@
-- 
+/sbin/iptables -I INPUT -p tcp --dport 8080 -j ACCEPT #8080为指定端口 

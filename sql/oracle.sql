@@ -1,0 +1,2 @@
+--create user kenya identified by kenya;
+--grant connect,resource,dba to kenya;

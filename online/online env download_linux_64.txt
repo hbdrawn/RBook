@@ -1,0 +1,4 @@
+
+http://download.oracle.com/otn-pub/java/jdk/7u75-b13/jdk-7u75-linux-x64.tar.gz
+
+http://apache.dataguru.cn/tomcat/tomcat-7/v7.0.59/bin/apache-tomcat-7.0.59.tar.gz
