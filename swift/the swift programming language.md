@@ -7,11 +7,11 @@
     let var
     let myConstant = 12
     var myDouble:Double = 12
-    let withLabel = String(myDouble) + "this is a test"
-    let withLabel = "my age is \(myDouble)"
+    let withLabel = String(myDouble) + \"this is a test\"
+    let withLabel = \"my age is \(myDouble)\"
 
 for, for in, while ,switch case, if let, do while
 2. 方法体:
     func greeting(name: String, today: String) -> String{
-        return "hello \(name), today is \(today)"
+        return \"hello \(name), today is \(today)\"
     }

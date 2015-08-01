@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by wang (Bankit) -->
+<configuration scan="true" scanPeriod="60 seconds">
+	<contextName>bsp</contextName>
+	<!--statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/-->
+	<timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
+	<!-- appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="cn.com.bankit.bsp.log.filters.ModuleFilter"/>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+		</filter-->
+		<!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+		<!-- encoder>
+			<pattern>%date{ISO8601} %.-1level %X{bsn}%X{name}-%X{serialno}%X{code} [%-20logger{0}] - %msg%n</pattern>
+			<charset>GBK</charset>
+		</encoder>
+	</appender -->
+	<!-- 固定大小循环滚动日志  -->
+	<!--appender name="ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>log/all.log</file>
+		<filter class="cn.com.bankit.bsp.log.filters.ModuleFilter"/>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>log/all.%i.log</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>10</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>10MB</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%date{ISO8601} %.-1level %X{bsn}%X{name}-%X{serialno}%X{code} [%-20logger{0}] - %msg%n</pattern>
+			<charset>GBK</charset>
+		</encoder>
+	</appender-->
+	<!-- 按日期保存日志文件（同一日期内日志按固定大小滚动，无最大文件数限制） -->
+	<appender name="ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>log/%d{yyyyMMdd}/all.log</file>
+		<append>true</append>
+		<filter class="cn.com.bankit.bsp.log.filters.ModuleFilter"/>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	        <fileNamePattern>log/%d{yyyyMMdd}/all.%i.log</fileNamePattern>
+			<MaxHistory>10</MaxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				 <maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+	    </rollingPolicy>
+		<encoder>
+			<pattern>%date{ISO8601} %.-1level %X{bsn}%X{name}-%X{serialno}%X{code} [%-20logger{0}] - %msg%n</pattern>
+			<charset>GBK</charset>
+		</encoder>
+	</appender>
+	<appender name="MONITOR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>log/system/monitor.log</file>
+		<!-- deny all events with a level below INFO, that is TRACE and DEBUG -->
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>log/system/monitor.%i.log</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>10</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>10MB</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%date{ISO8601} %.-1level %X{name}-%X{serialno} [%-20logger{0}] - %msg%n</pattern>
+			<charset>GBK</charset>
+		</encoder>
+	</appender>
+	<appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<!-- in the absence of the class attribute, it is assumed that the
+         desired discriminator type is
+         ch.qos.logback.classic.sift.MDCBasedDiscriminator -->
+		<discriminator>
+			<key>applog</key>
+			<defaultValue>mdc/bsp</defaultValue>
+		</discriminator>
+		<sift>
+			<appender name="FILE-${applog}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<file>log/%d{yyyyMMdd}/${applog}.log</file>
+				<append>true</append>
+				<filter class="cn.com.bankit.bsp.log.filters.ModuleFilter"/>
+				<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+					<level>DEBUG</level>
+				</filter>
+				<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			                <fileNamePattern>log/%d{yyyyMMdd}/${applog}.%i.log</fileNamePattern>
+				  	<MaxHistory>10</MaxHistory>
+				        <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				            <maxFileSize>10MB</maxFileSize>
+				        </timeBasedFileNamingAndTriggeringPolicy>
+			        </rollingPolicy>
+				<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+					<pattern>%date{ISO8601} %.-1level %X{bsn}%X{name}-%X{serialno}%X{code} [%-20logger{0}] - %msg%n</pattern>
+					<charset>GBK</charset>
+				</encoder>
+			</appender>
+		</sift>
+	</appender>
+	<!--appender name="CONTENTSIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<key>contentlog</key>
+			<defaultValue>mdc/content</defaultValue>
+		</discriminator>
+		<sift>
+			<appender name="FILE-${contentlog}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<file>log/commu/${contentlog}/commu.log</file>
+				<append>true</append>
+				<filter class="cn.com.bankit.bsp.log.filters.ModuleFilter"/>
+				<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+					<level>DEBUG</level>
+				</filter>
+				<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+					<fileNamePattern>log/commu/${contentlog}.%i.log</fileNamePattern>
+					<minIndex>1</minIndex>
+					<maxIndex>10</maxIndex>
+				</rollingPolicy>
+				<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+					<maxFileSize>10MB</maxFileSize>
+				</triggeringPolicy>
+				<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+					<pattern>%date{ISO8601} %.-1level %X{bsn}%X{name}-%X{serialno}%X{code} [%-20logger{0}] - %msg%n</pattern>
+					<charset>GBK</charset>
+				</encoder>
+			</appender>
+		</sift>
+	</appender-->
+	<appender name="SUPERLOG" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<key>logComponentMDC</key>
+			<key>logComponentPath</key>
+			<defaultValue>log/biz/logFile</defaultValue>
+		</discriminator>
+		<sift>
+			<appender name="FILE-${logComponentMDC}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<file>${logComponentPath}.log</file>
+				<append>true</append>
+				<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+					<level>DEBUG</level>
+				</filter>
+				<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+					<fileNamePattern>${logComponentPath}.%i.log</fileNamePattern>
+					<minIndex>1</minIndex>
+					<maxIndex>10</maxIndex>
+				</rollingPolicy>
+				<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+					<maxFileSize>10MB</maxFileSize>
+				</triggeringPolicy>
+				<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+					<pattern>%date{ISO8601} %.-1level %X{name}-%X{serialno} - %msg%n</pattern>
+					<charset>GBK</charset>
+				</encoder>
+			</appender>
+		</sift>
+	</appender>
+	<logger name="cn.com.bankit.bsp" level="DEBUG">
+		<appender-ref ref="SIFT"/>
+		<!-- appender-ref ref="CONTENTSIFT"/-->
+	</logger>
+	<logger name="cn.com.bankit.bsp.communication" level="DEBUG"/>
+	<logger name="cn.com.bankit.bsp.toolkit.common.FileChecker" level="INFO"/>
+	<logger name="cn.com.bankit.bsp.workflow.component.impl.fileoper.BizLogFile" level="DEBUG" additivity="false">
+		<appender-ref ref="SUPERLOG"/>
+	</logger>
+	<logger name="cn.com.bankit.bsp.web" level="INFO"/>
+	<logger name="cn.com.bankit.bsp.resources.BspAppContext" level="WARN"/>
+	<logger name="cn.com.bankit.toolkit" level="INFO"/>
+	<logger name="cn.com.bankit.bsp.app.config.AppStartAssist"/>
+	<logger name="org.apache.hivemind" level="ERROR"/>
+	<logger name="org.apache.tapestry" level="INFO"/>
+	<logger name="org.apache.activemq" level="INFO"/>
+	<logger name="org.jbpm" level="ERROR"/>
+	<logger name="org.apache.geronimo" level="INFO"/>
+	<logger name="org.apache.struts" level="ERROR"/>
+	<logger name="org.hibernate" level="ERROR"/>
+	<logger name="org.apache.axis2" level="ERROR"/>
+	<logger name="org.mortbay" level="ERROR"/>
+	<logger name="org.apache.xbean" level="ERROR"/>
+	<logger name="org.apache.axiom" level="ERROR"/>
+	<logger name="org.eclipse.jetty" level="ERROR"/>
+	<logger name="org.apache.commons" level="ERROR"/>
+	<logger name="org.apache.xml.security" level="ERROR"/>
+	<logger name="org.springframework.beans" level="WARN"/>
+	<logger name="org.exolab.castor" level="ERROR"/>
+	<logger name="org.castor" level="ERROR"/>
+	<logger name="com.coldcore.coloradoftp" level="ERROR"/>
+	<logger name="org.springframework.remoting.rmi.RmiRegistryFactoryBean" level="INFO"/>
+	<logger name="cn.com.bankit.bsp.resources.monitor.JVMInfoMonitor" level="INFO" additivity="false">
+		<appender-ref ref="MONITOR"/>
+	</logger>
+	<logger name="cn.com.bankit.bsp.dataformat.exe.AbstractExecutor" level="DEBUG"/>
+	<logger name="cn.com.bankit.bsp.server.BSPServerApplication" level="INFO"/>
+	<logger name="cn.com.bankit.bsp.server.CloseBSPApplication" level="INFO"/>
+	<root level="DEBUG">
+		<appender-ref ref="ALL"/>
+		<!-- appender-ref ref="STDOUT"/-->
+	</root>
+</configuration>
