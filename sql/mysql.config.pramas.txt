@@ -1,0 +1,371 @@
+状态名	作用域	详细解释
+Aborted_clients	Global	由于客户端没有正确关闭连接导致客户端终止而中断的连接数
+Aborted_connects	Global	试图连接到MySQL服务器而失败的连接数
+Binlog_cache_disk_use	Global	使用临时二进制日志缓存但超过binlog_cache_size值并使用临时文件来保存事务中的语句的事务数量
+Binlog_cache_use	Global	使用临时二进制日志缓存的事务数量
+Bytes_received	Both	从所有客户端接收到的字节数。
+Bytes_sent	Both	发送给所有客户端的字节数。
+com*	 	各种数据库操作的数量
+Compression	Session	客户端与服务器之间只否启用压缩协议
+Connections	Global	试图连接到(不管是否成功)MySQL服务器的连接数
+Created_tmp_disk_tables	Both	服务器执行语句时在硬盘上自动创建的临时表的数量
+Created_tmp_files	Global	mysqld已经创建的临时文件的数量
+Created_tmp_tables	Both	服务器执行语句时自动创建的内存中的临时表的数量。如果Created_tmp_disk_tables较大，你可能要增加tmp_table_size值使临时 表基于内存而不基于硬盘
+Delayed_errors	Global	用INSERT DELAYED写的出现错误的行数(可能为duplicate key)。
+Delayed_insert_threads	Global	使用的INSERT DELAYED处理器线程数。
+Delayed_writes	Global	写入的INSERT DELAYED行数
+Flush_commands	Global	执行的FLUSH语句数。
+Handler_commit	Both	内部提交语句数
+Handler_delete	Both	行从表中删除的次数。
+Handler_discover	Both	MySQL服务器可以问NDB CLUSTER存储引擎是否知道某一名字的表。这被称作发现。Handler_discover说明通过该方法发现的次数。
+Handler_prepare	Both	A counter for the prepare phase of two-phase commit operations.
+Handler_read_first	Both	索引中第一条被读的次数。如果较高，它建议服务器正执行大量全索引扫描；例如，SELECT col1 FROM foo，假定col1有索引。
+Handler_read_key	Both	根据键读一行的请求数。如果较高，说明查询和表的索引正确。
+Handler_read_next	Both	按照键顺序读下一行的请求数。如果你用范围约束或如果执行索引扫描来查询索引列，该值增加。
+Handler_read_prev	Both	按照键顺序读前一行的请求数。该读方法主要用于优化ORDER BY ... DESC。
+Handler_read_rnd	Both	根据固定位置读一行的请求数。如果你正执行大量查询并需要对结果进行排序该值较高。你可能使用了大量需要MySQL扫描整个表的查询或你的连接没有正确使用键。
+Handler_read_rnd_next	Both	在数据文件中读下一行的请求数。如果你正进行大量的表扫描，该值较高。通常说明你的表索引不正确或写入的查询没有利用索引。
+Handler_rollback	Both	内部ROLLBACK语句的数量。
+Handler_savepoint	Both	在一个存储引擎放置一个保存点的请求数量。
+Handler_savepoint_rollback	Both	在一个存储引擎的要求回滚到一个保存点数目。
+Handler_update	Both	在表内更新一行的请求数。
+Handler_write	Both	在表内插入一行的请求数。
+Innodb_buffer_pool_pages_data	Global	包含数据的页数(脏或干净)。
+Innodb_buffer_pool_pages_dirty	Global	当前的脏页数。
+Innodb_buffer_pool_pages_flushed	Global	要求清空的缓冲池页数
+Innodb_buffer_pool_pages_free	Global	空页数。
+Innodb_buffer_pool_pages_latched	Global	在InnoDB缓冲池中锁定的页数。这是当前正读或写或由于其它原因不能清空或删除的页数。
+Innodb_buffer_pool_pages_misc	Global	忙的页数，因为它们已经被分配优先用作管理，例如行锁定或适用的哈希索引。该值还可以计算为Innodb_buffer_pool_pages_total - Innodb_buffer_pool_pages_free - Innodb_buffer_pool_pages_data。
+Innodb_buffer_pool_pages_total	Global	缓冲池总大小（页数）。
+Innodb_buffer_pool_read_ahead_rnd	Global	InnoDB初始化的“随机”read-aheads数。当查询以随机顺序扫描表的一大部分时发生。
+Innodb_buffer_pool_read_ahead_seq	Global	InnoDB初始化的顺序read-aheads数。当InnoDB执行顺序全表扫描时发生。
+Innodb_buffer_pool_read_requests	Global	InnoDB已经完成的逻辑读请求数。
+Innodb_buffer_pool_reads	Global	不能满足InnoDB必须单页读取的缓冲池中的逻辑读数量。
+Innodb_buffer_pool_wait_free	Global	一般情况，通过后台向InnoDB缓冲池写。但是，如果需要读或创建页，并且没有干净的页可用，则它还需要先等待页面清空。该计数器对等待实例进行记数。如果已经适当设置缓冲池大小，该值应小。
+Innodb_buffer_pool_write_requests	Global	向InnoDB缓冲池的写数量。
+Innodb_data_fsyncs	Global	fsync()操作数。
+Innodb_data_pending_fsyncs	Global	当前挂起的fsync()操作数。
+Innodb_data_pending_reads	Global	当前挂起的读数。
+Innodb_data_pending_writes	Global	当前挂起的写数。
+Innodb_data_read	Global	至此已经读取的数据数量（字节）。
+Innodb_data_reads	Global	数据读总数量。
+Innodb_data_writes	Global	数据写总数量。
+Innodb_data_written	Global	至此已经写入的数据量（字节）。
+Innodb_dblwr_pages_written	Global	已经执行的双写操作数量
+Innodb_dblwr_writes	Global	双写操作已经写好的页数
+Innodb_log_waits	Global	我们必须等待的时间，因为日志缓冲区太小，我们在继续前必须先等待对它清空
+Innodb_log_write_requests	Global	日志写请求数。
+Innodb_log_writes	Global	向日志文件的物理写数量。
+Innodb_os_log_fsyncs	Global	向日志文件完成的fsync()写数量。
+Innodb_os_log_pending_fsyncs	Global	挂起的日志文件fsync()操作数量。
+Innodb_os_log_pending_writes	Global	挂起的日志文件写操作
+Innodb_os_log_written	Global	写入日志文件的字节数。
+Innodb_page_size	Global	编译的InnoDB页大小(默认16KB)。许多值用页来记数；页的大小很容易转换为字节。
+Innodb_pages_created	Global	创建的页数。
+Innodb_pages_read	Global	读取的页数。
+Innodb_pages_written	Global	写入的页数。
+Innodb_row_lock_current_waits	Global	当前等待的待锁定的行数。
+Innodb_row_lock_time	Global	行锁定花费的总时间，单位毫秒。
+Innodb_row_lock_time_avg	Global	行锁定的平均时间，单位毫秒。
+Innodb_row_lock_time_max	Global	行锁定的最长时间，单位毫秒。
+Innodb_row_lock_waits	Global	一行锁定必须等待的时间数。
+Innodb_rows_deleted	Global	从InnoDB表删除的行数。
+Innodb_rows_inserted	Global	插入到InnoDB表的行数。
+Innodb_rows_read	Global	从InnoDB表读取的行数。
+Innodb_rows_updated	Global	InnoDB表内更新的行数。
+Key_blocks_not_flushed	Global	键缓存内已经更改但还没有清空到硬盘上的键的数据块数量。
+Key_blocks_unused	Global	键缓存内未使用的块数量。你可以使用该值来确定使用了多少键缓存
+Key_blocks_used	Global	键缓存内使用的块数量。该值为高水平线标记，说明已经同时最多使用了多少块。
+Key_read_requests	Global	从缓存读键的数据块的请求数。
+Key_reads	Global	从硬盘读取键的数据块的次数。如果Key_reads较大，则Key_buffer_size值可能太小。可以用Key_reads/Key_read_requests计算缓存损失率。
+Key_write_requests	Global	将键的数据块写入缓存的请求数。
+Key_writes	Global	向硬盘写入将键的数据块的物理写操作的次数。
+Last_query_cost	Session	用查询优化器计算的最后编译的查询的总成本。用于对比同一查询的不同查询方案的成本。默认值0表示还没有编译查询。 默认值是0。Last_query_cost具有会话范围。
+Max_used_connections	Global	服务器启动后已经同时使用的连接的最大数量。
+ndb*	 	ndb集群相关
+Not_flushed_delayed_rows	Global	等待写入INSERT DELAY队列的行数。
+ 
+Open_files	Global	打开的文件的数目。
+Open_streams	Global	打开的流的数量(主要用于记录)。
+Open_table_definitions	Global	缓存的.frm文件数量
+Open_tables	Both	当前打开的表的数量。
+Opened_files	Global	文件打开的数量。不包括诸如套接字或管道其他类型的文件。 也不包括存储引擎用来做自己的内部功能的文件。
+Opened_table_definitions	Both	已经缓存的.frm文件数量
+Opened_tables	Both	已经打开的表的数量。如果Opened_tables较大，table_cache 值可能太小。
+Prepared_stmt_count	Global	当前的预处理语句的数量。 (最大数为系统变量: max_prepared_stmt_count)
+Qcache_free_blocks	Global	查询缓存内自由内存块的数量。
+Qcache_free_memory	Global	用于查询缓存的自由内存的数量。
+Qcache_hits	Global	查询缓存被访问的次数。
+Qcache_inserts	Global	加入到缓存的查询数量。
+Qcache_lowmem_prunes	Global	由于内存较少从缓存删除的查询数量。
+Qcache_not_cached	Global	非缓存查询数(不可缓存，或由于query_cache_type设定值未缓存)。
+Qcache_queries_in_cache	Global	登记到缓存内的查询的数量。
+Qcache_total_blocks	Global	查询缓存内的总块数。
+Queries	Both	服务器执行的请求个数，包含存储过程中的请求。
+Questions	Both	已经发送给服务器的查询的个数。
+Rpl_status	Global	失败安全复制状态(还未使用)。
+Select_full_join	Both	没有使用索引的联接的数量。如果该值不为0,你应仔细检查表的索引
+Select_full_range_join	Both	在引用的表中使用范围搜索的联接的数量。
+Select_range	Both	在第一个表中使用范围的联接的数量。一般情况不是关键问题，即使该值相当大。
+Select_range_check	Both	在每一行数据后对键值进行检查的不带键值的联接的数量。如果不为0，你应仔细检查表的索引。
+Select_scan	Both	对第一个表进行完全扫描的联接的数量。
+Slave_heartbeat_period	Global	复制的心跳间隔
+Slave_open_temp_tables	Global	从服务器打开的临时表数量
+Slave_received_heartbeats	Global	从服务器心跳数
+Slave_retried_transactions	Global	本次启动以来从服务器复制线程重试次数
+Slave_running	Global	如果该服务器是连接到主服务器的从服务器，则该值为ON。
+Slow_launch_threads	Both	创建时间超过slow_launch_time秒的线程数。
+Slow_queries	Both	查询时间超过long_query_time秒的查询的个数。
+Sort_merge_passes	Both	排序算法已经执行的合并的数量。如果这个变量值较大，应考虑增加sort_buffer_size系统变量的值。
+Sort_range	Both	在范围内执行的排序的数量。
+Sort_rows	Both	已经排序的行数。
+Sort_scan	Both	通过扫描表完成的排序的数量。
+ssl＊	 	ssl连接相关
+Table_locks_immediate	Global	立即获得的表的锁的次数。
+Table_locks_waited	Global	不能立即获得的表的锁的次数。如果该值较高，并且有性能问题，你应首先优化查询，然后拆分表或使用复制。
+Threads_cached	Global	线程缓存内的线程的数量。
+Threads_connected	Global	当前打开的连接的数量。
+Threads_created	Global	创建用来处理连接的线程数。如果Threads_created较大，你可能要增加thread_cache_size值。缓存访问率的计算方法Threads_created/Connections。
+Threads_running	Global	激活的（非睡眠状态）线程数。
+Uptime	Global	服务器已经运行的时间（以秒为单位）。
+Uptime_since_flush_status	Global	最近一次使用FLUSH STATUS 的时间（以秒为单位）。
+
+
+=============================================================================
+公司的nagios监控服务器长期对内网用MySQL数据库发出ctritical报警，因为我将其他同事的手机短信报警也开通了，搞得整个系统组的同事都怨声载道(呵呵)这时候就需要根据其status对其Mysql数据库进行优化了，这时候可以等MySQL服务器稳定运行了一段时间后运行，根据服务器的“状态”进行优化。
+mysql> show global status;
+可以列出MySQL服务器运行各种状态值，我个人较喜欢的用法是show status like '查询值%';
+一、慢查询
+mysql> show variables like '%slow%';
++------------------+-------+
+| Variable_name | Value |
++------------------+-------+
+| log_slow_queries | ON |
+| slow_launch_time | 2     |
++------------------+-------+
+mysql> show global status like '%slow%';
++---------------------+-------+
+| Variable_name    | Value |
++---------------------+-------+
+| Slow_launch_threads | 0     |
+| Slow_queries        | 4148 |
++---------------------+-------+
+打开慢查询日志可能会对系统性能有一点点影响，如果你的MySQL是主－从结构，可以考虑打开其中一台从服务器的慢查询日志，这样既可以监控慢查询，对系统性能影响又小，另mysql有自带的命令mysqldumpslow可进行查询，例下列命令可以查出访问次数最多的20个sql语句mysqldumpslow -s c -t 20 host-slow.log
+
+二、连接数
+经常会遇见”MySQL: ERROR 1040: Too manyconnections”的情况，一种是访问量确实很高，MySQL服务器抗不住，这个时候就要考虑增加从服务器分散读压力，另外一种情况是MySQL配置文件中max_connections值过小：
+mysql> show variables like 'max_connections';
++-----------------+-------+
+| Variable_name | Value |
++-----------------+-------+
+| max_connections | 256 |
++-----------------+-------+
+这台MySQL服务器最大连接数是256，然后查询一下服务器响应的最大连接数：
+mysql> show global status like 'Max_used_connections';
++----------------------+-------+
+| Variable_name        | Value |
++----------------------+-------+
+| Max_used_connections | 245 |
++----------------------+-------+
+MySQL服务器过去的最大连接数是245，没有达到服务器连接数上限256，应该没有出现1040错误，比较理想的设置是：
+Max_used_connections / max_connections   * 100% ≈ 85%
+最大连接数占上限连接数的85％左右，如果发现比例在10%以下，MySQL服务器连接数上限设置的过高了。
+
+三、Key_buffer_size
+key_buffer_size是对MyISAM表性能影响最大的一个参数，下面一台以MyISAM为主要存储引擎服务器的配置：
+mysql> show variables like 'key_buffer_size';
++-----------------+------------+
+| Variable_name | Value    |
++-----------------+------------+
+| key_buffer_size | 536870912 |
++-----------------+------------+
+分配了512MB内存给key_buffer_size，我们再看一下key_buffer_size的使用情况：
+mysql> show global status like 'key_read%';
++------------------------+-------------+
+| Variable_name       | Value    |
++------------------------+-------------+
+| Key_read_requests    | 27813678764 |
+| Key_reads              | 6798830     |
++------------------------+-------------+
+一共有27813678764个索引读取请求，有6798830个请求在内存中没有找到直接从硬盘读取索引，计算索引未命中缓存的概率：
+key_cache_miss_rate ＝ Key_reads / Key_read_requests * 100%
+比如上面的数据，key_cache_miss_rate为0.0244%，4000个索引读取请求才有一个直接读硬盘，已经很BT 了，key_cache_miss_rate在0.1%以下都很好（每1000个请求有一个直接读硬盘），如果key_cache_miss_rate在 0.01%以下的话，key_buffer_size分配的过多，可以适当减少。
+MySQL服务器还提供了key_blocks_*参数：
+mysql> show global status like 'key_blocks_u%';
++------------------------+-------------+
+| Variable_name       | Value    |
++------------------------+-------------+
+| Key_blocks_unused    | 0           |
+| Key_blocks_used        | 413543    |
++------------------------+-------------+
+Key_blocks_unused 表示未使用的缓存簇(blocks)数，Key_blocks_used表示曾经用到的最大的blocks数，比如这台服务器，所有的缓存都用到了，要么 增加key_buffer_size，要么就是过渡索引了，把缓存占满了。比较理想的设置：Key_blocks_used / (Key_blocks_unused + Key_blocks_used) * 100% ≈ 80%
+
+
+四、临时表
+mysql> show global status like 'created_tmp%';
++-------------------------+---------+
+| Variable_name           | Value |
++-------------------------+---------+
+| Created_tmp_disk_tables | 21197 |
+| Created_tmp_files    | 58    |
+| Created_tmp_tables    | 1771587 |
++-------------------------+---------+
+每次创建临时表，Created_tmp_tables增加，如果是在磁盘上创建临时表，Created_tmp_disk_tables也增加,Created_tmp_files表示MySQL服务创建的临时文件文件数，比较理想的配置是：
+Created_tmp_disk_tables / Created_tmp_tables * 100% <= 25%
+比如上面的服务器Created_tmp_disk_tables / Created_tmp_tables * 100% ＝ 1.20%，应该相当好了。我们再看一下MySQL服务器对临时表的配置：
+mysql> show variables where Variable_name in ('tmp_table_size', 'max_heap_table_size');
++---------------------+-----------+
+| Variable_name    | Value     |
++---------------------+-----------+
+| max_heap_table_size | 268435456 |
+| tmp_table_size    | 536870912 |
++---------------------+-----------+
+只有256MB以下的临时表才能全部放内存，超过的就会用到硬盘临时表。
+
+五、Open Table情况
+mysql> show global status like 'open%tables%';
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| Open_tables | 919 |
+| Opened_tables | 1951   |
++---------------+-------+
+Open_tables 表示打开表的数量，Opened_tables表示打开过的表数量，如果Opened_tables数量过大，说明配置中 table_cache(5.1.3之后这个值叫做table_open_cache)值可能太小，我们查询一下服务器table_cache值：
+mysql> show variables like 'table_cache';
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| table_cache | 2048   |
+
++---------------+-------+
+比较合适的值为：
+Open_tables / Opened_tables   * 100% >= 85%
+Open_tables / table_cache * 100% <= 95%
+
+六、进程使用情况
+mysql> show global status like 'Thread%';
++-------------------+-------+
+| Variable_name     | Value |
++-------------------+-------+
+| Threads_cached | 46 |
+| Threads_connected | 2     |
+| Threads_created | 570 |
+| Threads_running | 1     |
++-------------------+-------+
+如果我们在MySQL服务器配置文件中设置了thread_cache_size，当客户端断开之后，服务器处理此客户的线程将会缓存起来以响应下一个客户 而不是销毁（前提是缓存数未达上限）。Threads_created表示创建过的线程数，如果发现Threads_created值过大的话，表明 MySQL服务器一直在创建线程，这也是比较耗资源，可以适当增加配置文件中thread_cache_size值，查询服务器 thread_cache_size配置：
+mysql> show variables like 'thread_cache_size';
++-------------------+-------+
+| Variable_name     | Value |
++-------------------+-------+
+| thread_cache_size | 64 |
++-------------------+-------+
+示例中的服务器还是挺健康的。
+
+七、查询缓存(query cache)
+mysql> show global status like 'qcache%';
++-------------------------+-----------+
+| Variable_name           | Value     |
++-------------------------+-----------+
+| Qcache_free_blocks    | 22756     |
+| Qcache_free_memory    | 76764704   |
+| Qcache_hits          | 213028692 |
+| Qcache_inserts       | 208894227 |
+| Qcache_lowmem_prunes | 4010916 |
+| Qcache_not_cached    | 13385031   |
+| Qcache_queries_in_cache | 43560     |
+| Qcache_total_blocks     | 111212 |
++-------------------------+-----------+
+MySQL查询缓存变量解释：
+Qcache_free_blocks：缓存中相邻内存块的个数。数目大说明可能有碎片。FLUSH QUERY CACHE会对缓存中的碎片进行整理，从而得到一个空闲块。
+Qcache_free_memory：缓存中的空闲内存。
+Qcache_hits：每次查询在缓存中命中时就增大
+Qcache_inserts：每次插入一个查询时就增大。命中次数除以插入次数就是不中比率。
+Qcache_lowmem_prunes： 缓存出现内存不足并且必须要进行清理以便为更多查询提供空间的次数。这个数字最好长时间来看；如果这个数字在不断增长，就表示可能碎片非常严重，或者内存 很少。（上面的 free_blocks和free_memory可以告诉您属于哪种情况）
+Qcache_not_cached：不适合进行缓存的查询的数量，通常是由于这些查询不是 SELECT 语句或者用了now()之类的函数。
+Qcache_queries_in_cache：当前缓存的查询（和响应）的数量。
+Qcache_total_blocks：缓存中块的数量。
+
+我们再查询一下服务器关于query_cache的配置：
+mysql> show variables like 'query_cache%';
++------------------------------+-----------+
+| Variable_name             | Value     |
++------------------------------+-----------+
+| query_cache_limit          | 2097152 |
+| query_cache_min_res_unit     | 4096    |
+| query_cache_size          | 203423744 |
+| query_cache_type          | ON        |
+| query_cache_wlock_invalidate | OFF    |
++------------------------------+-----------+
+各字段的解释：
+query_cache_limit：超过此大小的查询将不缓存
+query_cache_min_res_unit：缓存块的最小大小
+query_cache_size：查询缓存大小
+query_cache_type：缓存类型，决定缓存什么样的查询，示例中表示不缓存 select sql_no_cache 查询
+query_cache_wlock_invalidate：当有其他客户端正在对MyISAM表进行写操作时，如果查询在query cache中，是否返回cache结果还是等写操作完成再读表获取结果。
+query_cache_min_res_unit的配置是一柄”双刃剑”，默认是4KB，设置值大对大数据查询有好处，但如果你的查询都是小数据查询，就容易造成内存碎片和浪费。
+查询缓存碎片率 = Qcache_free_blocks / Qcache_total_blocks * 100%
+如果查询缓存碎片率超过20%，可以用FLUSH QUERY CACHE整理缓存碎片，或者试试减小query_cache_min_res_unit，如果你的查询都是小数据量的话。
+查询缓存利用率 = (query_cache_size - Qcache_free_memory) / query_cache_size * 100%
+查询缓存利用率在25%以下的话说明query_cache_size设置的过大，可适当减小；查询缓存利用率在80％以上而且Qcache_lowmem_prunes > 50的话说明query_cache_size可能有点小，要不就是碎片太多。
+查询缓存命中率 = (Qcache_hits - Qcache_inserts) / Qcache_hits * 100%
+示例服务器 查询缓存碎片率 ＝ 20.46％，查询缓存利用率 ＝ 62.26％，查询缓存命中率 ＝ 1.94％，命中率很差，可能写操作比较频繁吧，而且可能有些碎片。
+
+八、排序使用情况
+mysql> show global status like 'sort%';
++-------------------+------------+
+| Variable_name     | Value    |
++-------------------+------------+
+| Sort_merge_passes | 29       |
+| Sort_range        | 37432840 |
+| Sort_rows       | 9178691532 |
+| Sort_scan       | 1860569 |
++-------------------+------------+
+Sort_merge_passes 包括两步。MySQL 首先会尝试在内存中做排序，使用的内存大小由系统变量Sort_buffer_size 决定，如果它的大小不够把所有的记录都读到内存中，MySQL 就会把每次在内存中排序的结果存到临时文件中，等MySQL 找到所有记录之后，再把临时文件中的记录做一次排序。这再次排序就会增加 Sort_merge_passes。实际上，MySQL会用另一个临时文件来存再次排序的结果，所以通常会看到 Sort_merge_passes增加的数值是建临时文件数的两倍。因为用到了临时文件，所以速度可能会比较慢，增加 Sort_buffer_size 会减少Sort_merge_passes 和 创建临时文件的次数，但盲目的增加Sort_buffer_size 并不一定能提高速度
+
+九、文件打开数(open_files)
+mysql> show global status like 'open_files';
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| Open_files | 1410   |
++---------------+-------+
+mysql> show variables like 'open_files_limit';
++------------------+-------+
+| Variable_name | Value |
++------------------+-------+
+| open_files_limit | 4590   |
++------------------+-------+
+比较合适的设置：Open_files / open_files_limit * 100% <= 75％
+
+十、表锁情况
+mysql> show global status like 'table_locks%';
++-----------------------+-----------+
+| Variable_name       | Value     |
++-----------------------+-----------+
+| Table_locks_immediate | 490206328 |
+| Table_locks_waited | 2084912 |
++-----------------------+-----------+
+Table_locks_immediate 表示立即释放表锁数，Table_locks_waited表示需要等待的表锁数，如果Table_locks_immediate / Table_locks_waited >5000，最好采用InnoDB引擎，因为InnoDB是行锁而MyISAM是表锁，对于高并发写入的应用InnoDB效果会好些。示例中的服务 器Table_locks_immediate / Table_locks_waited ＝ 235，MyISAM就足够了。
+
+十一、表扫描情况
+mysql> show global status like 'handler_read%';
++-----------------------+-------------+
+| Variable_name       | Value    |
++-----------------------+-------------+
+| Handler_read_first | 5803750     |
+| Handler_read_key    | 6049319850   |
+| Handler_read_next     | 94440908210 |
+| Handler_read_prev     | 34822001724 |
+| Handler_read_rnd    | 405482605 |
+| Handler_read_rnd_next | 18912877839 |
++-----------------------+-------------+
+mysql> show global status like 'com_select';
++---------------+-----------+
+| Variable_name | Value     |
++---------------+-----------+
+| Com_select | 222693559 |
++---------------+-----------+
+计算表扫描率：
+表扫描率 ＝ Handler_read_rnd_next / Com_select
+如果表扫描率超过4000，说明进行了太多表扫描，很有可能索引没有建好，增加read_buffer_size值会有一些好处，但最好不要超过8MB。
+

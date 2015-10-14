@@ -18,3 +18,7 @@ mysql>use 数据库
 然后使用source命令，后面参数为脚本文件（如这里用到的.sql） 
 mysql>source d:\wcnc_db.sql 
 4.可参看 MySQL数据的导出和导入工具:mysqldump 
+
+set password for root@139.159.1.81 = password('tcpServerP'); 
+update user set password=password('tcpServerP') where user='root' and host='139.159.1.81'; 
+GRANT ALL PRIVILEGES ON tcpServerDB.* TO 'root'@'139.159.1.81' IDENTIFIED BY 'tcpServerP' WITH GRANT OPTION;
