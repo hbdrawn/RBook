@@ -1,0 +1,1259 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 14. API Reference</title><link rel="stylesheet" href="css/espertech.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Esper Reference"/><link rel="up" href="index.html" title="Esper Reference"/><link rel="prev" href="dataflow.html" title="Chapter 13. EPL Reference: Data Flow"/><link rel="next" href="configuration.html" title="Chapter 15. Configuration"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.espertech.com" class="site_href"><strong>esper.codehaus.org and espertech.com</strong></a><a href="http://esper.codehaus.org/esper/documentation/documentation.html" class="doc_href"><strong>Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="dataflow.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="configuration.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api"/>Chapter 14. API Reference</h2></div></div></div><div class="toc"><dl><dt><span class="sect1"><a href="api.html#api-reference-intro">14.1. API Overview</a></span></dt><dt><span class="sect1"><a href="api.html#api-engine-instances">14.2. The Service Provider Interface</a></span></dt><dt><span class="sect1"><a href="api.html#api-administrative">14.3. The Administrative Interface</a></span></dt><dd><dl><dt><span class="sect2"><a href="api.html#api-admin-creating">14.3.1. Creating Statements</a></span></dt><dt><span class="sect2"><a href="api.html#api-receive-results">14.3.2. Receiving Statement Results</a></span></dt><dt><span class="sect2"><a href="api.html#api-admin-subscriber">14.3.3. Setting a Subscriber Object</a></span></dt><dt><span class="sect2"><a href="api.html#api-admin-listeners">14.3.4. Adding Listeners</a></span></dt><dt><span class="sect2"><a href="api.html#api-admin-iterators">14.3.5. Using Iterators</a></span></dt><dt><span class="sect2"><a href="api.html#api-admin-mgmt-stmt">14.3.6. Managing Statements</a></span></dt><dt><span class="sect2"><a href="api.html#api-admin-runtime-config">14.3.7. Runtime Configuration</a></span></dt></dl></dd><dt><span class="sect1"><a href="api.html#api-runtime">14.4. The Runtime Interface</a></span></dt><dd><dl><dt><span class="sect2"><a href="api.html#api-runtime-eventsender">14.4.1. Event Sender</a></span></dt><dt><span class="sect2"><a href="api.html#api-runtime-unmatched">14.4.2. Receiving Unmatched Events</a></span></dt><dt><span class="sect2"><a href="api.html#api-runtime-ondemand">14.4.3. On-Demand Fire-And-Forget Query Execution</a></span></dt></dl></dd><dt><span class="sect1"><a href="api.html#api-event">14.5. Event and Event Type</a></span></dt><dd><dl><dt><span class="sect2"><a href="api.html#api-eventtype">14.5.1. Event Type Metadata</a></span></dt><dt><span class="sect2"><a href="api.html#api-eventbean">14.5.2. Event Object</a></span></dt><dt><span class="sect2"><a href="api.html#api-eventtype-query">14.5.3. Query Example</a></span></dt><dt><span class="sect2"><a href="api.html#api-eventtype-pattern">14.5.4. Pattern Example</a></span></dt></dl></dd><dt><span class="sect1"><a href="api.html#api-threading">14.6. Engine Threading and Concurrency</a></span></dt><dd><dl><dt><span class="sect2"><a href="api.html#api-threading-advanced">14.6.1. Advanced Threading</a></span></dt><dt><span class="sect2"><a href="api.html#api-processingorder">14.6.2. Processing Order</a></span></dt></dl></dd><dt><span class="sect1"><a href="api.html#api-controlling-time">14.7. Controlling Time-Keeping</a></span></dt><dd><dl><dt><span class="sect2"><a href="api.html#api-controlling-time-span">14.7.1. Controlling Time Using Time Span Events</a></span></dt><dt><span class="sect2"><a href="api.html#api-controlling-time-spi">14.7.2. Additional Time-Related APIs</a></span></dt></dl></dd><dt><span class="sect1"><a href="api.html#api-time-resolution">14.8. Time Resolution</a></span></dt><dt><span class="sect1"><a href="api.html#api-isolatedservice">14.9. Service Isolation</a></span></dt><dd><dl><dt><span class="sect2"><a href="api.html#api-isolatedservice-overview">14.9.1. Overview</a></span></dt><dt><span class="sect2"><a href="api.html#api-isolatedruntime-suspend">14.9.2. Example: Suspending a Statement</a></span></dt><dt><span class="sect2"><a href="api.html#api-isolatedruntime-catchup">14.9.3. Example: Catching up a Statement from Historical Data</a></span></dt><dt><span class="sect2"><a href="api.html#api-isolatedruntime-insertinto">14.9.4. Isolation for Insert-Into</a></span></dt><dt><span class="sect2"><a href="api.html#api-isolatedruntime-namedwindow">14.9.5. Isolation for Named Windows</a></span></dt><dt><span class="sect2"><a href="api.html#api-isolatedruntime-runtime">14.9.6. Runtime Considerations</a></span></dt></dl></dd><dt><span class="sect1"><a href="api.html#api-exception">14.10. Exception Handling</a></span></dt><dt><span class="sect1"><a href="api.html#api-condition">14.11. Condition Handling</a></span></dt><dt><span class="sect1"><a href="api.html#api-soda">14.12. Statement Object Model</a></span></dt><dd><dl><dt><span class="sect2"><a href="api.html#api-soda-building-step1">14.12.1. Building an Object Model</a></span></dt><dt><span class="sect2"><a href="api.html#api-soda-building-step2">14.12.2. Building Expressions</a></span></dt><dt><span class="sect2"><a href="api.html#api-soda-building-step3">14.12.3. Building a Pattern Statement</a></span></dt><dt><span class="sect2"><a href="api.html#api-soda-building-step4">14.12.4. Building a Select Statement</a></span></dt><dt><span class="sect2"><a href="api.html#api-soda-building-step5">14.12.5. Building a Create-Variable and On-Set Statement</a></span></dt><dt><span class="sect2"><a href="api.html#api-soda-building-step6">14.12.6. Building Create-Window, On-Delete and On-Select Statements</a></span></dt></dl></dd><dt><span class="sect1"><a href="api.html#api-prepared">14.13. Prepared Statement and Substitution Parameters</a></span></dt><dt><span class="sect1"><a href="api.html#api-instrumentation">14.14. Engine and Statement Metrics Reporting</a></span></dt><dd><dl><dt><span class="sect2"><a href="api.html#api-instrumentation-enginemetrics">14.14.1. Engine Metrics</a></span></dt><dt><span class="sect2"><a href="api.html#api-instrumentation-statementmetrics">14.14.2. Statement Metrics</a></span></dt></dl></dd><dt><span class="sect1"><a href="api.html#api-output-rendering">14.15. Event Rendering to XML and JSON</a></span></dt><dd><dl><dt><span class="sect2"><a href="api.html#api-output-rendering-json">14.15.1. JSON Event Rendering Conventions and Options</a></span></dt><dt><span class="sect2"><a href="api.html#api-output-rendering-xml">14.15.2. XML Event Rendering Conventions and Options</a></span></dt></dl></dd><dt><span class="sect1"><a href="api.html#api-plugin">14.16. Plug-in Loader</a></span></dt><dt><span class="sect1"><a href="api.html#api-annotation">14.17. Interrogating EPL Annotations</a></span></dt><dt><span class="sect1"><a href="api.html#api-contextpartitionselection">14.18. Context Partition Selection</a></span></dt><dd><dl><dt><span class="sect2"><a href="api.html#api-contextpartitionselection-selectors">14.18.1. Selectors</a></span></dt></dl></dd><dt><span class="sect1"><a href="api.html#api-contextpartitionadmin">14.19. Context Partition Administration</a></span></dt><dt><span class="sect1"><a href="api.html#api-testing">14.20. Test and Assertion Support</a></span></dt><dd><dl><dt><span class="sect2"><a href="api.html#api-testing-assertion">14.20.1. EPAssertionUtil Summary</a></span></dt><dt><span class="sect2"><a href="api.html#api-testing-listener">14.20.2. SupportUpdateListener Summary</a></span></dt><dt><span class="sect2"><a href="api.html#api-testing-usage">14.20.3. Usage Example</a></span></dt></dl></dd></dl></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-reference-intro"/>14.1. API Overview</h2></div></div></div><p>
+			Esper has the following primary interfaces:
+        </p><div class="itemizedlist"><ul><li><p>
+                    The event and event type interfaces are described in <a class="xref" href="api.html#api-event" title="14.5. Event and Event Type">Section 14.5, “Event and Event Type”</a>.
+                </p></li><li><p>
+                    The administrative interface to create and manage EPL and pattern statements, and set runtime configurations, is described in <a class="xref" href="api.html#api-administrative" title="14.3. The Administrative Interface">Section 14.3, “The Administrative Interface”</a>.
+                </p></li><li><p>
+			        The runtime interface to send events into the engine, set and get variable values and execute on-demand queries, is described in <a class="xref" href="api.html#api-runtime" title="14.4. The Runtime Interface">Section 14.4, “The Runtime Interface”</a>.
+                </p></li></ul></div><p>
+          For EPL introductory information please see <a class="xref" href="epl_clauses.html#epl-intro" title="5.1. EPL Introduction">Section 5.1, “EPL Introduction”</a> and patterns are described at <a class="xref" href="event_patterns.html#event-pattern-intro" title="6.1. Event Pattern Overview">Section 6.1, “Event Pattern Overview”</a>.
+        </p><p>
+			The JavaDoc documentation is also a great source for API information.
+        </p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-engine-instances"/>14.2. The Service Provider Interface</h2></div></div></div><a id="d0e30473" class="indexterm"/><p>
+			The <code class="literal">EPServiceProvider</code> interface represents an engine instance. Each instance of an Esper engine is completely independent of other engine instances and has its own administrative and runtime interface.
+        </p><p>
+			An instance of the Esper engine is obtained via static methods on the <code class="literal">EPServiceProviderManager</code> class.
+			The <code class="literal">getDefaultProvider</code> method and the <code class="literal">getProvider(String providerURI)</code> methods return an instance of the Esper engine.
+			The latter can be used to obtain multiple instances of the engine for different provider URI values. The <code class="literal">EPServiceProviderManager</code>
+			determines if the provider URI matches all prior provider URI values and returns the same engine instance for the same provider URI value. If the provider URI has not been seen before, it creates a new engine instance.
+        </p><p>
+			The code snipped below gets the default instance Esper engine. Subsequent calls to get the default engine instance return the same instance.
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPServiceProvider epService = EPServiceProviderManager.getDefaultProvider();</pre><p>
+			This code snippet gets an Esper engine for the provider URI <code class="literal">RFIDProcessor1</code>. Subsequent calls to get an engine with the same provider URI return the same instance.
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPServiceProvider epService = EPServiceProviderManager.getProvider("RFIDProcessor1");</pre><p>
+			Since the <code class="literal">getProvider</code> methods return the same cached engine instance for each URI, there is no need to statically cache an engine instance in your application.
+        </p><p>
+			An existing Esper engine instance can be reset via the <code class="literal">initialize</code> method on the <code class="literal">EPServiceProvider</code> instance. This operation stops and removes all statements and 
+			resets the engine to the configuration provided when the engine instance for that URI was obtained. If no configuration is provided, an empty (default) configuration applies.
+        </p><p>
+			After <code class="literal">initialize</code> your application must obtain new administrative and runtime services. Any administrative and runtime services obtained before the initialize are invalid and have undefined behavior.
+        </p><p>
+			The next code snippet outlines a typical sequence of use: 
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Configure the engine, this is optional
+Configuration config = new Configuration();
+config.configure("configuration.xml");	// load a configuration from file
+config.set....(...);    // make additional configuration settings
+
+// Obtain an engine instance
+EPServiceProvider epService = EPServiceProviderManager.getDefaultProvider(config);
+
+// Optionally, use initialize if the same engine instance has been used before to start clean
+epService.initialize();
+
+// Optionally, make runtime configuration changes
+epService.getEPAdministrator().getConfiguration().add...(...);
+
+// Destroy the engine instance when no longer needed, frees up resources
+epService.destroy();</pre><p>
+			An existing Esper engine instance can be destroyed via the <code class="literal">destroy</code> method on the <code class="literal">EPServiceProvider</code> instance. This stops and removes all statements
+			as well as frees all resources held by the instance. After a <code class="literal">destroy</code> the engine can no longer be used.
+        </p><p>
+			The <code class="literal">EPServiceStateListener</code> interface may be implemented by your application to receive callbacks when an engine instance is about to be destroyed and after an engine instance has been initialized. Listeners are registered via the <code class="literal">addServiceStateListener</code> method. The <code class="literal">EPStatementStateListener</code> interface is used to receive callbacks when a new statement gets created and when a statement gets started, stopped or destroyed. Listeners are registered via the <code class="literal">addStatementStateListener</code> method.
+        </p><p>
+			When destroying an engine instance your application must make sure that threads that are sending events into the engine have completed their work. More generally, the engine should not be currently in use during or after the destroy operation.
+        </p><p>
+			As engine instances are completely independent, your application may not send <code class="literal">EventBean</code> instances obtained from one engine instance into a second engine instance since the event type space between two engine instances is not shared.
+        </p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-administrative"/>14.3. The Administrative Interface</h2></div></div></div><a id="d0e30563" class="indexterm"/><a id="d0e30566" class="indexterm"/><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-admin-creating"/>14.3.1. Creating Statements</h3></div></div></div><p>
+				Create event pattern expression and EPL  statements via the administrative interface <code class="literal">EPAdministrator</code>.
+			</p><p>
+				This code snippet gets an Esper engine then creates an event pattern and an EPL  statement.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPServiceProvider epService = EPServiceProviderManager.getDefaultProvider();
+EPAdministrator admin = epService.getEPAdministrator();
+
+EPStatement 10secRecurTrigger = admin.createPattern(
+  "every timer:at(*, *, *, *, *, */10)");
+
+EPStatement countStmt = admin.createEPL(
+  "select count(*) from MarketDataBean.win:time(60 sec)");
+</pre><p>
+				Note that event pattern expressions can also occur within EPL  statements. This is outlined in more detail in <a class="xref" href="epl_clauses.html#epl-from-clause-patterns" title="5.4.2. Pattern-based Event Streams">Section 5.4.2, “Pattern-based Event Streams”</a>.
+			</p><p>
+				The <code class="literal">create</code> methods on <code class="literal">EPAdministrator</code> are overloaded and allow an optional statement name to be passed to the engine. A statement name can be useful for retrieving a statement
+				by name from the engine at a later time. The engine assigns a statement name if no statement name is supplied on statement creation.
+			</p><p>
+				The <code class="literal">createPattern</code> and <code class="literal">createEPL</code> methods return <code class="literal">EPStatement</code> instances. Statements are automatically started and active when created. A statement can also be stopped and started again via the <code class="literal">stop</code> and <code class="literal">start</code> methods shown in the code snippet below.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">countStmt.stop();
+countStmt.start();</pre><p>
+				The <code class="literal">create</code> methods on <code class="literal">EPAdministrator</code> also accept a user object.  
+				The user object is associated with a statement at time of statement creation and is a single, unnamed field that is stored with every statement.
+				Applications may put arbitrary objects in this field. Use the <code class="literal">getUserObject</code> method on <code class="literal">EPStatement</code> to obtain the user object of a statement
+				and <code class="literal">StatementAwareUpdateListener</code> for listeners.
+			</p><p>
+				Your application may create new statements or stop and destroy existing statements using any thread and also within listener or subscriber code. If using POJO events, your application may not create or manage statements in the event object itself while the same event is currently being processed by a statement.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-receive-results"/>14.3.2. Receiving Statement Results</h3></div></div></div><a id="d0e30634" class="indexterm"/><p>
+				Esper provides three choices for your application to receive statement results. Your application can use all three mechanisms alone or in any combination for each statement. The choices are:
+			</p><div class="table"><a id="api-admin-receive-results"/><p class="title"><b>Table 14.1. Choices For Receiving Statement Results</b></p><div class="table-contents"><table summary="Choices For Receiving Statement Results" border="1"><colgroup><col/><col/><col/></colgroup><thead><tr><th>Name</th><th>Methods on <code class="literal">EPStatement</code></th><th>Description</th></tr></thead><tbody><tr><td>Listener Callbacks</td><td><code class="literal">addListener</code> and <code class="literal">removeListener</code></td><td>
+								<p> 
+									Your application provides implementations of the <code class="literal">UpdateListener</code> or the <code class="literal">StatementAwareUpdateListener</code> interface to the statement. 
+									Listeners receive <code class="literal">EventBean</code> instances containing statement results.
+								</p>
+								<p>The engine continuously indicates results to all listeners as soon they occur, and following output rate limiting clauses if specified.</p>
+                            </td></tr><tr><td>Subscriber Object</td><td><code class="literal">setSubscriber</code></td><td>
+                                <p>
+                                    Your application provides a POJO (plain Java object) that exposes methods to receive statement results.
+                                </p>
+                                <p>The engine continuously indicates results to the single subscriber as soon they occur, and following output rate limiting clauses if specified.</p>
+                                <p>
+                                    This is the fastest method to receive statement results, as the engine delivers strongly-typed results directly to your application objects without the need for
+                                    building an <code class="literal">EventBean</code> result set as in the Listener Callback choice.
+                                </p>
+                                <p>
+                                    There can be at most 1 Subscriber Object registered per statement. If you require more than one listener, use the Listener Callback instead (or in addition).
+                                    The Subscriber Object is bound to the statement with a strongly typed support which ensure direct delivery of new events without type conversion. This optimization
+                                    is made possible because there can only be 0 or 1 Subscriber Object per statement.
+                                </p>
+                            </td></tr><tr><td>Pull API</td><td><code class="literal">safeIterator</code> and <code class="literal">iterator</code></td><td>
+                                <p>Your application asks the statement for results and receives a set of events via <code class="literal">java.util.Iterator&lt;EventBean&gt;</code>.</p>
+                                <p>This is useful if your application does not need continuous indication of new results in real-time.</p>
+                             </td></tr></tbody></table></div></div><br class="table-break"/><p>
+				Your application may attach one or more listeners, zero or one single subscriber and in addition use the Pull API on the same statement. There are no limitations to the use of iterator, subscriber or listener
+				alone or in combination to receive statement results.
+			</p><p>
+				The best delivery performance can generally be achieved by attaching a subscriber and by not attaching listeners.
+                The engine is aware of the listeners and subscriber attached to a statement. The engine uses this information internally to reduce statement overhead. For example, if your statement does not have listeners or a subscriber attached, the engine does not need to continuously generate results for delivery.
+			</p><p>
+				If your application attaches both a subscriber and one or more listeners then the subscriber receives the result first before any of the listeners.
+			</p><p>
+				If your application attaches more then one listener then the <code class="literal">UpdateListener</code> listeners receive results first in the order they were added to the statement, and
+				<code class="literal">StatementAwareUpdateListener</code> listeners receive results next in the order they were added to the statement. To change the order of delivery among listeners your application can add and remove listeners at runtime.
+			</p><p>
+				If you have configured outbound threading, it means a thread from the outbound thread pool delivers results to the subscriber and listeners instead of the processing or event-sending thread.
+			</p><p>
+				If outbound threading is turned on, we recommend turning off the engine setting preserving the order of events delivered to listeners as described in <a class="xref" href="configuration.html#config-engine-threading-dispatch" title="15.4.10.1. Preserving the order of events delivered to listeners">Section 15.4.10.1, “Preserving the order of events delivered to listeners”</a>. If outbound threading is turned on statement execution is not blocked for the configured time in the case a subscriber or listener takes too much time.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-admin-subscriber"/>14.3.3. Setting a Subscriber Object</h3></div></div></div><a id="d0e30751" class="indexterm"/><a id="d0e30754" class="indexterm"/><p>
+				A subscriber object is a direct binding of query results to a Java object. The object, a POJO, receives statement results via method invocation. The subscriber class does not need to implement an interface or extend a superclass. Only one subscriber object may be set for a statement.
+			</p><p>
+			  Subscriber objects have several advantages over listeners. First, they offer a substantial performance benefit: Query results are delivered directly to your method(s) through Java virtual machine method calls, and there is no intermediate representation (<code class="literal">EventBean</code>). Second, as subscribers receive strongly-typed parameters, the subscriber code tends to be simpler.
+			</p><p>
+			  This chapter describes the requirements towards the methods provided by your subscriber class.
+			</p><p>
+			  The engine can deliver results to your subscriber in two ways:			 
+			</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+						Each evert in the insert stream results in a method invocation, and each event in the remove stream results in further method invocations. This is termed <span class="emphasis"><em>row-by-row delivery</em></span>.
+					</p></li><li><p>
+						A single method invocation that delivers all rows of the insert and remove stream. This is termed <span class="emphasis"><em>multi-row</em></span> delivery.
+					</p></li></ol></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="api-admin-subscriber-rowbyrow"/>14.3.3.1. Row-By-Row Delivery</h4></div></div></div><a id="d0e30786" class="indexterm"/><p>
+					Your subscriber class must provide a method by name <code class="literal">update</code> to receive insert stream events row-by-row. The number and types of parameters declared by the <code class="literal">update</code> method must match the number and types of columns as specified in the <code class="literal">select</code> clause, in the same order as in the <code class="literal">select</code> clause.
+				</p><p>
+					For example, if your statement is:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select orderId, price, count(*) from OrderEvent</pre><p>
+					Then your subscriber <code class="literal">update</code> method looks as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MySubscriber {
+  ...
+  public void update(String orderId, double price, long count) {...}
+  ...
+}</pre><p>
+					Each method parameter declared by the <code class="literal">update</code> method must be assignable from the respective column type as listed in the <code class="literal">select</code>-clause, in the order selected. The assignability rules are:
+				</p><div class="itemizedlist"><ul compact="compact"><li><p>
+							Widening of types follows Java standards. For example, if your <code class="literal">select</code> clause selects an integer value, the method parameter for the same column can be typed int, long, float or double (or any equivalent boxed type).
+						</p></li><li><p>
+							Auto-boxing and unboxing follows Java standards. For example, if your <code class="literal">select</code> clause selects an <code class="literal">java.lang.Integer</code> value, the method parameter for the same column can be typed <code class="literal">int</code>. Note that if your <code class="literal">select</code> clause column may generate <code class="literal">null</code> values, an exception may occur at runtime unboxing the <code class="literal">null</code> value.
+						</p></li><li><p>
+							Interfaces and super-classes are honored in the test for assignability. Therefore <code class="literal">java.lang.Object</code> can be used to accept any <code class="literal">select</code> clause column type
+						</p></li></ul></div><p>
+				  In the case that your subscriber class offers multiple <code class="literal">update</code> method footprints, the engine selects the closest-matching footprint by comparing the output types and method parameter types. The engine prefers the update method that is an exact match of types, followed by an update method that requires boxing or unboxing, followed by an update method that requires widening and finally any other allowable update method. 
+				</p><div class="sect4" lang="en-US"><div class="titlepage"><div><div><h5 class="title"><a id="api-admin-subscriber-rowbyrow-wildcard"/>14.3.3.1.1. Wildcards</h5></div></div></div><p>
+						If your <code class="literal">select</code> clause contains one or more wildcards (*), then the equivalent parameter type is the underlying event type of the stream selected from.
+					</p><p>
+						For example, your statement may be:
+					</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select *, count(*) from OrderEvent</pre><p>
+						Then your subscriber <code class="literal">update</code> method looks as follows:
+					</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void update(OrderEvent orderEvent, long count) {...}</pre><p>
+						In a join, the wildcard expands to the underlying event type of each stream in the join in the order the streams occur in the <code class="literal">from</code> clause. An example statement for a join is:
+					</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select *, count(*) from OrderEvent order, OrderHistory hist</pre><p>
+						Then your subscriber <code class="literal">update</code> method should be:
+					</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void update(OrderEvent orderEvent, OrderHistory orderHistory, long count) {...}</pre><p>
+						The stream wildcard syntax and the stream name itself can also be used:
+					</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select hist.*, order from OrderEvent order, OrderHistory hist</pre><p>
+						The matching <code class="literal">update</code> method is:
+					</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void update(OrderHistory orderHistory, OrderEvent orderEvent) {...}</pre></div><div class="sect4" lang="en-US"><div class="titlepage"><div><div><h5 class="title"><a id="api-admin-subscriber-rowbyrow-generic"/>14.3.3.1.2. Row Delivery as Map and Object Array </h5></div></div></div><p>
+						Alternatively, your <code class="literal">update</code> method may simply choose to accept <code class="literal">java.util.Map</code> as a representation for each row. Each column in the <code class="literal">select</code> clause is 
+						then made an entry in the resulting <code class="literal">Map</code>. The <code class="literal">Map</code> keys are the column name if supplied, or the expression string itself for columns without a name.
+					</p><p>
+						The <code class="literal">update</code> method for <code class="literal">Map</code> delivery is:
+					</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void update(Map row) {...}</pre><p>
+						The engine also supports delivery of <code class="literal">select</code> clause columns as an object array. Each item in the object array represents a column in the <code class="literal">select</code> clause. The <code class="literal">update</code> method then looks as follows:
+					</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void update(Object[] row) {...}</pre></div><div class="sect4" lang="en-US"><div class="titlepage"><div><div><h5 class="title"><a id="api-admin-subscriber-rowbyrow-rstream"/>14.3.3.1.3. Delivery of Remove Stream Events</h5></div></div></div><p>
+						Your subscriber receives remove stream events if it provides a method named <code class="literal">updateRStream</code>. The method must accept the same number and types of parameters as the <code class="literal">update</code> method.
+					</p><p>
+						An example statement:
+					</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select orderId, count(*) from OrderEvent.win:time(20 sec) group by orderId</pre><p>
+						Then your subscriber <code class="literal">update</code> and <code class="literal">updateRStream</code> methods should be:
+					</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void update(String, long count) {...}
+public void updateRStream(String orderId, long count) {...}</pre></div><div class="sect4" lang="en-US"><div class="titlepage"><div><div><h5 class="title"><a id="api-admin-subscriber-rowbyrow-beginend"/>14.3.3.1.4. Delivery of Begin and End Indications</h5></div></div></div><p>
+						If your subscriber requires a notification for begin and end of event delivery, it can expose methods by name <code class="literal">updateStart</code> and <code class="literal">updateEnd</code>. 
+					</p><p>
+						The <code class="literal">updateStart</code> method must take two integer parameters that indicate the number of events of the insert stream and remove stream to be delivered. The engine invokes the <code class="literal">updateStart</code> method immediately prior to delivering events to the <code class="literal">update</code> and <code class="literal">updateRStream</code> methods.
+					</p><p>
+						The <code class="literal">updateEnd</code> method must take no parameters. The engine invokes the <code class="literal">updateEnd</code> method immediately after delivering events to the <code class="literal">update</code> and <code class="literal">updateRStream</code> methods.
+					</p><p>
+						An example set of delivery methods:
+					</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Called by the engine before delivering events to update methods
+public void updateStart(int insertStreamLength, int removeStreamLength)
+
+// To deliver insert stream events
+public void update(String orderId, long count) {...}
+
+// To deliver remove stream events
+public void updateRStream(String orderId, long count) {...}
+
+// Called by the engine after delivering events
+public void updateEnd() {...}</pre></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="api-admin-subscriber-multirow"/>14.3.3.2. Multi-Row Delivery</h4></div></div></div><a id="d0e31024" class="indexterm"/><p>
+					In place of row-by-row delivery, your subscriber can receive all events in the insert and remove stream via a single method invocation. This is applicable when an EPL delivers multiple output rows for a given input event or time advancing, for example when multiple pattern matches occur for the same incoming event, for a join producing multiple output rows or with output rate limiting, for example.
+				</p><p>
+					The event delivery follow the scheme as described earlier in <a class="xref" href="api.html#api-admin-subscriber-rowbyrow-generic" title="14.3.3.1.2. Row Delivery as Map and Object Array">Section 14.3.3.1.2, “Row Delivery as Map and Object Array ”</a>. The subscriber class must provide one of the following methods:
+				</p><div class="table"><a id="api-admin-subscriber-multirow-underlying"/><p class="title"><b>Table 14.2. Update Method for Multi-Row Delivery of Underlying Events</b></p><div class="table-contents"><table summary="Update Method for Multi-Row Delivery of Underlying Events" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Method</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">update(Object[][] insertStream, Object[][] removeStream)</code></td><td>
+									<p>The first dimension of each Object array is the event row, and the second dimension is the column matching the column order of the statement <code class="literal">select</code> clause</p>
+								 </td></tr><tr><td><code class="literal">update(Map[] insertStream, Map[] removeStream)</code></td><td>
+									<p> Each map represents one event, and Map entries represent columns of the statement <code class="literal">select</code> clause</p>
+								</td></tr></tbody></table></div></div><br class="table-break"/><div class="sect4" lang="en-US"><div class="titlepage"><div><div><h5 class="title"><a id="api-admin-subscriber-multirow-wildcard"/>14.3.3.2.1. Wildcards</h5></div></div></div><p>
+						If your <code class="literal">select</code> clause contains a single wildcard (*) or wildcard stream selector, the subscriber object may also directly receive arrays of the underlying events. In this case, the subscriber class should provide a method <code class="literal">update(</code><span class="emphasis"><em>Underlying</em></span><code class="literal">[] insertStream, </code><span class="emphasis"><em>Underlying</em></span>[] <span class="emphasis"><em>removeStream</em></span><code class="literal">)</code> , such that <span class="emphasis"><em>Underlying</em></span> represents the class of the underlying event.
+					</p><p>
+						For example, your statement may be:
+					</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from OrderEvent.win:time(30 sec)</pre><p>
+						Your subscriber class exposes the method:
+					</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void update(OrderEvent[] insertStream, OrderEvent[] removeStream) {...}</pre></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="api-admin-subscriber-null"/>14.3.3.3. No-Parameter Update Method</h4></div></div></div><a id="d0e31108" class="indexterm"/><p>
+					In the case that your subscriber object wishes to receive no data from a statement please follow the instructions here. 
+				</p><p>
+				  You EPL statement must select a single <code class="literal">null</code> value.
+				</p><p>
+					For example, your statement may be:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select null from OrderEvent(price &gt; 100)</pre><p>
+					Your subscriber class exposes the method:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void update() {...}</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-admin-listeners"/>14.3.4. Adding Listeners</h3></div></div></div><a id="d0e31131" class="indexterm"/><a id="d0e31134" class="indexterm"/><p>
+				Your application can subscribe to updates posted by a statement via the <code class="literal">addListener</code> and <code class="literal">removeListener</code> methods on <code class="literal">EPStatement</code> . Your application must to provide an implementation of the <code class="literal">UpdateListener</code> or the <code class="literal">StatementAwareUpdateListener</code> interface to the statement:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">UpdateListener myListener = new MyUpdateListener();
+countStmt.addListener(myListener);</pre><p>			
+				EPL statements and event patterns publish old data and new data to registered <code class="literal">UpdateListener</code> listeners. 
+				New data published by statements is the events representing the new values of derived data held by the statement.
+				Old data published by statements constists of the events representing the prior values of derived data held by the statement.
+			</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="important"><h2>Important</h2><p>
+				  	<code class="literal">UpdateListener</code> listeners receive multiple result rows in one invocation by the engine: the new data and old data parameters to your listener are array parameters. For example, if your application uses one of the batch data windows, or your application creates a pattern that matches multiple times when a single event arrives, then the engine indicates such multiple result rows in one invocation and your new data array carries two or more rows.
+				</p></div><p>			
+				A second listener interface is the <code class="literal">StatementAwareUpdateListener</code> interface. A <code class="literal">StatementAwareUpdateListener</code> is especially useful for registering the same listener object with multiple statements, 
+				as the listener receives the statement instance and engine instance in addition to new and old data when the engine indicates new results to a listener.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">StatementAwareUpdateListener myListener = new MyStmtAwareUpdateListener();
+statement.addListener(myListener);</pre><p>			
+				To indicate results the engine invokes this method on <code class="literal">StatementAwareUpdateListener</code> listeners: <code class="literal">update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPServiceProvider epServiceProvider)</code>
+			</p><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="api-admin-listeners-replay"/>14.3.4.1. Subscription Snapshot  and Atomic Delivery</h4></div></div></div><p>
+					The <code class="literal">addListenerWithReplay</code> method provided by <code class="literal">EPStatement</code> makes it possible to send a snapshot of current statement results to a listener when the listener is added.
+				</p><p>
+					When using the <code class="literal">addListenerWithReplay</code> method to register a listener, the listener receives current statement results as the first call to the update method of the listener, passing in the newEvents parameter the current statement results as an array of zero or more events. Subsequent calls to the update method of the listener are statement results.   
+				</p><p>
+					Current statement results are the events returned by the <code class="literal">iterator</code> or <code class="literal">safeIterator</code> methods.
+				</p><p>
+					Delivery is atomic: Events occurring during delivery of current results to the listener are guaranteed to be delivered in a separate call and not lost. The listener implementation should thus minimize long-running or blocking operations to reduce lock times held on statement-level resources.
+				</p></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-admin-iterators"/>14.3.5. Using Iterators</h3></div></div></div><a id="d0e31214" class="indexterm"/><a id="d0e31217" class="indexterm"/><a id="d0e31220" class="indexterm"/><p>
+				Subscribing to events posted by a statement is following a push model. The engine pushes data to listeners when events are received that cause data to change or patterns to match. Alternatively, you need to know that statements serve up data that your application can obtain via the <code class="literal">safeIterator</code> and <code class="literal">iterator</code> methods on <code class="literal">EPStatement</code>. This is called the pull API and can come in handy if your application is not interested in all new updates, and only needs to perform a frequent or infrequent poll for the latest data. 
+			</p><p>
+				The <code class="literal">safeIterator</code> method on <code class="literal">EPStatement</code> returns a concurrency-safe iterator returning current statement results, even while concurrent threads may send events into the engine for processing. The engine employs a read-write lock per context partition and obtains a read lock for iteration. Thus safe iterator guarantees correct results even as events are being processed by other threads and other context partitions. The cost is that the iterator obtains and holds zero, one or multiple context partition locks for that statement that must be released via the <code class="literal">close</code> method on the <code class="literal">SafeIterator</code> instance. 
+			</p><p>
+				The <code class="literal">iterator</code> method on <code class="literal">EPStatement</code> returns a concurrency-unsafe iterator. This iterator is only useful for applications that are single-threaded, or applications that themselves perform coordination between the iterating thread and the  threads that send events into the engine for processing. The advantage to this iterator is that it does not hold a lock.
+			</p><p>
+			  When statements are used with contexts and context partitions, the APIs to identify, filter and select context partitions for statement iteration are described in <a class="xref" href="api.html#api-contextpartitionselection" title="14.18. Context Partition Selection">Section 14.18, “Context Partition Selection”</a>.
+			</p><p>
+				The next code snippet shows a short example of use of safe iterators:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPStatement statement = epAdmin.createEPL("select avg(price) as avgPrice from MyTick");
+// .. send events into the engine
+// then use the pull API...
+SafeIterator&lt;EventBean&gt; safeIter = statement.safeIterator();
+try {
+  for (;safeIter.hasNext();) {
+     // .. process event ..
+     EventBean event = safeIter.next();
+     System.out.println("avg:" + event.get("avgPrice");
+  }
+}
+finally {
+  safeIter.close();	// Note: safe iterators must be closed
+}</pre><p>
+				This is a short example of use of the regular iterator that is not safe for concurrent event processing:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">double averagePrice = (Double) eplStatement.iterator().next().get("average");</pre><p>
+				The <code class="literal">safeIterator</code> and <code class="literal">iterator</code> methods can be used to pull results out of all statements, including statements that join streams, contain aggregation functions, pattern statements, and statements that contain a <code class="literal">where</code> clause, <code class="literal">group by</code> clause, <code class="literal">having</code> clause or <code class="literal">order by</code> clause.
+			</p><p>
+				For statements without an <code class="literal">order by</code> clause, the <code class="literal">iterator</code> method returns events in the order maintained by the data window. For statements that contain an <code class="literal">order by</code> clause, the <code class="literal">iterator</code> method returns events in the order indicated by the <code class="literal">order by</code> clause.
+			</p><p>
+				Consider using the <code class="literal">on-select</code> clause and a named window if your application requires iterating over a partial result set or requires indexed access for fast iteration; Note that <code class="literal">on-select</code> requires that you sent a trigger event, which may contain the key values for indexed access.
+			</p><p>
+				Esper places the following restrictions on the pull API and usage of the <code class="literal">safeIterator</code> and <code class="literal">iterator</code> methods:
+			</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+						In multithreaded applications, use the <code class="literal">safeIterator</code> method. Note: make sure your application closes the iterator via the <code class="literal">close</code> method when done, otherwise the iterated statement context partitions stay locked and event processing for statement context partitions does not resume.
+					</p></li><li><p>
+						In multithreaded applications, the <code class="literal">iterator</code> method does not hold any locks. The iterator returned by this method does not make any guarantees towards correctness of results and fail-behavior, if your application processes events into the engine instance by multiple threads. Use the <code class="literal">safeIterator</code> method for concurrency-safe iteration instead.
+					</p></li><li><p>
+						Since the <code class="literal">safeIterator</code> and <code class="literal">iterator</code> methods return events to the application immediately, the iterator does not honor an output rate limiting clause, if present. That is, the iterator returns results as if there is no output-rate clause for the statement in statements without grouping or aggregation. For statements with grouping or aggregation, the iterator in combintion with an output clause returns last output group and aggregation results. Use a separate statement and the <code class="literal">insert into</code> clause to control the output rate for iteration, if so required.
+					</p></li><li><p>
+						When iterating a statement that operates on an unbound stream (no data window declared), please note the following:
+					</p><div class="itemizedlist"><ul compact="compact"><li><p>
+								When iterating a statement that groups and aggregates values from an unbound stream and that specifies <code class="literal">output snapshot</code>, the engine retains groups and aggregations for output as iteration results or upon the output snapshot condition .
+							</p></li><li><p>
+								When iterating a statement that groups and aggregates values from an unbound stream and that does not specify <code class="literal">output snapshot</code>, the engine only retains the last aggregation values and the iterated result contains only the last updated group.
+							</p></li><li><p>
+								When iterating a statement that operates on an unbound stream and does not group and aggregate, the iterator returns the last event.
+							</p></li></ul></div></li></ol></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-admin-mgmt-stmt"/>14.3.6. Managing Statements</h3></div></div></div><p>
+				The <code class="literal">EPAdministrator</code> interface provides the facilities for managing statements:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						Use the <code class="literal">getStatement</code> method to obtain an existing started or stopped statement by name
+					</p></li><li><p>
+						Use the <code class="literal">getStatementNames</code> methods to obtain a list of started and stopped statement names
+					</p></li><li><p>
+						Use the <code class="literal">startAllStatements</code>, <code class="literal">stopAllStatements</code> and <code class="literal">destroyAllStatements</code> methods to manage all statements in one operation
+					</p></li></ul></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-admin-runtime-config"/>14.3.7. Runtime Configuration</h3></div></div></div><a id="d0e31407" class="indexterm"/><p>
+				Certain configuration changes are available to perform on an engine instance while in operation. Such configuration operations are available via the <code class="literal">getConfiguration</code> method on <code class="literal">EPAdministrator</code>,
+				which returns a <code class="literal">ConfigurationOperations</code> object.
+			</p><p>
+				Please consult the JavaDoc of <code class="literal">ConfigurationOperations</code> for further information. The section <a class="xref" href="configuration.html#configuration-runtime" title="15.6. Runtime Configuration">Section 15.6, “Runtime Configuration”</a> provides a summary of available configurations.
+			</p><p>
+				In summary, the configuration operations available on a running engine instance are as follows:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						Add new event types for all event representations, check if an event type exists, update an existing event type, remove an event type, query a list of types and obtain a type by name.
+					</p></li><li><p>
+						Add and remove variables (get and set variable values is done via the runtime API).
+					</p></li><li><p>
+						Add a variant stream.
+					</p></li><li><p>
+						Add a revision event type.
+					</p></li><li><p>
+						Add event types for all event classes in a given Java package, using the simple class name as the event name.
+					</p></li><li><p>
+						Add import for user-defined functions.
+					</p></li><li><p>
+						Add a plug-in aggregation function, plug-in single row function, plug-in event type, plug-in event type resolution URIs.
+					</p></li><li><p>
+						Control metrics reporting.
+					</p></li><li><p>
+						Additional items please see the <code class="literal">ConfigurationOperations</code> interface.
+					</p></li></ul></div><p>
+				For examples of above runtime configuration API functions please consider the Configuration chapter, which applies to both static configuration and runtime configuration as the <code class="literal">ConfigurationOperations</code> interface is the same.
+			</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-runtime"/>14.4. The Runtime Interface</h2></div></div></div><a id="d0e31471" class="indexterm"/><p>
+			The <code class="literal">EPRuntime</code> interface is used to send events for processing into an Esper engine, set and get variable values and execute on-demand queries.
+        </p><p>
+			The below code snippet shows how to send a Java object event to the engine. Note that the <code class="literal">sendEvent</code> method is overloaded. As events can take on different representation classes in Java, the <code class="literal">sendEvent</code> takes parameters to reflect the different 
+			types of events that can be send into the engine. The <a class="xref" href="event_representation.html" title="Chapter 2. Event Representations">Chapter 2, <i>Event Representations</i></a> section explains the types of events 
+			accepted.
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPServiceProvider epService = EPServiceProviderManager.getDefaultProvider();
+EPRuntime runtime = epService.getEPRuntime();
+
+// Send an example event containing stock market data
+runtime.sendEvent(new MarketDataBean('IBM', 75.0));		
+</pre><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="tip"><h2>Tip</h2><p>
+				Events, in theoretical terms, are observations of a state change that occurred in the past. Since one cannot change an event that happened in the past, events are best modelled as immutable objects. 
+			</p></div><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="caution"><h2>Caution</h2><p>
+				The engine relies on events that are sent into an engine to not change their state. Typically, applications create a new event object for every new event, to represent that new event. Application should not modify an existing event that was sent into the engine.
+			</p></div><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="important"><h2>Important</h2><p>
+				Another important method in the runtime interface is the <code class="literal">route</code> method. This method is designed for use by <code class="literal">UpdateListener</code> and subscriber implementations as well as engine extensions that
+				need to send events into an engine instance to avoid the possibility of a stack overflow due to nested calls to <code class="literal">sendEvent</code> and to ensure correct processing of the current and routed event.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-runtime-eventsender"/>14.4.1. Event Sender</h3></div></div></div><p>
+				The <code class="literal">EventSender</code> interface processes event objects that are of a known type. This facility can reduce the overhead of event object reflection and type lookup as an event sender
+				is always associated to a single concrete event type.
+			</p><p>
+				Use the method <code class="literal">getEventSender(String eventTypeName) </code> to obtain an event sender for processing events of the named type:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EventSender sender = epService.getEPRuntime().getEventSender("MyEvent");
+sender.sendEvent(myEvent);</pre><p>
+				For events backed by a Java class (JavaBean events), the event sender ensures that the event object equals the underlying class, or implements or extends the underlying class
+				for the given event type name.
+			</p><p>
+				For events backed by a <code class="literal">java.util.Map</code> (Map events), the event sender does not perform any checking other then checking that the event object implements Map.
+			</p><p>
+				For events backed by a <code class="literal">Object[]</code> (Object-array events), the event sender does not perform any checking other then checking that the event object implements Object[]. The array elements must be in the exact same order of properties as declared and array length must always be at least the number of properties declared.
+			</p><p>
+				For events backed by a org.w3c.Node (XML DOM events), the event sender checks that the root element name equals the root element name for the event type.
+			</p><p>
+				A second method to obtain an event sender is the method <code class="literal">getEventSender(URI[])</code>, which takes an array of URIs. This method is for use with plug-in event representations.
+				The event sender returned by this method processes event objects that are of one of the types of one or more plug-in event representations. Please consult <a class="xref" href="extension.html#custom-event-representation" title="17.8. Event Type And Event Object">Section 17.8, “Event Type And Event Object”</a> for more information.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-runtime-unmatched"/>14.4.2. Receiving Unmatched Events</h3></div></div></div><a id="d0e31548" class="indexterm"/><p>
+				Your application can register an implementation of the <code class="literal">UnmatchedListener</code> interface with the <code class="literal">EPRuntime</code> runtime via the <code class="literal">setUnmatchedListener</code> method to receive events that were not matched by any statement.
+			</p><p>
+				 Events that can be unmatched are all events that your application sends into the runtime via one of the <code class="literal">sendEvent</code> or <code class="literal">route</code> methods, or that have been generated via an <code class="literal">insert into</code> clause.
+			</p><p>
+				For an event to become unmatched by any statement, the event must not match any statement's event stream filter criteria. Note that the EPL  <code class="literal">where</code> clause or <code class="literal">having</code> clause are not considered part of the filter criteria for a stream, as explained by example below.
+			</p><p>
+				In the next statement all MyEvent events match the statement's event stream filter criteria, regardless of the value of the 'quantity' property. As long as the below statement remains started, the engine would not deliver MyEvent events to your registered <code class="literal">UnmatchedListener</code> instance:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from MyEvent where quantity &gt; 5</pre><p>
+				In the following statement a MyEvent event with a 'quantity' property value of 5 or less does not match this statement's event stream filter criteria. The engine delivers such an event to the registered <code class="literal">UnmatchedListener</code> instance provided no other statement matches on the event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from MyEvent(quantity &gt; 5)</pre><p>
+				 For patterns, if no pattern sub-expression is active for an event type, an event of that type also counts as unmatched in regards to the pattern statement.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-runtime-ondemand"/>14.4.3. On-Demand Fire-And-Forget Query Execution</h3></div></div></div><p>
+				As your application may not require streaming results and may not know each query in advance, the on-demand query facility provides for ad-hoc execution of an EPL expression.
+			</p><p>
+				On-demand queries are not continuous in nature: The query engine executes the query once and returns all result rows to the application. On-demand query execution is very lightweight as the engine performs no statement creation
+				and the query leaves no traces within the engine.
+			</p><p>
+				Esper also provides the facility to explicitly index named windows to speed up queries. Please consult <a class="xref" href="epl_clauses.html#named_explicit_index" title="5.15.12. Explicitly Indexing Named Windows">Section 5.15.12, “Explicitly Indexing Named Windows”</a> for more information.
+			</p><p>
+			  When named windows are used with contexts and context partitions, the APIs to identify, filter and select context partitions for on-demand queries can be found in <a class="xref" href="api.html#api-contextpartitionselection" title="14.18. Context Partition Selection">Section 14.18, “Context Partition Selection”</a>.
+			</p><p>
+				The following limitations apply:
+			</p><div class="itemizedlist"><ul><li><p>
+						An on-demand EPL expression only evaluates against the named windows that your application creates. On-demand queries may not specify any other streams or application event types.
+					</p></li><li><p>
+						The following clauses are not allowed in on-demand EPL: <code class="literal">insert into</code> and <code class="literal">output</code>.
+					</p></li><li><p>
+						Views and patterns are not allowed to appear in on-demand queries.
+					</p></li><li><p>
+						On-demand EPL may not perform subqueries.
+					</p></li><li><p>
+						The <code class="literal">previous</code> and <code class="literal">prior</code> functions may not be used.
+					</p></li></ul></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="api-runtime-ondemand-use"/>14.4.3.1. On-Demand Query API</h4></div></div></div><p>
+					The <code class="literal">EPRuntime</code> provides two ways to run on-demand queries:
+				</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+							Dynamic on-demand queries are executed once through the <code class="literal">executeQuery</code> method.
+						</p></li><li><p>
+							Prepared on-demand queries: The <code class="literal">prepareQuery</code> method returns an <code class="literal">EPOnDemandPreparedQuery</code> representing the query, and the query can be performed repeatedly via the <code class="literal">execute</code> method.
+						</p></li></ol></div><p>
+					Prepared on-demand queries are designed for repeated execution and may perform better then the dynamic queries if running the same query multiple times. Placeholders are not allowed in prepared on-demand queries.
+				</p><p>
+					The next program listing runs an on-demand query against a named window <code class="literal">MyNamedWindow</code> and prints a column of each row result of the query:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">String query = "select * from MyNamedWindow";
+EPOnDemandQueryResult result = epRuntime.executeQuery(query);
+for (EventBean row : result.getArray()) {
+  System.out.println("name=" + row.get("name"));
+}</pre><p>
+					The next code snippet demonstrates prepared on-demand queries:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPOnDemandPreparedQuery prepared = epRuntime.prepareQuery(query);
+EPOnDemandQueryResult result = prepared.execute();
+// ...later ...
+prepared.execute();	// execute a second time</pre></div></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-event"/>14.5. Event and Event Type</h2></div></div></div><a id="d0e31685" class="indexterm"/><a id="d0e31688" class="indexterm"/><p>
+			An <code class="literal">EventBean</code> object represents a row (event) in your continuous query's result set. Each <code class="literal">EventBean</code> object has an associated <code class="literal">EventType</code> object providing event metadata.
+        </p><p>
+			An <code class="literal">UpdateListener</code> implementation receives one or more <code class="literal">EventBean</code> events with each invocation. Via the <code class="literal">iterator</code> method on <code class="literal">EPStatement</code> your application can poll or read data out of statements. Statement iterators also return <code class="literal">EventBean</code> instances.
+        </p><p>
+			Each statement provides the event type of the events it produces, available via the <code class="literal">getEventType</code> method on <code class="literal">EPStatement</code>.
+        </p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-eventtype"/>14.5.1. Event Type Metadata</h3></div></div></div><p>
+				An <code class="literal">EventType</code> object encapulates all the metadata about a certain type of events. As Esper supports an inheritance hierarchy for event types, it also provides information about super-types to an event type.
+			</p><p>
+				An <code class="literal">EventType</code> object provides the following information:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						For each event property, it lists the property name and type as well as flags for indexed or mapped properties and whether a property is a fragment.
+					</p></li><li><p>
+						The direct and indirect super-types to the event type.
+					</p></li><li><p>
+						Value getters for property expressions.
+					</p></li><li><p>
+						Underlying class of the event representation.
+					</p></li></ul></div><p>
+				For each property of an event type, there is an <code class="literal">EventPropertyDescriptor</code> object that describes the property.
+				The <code class="literal">EventPropertyDescriptor</code> contains flags that indicate whether a property is an indexed (array) or a mapped property and whether access to property values require an integer index value (indexed properties only) or string key value (mapped properties only). The descriptor also contains a fragment flag that indicates whether a property value is available as a fragment.
+			</p><p>
+				The term <span class="emphasis"><em>fragment</em></span> means an event property value that is itself an event, or a property value that can be represented as an event. The <code class="literal">getFragmentType</code> on <code class="literal">EventType</code> may be used to determine a fragment's event type in advance. 
+			</p><p>
+				A fragment event type and thereby fragment events allow navigation over a statement's results even if the statement result contains nested events or a graph of events. There is no need to use the Java reflection API to navigate events, 
+				since fragments allow the querying of nested event properties or array values, including nested Java classes.
+			</p><p>
+				When using the Map or Object-array event representation, any named Map type or Object-array type nested within a Map or Object-array as a simple or array property is also available as a fragment. When using Java objects either directly or within Map or Object-array events, any object that is neither a primitive or boxed built-in type, and that is not an enumeration and does not implement the Map interface is also available as a fragment.
+			</p><p>
+				The nested, indexed and mapped property syntax can be combined to a property expression that may query an event property graph. Most of the methods on the <code class="literal">EventType</code> interface allow a property expression to be passed.
+			</p><p>
+				Your application may use an <code class="literal">EventType</code> object to obtain special getter-objects. A getter-object is a fast accessor to a property value of an event of a given type. All getter objects implement the <code class="literal">EventPropertyGetter</code> interface.  Getter-objects work only for events of the same type or sub-types as the <code class="literal">EventType</code> that provides the <code class="literal">EventPropertyGetter</code>. The performance section provides additional information and samples on using getter-objects.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-eventbean"/>14.5.2. Event Object</h3></div></div></div><p>
+				An event object is an <code class="literal">EventBean</code> that provides:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						The property value for a property given a property name or property expression that may include nested, indexed or mapped properties in any combination.
+					</p></li><li><p>
+						The event type of the event.
+					</p></li><li><p>
+						Access to the underlying event object.
+					</p></li><li><p>
+						The <code class="literal">EventBean</code> fragment or array of <code class="literal">EventBean</code> fragments given a property name or property expression.
+					</p></li></ul></div><p>
+				The <code class="literal">getFragment</code> method on <code class="literal">EventBean</code> and <code class="literal">EventPropertyGetter</code> return the fragment <code class="literal">EventBean</code> or array of <code class="literal">EventBean</code>, if the property is itself an event
+				or can be represented as an event. Your application may use <code class="literal">EventPropertyDescriptor</code> to determine which properties are also available as fragments.
+			</p><p>
+				The underlying event object of an <code class="literal">EventBean</code> can be obtained via the <code class="literal">getUnderlying</code> method. Please see <a class="xref" href="event_representation.html" title="Chapter 2. Event Representations">Chapter 2, <i>Event Representations</i></a>  for more information on different event representations.
+			</p><p>
+				From a threading perspective, it is safe to retain and query <code class="literal">EventBean</code> and <code class="literal">EventType</code> objects in multiple threads.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-eventtype-query"/>14.5.3. Query Example</h3></div></div></div><p>
+				Consider a statement that returns the symbol, count of events per symbol and average price per symbol for tick events. Our sample statement may declare a fully-qualified Java class name as the event type: <code class="literal">org.sample.StockTickEvent</code>. Assume that this class exists and exposes a <code class="literal">symbol</code> property of type String, and a <code class="literal">price</code> property of type (Java primitive) double.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select symbol, avg(price) as avgprice, count(*) as mycount 
+from org.sample.StockTickEvent 
+group by symbol</pre><p>
+				The next table summarizes the property names and types as posted by the statement above:
+			</p><div class="table"><a id="d0e31878"/><p class="title"><b>Table 14.3. Properties offered by sample statement aggregating price</b></p><div class="table-contents"><table summary="Properties offered by sample statement aggregating price" border="1"><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Java code snippet</th></tr></thead><tbody><tr><td><code class="literal">symbol</code></td><td>java.lang.String</td><td>Value of symbol event property</td><td><pre class="synopsis">eventBean.get("symbol")</pre></td></tr><tr><td><code class="literal">avgprice</code></td><td>java.lang.Double</td><td>Average price per symbol</td><td><pre class="synopsis">eventBean.get("avgprice")</pre></td></tr><tr><td><code class="literal">mycount</code></td><td>java.lang.Long</td><td>Number of events per symbol</td><td><pre class="synopsis">eventBean.get("mycount")</pre></td></tr></tbody></table></div></div><br class="table-break"/><p>
+				A code snippet out of a possible <code class="literal">UpdateListener</code> implementation to this statement may look as below:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">String symbol = (String) newEvents[0].get("symbol");
+Double price= (Double) newEvents[0].get("avgprice");
+Long count= (Long) newEvents[0].get("mycount");</pre><p>
+				The engine supplies the boxed <code class="literal">java.lang.Double</code> and <code class="literal">java.lang.Long</code> types as property values rather then primitive Java types. This is because aggregated values can return a <code class="literal">null</code> value to indicate that no data is available for aggregation. Also, in a select statement that computes expressions, the underlying event objects to <code class="literal">EventBean</code> instances are either of type <code class="literal">Object[]</code> (object-array) or of type <code class="literal">java.util.Map</code>. 
+			</p><p>
+			  Use <code class="literal">statement.getEventType().getUnderlyingType()</code> to inspect the underlying type for all events delivered to listeners. Whether the engine delivers Map or Object-array events to listeners can be specified as follows. If the statement provides the <code class="literal">@EventRepresentation(array=true)</code> annotation the engine delivers the output events as object array. If the statement provides the <code class="literal">@EventRepresentation(array=false)</code> annotation the engine delivers output events as a Map. If neither annotation is provided, the engine delivers the configured default event representation as discussed in <a class="xref" href="configuration.html#config-engine-eventmeta-representation" title="15.4.11.1. Default Event Representation">Section 15.4.11.1, “Default Event Representation”</a>.
+			</p><p>
+				Consider the next statement that specifies a wildcard selecting the same type of event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from org.sample.StockTickEvent where price &gt; 100</pre><p>
+				The property names and types provided by an <code class="literal">EventBean</code> query result row, as posted by the statement above are as follows:
+			</p><div class="table"><a id="d0e31979"/><p class="title"><b>Table 14.4. Properties offered by sample wildcard-select statement</b></p><div class="table-contents"><table summary="Properties offered by sample wildcard-select statement" border="1"><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Java code snippet</th></tr></thead><tbody><tr><td><code class="literal">symbol</code></td><td>java.lang.String</td><td>Value of symbol event property</td><td><pre class="synopsis">eventBean.get("symbol")</pre></td></tr><tr><td><code class="literal">price</code></td><td>double</td><td>Value of price event property</td><td><pre class="synopsis">eventBean.get("price")</pre></td></tr></tbody></table></div></div><br class="table-break"/><p>
+				As an alternative to querying individual event properties via the <code class="literal">get</code> methods, the <code class="literal">getUnderlying</code> method on <code class="literal">EventBean</code> returns the underlying object representing the query result.
+				In the sample statement that features a wildcard-select, the underlying event object is of type <code class="literal">org.sample.StockTickEvent</code>:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">StockTickEvent tick = (StockTickEvent) newEvents[0].getUnderlying();</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-eventtype-pattern"/>14.5.4. Pattern Example</h3></div></div></div><p>
+				Composite events are events that aggregate one or more other events. Composite events are typically created by the engine for statements that join two event streams, and for event patterns in which the causal events are retained and reported in a composite event. The example below shows such an event pattern.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Look for a pattern where BEvent follows AEvent
+String pattern = "a=AEvent -&gt; b=BEvent";
+EPStatement stmt = epService.getEPAdministrator().createPattern(pattern);
+stmt.addListener(testListener);
+</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Example listener code
+public class MyUpdateListener implements UpdateListener {
+  public void update(EventBean[] newData, EventBean[] oldData) {
+    System.out.println("a event=" + newData[0].get("a"));
+    System.out.println("b event=" + newData[0].get("b"));
+  }
+}</pre><p>
+				Note that the <code class="literal">update</code> method can receive multiple events at once as it accepts an array of <code class="literal">EventBean</code> instances. For example, a time batch window may post multiple events to listeners representing a batch of events received during a given time period. 
+			</p><p>
+				Pattern statements can also produce multiple events delivered to update listeners in one invocation. The pattern statement below, for instance, delivers an event for each A event that was not followed by a B event with the same <code class="literal">id</code> property within 60 seconds of the A event. The engine may deliver all matching A events as an array of events in a single invocation of the <code class="literal">update</code> method of each listener to the statement:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from pattern[
+  every a=A -&gt; (timer:interval(60 sec) and not B(id=a.id))]</pre><p>
+				A code snippet out of a possible <code class="literal">UpdateListener</code> implementation to this statement that retrives the events as fragments may look as below:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EventBean a = (EventBean) newEvents[0].getFragment("a");
+// ... or using a nested property expression to get a value out of A event...
+double value = (Double) newEvent[0].get("a.value");</pre><p>
+				Some pattern objects return an array of events. An example is the unbound repeat operator. Here is a sample pattern that collects all A events until a B event arrives:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from pattern [a=A until b=B]</pre><p>
+				A possible code to retrieve different fragments or property values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EventBean[] a = (EventBean[]) newEvents[0].getFragment("a");
+// ... or using a nested property expression to get a value out of A event...
+double value = (Double) newEvent[0].get("a[0].value");</pre></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-threading"/>14.6. Engine Threading and Concurrency</h2></div></div></div><a id="d0e32081" class="indexterm"/><p>
+			Esper is designed from the ground up to operate as a component to multi-threaded, highly-concurrent applications that require efficient use of Java VM resources. In addition, multi-threaded execution requires guarantees in predictability of results and deterministic processing. This section discusses these concerns in detail. 
+        </p><p>
+In Esper, an engine instance is a unit of separation. Applications can obtain and discard (initialize) one or more engine instances within the same Java VM and can provide the same or different engine configurations to each instance. An engine instance efficiently shares resources between statements. For example, consider two statements that declare the same data window. The engine matches up view declarations provided by each statement and can thus provide a single data window representation shared between the two statements.
+        </p><p>
+			Applications can use Esper APIs to concurrently, by multiple threads of execution, perform such functions as creating and 
+managing statements, or sending events into an engine instance for processing. Applications can use application-managed threads or thread pools or any set of same or different threads of execution with any of the public Esper APIs. There are no restrictions towards threading other then those noted in specific sections of this document. 
+        </p><p>
+Esper does not prescribe a specific threading model. Applications using Esper retain full control over threading, allowing an engine to be easily embedded and used as a component or library in your favorite Java container or process.
+        </p><p>
+In the default configuration it is up to the application code to use multiple threads for processing events by the engine, if so desired. All event processing takes places within your application thread call stack. The exception is timer-based processing if your engine instance relies on the internal timer (default). If your application relies on external timer events instead of the internal timer then there need not be any Esper-managed internal threads.
+        </p><p>
+The fact that event processing can take place within your application thread's call stack makes developing applications with Esper easier: Any common Java integrated development environment (IDE) can host an Esper engine instance. This allows developers to easily set up test cases, debug through listener code and inspect input or output events, or trace their call stack.
+        </p><p>
+In the default configuration, each engine instance maintains a single timer thread (internal timer) providing for time or schedule-based processing within the engine. The default resolution at which the internal timer operates is 100 milliseconds. The internal timer thread can be disabled and applications can instead send external time events to an engine instance to perform timer or scheduled processing at the resolution required by an application.
+        </p><p>
+Each engine instance performs minimal locking to enable high levels of concurrency. An engine instance locks on a context partition level to protect context partition resources. For stateless EPL select-statements the engine does not use a context-partition lock and operates lock-free for the context partition. For stateful statements, the maximum (theoretical) degree of parallelism is 2^31-1 (2,147,483,647) parallel threads working to process a single EPL statement under a hash segmented context.
+        </p><p>
+You may turn off context partition locking engine-wide (also read the caution notice) as described in <a class="xref" href="configuration.html#config-engine-execution-disablelock" title="15.4.22.3. Disable Locking">Section 15.4.22.3, “Disable Locking”</a>. You may disable context partition locking for a given statement by providing the <code class="literal">@NoLock</code> annotation as part of your EPL. Note, we provide the <code class="literal">@NoLock</code> annotation for the purpose of identifying locking overhead, or when your application is single-threaded, or when using an external mechanism for concurrency control or for example with virtual data windows or plug-in data windows to allow customizing concurrency for a given statement or named window. Using this annotation may have unpredictable results unless your application is taking concurrency under consideration.
+        </p><p>
+For an engine instance to produce predictable results from the viewpoint of listeners to statements, an engine instance by default ensures that 
+it dispatches statement result events to listeners in the order in which a statement produced result events. Applications that require the highest possible concurrency and do not require predictable order of delivery of events to listeners, this feature can be turned off via configuration, see
+<a class="xref" href="configuration.html#config-engine-threading-dispatch" title="15.4.10.1. Preserving the order of events delivered to listeners">Section 15.4.10.1, “Preserving the order of events delivered to listeners”</a>. For example, assume thread T1 processes an event applied to statement S producing output event O1. Assume thread T2 processes another event applied to statement S and produces output event O2.  The engine employs a configurable latch system to ensure that listeners to statement S receive and may complete processing of O1 before receiving O2. When using outbound threading (advanced threading options) or changing the configuration this guarantee is weakened or removed.
+        </p><p>
+In multithreaded environments, when one or more statements make result events available via the <code class="literal">insert into</code> clause to further statements, the engine preserves the order of events inserted into the generated insert-into stream, allowing statements that consume other statement's events to behave deterministic. This feature can also be turned off via configuration, see , see <a class="xref" href="configuration.html#config-engine-threading-insert-into" title="15.4.10.2. Preserving the order of events for insert-into streams">Section 15.4.10.2, “Preserving the order of events for insert-into streams”</a>. For example, assume thread T1 processes an event applied to statement S and thread T2 processes another event applied to statement S.  Assume statement S inserts into into stream ST. T1 produces an output event O1 for processing by consumers of ST1 and T2 produces an output event O2 for processing by consumers of ST. The engine employs a configurable latch system such that O1 is processed before O2 by consumers of ST. When using route execution threading (advanced threading options) or changing the configuration this guarantee is weakened or removed.
+        </p><p>
+We generally recommended that listener implementations block minimally or do not block at all. By implementing listener code as non-blocking code execution threads can often achieve higher levels of concurrency.
+        </p><p>
+We recommended that, when using a single listener or subscriber instance to receive output from multiple statements, that the listener or subscriber code is multithread-safe. If your application has shared state between
+listener or subscriber instances then such shared state should be thread-safe. 
+        </p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-threading-advanced"/>14.6.1. Advanced Threading</h3></div></div></div><p>
+				In the default configuration the same application thread that invokes any of the <code class="literal">sendEvent</code> methods will process the event fully and also deliver output events to listeners and subscribers. By default the single internal timer thread based on system time performs time-based processing and delivery of time-based results. 
+			</p><p>
+				This default configuration reduces the processing overhead associated with thread context switching, is lightweight and fast and works well in many environments such as J2EE, server or client. Latency and throughput requirements are largely use case dependant, and Esper provides engine-level facilities for controlling concurrency that are described next.
+			</p><p>
+				<span class="emphasis"><em>Inbound Threading</em></span> queues all incoming events: A pool of engine-managed threads performs the event processing. The application thread that sends an event via any of the <code class="literal">sendEvent</code> methods returns without blocking.
+			</p><p>
+				<span class="emphasis"><em>Outbound Threading</em></span> queues events for delivery to listeners and subscribers, such that slow or blocking listeners or subscribers do not block event processing.
+			</p><p>
+				<span class="emphasis"><em>Timer Execution Threading</em></span> means time-based event processing is performed by a pool of engine-managed threads. With this option the internal timer thread (or external timer event) serves only as a metronome, providing units-of-work to the engine-managed threads in the timer execution pool, pushing threading to the level of each statement for time-based execution.
+			</p><p>
+				<span class="emphasis"><em>Route Execution Threading</em></span> means that the thread sending in an event via any of the <code class="literal">sendEvent</code> methods (or the inbound threading pooled thread if inbound threading is enabled) only identifies and pre-processes an event, and a pool of engine-managed threads handles the actual processing of the event for each statement, pushing threading to the level of each statement for event-arrival-based execution.
+			</p><p>
+				The engine starts engine-managed threads as daemon threads when the engine instance is first obtained. The engine stops engine-managed threads when the engine instance is destroyed via the <code class="literal">destroy</code> method. When the engine is initialized via the <code class="literal">initialize</code> method the existing engine-managed threads are stopped and new threads are created. When shutting down your application, use the <code class="literal">destroy</code> method to stop engine-managed threads.
+			</p><p>
+				Note that the options discussed herein may introduce additional processing overhead into your system, as each option involves work queue management and thread context switching.
+			</p><p>
+				If your use cases require ordered processing of events or do not tolerate disorder, the threading options described herein may not be the right choice.
+			</p><p>
+				If your use cases require loss-less processing of events, wherein the threading options mean that events are held in an in-memory queue, the threading options described herein may not be the right choice.
+			</p><p>
+				Care should be taken to consider arrival rates and queue depth. Threading options utilize unbound queues or capacity-bound queues with blocking-put, depending on your configuration, and may therefore introduce an overload or blocking situation to your application. You may use the service provider interface as outlined below to manage queue sizes, if required, and to help tune the engine to your application needs. Consider throttling down the event send rate when the API (see below) indicates that events are getting queued.
+			</p><p>
+				All threading options are on the level of an engine. If you require different threading behavior for certain statements then consider using multiple engine instances, consider using the <code class="literal">route</code> method or consider 
+				using application threads instead.
+			</p><p>
+				Please consult <a class="xref" href="configuration.html#config-engine-threading" title="15.4.10. Engine Settings related to Concurrency and Threading">Section 15.4.10, “Engine Settings related to Concurrency and Threading”</a> for instructions on how to configure threading options. Threading options take effect at engine initialization time.
+			</p><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="api-threading-advanced-inbound"/>14.6.1.1. Inbound Threading</h4></div></div></div><p>
+					With inbound threading an engine places inbound events in a queue for processing by one or more engine-managed threads other then the delivering application threads.
+				</p><p>
+					The delivering application thread uses one of the <code class="literal">sendEvent</code> methods on <code class="literal">EPRuntime</code> to deliver events or may also use the <code class="literal">sendEvent</code> method on a <code class="literal">EventSender</code>. The engine receives the event and places the event into a queue, allowing the delivering thread to continue and not block while the event is being processed and results are delivered.
+				</p><p>
+					Events that are sent into the engine via one of the <code class="literal">route</code> methods are not placed into queue but processed by the same thread invoking the <code class="literal">route</code> operation.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="api-threading-advanced-outbound"/>14.6.1.2. Outbound Threading</h4></div></div></div><p>
+					With outbound threading an engine places outbound events in a queue for delivery by one or more engine-managed threads other then the processing thread originating the result.
+				</p><p>
+					With outbound threading your listener or subscriber class receives statement results from one of the engine-managed threads in the outbound pool of threads. This is useful when you expect your listener or subscriber code to perform significantly blocking operations and you do not want to hold up event processing.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="api-threading-advanced-timer-exec"/>14.6.1.3. Timer Execution Threading</h4></div></div></div><p>
+					With timer execution threading an engine places time-based work units into a queue for processing by one or more engine-managed threads other then the internal timer thread or the application thread that sends an external timer event.
+				</p><p>
+					Using timer execution threading the internal timer thread (or thread delivering an external timer event) serves to evaluate which time-based work units must be processed. A pool of engine-managed threads performs the actual processing of time-based work units and thereby offloads the work from the internal timer thread (or thread delivering an external timer event).
+				</p><p>
+					Enable this option as a tuning parameter when your statements utilize time-based patterns or data windows. Timer execution threading is fine grained and works on the level of a time-based schedule in combination with a statement.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="api-threading-advanced-route-exec"/>14.6.1.4. Route Execution Threading</h4></div></div></div><p>
+					With route execution threading an engine identifies event-processing work units based on the event and statement combination. It places such work units into a queue for processing by one or more engine-managed threads other then the thread that originated the event.
+				</p><p>
+					While inbound threading works on the level of an event, route execution threading is fine grained and works on the level of an event in combination with a statement.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="api-threading-management"/>14.6.1.5. Threading Service Provider Interface</h4></div></div></div><p>
+					The service-provider interface <code class="literal">EPServiceProviderSPI</code> is an extension API that allows to manage engine-level queues and thread pools .
+				</p><p>
+					The service-provider interface <code class="literal">EPServiceProviderSPI</code> is considered an extension API and subject to change between release versions.
+				</p><p>
+					The following code snippet shows how to obtain the <code class="literal">BlockingQueue&lt;Runnable&gt;</code> and the <code class="literal">ThreadPoolExecutor</code> for the managing the queue and thread pool responsible for inbound threading:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPServiceProviderSPI spi = (EPServiceProviderSPI) epService;
+int queueSize = spi.getThreadingService().getInboundQueue().size();
+ThreadPoolExecutor threadpool = spi.getThreadingService().getInboundThreadPool();</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-processingorder"/>14.6.2. Processing Order</h3></div></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="api-processingorder-competingstmt"/>14.6.2.1. Competing Statements</h4></div></div></div><p>
+				  This section discusses the order in which N competing statements that all react to the same arriving event execute. 
+				</p><p>
+					The engine, by default, does not guarantee to execute competing statements in any particular order unless using @Priority.  We therefore recommend that an application does not rely on the order of execution of statements by the engine, since that best shields the behavior of an application from changes in the order that statements may get created by your application or by threading configurations that your application may change at will.
+				</p><p>
+					If your application requires a defined order of execution of competing statements, use the @Priority EPL syntax to make the order of execution between statements well-defined (requires that you set the prioritized-execution configuration setting). And the @Drop can make a statement preempt all other lowered priority ones that then won't get executed for any matching events.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="api-processingorder-eventdepth"/>14.6.2.2. Competing Events in a Work Queue</h4></div></div></div><p>
+				  This section discusses the order of event evaluation when multiple events must be processed, for example when multiple statements use insert-into to generate further events upon arrival of an event.
+				</p><p>
+					The engine processes an arriving event completely before indicating output events to listeners and subscribers, and before considering output events generated by insert-into or routed events inserted by listeners or subscribers.
+				</p><p>
+					For example, assume three statements (1) select * from MyEvent and (2) insert into ABCStream select * from MyEvent. (3) select * from ABCStream. When a MyEvent event arrives then the listeners to statements (1) and (2) execute first (default threading model). Listeners to statement (3) which receive the inserted-into stream events are always executed after delivery of the triggering event. 
+				</p><p>
+					Among all events generated by insert-into of statements and the events routed into the engine via the <code class="literal">route</code> method, all events that insert-into a named window are processed first in the order generated. All other events are processed thereafter in the order they were generated.
+				</p><p>
+				  When enabling timer or route execution threading as explained under advanced threading options then the engine does not make any guarantee to the processing order except that is will prioritize events inserted into a named window.
+				</p></div></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-controlling-time"/>14.7. Controlling Time-Keeping</h2></div></div></div><a id="d0e32293" class="indexterm"/><a id="d0e32298" class="indexterm"/><p>
+			There are two modes for an engine to keep track of time: The internal timer based on JVM system time (the default), and externally-controlled time giving your application full control over the concept of time within an engine or isolated service.
+        </p><p>
+			An isolated service is an execution environment separate from the main engine runtime, allowing full control over the concept of time for a group of statements, as further described in <a class="xref" href="api.html#api-isolatedservice" title="14.9. Service Isolation">Section 14.9, “Service Isolation”</a>.
+        </p><p>
+			By default the internal timer provides time and evaluates schedules. External clocking can be used to supply time ticks to the engine instead. The latter is useful for testing time-based event sequences or for synchronizing the engine with an external time source.
+        </p><p>
+			The internal timer relies on the <code class="literal">java.util.concurrent.ScheduledThreadPoolExecutor</code> class for time tick events. The next section describes timer resolution for the internal timer, by default set to 100 milliseconds but is configurable via the threading options. When using externally-controlled time the timer resolution is in your control.
+        </p><p>
+			To disable the internal timer and use externally-provided time instead, there are two options. The first option is to use the configuration API at engine initialization time. The second option toggles on and off the internal timer at runtime, via special timer control events that are sent into the engine like any other event.
+        </p><p>
+			If using a timer execution thread pool as discussed above, the internal timer or external time event provide the schedule evaluation however do not actually perform the time-based processing. The time-based processing is performed by the threads in the timer execution thread pool.
+        </p><p>
+			This code snippet shows the use of the configuration API to disable the internal timer and thereby turn on externally-provided time (see the Configuration section for configuration via XML file):
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getThreading().setInternalTimerEnabled(false);
+EPServiceProvider epService = EPServiceProviderManager.getDefaultProvider(config);</pre><p>
+			After disabling the internal timer, it is wise to set a defined time so that any statements created thereafter start relative to the time defined. Use the <code class="literal">CurrentTimeEvent</code> class to indicate current time to the engine
+			and to move time forward for the engine (a.k.a application-time model).
+        </p><p>
+			This code snippet obtains the current time and sends a timer event in:
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">long timeInMillis = System.currentTimeMillis();
+CurrentTimeEvent timeEvent = new CurrentTimeEvent(timeInMillis);
+epService.getEPRuntime().sendEvent(timeEvent);</pre><p>
+			Alternatively, you can use special timer control events to enable or disable the internal timer. Use the <code class="literal">TimerControlEvent</code> class to control timer operation at runtime.
+        </p><p>
+			The next code snippet demonstrates toggling to external timer at runtime, by sending in a <code class="literal">TimerControlEvent</code> event:
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPServiceProvider epService = EPServiceProviderManager.getDefaultProvider();
+EPRuntime runtime = epService.getEPRuntime();
+// switch to external clocking
+runtime.sendEvent(new TimerControlEvent(TimerControlEvent.ClockType.CLOCK_EXTERNAL));</pre><p>
+			Your application sends a <code class="literal">CurrentTimeEvent</code> event when it desires to move the time forward. All aspects of Esper engine time related to EPL statements and patterns are driven by the time provided by the <code class="literal">CurrentTimeEvent</code> that your application sends in.
+		</p><p>
+			The next example sequence of instructions sets time to zero, then creates a statement, then moves time forward to 1 seconds later and then 6 seconds later:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Set start time at zero.
+runtime.sendEvent(new CurrentTimeEvent(0));
+
+// create a statement here
+epAdministrator.createEPL("select * from MyEvent output every 5 seconds");
+
+// move time forward 1 second
+runtime.sendEvent(new CurrentTimeEvent(1000));
+
+// move time forward 5 seconds
+runtime.sendEvent(new CurrentTimeEvent(6000));</pre><p>
+			When sending external timer events, your application should make sure that <code class="literal">long</code>-type time values are ascending. That is, each long-type value should be either the same value or a larger value then the prior value provided by a <code class="literal">CurrentTimeEvent</code>. The engine outputs a warning if time events move back in time.
+		</p><p>
+		    Your application may use the <code class="literal">getNextScheduledTime</code> method in <code class="literal">EPRuntime</code> to determine the earliest time a schedule for any statement requires evaluation.
+		</p><p>
+			The following code snippet sets the current time, creates a statement and prints the next scheduled time which is 1 minute later then the current time:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Set start time to the current time.
+runtime.sendEvent(new CurrentTimeEvent(System.currentTimeMillis()));
+
+// Create a statement.
+epService.getEPAdministrator().createEPL("select * from pattern[timer:interval(1 minute)]");
+
+// Print next schedule time
+System.out.println("Next schedule at " + new Date(runtime.getNextScheduledTime());</pre><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-controlling-time-span"/>14.7.1. Controlling Time Using Time Span Events</h3></div></div></div><p>
+				With <code class="literal">CurrentTimeEvent</code>, as described above, your application can advance engine time to a given point in time. In addition, the <code class="literal">getNextScheduledTime</code> method in <code class="literal">EPRuntime</code> returns the next scheduled time according to started statements.
+				You would typically use <code class="literal">CurrentTimeEvent</code> to advance time at a relatively high resolution.
+			</p><p>
+				To advance time for a span of time without sending individual <code class="literal">CurrentTimeEvent</code> events to the engine, the API provides the class <code class="literal">CurrentTimeSpanEvent</code>.  You may use <code class="literal">CurrentTimeSpanEvent</code> with or without a resolution.
+			</p><p>
+				If your application only provides the target end time of time span to <code class="literal">CurrentTimeSpanEvent</code> and no resolution, the engine advances time up to the target time by stepping through all relevant times according to started statements.
+			</p><p>
+				If your application provides the target end time of time span and in addition a <code class="literal">long</code>-typed resolution, the engine advances time up to the target time by incrementing time according to the resolution (regardless of next scheduled time according to started statements).
+			</p><p>
+				Consider the following example:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Set start time to Jan.1, 2010, 00:00 am for this example
+SimpleDateFormat format = new SimpleDateFormat("yyyy MM dd HH:mm:ss SSS");
+Date startTime = format.parse("2010 01 01 00:00:00 000");
+runtime.sendEvent(new CurrentTimeEvent(startTime.getTime()));
+
+// Create a statement.
+EPStatement stmt = epService.getEPAdministrator().createEPL("select current_timestamp() as ct " +
+  "from pattern[every timer:interval(1 minute)]");
+stmt.addListener(...);	// add a listener
+
+// Advance time to 10 minutes after start time
+runtime.sendEvent(new CurrentTimeSpanEvent(startTime.getTime() + 10*60*1000));</pre><p>
+				The above example advances time to 10 minutes after the time set using <code class="literal">CurrentTimeSpanEvent</code>. As the example does not pass a resolution, the engine advances time according to statement schedules.
+				Upon sending the <code class="literal">CurrentTimeSpanEvent</code> the listener sees 10 invocations for minute 1 to minute 10.
+			</p><p>
+				To advance time according to a given resolution, you may provide the resolution as shown below:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Advance time to 10 minutes after start time at 100 msec resolution
+runtime.sendEvent(new CurrentTimeSpanEvent(startTime.getTime() + 10*60*1000, 100));</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-controlling-time-spi"/>14.7.2. Additional Time-Related APIs</h3></div></div></div><p>
+				Consider using the service-provider interface <code class="literal">EPRuntimeSPI</code> <code class="literal">EPRuntimeIsolatedSPI</code>. The two interfaces are service-provider interfaces that expose additional function to manage statement schedules. However the SPI interfaces should be considered an extension API and are subject to change between release versions.
+			</p><p>
+				Additional engine-internal SPI interfaces can be obtained by downcasting <code class="literal">EPServiceProvider</code> to <code class="literal">EPServiceProviderSPI</code>. For example the <code class="literal">SchedulingServiceSPI</code> exposes schedule information per statement (downcast from <code class="literal">SchedulingService</code>). Engine-internal SPI are subject to change between versions.
+			</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-time-resolution"/>14.8. Time Resolution</h2></div></div></div><a id="d0e32457" class="indexterm"/><p>
+			The minimum resolution that all data windows, patterns and output rate limiting operate at is the millisecond. 
+			Parameters to time window views, pattern operators or the <code class="literal">output</code> clause that are less then 1 millisecond are not allowed. As stated earlier, the default frequency at which the internal timer operates is 100 milliseconds (configurable).
+        </p><p>
+			The internal timer thread, by default, uses the call <code class="literal">System.currentTimeMillis()</code> to obtain system time. Please see the JIRA issue ESPER-191 Support nano/microsecond resolution for more information on Java system time-call performance, accuracy and drift. 
+        </p><p>
+			The internal timer thread can be configured to use nano-second time as returned by <code class="literal">System.nanoTime()</code>. If configured for nano-second time, the engine computes an offset of the nano-second ticks to wall clock time upon startup to present back an accurate millisecond wall clock time. 
+			Please see section <a class="xref" href="configuration.html#config-engine-time-source" title="15.4.18. Engine Settings related to Time Source">Section 15.4.18, “Engine Settings related to Time Source”</a> to configure the internal timer thread to use <code class="literal">System.nanoTime()</code>.
+		</p><p>
+			The internal timer is based on <code class="literal">java.util.concurrent.ScheduledThreadPoolExecutor</code> (<code class="literal">java.util.Timer</code> does not support high accuracy VM time).
+        </p><p>
+			Your application can achieve a higher tick rate then 1 tick per millisecond by sending external timer events that carry a long-value which is not based on milliseconds since January 1, 1970, 00:00:00 GMT. In this case, your time interval parameters need to take consideration of the changed use of engine time. 
+        </p><p>
+			Thus, if your external timer events send long values that represents microseconds (1E-6 sec), then your time window interval must be 1000-times larger, i.e. "win:time(1000)" becomes a 1-second time window.
+        </p><p>
+			And therefore, if your external timer events send long values that represents nanoseconds (1E-9 sec), then your time window interval must be 1000000-times larger, i.e. "win:time(1000000)" becomes a 1-second time window.
+        </p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-isolatedservice"/>14.9. Service Isolation</h2></div></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-isolatedservice-overview"/>14.9.1. Overview</h3></div></div></div><p>
+				An <span class="emphasis"><em>isolated service</em></span> allows an application to control event visibility and the concept of time as desired on a statement level: Events sent into an isolated service are visible only to those statements that currently reside in the isolated service and are not visible to statements outside of that isolated service. Within an isolated service an application can control time independently, start time at a point in time and advance time at the resolution and pace suitable for the statements added to that isolated service. 
+			</p><p>
+				As discussed before, a single Java Virtual Machine may hold multiple Esper engine instances unique by engine URI. Within an Esper engine instance the default execution environment for statements is the <code class="literal">EPRuntime</code> engine runtime, which coordinates all statement's reaction to incoming events and to time passing (via internal or external timer).
+			</p><p>
+				Subordinate to an Esper engine instance, your application can additionally allocate multiple isolated services (or execution environments), uniquely identified by a name and represented by the <code class="literal">EPServiceProviderIsolated</code> interface. In the isolated service, time passes only when you application sends timer events to the <code class="literal">EPRuntimeIsolated</code> instance. Only events explicitly sent to the isolated service are visible to statements added.
+			</p><p>
+				Your application can create new statements that start in an isolated service. You can also move existing statements back and forth between the engine and an isolated service.
+			</p><p>
+				Isolation does not apply to variables: Variables are global in nature. Also, as named windows are globally visibly data windows, consumers to named windows see changes in named windows even though a consumer or the named window (through the create statement) may be in an isolated service.
+			</p><p>
+				An isolated service allows an application to:
+			</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+						Suspend a statement without loosing its statement state that may have accumulated for the statement.
+					</p></li><li><p>
+					  Control the concept of time separately for a set of statements, for example to simulate, backtest, adjust arrival order or compute arrival time.
+					</p></li><li><p>
+					   Initialize statement state by replaying events, without impacting already running statements, to catch-up statements from historical events for example.
+					</p></li></ol></div><p>
+				While a statement resides in an isolated runtime it receives only those events explicitly sent to the isolated runtime, and performs time-based processing based on the timer events provided to that isolated runtime.
+			</p><p>
+				Use the <code class="literal">getEPServiceIsolated</code> method on <code class="literal">EPServiceProvider</code> passing a name to obtain an isolated runtime:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPServiceProviderIsolated isolatedService = epServiceManager.getEPServiceIsolated("name");</pre><p>
+				Set the start time for your isolated runtime via the <code class="literal">CurrentTimeEvent</code> timer event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// In this example start the time at the system time
+long startInMillis = System.currentTimeMillis();	
+isolatedService.getEPRuntime().sendEvent(new CurrentTimeEvent(startInMillis));</pre><p>
+				Use the <code class="literal">addStatement</code> method on <code class="literal">EPAdministratorIsolated</code> to move an existing statement out of the engine runtime into the isolated runtime:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// look up the existing statement
+EPStatement stmt = epServiceManager.getEPAdministrator().getStatement("MyStmt");
+
+// move it to an isolated service
+isolatedService.getEPAdministrator().addStatement(stmt);</pre><p>
+				To remove the statement from isolation and return the statement back to the engine runtime, use the <code class="literal">removeStatement</code> method on <code class="literal">EPAdministratorIsolated</code>:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">isolatedService.getEPAdministrator().removeStatement(stmt);</pre><p>
+				To create a new statement in the isolated service, use the <code class="literal">createEPL</code> method on <code class="literal">EPAdministratorIsolated</code>:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">isolatedService.getEPAdministrator().createEPL(
+  "@Name('MyStmt') select * from Event", null, null); 
+// the example is passing the statement name in an annotation and no user object</pre><p>
+				The <code class="literal">destroy</code> method on <code class="literal">EPServiceProviderIsolated</code> moves all currently-isolated statements for that isolated service provider back to engine runtime.
+			</p><p>
+				When moving a statement between engine runtime and isolated service or back, the algorithm ensures that events are aged according to the time that passed and time schedules stay intact.
+			</p><p>
+				To use isolated services, your configuration must have view sharing disabled as described in <a class="xref" href="configuration.html#config-engine-viewresources-sharing" title="15.4.12.1. Sharing View Resources between Statements">Section 15.4.12.1, “Sharing View Resources between Statements”</a>.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-isolatedruntime-suspend"/>14.9.2. Example: Suspending a Statement</h3></div></div></div><p>
+				By adding an existing statement to an isolated service, the statement's processing effectively becomes suspended. Time does not pass for the statement and it will not process events, unless your application explicitly moves time forward or sends events into the isolated service.
+			</p><p>
+				First, let's create a statement and send events:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPStatement stmt = epServiceManager.getEPAdministrator().createEPL("select * from TemperatureEvent.win:time(30)");
+epServiceManager.getEPRuntime().send(new TemperatureEvent(...));
+// send some more events over time</pre><p>
+				The steps to suspend the previously created statement are as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPServiceProviderIsolated isolatedService = epServiceManager.getEPServiceIsolated("suspendedStmts");
+isolatedService.getEPAdministrator().addStatement(stmt);</pre><p>
+				To resume the statement, move the statement back to the engine:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">isolatedService.getEPAdministrator().removeStatement(stmt);</pre><p>
+				If the statement employed a time window, the events in the time window did not age. If the statement employed patterns, the pattern's time-based schedule remains unchanged. This is because the example did not advance time in the isolated service.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-isolatedruntime-catchup"/>14.9.3. Example: Catching up a Statement from Historical Data</h3></div></div></div><p>
+				This example creates a statement in the isolated service, replays some events and advances time, then merges back the statement to the engine to let it participate in incoming events and engine time processing.
+			</p><p>
+				First, allocate an isolated service and explicitly set it to a start time. Assuming that <code class="literal">myStartTime</code> is a long millisecond time value that marks the beginning of the data to replay, the sequence is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPServiceProviderIsolated isolatedService = epServiceManager.getEPServiceIsolated("suspendedStmts");
+isolatedService.getEPRuntime().sendEvent(new CurrentTimeEvent(myStartTime));</pre><p>
+				Next, create the statement. The sample statement is a pattern statement looking for temperature events following each other within 60 seconds:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPStatement stmt = epAdmin.createEPL(
+  "select * from pattern[every a=TemperatureEvent -&gt; b=TemperatureEvent where timer:within(60)]");</pre><p>
+				For each historical event to be played, advance time and send an event. This code snippet assumes that <code class="literal">currentTime</code> is a time greater then <code class="literal">myStartTime</code> and reflects the time that  the historical event should be processed at.
+				It also assumes <code class="literal">historyEvent</code> is the historical event object.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">isolatedService.getEPRuntime().sendEvent(new CurrentTimeEvent(currentTime));
+isolatedService.getEPRuntime().send(historyEvent);
+// repeat the above advancing time until no more events</pre><p>
+				Finally, when done replaying events, merge the statement back with the engine:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">isolatedService.getEPAdministrator().removeStatement(stmt);</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-isolatedruntime-insertinto"/>14.9.4. Isolation for Insert-Into</h3></div></div></div><p>
+				When isolating statements, events that are generated by <code class="literal">insert into</code> are visible within the isolated service that currently holds that <code class="literal">insert into</code> statement.
+			</p><p>
+				For example, assume the below two statements named A and B:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">@Name('A') insert into MyStream select * from MyEvent
+@Name('B') select * from MyStream</pre><p>
+				When adding statement A to an isolated service, and assuming a <code class="literal">MyEvent</code> is sent to either the engine runtime or the isolated service, a listener to statement B does not receive that event.
+			</p><p>
+				When adding statement B to an isolated service, and assuming a <code class="literal">MyEvent</code> is sent to either the engine runtime or the isolated service, a listener to statement B does not receive that event.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-isolatedruntime-namedwindow"/>14.9.5. Isolation for Named Windows</h3></div></div></div><p>
+				When isolating named windows, the event visibility of events entering and leaving from a named window is not limited to the isolated service. This is because named windows are global data windows (a relation in essence).
+			</p><p>
+				For example, assume the below three statements named A, B and C:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">@Name('A') create window MyNamedWindow.win:time(60) as select * from MyEvent
+@Name('B') insert into MyNamedWindow select * from MyEvent
+@Name('C') select * from MyNamedWindow</pre><p>
+				When adding statement A to an isolated service, and assuming a <code class="literal">MyEvent</code> is sent to either the engine runtime or the isolated service, a listener to statement A and C does not receive that event.
+			</p><p>
+				When adding statement B to an isolated service, and assuming a <code class="literal">MyEvent</code> is sent to either the engine runtime or the isolated service, a listener to statement A and C does not receive that event.
+			</p><p>
+				When adding statement C to an isolated service, and assuming a <code class="literal">MyEvent</code> is sent to the engine runtime, a listener to statement A and C does receive that event.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-isolatedruntime-runtime"/>14.9.6. Runtime Considerations</h3></div></div></div><p>
+				Moving statements between an isolated service and the engine is an expensive operation and should not be performed with high frequency.
+			</p><p>
+				When using multiple threads to send events and at the same time moving a statement to an isolated service, it its undefined whether events will be delivered to a listener of the isolated statement until all threads completed sending events.
+			</p><p>
+				Metrics reporting is not available for statements in an isolated service. Advanced threading options are also not available in the isolated service, however it is thread-safe to send events including timer events from multiple threads to the
+				same or different isolated service.
+			</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-exception"/>14.10. Exception Handling</h2></div></div></div><p>
+			You may register one or more exception handlers for the engine to invoke in the case it encounters an exception processing a continuously-executing statement. By default and without exception handlers the engine cancels execution of the current EPL statement that encountered the exception, logs the exception and continues to the next statement, if any. The configuration is described in <a class="xref" href="configuration.html#config-engine-exceptionhandling" title="15.4.23. Engine Settings related to Exception Handling">Section 15.4.23, “Engine Settings related to Exception Handling”</a>.
+        </p><p>
+			If your application registers exception handlers as part of engine configuration, the engine invokes the exception handlers in the order they are registered passing relevant exception information such as EPL statement name, expression and the exception itself.
+        </p><p>
+			Exception handlers receive any EPL statement unchecked exception such as internal exceptions or exceptions thrown by plug-in aggregation functions or plug-in views. The engine does not provide to exception handlers any exceptions thrown by static method invocations for function calls, method invocations in joins, methods on event classes and listeners or subscriber exceptions.
+        </p><p>
+			An exception handler can itself throw a runtime exception to cancel execution of the current event against any further statements.
+        </p><p>
+			For on-demand queries the API indicates any exception directly back to the caller without the exception handlers being invoked, as exception handlers apply to continuous queries only. The same applies to any API calls other then <code class="literal">sendEvent</code> and the <code class="literal">EventSender</code> methods.
+        </p><p>
+			As the configuration section describes, your application registers one or more classes that implement the <code class="literal">ExceptionHandlerFactory</code> interface in the engine configuration. Upon engine initialization the engine obtains a factory instance from the class name that then provides the exception handler instance. The exception handler class must implement the <code class="literal">ExceptionHandler</code> interface.
+        </p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-condition"/>14.11. Condition Handling</h2></div></div></div><p>
+			You may register one or more condition handlers for the engine to invoke in the case it encounters certain conditions, as outlined below, when executing a statement. By default and without condition handlers the engine logs the condition at informational level and continues processing. The configuration is described in <a class="xref" href="configuration.html#config-engine-conditionhandling" title="15.4.24. Engine Settings related to Condition Handling">Section 15.4.24, “Engine Settings related to Condition Handling”</a>.
+        </p><p>
+			If your application registers condition handlers as part of engine configuration, the engine invokes the condition handlers in the order they are registered passing relevant condition information such as EPL statement name, expression and the condition information itself.
+        </p><p>
+			Currently the only conditions indicated by this facility are raised by the pattern followed-by operator, see <a class="xref" href="event_patterns.html#pattern-temporal-followed-by-max" title="6.5.8.1. Limiting Sub-Expression Count">Section 6.5.8.1, “Limiting Sub-Expression Count”</a> and see <a class="xref" href="event_patterns.html#pattern-temporal-followed-by-engine-max" title="6.5.8.2. Limiting Engine-wide Sub-Expression Count">Section 6.5.8.2, “Limiting Engine-wide Sub-Expression Count”</a>.
+        </p><p>
+			A condition handler may not itself throw a runtime exception or return any value.
+        </p><p>
+			As the configuration section describes, your application registers one or more classes that implement the <code class="literal">ConditionHandlerFactory</code> interface in the engine configuration. Upon engine initialization the engine obtains a factory instance from the class name that then provides the condition handler instance. The condition handler class must implement the <code class="literal">ConditionHandler</code> interface.
+        </p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-soda"/>14.12. Statement Object Model</h2></div></div></div><a id="d0e32766" class="indexterm"/><p>
+			The statement object model is a set of classes that provide an object-oriented representation of an EPL  or pattern statement. The object model classes are found in package <code class="literal">com.espertech.esper.client.soda</code>. An instance of <code class="literal">EPStatementObjectModel</code> represents a statement's object model.
+        </p><p>
+			The statement object model classes are a full and complete specification of a statement. All EPL  and pattern constructs including expressions and sub-queries are available via the statement object model. 
+        </p><p>
+			In conjunction with the administrative API, the statement object model provides the means to build, change or interrogate statements beyond the EPL  or pattern syntax string representation. The object graph of the statement object model is fully navigable for easy querying by code, and is also serializable allowing applications to persist or transport statements in object form, when required.
+        </p><p>
+			The statement object model supports full round-trip from object model to EPL  statement string and back to object model: A statement object model can be rendered into an EPL  string representation via the <code class="literal">toEPL</code> method on <code class="literal">EPStatementObjectModel</code>. Further, the administrative API allows to compile a statement string into an object model representation via the <code class="literal">compileEPL</code> method on <code class="literal">EPAdministrator</code>.
+        </p><p>
+			The statement object model is fully mutable. Mutating a any list such as returned by <code class="literal">getChildren()</code>, for example, is acceptable and supported.
+        </p><p>
+			The <code class="literal">create</code> method on <code class="literal">EPAdministrator</code> creates and starts a statement as represented by an object model. In order to obtain an object model from an existing statement, obtain the statement expression text of the statement via the <code class="literal">getText</code> method on <code class="literal">EPStatement</code> and use the <code class="literal">compileEPL</code> method to obtain the object model.
+		</p><p>
+			The following limitations apply:
+		</p><div class="itemizedlist"><ul compact="compact"><li><p>
+					Statement object model classes are not safe for sharing between threads other then for read access. 
+				</p></li><li><p>
+					Between versions of Esper, the serialized form of the object model is subject to change. Esper makes no guarantees that the serialized object model of one version will be fully compatible with the 
+					serialized object model generated by another version of Esper. Please consider this issue when storing Esper object models in persistent store. 
+				</p></li></ul></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-soda-building-step1"/>14.12.1. Building an Object Model</h3></div></div></div><p>
+				A <code class="literal">EPStatementObjectModel</code> consists of an object graph representing all possible clauses that can be part of an EPL  statement. 
+			</p><p>
+				Among all clauses, the <code class="literal">SelectClause</code> and <code class="literal">FromClause</code> objects are required clauses that must be present, in order to define what to select and where to select from.
+			</p><div class="table"><a id="soda-building-classes-1"/><p class="title"><b>Table 14.5. Required Statement Object Model Instances</b></p><div class="table-contents"><table summary="Required Statement Object Model Instances" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Class</th><th>Description</th></tr></thead><tbody><tr><td><span class="emphasis"><em>EPStatementObjectModel</em></span></td><td>All statement clauses for a statement, such as the select-clause and the from-clause, are specified within the object graph of an instance of this class</td></tr><tr><td><span class="emphasis"><em>SelectClause</em></span></td><td>A list of the selection properties or expressions, or a wildcard</td></tr><tr><td><span class="emphasis"><em>FromClause</em></span></td><td>A list of one or more streams; A stream can be a filter-based, a pattern-based or a SQL-based stream; Views are added to streams to provide data window or other projections</td></tr></tbody></table></div></div><br class="table-break"/><p>
+				Part of the statement object model package are convenient builder classes that make it easy to build a new object model or change an existing object model. The <code class="literal">SelectClause</code> and <code class="literal">FromClause</code> are such builder classes and provide convenient <code class="literal">create</code> methods.
+			</p><p>
+				Within the from-clause we have a choice of different streams to select on. The <code class="literal">FilterStream</code> class represents a stream that is filled by events of a certain type and that pass an optional filter expression.
+			</p><p>
+				We can use the classes introduced above to create a simple statement object model:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPStatementObjectModel model = new EPStatementObjectModel();
+model.setSelectClause(SelectClause.createWildcard());
+model.setFromClause(FromClause.create(FilterStream.create("com.chipmaker.ReadyEvent")));</pre><p>
+				The model as above is equivalent to the EPL :
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from com.chipmaker.ReadyEvent</pre><p>
+				Last, the code snippet below creates a statement from the object model:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPStatement stmt = epService.getEPAdministrator().create(model);</pre><p>
+				Notes on usage: 
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						Variable names can simply be treated as property names.
+					</p></li><li><p>
+						When selecting from named windows, the name of the named window is the event type name for use in <code class="literal">FilterStream</code> instances or patterns.
+					</p></li><li><p>
+						To compile an arbitrary sub-expression text into an <code class="literal">Expression</code> object representation, simply add the expression text to a <code class="literal">where</code> clause,
+						compile the EPL  string into an object model via the <code class="literal">compileEPL</code> on <code class="literal">EPAdministrator</code>, and obtain the compiled <code class="literal">where</code>
+						from the <code class="literal">EPStatementObjectModel</code> via the <code class="literal">getWhereClause</code> method.
+					</p></li></ul></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-soda-building-step2"/>14.12.2. Building Expressions</h3></div></div></div><p>
+				The <code class="literal">EPStatementObjectModel</code> includes an optional where-clause. The where-clause is a filter expression that the engine applies to events in one or more streams. The key interface for all expressions is the <code class="literal">Expression</code> interface.
+			</p><p>
+				The <code class="literal">Expressions</code> class provides a convenient way of obtaining <code class="literal">Expression</code> instances for all possible expressions. Please consult the JavaDoc for detailed method information. 
+				The next example discusses sample where-clause expressions.
+			</p><p>
+				Use the <code class="literal">Expressions</code> class as a service for creating expression instances, and add additional expressions via the <code class="literal">add</code> method that most expressions provide.
+			</p><p>
+				In the next example we add a simple where-clause to the EPL  as shown earlier:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from com.chipmaker.ReadyEvent where line=8</pre><p>
+				And the code to add a where-clause to the object model is below.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">model.setWhereClause(Expressions.eq("line", 8));</pre><p>
+				The following example considers a more complex where-clause. Assume we need to build an expression using logical-and and logical-or:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from com.chipmaker.ReadyEvent 
+where (line=8) or (line=10 and age&lt;5)</pre><p>
+				The code for building such a where-clause by means of the object model classes is:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">model.setWhereClause(Expressions.or()
+  .add(Expressions.eq("line", 8))
+  .add(Expressions.and()
+      .add(Expressions.eq("line", 10))
+      .add(Expressions.lt("age", 5))
+  ));</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-soda-building-step3"/>14.12.3. Building a Pattern Statement</h3></div></div></div><p>
+				The <code class="literal">Patterns</code> class is a factory for building pattern expressions. It provides convenient methods to create all pattern expressions of the pattern language.
+			</p><p>
+				Patterns in EPL  are seen as a stream of events that consist of patterns matches. The <code class="literal">PatternStream</code> class represents a stream of pattern matches and contains a pattern expression within. 
+			</p><p>
+				 For instance, consider the following pattern statement.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from pattern [every a=MyAEvent and not b=MyBEvent]</pre><p>
+				The next code snippet outlines how to use the statement object model and specifically the <code class="literal">Patterns</code> class to create a statement object model that is equivalent to the pattern statement above.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPStatementObjectModel model = new EPStatementObjectModel();
+model.setSelectClause(SelectClause.createWildcard());
+PatternExpr pattern = Patterns.and()
+  .add(Patterns.everyFilter("MyAEvent", "a"))
+  .add(Patterns.notFilter("MyBEvent", "b"));
+model.setFromClause(FromClause.create(PatternStream.create(pattern)));</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-soda-building-step4"/>14.12.4. Building a Select Statement</h3></div></div></div><p>
+				In this section we build a complete example statement and include all optional clauses in one EPL  statement, to demonstrate the object model API.
+			</p><p>
+				A sample statement:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">insert into ReadyStreamAvg(line, avgAge) 
+select line, avg(age) as avgAge 
+from com.chipmaker.ReadyEvent(line in (1, 8, 10)).win:time(10) as RE
+where RE.waverId != null
+group by line 
+having avg(age) &lt; 0
+output every 10.0 seconds 
+order by line</pre><p>
+				Finally, this code snippet builds the above statement from scratch:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPStatementObjectModel model = new EPStatementObjectModel();
+model.setInsertInto(InsertIntoClause.create("ReadyStreamAvg", "line", "avgAge"));
+model.setSelectClause(SelectClause.create()
+    .add("line")
+    .add(Expressions.avg("age"), "avgAge"));
+Filter filter = Filter.create("com.chipmaker.ReadyEvent", Expressions.in("line", 1, 8, 10));
+model.setFromClause(FromClause.create(
+    FilterStream.create(filter, "RE").addView("win", "time", 10)));
+model.setWhereClause(Expressions.isNotNull("RE.waverId"));
+model.setGroupByClause(GroupByClause.create("line"));
+model.setHavingClause(Expressions.lt(Expressions.avg("age"), Expressions.constant(0)));
+model.setOutputLimitClause(OutputLimitClause.create(OutputLimitSelector.DEFAULT, Expressions.timePeriod(null, null, null, 10.0, null)));
+model.setOrderByClause(OrderByClause.create("line"));</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-soda-building-step5"/>14.12.5. Building a Create-Variable and On-Set Statement</h3></div></div></div><p>
+				This sample statement creates a variable:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create variable integer var_output_rate = 10</pre><p>
+				The code to build the above statement using the object model:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPStatementObjectModel model = new EPStatementObjectModel();
+model.setCreateVariable(CreateVariableClause.create("integer", "var_output_rate", 10));
+epService.getEPAdministrator().create(model);</pre><p>
+				A second statement sets the variable to a new value:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">on NewValueEvent set var_output_rate = new_rate</pre><p>
+				The code to build the above statement using the object model:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPStatementObjectModel model = new EPStatementObjectModel();
+model.setOnExpr(OnClause.createOnSet("var_output_rate", Expressions.property("new_rate")));
+model.setFromClause(FromClause.create(FilterStream.create("NewValueEvent")));
+EPStatement stmtSet = epService.getEPAdministrator().create(model);</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-soda-building-step6"/>14.12.6. Building Create-Window, On-Delete and On-Select Statements</h3></div></div></div><p>
+				This sample statement creates a named window:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create window OrdersTimeWindow.win:time(30 sec) as select symbol as sym, volume as vol, price from OrderEvent</pre><p>
+				The is the code that builds the create-window statement as above:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPStatementObjectModel model = new EPStatementObjectModel();
+model.setCreateWindow(CreateWindowClause.create("OrdersTimeWindow").addView("win", "time", 30));
+model.setSelectClause(SelectClause.create()
+		.addWithName("symbol", "sym")
+		.addWithName("volume", "vol")
+		.add("price"));
+model.setFromClause(FromClause.create(FilterStream.create("OrderEvent)));</pre><p>
+				A second statement deletes from the named window:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">on NewOrderEvent as myNewOrders
+delete from AllOrdersNamedWindow as myNamedWindow
+where myNamedWindow.symbol = myNewOrders.symbol</pre><p>
+				The object model is built by:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPStatementObjectModel model = new EPStatementObjectModel();
+model.setOnExpr(OnClause.createOnDelete("AllOrdersNamedWindow", "myNamedWindow"));
+model.setFromClause(FromClause.create(FilterStream.create("NewOrderEvent", "myNewOrders")));
+model.setWhereClause(Expressions.eqProperty("myNamedWindow.symbol", "myNewOrders.symbol"));
+EPStatement stmtOnDelete = epService.getEPAdministrator().create(model);</pre><p>
+				A third statement selects from the named window using the non-continuous on-demand selection via on-select:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">on QueryEvent(volume&gt;0) as query
+select count(*) from OrdersNamedWindow as win
+where win.symbol = query.symbol</pre><p>
+				The on-select statement is built from scratch via the object model as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPStatementObjectModel model = new EPStatementObjectModel();
+model.setOnExpr(OnClause.createOnSelect("OrdersNamedWindow", "win"));
+model.setWhereClause(Expressions.eqProperty("win.symbol", "query.symbol"));
+model.setFromClause(FromClause.create(FilterStream.create("QueryEvent", "query", 
+  Expressions.gt("volume", 0))));
+model.setSelectClause(SelectClause.create().add(Expressions.countStar()));
+EPStatement stmtOnSelect = epService.getEPAdministrator().create(model);</pre></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-prepared"/>14.13. Prepared Statement and Substitution Parameters</h2></div></div></div><p>
+			The <code class="literal">prepare</code> method that is part of the administrative API pre-compiles an EPL  statement and stores the precompiled statement in an <code class="literal">EPPreparedStatement</code> object. This 
+			object can then be used to efficiently start the parameterized statement multiple times.
+        </p><p>
+			Substitution parameters are inserted into an EPL  statement as a single question mark character <code class="literal">'?'</code>. The engine assigns the first substitution parameter an index of 1 and subsequent parameters increment the index by one.
+        </p><p>
+			Substitution parameters can be inserted into any EPL  construct that takes an expression. 
+			They are therefore valid in any clauses such as the select-clause, from-clause filters, where-clause, group-by-clause, 
+			having-clause or order-by-clause, including view parameters and pattern observers and guards.
+			Substitution parameters cannot be used where a numeric constant is required rather then an expression and in SQL statements.
+        </p><p>
+			All substitution parameters must be replaced by actual values before a statement with substitution parameters can be started. Substitution parameters can be replaced with an actual value using the <code class="literal">setObject</code> method for each index. Substitution parameters can be set to new values and new statements can be created from the same <code class="literal">EPPreparedStatement</code> object more then once.
+        </p><p>
+			While the <code class="literal">setObject</code> method allows substitution parameters to assume any actual value including application Java objects or enumeration values, the application must provide the correct type of  substitution parameter that matches the requirements of the expression the parameter resides in.
+        </p><p>
+			In the following example of setting parameters on a prepared statement and starting the prepared statement, <code class="literal">epService</code> represents an engine instance:
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">String stmt = "select * from com.chipmaker.ReadyEvent(line=?)";
+EPPreparedStatement prepared = epService.getEPAdministrator().prepareEPL(stmt);
+prepared.setObject(1, 8);
+EPStatement statement = epService.getEPAdministrator().create(prepared);</pre></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-instrumentation"/>14.14. Engine and Statement Metrics Reporting</h2></div></div></div><p>
+			Metrics reporting is a feature that allows an application to receive ongoing reports about key engine-level and statement-level metrics. Examples are the number of incoming events, the CPU time and wall time taken by statement executions or the number of output events per statement.
+        </p><p>
+			Metrics reporting is, by default, disabled. To enable reporting, please follow the steps as outlined in <a class="xref" href="configuration.html#config-engine-instrumentation" title="15.4.19. Engine Settings related to Metrics Reporting">Section 15.4.19, “Engine Settings related to Metrics Reporting”</a>. Metrics reporting must be enabled at engine initialization time. Reporting intervals can be controlled at runtime via the <code class="literal">ConfigurationOperations</code> interface available from the administrative API.
+        </p><p>
+			Your application receives metrics at configurable intervals via EPL statement. A metric datapoint is simply a well-defined event. The events are <code class="literal">EngineMetric</code> and <code class="literal">StatementMetric</code> and the Java class representing the events can be found in the client API in package <code class="literal">com.espertech.esper.client.metric</code>.
+        </p><p>
+			Since metric events are processed by the engine the same as application events, your EPL may use any construct on such events. For example, your application may select, filter, aggregate properties, sort or insert into a stream or named window all metric events the same as application events.
+        </p><p>
+			This example statement selects all engine metric events:
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from com.espertech.esper.client.metric.EngineMetric</pre><p>
+			The next statement selects all statement metric events:
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from com.espertech.esper.client.metric.StatementMetric</pre><p>
+			Make sure to have metrics reporting enabled since only then do listeners or subscribers to a statement such as above receive metric events.
+        </p><p>
+			The engine provides metric events after the configured interval of time has passed. By default, only started statements that have activity within an interval (in the form of event or timer processing) are reported upon.
+        </p><p>
+			The default configuration performs the publishing of metric events in an Esper daemon thread under the control of the engine instance. Metrics reporting honors externally-supplied time, if using external timer events. 
+        </p><p>
+			Via runtime configuration options provided by <code class="literal">ConfigurationOperations</code>, your application may enable and disable metrics reporting globally, provided that metrics reporting was enabled at initialization time. Your application may also enable and disable metrics reporting for individual statements by statement name.
+        </p><p>
+			Statement groups is a configuration feature that allows to assign reporting intervals to statements. Statement groups are described further in the <a class="xref" href="configuration.html#config-engine-instrumentation" title="15.4.19. Engine Settings related to Metrics Reporting">Section 15.4.19, “Engine Settings related to Metrics Reporting”</a> section. Statement groups cannot be added or removed at runtime. 
+        </p><p>
+			The following limitations apply:
+		</p><div class="itemizedlist"><ul compact="compact"><li><p>
+					If your Java VM version does not report current thread CPU time (most JVM do), then CPU time is reported as zero (use <code class="literal"> ManagementFactory.getThreadMXBean().isCurrentThreadCpuTimeSupported()</code> to determine if your JVM supports this feature).
+				</p><p>
+					Note: In some JVM the accuracy of CPU time returned is very low (in the order of 10 milliseconds off) which can impact the usefulness of CPU metrics returned. 
+					Consider measuring CPU time in your application thread after sending a number of events in the same thread, external to the engine as an alternative.
+				</p></li><li><p>
+					Your Java VM may not provide high resolution time via <code class="literal">System.nanoTime</code>. In such case wall time may be inaccurate and inprecise.
+				</p></li><li><p>
+					CPU time and wall time have nanosecond precision but not necessarily nanosecond accuracy, please check with your Java VM provider.
+				</p></li><li><p>
+					There is a performance cost to collecting and reporting metrics.
+				</p></li><li><p>
+					Not all statements may report metrics: The engine performs certain runtime optimizations sharing resources between similar statements, thereby not reporting on certain statements unless resource sharing is disabled through configuration.
+				</p></li></ul></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-instrumentation-enginemetrics"/>14.14.1. Engine Metrics</h3></div></div></div><p>
+				Engine metrics are properties of <code class="literal">EngineMetric</code> events:
+			</p><div class="table"><a id="api-instrumentation-events-engine"/><p class="title"><b>Table 14.6. EngineMetric Properties</b></p><div class="table-contents"><table summary="EngineMetric Properties" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody><tr><td>engineURI</td><td>The URI of the engine instance.</td></tr><tr><td>timestamp</td><td>The current engine time.</td></tr><tr><td>inputCount</td><td>Cumulative number of input events since engine initialization time. Input events are defined as events send in via application threads as well as <code class="literal">insert into</code> events.</td></tr><tr><td>inputCountDelta</td><td>Number of input events since last reporting period.</td></tr><tr><td>scheduleDepth</td><td>Number of outstanding schedules.</td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-instrumentation-statementmetrics"/>14.14.2. Statement Metrics</h3></div></div></div><p>
+				Statement metrics are properties of <code class="literal">StatementMetric</code>. The properties are:
+			</p><div class="table"><a id="api-instrumentation-events-statement"/><p class="title"><b>Table 14.7. StatementMetric Properties</b></p><div class="table-contents"><table summary="StatementMetric Properties" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody><tr><td>engineURI</td><td>The URI of the engine instance.</td></tr><tr><td>timestamp</td><td>The current engine time.</td></tr><tr><td>statementName</td><td>Statement name, if provided at time of statement creation, otherwise a generated name.</td></tr><tr><td>cpuTime</td><td>Statement processing CPU time (system and user) in nanoseconds (if available by Java VM).</td></tr><tr><td>wallTime</td><td>Statement processing wall time in nanoseconds (based on <code class="literal">System.nanoTime</code>).</td></tr><tr><td>numInput</td><td>Number of input events to the statement.</td></tr><tr><td>numOutputIStream</td><td>Number of insert stream rows output to listeners or the subscriber, if any.</td></tr><tr><td>numOutputRStream</td><td>Number of remove stream rows output to listeners or the subscriber, if any.</td></tr></tbody></table></div></div><br class="table-break"/><p>
+				The totals reported are cumulative relative to the last metric report.
+			</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-output-rendering"/>14.15. Event Rendering to XML and JSON</h2></div></div></div><p>
+			Your application may use the built-in XML and JSON formatters to render output events into a readable textual format, such as for integration or debugging purposes. This section introduces the utility classes in the client <code class="literal">util</code> package for rendering events to strings. Further API information can be found in the JavaDocs.
+		</p><p>
+			The <code class="literal">EventRenderer</code> interface accessible from the runtime interface via the <code class="literal">getEventRenderer</code> method provides access to JSON and XML rendering. For repeated rendering of events of the same event type or subtypes, it is recommended to obtain a <code class="literal">JSONEventRenderer</code> or <code class="literal">XMLEventRenderer</code> instance and use the <code class="literal">render</code> method provided by the interface. This allows the renderer implementations to cache event type metadata for fast rendering.
+		</p><p>
+			In this example we show how one may obtain a renderer for repeated rendering of events of the same type, assuming that <code class="literal">statement</code> is an instance of <code class="literal">EPStatement</code>:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">JSONEventRenderer jsonRenderer = epService.getEPRuntime().
+    getEventRenderer().getJSONRenderer(statement.getEventType());</pre><p>
+			Assuming that <code class="literal">event</code> is an instance of <code class="literal">EventBean</code>, this code snippet renders an event into the JSON format:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">String jsonEventText = jsonRenderer.render("MyEvent", event);</pre><p>
+			The XML renderer works the same:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">XMLEventRenderer xmlRenderer = epService.getEPRuntime().
+    getEventRenderer().getXMLRenderer(statement.getEventType());</pre><p>
+			...and...
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">String xmlEventText = xmlRenderer.render("MyEvent", event);</pre><p>
+			If the event type is not known in advance or if you application does not want to obtain a renderer instance per event type for fast rendering, your application can use one of the following methods to render an event to a XML or JSON textual format:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">String json = epService.getEPRuntime().getEventRenderer().renderJSON(event);
+String xml = epService.getEPRuntime().getEventRenderer().renderXML(event);</pre><p>
+			Use the <code class="literal">JSONRenderingOptions</code> or <code class="literal">XMLRenderingOptions</code> classes to control how events are rendered. To render specific event properties using a custom event property renderer, specify an <code class="literal">EventPropertyRenderer</code> as part of the options
+			that renders event property values to strings. Please see the JavaDoc documentation for more information.
+		</p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-output-rendering-json"/>14.15.1. JSON Event Rendering Conventions and Options</h3></div></div></div><p>
+				The JSON renderer produces JSON text according to the standard documented at <code class="literal">http://www.json.org</code>.
+			</p><p>
+				The renderer formats simple properties as well as nested properties and indexed properties according to the JSON string encoding, array encoding and nested object encoding requirements.
+			</p><p>
+				The renderer does render indexed properties, it does not render indexed properties that require an index, i.e. if your event representation is backed by POJO objects and your getter method is <code class="literal">getValue(int index)</code>, the indexed property values are not part of the JSON text. This is because the implementation has no way to determine how many index keys there are. A workaround is to have a method such as <code class="literal">Object[] getValue()</code> instead.
+			</p><p>
+				The same is true for mapped properties that the renderer also renders.  If a property requires a Map key for access, i.e. your getter method is <code class="literal">getValue(String key)</code>, such property values are not part of the result text as there is no way for the implementation to determine the key set.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-output-rendering-xml"/>14.15.2. XML Event Rendering Conventions and Options</h3></div></div></div><p>
+				The XML renderer produces well-formed XML text according to the XML standard.
+			</p><p>
+				The renderer can be configured to format simple properties as attributes or as elements. Nested properties and indexed properties are always represented as XML sub-elements to the root or parent element.
+			</p><p>
+				The root element name provided to the XML renderer must be the element name of the root in the XML document and may include namespace instructions.
+			</p><p>
+				The renderer does render indexed properties, it does not render indexed properties that require an index, i.e. if your event representation is backed by POJO objects and your getter method is <code class="literal">getValue(int index)</code>, the indexed property values are not part of the XML text. This is because the implementation has no way to determine how many index keys there are. A workaround is to have a method such as <code class="literal">Object[] getValue()</code> instead.
+			</p><p>
+				The same is true for mapped properties that the renderer also renders.  If a property requires a Map key for access, i.e. your getter method is <code class="literal">getValue(String key)</code>, such property values are not part of the result text as there is no way for the implementation to determine the key set.
+			</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-plugin"/>14.16. Plug-in Loader</h2></div></div></div><a id="d0e33406" class="indexterm"/><p>
+			A plug-in loader is for general use with input adapters, output adapters or EPL code deployment or any other task that can benefits from being part of an Esper configuration file and that follows engine lifecycle.
+        </p><p>
+			A plug-in loader implements the <code class="literal">com.espertech.esper.plugin.PluginLoader</code> interface and can be listed in the configuration. 
+        </p><p>
+			Each configured plug-in loader follows the engine instance lifecycle: When an engine instance initializes, it instantiates each <code class="literal">PluginLoader</code> implementation class listed in the configuration. The engine then invokes the lifecycle 
+			methods of the <code class="literal">PluginLoader</code> implementation class before and after the engine is fully initialized and before an engine instance is destroyed.
+        </p><p>
+			Declare a plug-in loader in your configuration XML as follows:
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">...
+  &lt;plugin-loader name="MyLoader" class-name="org.mypackage.MyLoader"&gt;
+    &lt;init-arg name="property1" value="val1"/&gt;
+  &lt;/plugin-loader&gt;
+...</pre><p>
+			Alternatively, add the plug-in loader via the configuration API:
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+Properties props = new Properties();
+props.put("property1", "value1");
+config.addPluginLoader("MyLoader", "org.mypackage.MyLoader", props);</pre><p>
+			Implement the <code class="literal">init</code> method of your <code class="literal">PluginLoader</code> implementation to receive
+			initialization parameters. The engine invokes this method before the engine is fully initialized, therefore your implementation
+			should not yet rely on the engine instance within the method body:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyPluginLoader implements PluginLoader {
+  public void init(String loaderName, Properties properties, EPServiceProviderSPI epService) {
+     // save the configuration for later, perform checking
+  }
+  ...</pre><p>
+			The engine calls the <code class="literal">postInitialize</code> method once the engine completed initialization
+			and to indicate the engine is ready for traffic.
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void postInitialize() {
+  // Start the actual interaction with external feeds or the engine here
+}
+...</pre><p>
+			The engine calls the <code class="literal">destroy</code> method once the engine is destroyed or initialized for a second time.
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void destroy() {
+  // Destroy resources allocated as the engine instance is being destroyed
+}</pre></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-annotation"/>14.17. Interrogating EPL Annotations</h2></div></div></div><a id="d0e33459" class="indexterm"/><p>
+			As discussed in <a class="xref" href="epl_clauses.html#epl-syntax-annotation" title="5.2.7. Annotation">Section 5.2.7, “Annotation”</a> an EPL annotation is an addition made to information in an EPL statement. The API and examples to interrogate annotations are described here.
+        </p><p>
+          You may use the <code class="literal">getAnnotations</code> method of <code class="literal">EPStatement</code> to obtain annotations specified for an EPL statement. Or when compiling an EPL expression to a <code class="literal">EPStatementObjectModel</code> statement object model you may also query, change or add annotations.
+        </p><p>
+          The following example code demonstrates iterating over an <code class="literal">EPStatement</code> statement's annotations and retrieving values:
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">String exampleEPL = "@Tag(name='direct-output', value='sink 1') select * from RootEvent";
+EPStatement stmt = epService.getEPAdministrator().createEPL(exampleEPL);
+for (Annotation annotation : stmt.getAnnotations()) {
+  if (annotation instanceof Tag) {
+    Tag tag = (Tag) annotation;
+    System.out.println("Tag name " + tag.name() + " value " + tag.value());
+  }
+}</pre><p>
+			The output of the sample code shown above is <code class="literal">Tag name direct-output value sink 1</code>.
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-contextpartitionselection"/>14.18. Context Partition Selection</h2></div></div></div><p>
+			This chapter discusses how to select context partitions. Contexts are discussed in <a class="xref" href="context.html" title="Chapter 4. Context and Context Partitions">Chapter 4, <i>Context and Context Partitions</i></a> and the reasons for context partition selection are introduced in <a class="xref" href="context.html#context_selection" title="4.7. Operations on Specific Context Partitions">Section 4.7, “Operations on Specific Context Partitions”</a>.
+        </p><p>
+			The section is only relevant when you declare a context. It applies to all different types of hash, partitioned, category, overlapping or other temporal contexts. The section uses a category context for the purpose of illustration. The API discussed herein is general and handles all different types of contexts including nested contexts.
+        </p><p>
+			Consider a category context that separates bank transactions into small, medium and large:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// declare category context
+create context TxnCategoryContext 
+  group by amount &lt; 100 as small, 
+  group by amount between 100 and 1000 as medium, 
+  group by amount &gt; 1000 as large from BankTxn</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// retain 1 minute of events of each category separately
+context TxnCategoryContext select * from BankTxn.win:time(1 minute)</pre><p>
+		  In order for your application to iterate one or more specific categories it is necessary to identify which category, i.e. which context partition, to iterate. Similarly for on-demand queries, to execute on-demand queries against one or more specific categories, it is necessary to identify which context partition to execute the on-demand query against.
+		</p><p>
+			Your application may iterate one or more specific context partitions using either the <code class="literal">iterate</code> or <code class="literal">safeIterate</code> method of <code class="literal">EPStatement</code> by providing an implementation of the <code class="literal">ContextPartitionSelector</code> interface.
+        </p><p>
+			For example, assume your application must obtain all bank transactions for small amounts. It may use the API to identify the category and iterate the associated context partition:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">ContextPartitionSelectorCategory categorySmall = new ContextPartitionSelectorCategory() {
+    public Set&lt;String&gt; getLabels() {
+      return Collections.singleton("small");
+    }
+  };
+Iterator&lt;EventBean&gt; it = stmt.iterator(categorySmall);</pre><p>
+             Your application may execute on-demand queries against one or more specific context partitions by using the <code class="literal">executeQuery</code> method on <code class="literal">EPRuntime</code> or the <code class="literal">execute</code> method on <code class="literal">EPOnDemandPreparedQuery</code> and by providing an implementation of <code class="literal">ContextPartitionSelector</code>.
+        </p><p>
+			On-demand queries execute against named windows, therefore below EPL statement creates a named window which the engine manages separately for small, medium and large transactions according to the context declared earlier:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Named window per category
+context TxnCategoryContext create window BankTxnWindow.win:time(1 min) as BankTxn</pre><p>			
+			The following code demonstrates how to fire an on-demand query against the small and the medium category:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">ContextPartitionSelectorCategory categorySmallMed = new ContextPartitionSelectorCategory() {
+    public Set&lt;String&gt; getLabels() {
+      return new HashSet&lt;String&gt;(Arrays.asList("small", "medium"));
+    }
+  };
+epService.getEPRuntime().executeQuery(
+   "select count(*) from BankTxnWindow", 
+   new ContextPartitionSelector[] {categorySmallMed});</pre><p>
+				The following limitations apply:
+			</p><div class="itemizedlist"><ul><li><p>
+						On-demand queries may not join named windows that declare a context.
+					</p></li></ul></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-contextpartitionselection-selectors"/>14.18.1. Selectors</h3></div></div></div><p>
+				  This section summarizes the selector interfaces that are available for use to identify and interrogate context partitions. Please refer to the JavaDoc documentation for package <code class="literal">com.espertech.esper.client.context</code> and classes therein for additional information.
+				</p><p>
+					Use an implementation of <code class="literal">ContextPartitionSelectorAll</code> or the <code class="literal">ContextPartitionSelectorAll.INSTANCE</code> object to instruct the engine to consider all context partitions.
+				</p><p>
+					Use an implementation of <code class="literal">ContextPartitionSelectorById</code> if your application knows the context partition ids to query. This selector instructs the engine to consider only those provided context partitions based on their integer id value. The engine outputs the context partition id in the built-in property <code class="literal">context.id</code>.
+				</p><p>
+				    Use an implementation of <code class="literal">ContextPartitionSelectorFiltered</code> to receive and interrogate context partitions. Use the <code class="literal">filter</code> method that receives a <code class="literal">ContextPartitionIdentifier</code> to return a boolean indicator whether to include the context partition or not. The <code class="literal">ContextPartitionIdentifier</code> provides information about each context partition. Your application may not retain <code class="literal">ContextPartitionIdentifier</code> instances between <code class="literal">filter</code> method invocations as the engine reuses the same instance. This selector is not supported with nested contexts.
+				</p><p>
+				    Use an implementation of <code class="literal">ContextPartitionSelectorCategory</code> with category contexts.
+				</p><p>
+				    Use an implementation of <code class="literal">ContextPartitionSelectorSegmented</code> with keyed segmented contexts.
+				</p><p>
+				    Use an implementation of <code class="literal">ContextPartitionSelectorHash</code> with hash segmented contexts.
+				</p><p>
+				    Use an implementation of <code class="literal">ContextPartitionSelectorNested</code> in combination with the selectors described above with nested contexts.
+				</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-contextpartitionadmin"/>14.19. Context Partition Administration</h2></div></div></div><a id="d0e33626" class="indexterm"/><p>
+			This chapter briefly discusses the API to manage context partitions. Contexts are discussed in <a class="xref" href="context.html" title="Chapter 4. Context and Context Partitions">Chapter 4, <i>Context and Context Partitions</i></a>.
+        </p><p>
+			The section is only relevant when you declare a context. It applies to all different types of hash, partitioned, category, overlapping or other temporal contexts.
+        </p><p>
+			The administrative API for context partitions is <code class="literal">EPContextPartitionAdmin</code>. Use the <code class="literal">getContextPartitionAdmin</code> method of the <code class="literal">EPAdministrator</code> interface 
+			to obtain said service.
+		</p><p>
+			The context partition admin API allows an application to:
+		</p><div class="itemizedlist"><ul compact="compact"><li><p>
+					Start, stop and destroy individual context partitions.
+				</p></li><li><p>
+					Interrogate the state and identifiers for existing context partitions.
+				</p></li><li><p>
+					Determine statements associated to a context and context nesting level.
+				</p></li></ul></div><p>
+			Stopping individual context partitions is useful to drop state, free memory and suspend a given context partition without stopping or destroying any associated statements.
+			For example, assume a keyed segmented context per user id. To suspend and free the memory for a given user id your application can stop the user id's context partition. 
+			The engine does not allocate a context partition for this user id again, until your application destroys or starts the context partition.
+		</p><p>
+			Destroying individual context partitions is useful to drop state, free memory and deregister the given context partition without stopping or destroying any associated statements.
+			For example, assume a keyed segmented context per user id. To deregister and free the memory for a given user id your application can destroy the user id's context partition.
+			The engine can allocate a fresh context partition for this user id when events for this user id arrive.
+		</p><p>
+			Please see the JavaDoc documentation for more information.
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="api-testing"/>14.20. Test and Assertion Support</h2></div></div></div><a id="d0e33667" class="indexterm"/><a id="d0e33670" class="indexterm"/><p>
+			Esper offers a listener and an assertions class to facilitate automated testing of EPL rules, for example when using a test framework such as <code class="literal">JUnit</code> or <code class="literal">TestNG</code>. 
+        </p><p>
+			Esper does not require any specific test framework. If your application has the <code class="literal">JUnit</code> test framework in classpath Esper uses <code class="literal">junit.framework.AssertionFailedError</code> to indicate assertion errors, so as to integrate with continuous integration tools.
+        </p><p>
+            For detailed method-level information, please consult the JavaDoc of the package <code class="literal">com.espertech.esper.client.scopetest</code>.
+        </p><p>
+            The class <code class="literal">com.espertech.esper.client.scopetest.EPAssertionUtil</code> provides methods to assert or compare event property values as well as perform various array arthithmatic, sort events and convert events or iterators to arrays.
+        </p><p>
+            The class <code class="literal">com.espertech.esper.client.scopetest.SupportUpdateListener</code> provides an <code class="literal">UpdateListener</code> implementation that collects events and returns event data for assertion.
+        </p><p>
+            The class <code class="literal">com.espertech.esper.client.scopetest.SupportSubscriber</code> provides a subscriber implementation that collects events and returns event data for assertion. The <code class="literal">SupportSubscriberMRD</code> is a subscriber that accepts events multi-row delivery. The <code class="literal">SupportSubscriber</code> and <code class="literal">SupportSubscriberMRD</code> work similar to <code class="literal">SupportUpdateListener</code> that is introduced in more detail below.
+        </p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-testing-assertion"/>14.20.1. <code class="literal">EPAssertionUtil</code> Summary</h3></div></div></div><p>
+			  The below table only summarizes the most relevant assertion methods offered by <code class="literal">EPAssertionUtil</code>. Methods provide multiple footprints that are not listed in detail below. Please consult the JavaDoc for additional method-level information.
+			</p><div class="table"><a id="api-testing-assertion-summary"/><p class="title"><b>Table 14.8. Method Summary for EPAssertionUtil</b></p><div class="table-contents"><table summary="Method Summary for EPAssertionUtil" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">assertProps</code></td><td><p>Methods that assert that property values of a single <code class="literal">EventBean</code>, POJO or Map matches compared to expected values.</p></td></tr><tr><td><code class="literal">assertPropsPerRow</code></td><td><p>Methods that assert that property values of multiple <code class="literal">EventBean</code>, POJOs or Maps match compared to expected values.</p></td></tr><tr><td><code class="literal">assertPropsPerRowAnyOrder</code></td><td><p>Same as above, but any row may match. Useful for unordered result sets.</p></td></tr><tr><td><code class="literal">assertEqualsExactOrder</code></td><td><p>Methods that compare arrays, allowing <code class="literal">null</code>. as parameters.</p></td></tr><tr><td><code class="literal">assertEqualsAnyOrder</code></td><td><p>Same as above, but any row may match. Useful for unordered result sets.</p></td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-testing-listener"/>14.20.2. <code class="literal">SupportUpdateListener</code> Summary</h3></div></div></div><p>
+			  The below table only summarizes the most relevant methods offered by <code class="literal">SupportUpdateListener</code>. Please consult the JavaDoc for additional information.
+			</p><div class="table"><a id="api-testing-listener-summary"/><p class="title"><b>Table 14.9. Method Summary for SupportUpdateListener</b></p><div class="table-contents"><table summary="Method Summary for SupportUpdateListener" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">reset</code></td><td><p>Initializes listener clearing current events and resetting the invoked flag.</p></td></tr><tr><td><code class="literal">getAndClearIsInvoked</code></td><td><p>Returns the "invoked" flag indicating the listener has been invoked, and clears the flag.</p></td></tr><tr><td><code class="literal">getLastNewData</code></td><td><p>Returns the last events received by the listener.</p></td></tr><tr><td><code class="literal">getAndResetDataListsFlattened</code></td><td><p>Returns all events received by the listener as a pair.</p></td></tr><tr><td><code class="literal">assertOneGetNewAndReset</code></td><td><p>Asserts that exactly one new event was received and no removed events, returns the event and resets the listener.</p></td></tr><tr><td><code class="literal">assertOneGetNew</code></td><td><p>Asserts that exactly one new event was received and returns the event.</p></td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="api-testing-usage"/>14.20.3. Usage Example</h3></div></div></div><p>
+			  The next code block is a short but complete programming example that asserts that the properties received from output events match expected value.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">String epl = "select personName, count(*) as cnt from PersonEvent.win:length(3) group by personName";
+EPStatement stmt = epService.getEPAdministrator().createEPL(epl);
+
+SupportUpdateListener listener = new SupportUpdateListener();
+stmt.addListener(listener);
+
+epService.getEPRuntime().sendEvent(new PersonEvent("Joe"));
+EPAssertionUtil.assertProps(listener.assertOneGetNewAndReset(), "personName,cnt".split(","),
+    new Object[]{"Joe", 1L});</pre><p>
+			  A few additional examples are shown below:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">String[] fields = new String[] {"property"};			
+EPAssertionUtil.assertPropsPerRow(listener.getAndResetDataListsFlattened(), fields, 
+    new Object[][]{{"E2"}}, new Object[][]{{"E1"}});</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPAssertionUtil.assertPropsPerRow(listener.getAndResetLastNewData(), fields, 
+    new Object[][]{{"E1"}, {"E2"}, {"E3"}});</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">assertTrue(listener.getAndClearIsInvoked());</pre><p>
+			  Please refer to the Esper codebase test sources for more examples using the assertion class and the listener class. 
+			</p></div></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="dataflow.html"><strong>Prev</strong>Chapter 13. EPL Reference: Data Flow</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="configuration.html"><strong>Next</strong>Chapter 15. Configuration</a></li></ul></body></html>

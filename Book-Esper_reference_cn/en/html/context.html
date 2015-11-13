@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 4. Context and Context Partitions</title><link rel="stylesheet" href="css/espertech.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Esper Reference"/><link rel="up" href="index.html" title="Esper Reference"/><link rel="prev" href="processingmodel.html" title="Chapter 3. Processing Model"/><link rel="next" href="epl_clauses.html" title="Chapter 5. EPL Reference: Clauses"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.espertech.com" class="site_href"><strong>esper.codehaus.org and espertech.com</strong></a><a href="http://esper.codehaus.org/esper/documentation/documentation.html" class="doc_href"><strong>Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="processingmodel.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="epl_clauses.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="context"/>Chapter 4. Context and Context Partitions</h2></div></div></div><div class="toc"><dl><dt><span class="sect1"><a href="context.html#context_intro">4.1. Introduction</a></span></dt><dt><span class="sect1"><a href="context.html#context_decl">4.2. Context Declaration</a></span></dt><dd><dl><dt><span class="sect2"><a href="context.html#context_decl_props">4.2.1. Context-Provided Properties</a></span></dt><dt><span class="sect2"><a href="context.html#context_def_keyed">4.2.2. Keyed Segmented Context</a></span></dt><dt><span class="sect2"><a href="context.html#context_def_hashed">4.2.3. Hash Segmented Context</a></span></dt><dt><span class="sect2"><a href="context.html#context_def_category">4.2.4. Category Segmented Context</a></span></dt><dt><span class="sect2"><a href="context.html#context_def_nonoverlapping">4.2.5. Non-Overlapping Context</a></span></dt><dt><span class="sect2"><a href="context.html#context_def_overlapping">4.2.6. Overlapping Context</a></span></dt><dt><span class="sect2"><a href="context.html#context_def_condition">4.2.7. Context Conditions</a></span></dt></dl></dd><dt><span class="sect1"><a href="context.html#context_nesting">4.3. Context Nesting</a></span></dt><dd><dl><dt><span class="sect2"><a href="context.html#context_nesting_builtin">4.3.1. Built-In Nested Context Properties</a></span></dt></dl></dd><dt><span class="sect1"><a href="context.html#context_other">4.4. Partitioning Without Context Declaration</a></span></dt><dt><span class="sect1"><a href="context.html#context_outputterminated">4.5. Output When Context Partition Ends</a></span></dt><dt><span class="sect1"><a href="context.html#context_named_windows">4.6. Context and Named Window</a></span></dt><dt><span class="sect1"><a href="context.html#context_selection">4.7. Operations on Specific Context Partitions</a></span></dt></dl></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="context_intro"/>4.1. Introduction</h2></div></div></div><p>
+			This section discusses the notion of context and its role in the Esper event processing language (EPL).
+        </p><p>
+           When you look up the word <span class="emphasis"><em>context</em></span> in a dictionary, you may find: Context is the set of circumstances or facts that surround a particular event, situation, etc.. 
+        </p><p>
+          Context-dependent event processing occurs frequently: For example, consider a requirement that monitors banking transactions. For different customers your analysis considers customer-specific aggregations, patterns or data windows. In this example the context of detection is the customer. For a given customer you may want to analyze the banking transactions of that customer by using aggregations, data windows, patterns including other EPL constructs.
+        </p><p>
+          In a second example, consider traffic monitoring to detect speed violations. Assume the speed limit must be enforced only between 9 am and 5 pm. The context of detection is of temporal nature.
+        </p><p>
+           A context takes a cloud of events and classifies them into one or more sets. These sets are called <span class="emphasis"><em>context partitions</em></span>. An event processing operation that is associated with a context operates on each of these context partitions independently. (Credit: Taken from the book "Event Processing in Action" by Opher Etzion and Peter Niblett.)
+        </p><p>
+          A context is a declaration of dimension and may thus result in one or more context partitions. In the banking transaction example there the context dimension is the customer and a context partition exists per customer. In the traffic monitoring example there is a single context partition that exists only between 9 am and 5 pm and does not exist outside of that daily time period.
+        </p><p>
+          In an event processing glossary you may find the term <span class="emphasis"><em>event processing agent</em></span>. An EPL statement is an <span class="emphasis"><em>event processing agent</em></span>.  An alternative term for context partition is <span class="emphasis"><em>event processing agent instance</em></span>. 
+        </p><p>
+          Esper EPL allows you to declare contexts explicitly, offering the following benefits:
+		</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+                    Context can apply to multiple statements thereby eliminating the need to duplicate context dimensional information between statements.
+                </p></li><li><p>
+                    Context partitions can be temporally overlapping.
+                </p></li><li><p>
+                    Context partitions provide a fine-grained lifecycle that is independent of the lifecycle of statement lifecycle.
+                </p></li><li><p>
+                    Fine-grained lock granularity: The engine locks on the level of context partitions thereby allowing very high concurrency, with a maximum (theoretical) degree of parallelism at 2^31-1 (2,147,483,647) parallel threads working to process a single EPL statement under a hash segmented context.
+                </p></li><li><p>
+                    EPL can become easier to read as common predicate expressions can be factored out into a context.
+                </p></li><li><p>
+                    You may specify a nested context that is composed from two or more contexts. In particular a temporal context type is frequently used in combination with a segmentation-oriented context.
+                </p></li><li><p>
+                    Using contexts your application can aggregate events over time periods (overlapping or non-overlapping) without retaining any events in memory.
+                </p></li><li><p>
+                    Using contexts your application can coordinate time boundaries for multiple statements.
+                </p></li></ol></div><p>
+          Esper EPL allows you to declare a context explicitly via the <code class="literal">create context</code> syntax introduced below.
+		</p><p>
+		  After you have declared a context, one or more EPL statements can refer to that context by specifying <code class="literal">context </code><span class="emphasis"><em>name</em></span>.
+		  When an EPL statement refers to a context, all EPL-statement related state such as aggregations, patterns or data windows etc. exists once per context partition.
+		</p><p>
+		  If an EPL statement does not declare a context, it implicitly has a single context partition. The single context partition lives as long as the EPL statement is started and ends when the EPL statement is stopped.
+		</p><p>
+		  Variables are global state and are visible across context partitions. The same is true for event types and external data.
+		</p><p>
+		   For more information on locking and threading please see <a class="xref" href="api.html#api-threading" title="14.6. Engine Threading and Concurrency">Section 14.6, “Engine Threading and Concurrency”</a>. For performance related information please refer to <a class="xref" href="performance.html" title="Chapter 20. Performance">Chapter 20, <i>Performance</i></a>.
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="context_decl"/>4.2. Context Declaration</h2></div></div></div><p>
+			The <code class="literal">create context</code> statement declares a context by specifying a context name and context dimension information.
+		</p><p>
+			A context declaration by itself does not consume any resources or perform any logic until your application starts at least one statement that refers to that context. Until then the context is inactive and not in use.
+		</p><p>
+			When your application creates or starts the first statement that refers to the context, the engine activates the context.
+		</p><p>
+			As soon as your application stops or destroys all statements that refer to the context, the context becomes inactive again.
+		</p><p>
+		   When your application stops or destroys a statement that refers to a context, the context partitions associated to that statement also end (context partitions associated to other started statements live on).
+		</p><p>
+		   When your application stops or destroys the statement that declared the context and does not also stop or destroy any statements that refer to the context, the context partitions associated to each such statement do not end.
+		</p><p>
+			When your application destroys the statement that declared the context and destroys all statements that refer to that context then the engine removes the context declaration entirely.
+		</p><p>
+			The <code class="literal">create context</code> statement posts no output events to listeners or subscribers and does not return any rows when iterated.
+		</p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="context_decl_props"/>4.2.1. Context-Provided Properties</h3></div></div></div><p>
+			   Each of the context declarations makes available a set of built-in context properties as well as initiating event or pattern properties, as applicable. You may select these context properties for output or use them in any of the statement expressions.
+			</p><p>
+			   Refer to built-in context properties as <code class="literal">context.</code><span class="emphasis"><em>property_name</em></span>, wherein <span class="emphasis"><em>property_name</em></span> refers to the name of the built-in context property.
+			</p><p>
+			   Refer to initiating event or pattern match event properties as <code class="literal">context.</code><span class="emphasis"><em>stream_name</em></span>.<span class="emphasis"><em>property_name</em></span>, wherein <span class="emphasis"><em>stream_name</em></span> refers to the name assigned to the event or the tag name specified in a pattern and <span class="emphasis"><em>property_name</em></span> refers to the name of the initiating event or pattern match event property.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="context_def_keyed"/>4.2.2. Keyed Segmented Context</h3></div></div></div><p>
+				  This context assigns events to context partitions based on the values of one or more event properties, using the value of these property(s) as a key that picks a unique context partition directly. Each event thus belongs to exactly one context partition or zero context partitions if the event does not match the optional filter predicate expression(s). Each context partition handles exactly one set of key values.
+			</p><p>
+				The syntax for creating a keyed segmented context is as follows: 
+			</p><pre class="synopsis">create context <span class="emphasis"><em>context_name</em></span> partition [by]
+  <span class="emphasis"><em>event_property</em></span> [and <span class="emphasis"><em>event_property</em></span> [and ...]] from <span class="emphasis"><em>stream_def</em></span>
+  [, <span class="emphasis"><em>event_property</em></span> [...] from <span class="emphasis"><em>stream_def</em></span>]
+  [, ...]</pre><p>
+				The <span class="emphasis"><em>context_name</em></span> you assign to the context can be any identifier.
+			</p><p>
+				Following the context name is one or more lists of event properties and a stream definition for each entry, separated by comma (<code class="literal">,</code>).
+			</p><p>
+				The <span class="emphasis"><em>event_property</em></span> is the name(s) of the event properties that provide the value(s) to pick a unique partition. Multiple event property names are separated by the <code class="literal">and</code> keyword.
+			</p><p>
+				The <span class="emphasis"><em>stream_def</em></span> is a stream definition which consists of an event type name optionally followed by parenthesis that contains filter expressions. If providing filter expressions, only events matching the provided filter expressions for that event type are considered by context partitions.
+			</p><p>				
+				You may list multiple event properties for each stream definition. You may list multiple stream definitions. Please refer to usage guidelines below when specifying multiple event properties and/or multiple stream definitions.
+			</p><p>
+				The next statement creates a context <code class="literal">SegmentedByCustomer</code> that considers the value of the <code class="literal">custId</code> property of the <code class="literal">BankTxn</code> event type to pick the context partition to assign events to:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context SegmentedByCustomer partition by custId from BankTxn</pre><p>
+			    The following statement refers to the context created as above to compute a total withdrawal amount per account for each customer:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context SegmentedByCustomer
+select custId, account, sum(amount) from BankTxn group by account</pre><p>
+			    The following statement refers to the context created as above and detects a withdrawal of more then 400 followed by a second withdrawal of more then 400 that occur within 10 minutes of the first withdrawal, all for the same customer:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context SegmentedByCustomer
+select * from pattern [
+  every a=BankTxn(amount &gt; 400) -&gt; b=BankTxn(amount &gt; 400) where timer:within(10 minutes)
+]</pre><p>
+				The EPL statement that refers to a keyed segmented context must have at least one filter expression, at any place within the EPL statement that looks for events of any of the event types listed in the context declaration.
+			</p><p>
+			    For example, the following is not valid:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Neither LoginEvent nor LogoutEvent are listed in the context declaration
+context SegmentedByCustomer
+select * from pattern [every a=LoginEvent -&gt; b=LogoutEvent where timer:within(10 minutes)]</pre><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="context_def_keyed_multitype"/>4.2.2.1. Multiple Stream Definitions</h4></div></div></div><p>				
+					If the context declaration lists multiple streams, each event type must be unrelated: You may not list the same event type twice and you may not list a sub- or super-type of any event type already listed.
+				</p><p>
+					The following is not a valid declaration since the <code class="literal">BankTxn</code> event type is listed twice:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Not valid
+create context SegmentedByCustomer partition by custId from BankTxn, account from BankTxn</pre><p>
+					If the context declaration lists multiple streams, the number of event properties provided for each event type must also be the same. The value type returned by event properties of each event type must match within the respective position it is listed in, i.e. the first property listed for each event type must have the same type, the second property listed for each event type must have the same type, and so on.
+				</p><p>
+					The following is not a valid declaration since the customer id of <code class="literal">BankTxn</code> and login time of <code class="literal">LoginEvent</code> is not the same type:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Invalid: Type mismatch between properties
+create context SegmentedByCustomer partition by custId from BankTxn, loginTime from LoginEvent</pre><p>
+					The next statement creates a context <code class="literal">SegmentedByCustomer</code> that also considers <code class="literal">LoginEvent</code> and <code class="literal">LogoutEvent</code>:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context SegmentedByCustomer partition by 
+  custId from BankTxn, loginId from LoginEvent, loginId from LogoutEvent</pre><p>
+				  As you may have noticed, the above example refers to <code class="literal">loginId</code> as the event property name for <code class="literal">LoginEvent</code> and <code class="literal">LogoutEvent</code> events. The assumption is that the <code class="literal">loginId</code> event property of the login and logout events has the same type and carries the same exact value as the <code class="literal">custId</code> of bank transaction events, thereby allowing all events of the three event types to apply to the same customer-specific context partition.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="context_def_keyed_filter"/>4.2.2.2. Filters</h4></div></div></div><p>
+				  You may add a filter expression to each of the event types listed. The engine applies the filter expression to the EPL statement that refers to the context and to the same event type.
+				</p><p>
+					The next statement creates a context <code class="literal">SegmentedByCustomer</code> that does not consider login events that indicate that the login failed.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context SegmentedByCustomer partition by 
+  custId from BankTxn, loginId from LoginEvent(failed=false)</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="context_def_keyed_multiprop"/>4.2.2.3. Multiple Properties Per Event Type</h4></div></div></div><p>
+					You may assign events to context partitions based on the values of two or more event properties. The engine thus uses the combination of values of these properties to pick a context partition.
+				</p><p>
+					An example context declaration follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context ByCustomerAndAccount partition by custId and account from BankTxn</pre><p>
+					The next statement refers to the context and computes a total withdrawal amount, per account and customer:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context ByCustomerAndAccount select custId, account, sum(amount) from BankTxn</pre><p>
+				  As you can see, the above statement does not need to specify <code class="literal">group by</code> clause to aggregate per customer and account, since events of each unique combination of customer id and account are assigned to separate context partitions.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="context_def_keyed_builtin"/>4.2.2.4. Built-In Context Properties</h4></div></div></div><p>
+				  The following context properties are available in your EPL statement when it refers to a keyed segmented context:
+				</p><div class="table"><a id="d0e3273"/><p class="title"><b>Table 4.1. Keyed Segmented Context Properties</b></p><div class="table-contents"><table summary="Keyed Segmented Context Properties" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">name</code></td><td>The string-type context name.</td></tr><tr><td><code class="literal">id</code></td><td>The integer-type internal context id that the engine assigns to the context partition.</td></tr><tr><td><code class="literal">key1</code></td><td>The event property value for the first key.</td></tr><tr><td><code class="literal">key</code><span class="emphasis"><em>N</em></span></td><td>The event property value for the Nth key.</td></tr></tbody></table></div></div><br class="table-break"/><p>
+					Assume the keyed segmented context is declared as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context ByCustomerAndAccount partition by custId and account from BankTxn</pre><p>
+					You may, for example, select the context properties as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context ByCustomerAndAccount
+  select context.name, context.id, context.key1, context.key2 from BankTxn</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="context_def_keyed_additional"/>4.2.2.5. Examples of Joins</h4></div></div></div><p>
+				  This section discusses the impact of contexts on joins to provide further samples of use and deepen the understanding of context partitions.
+				</p><p>
+				    Consider a context declared as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context ByCust partition by custId from BankTxn</pre><p>
+				  The following statement matches, within the same customer id, the current event with the last 30 minutes of events to determine those events that match amounts:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context ByCust 
+  select * from BankTxn as t1 unidirectional, BankTxn.win:time(30) t2 
+  where t1.amount = t2.amount</pre><p>
+				  Note that the <code class="literal">where</code>-clause in the join above does not mention customer id. Since each <code class="literal">BankTxn</code> applies to a specific context partition the join evaluates within that single context partition.
+				</p><p>
+				  Consider the next statement that matches a security event with the last 30 minutes of transaction events for each customer:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context ByCust
+  select * from SecurityEvent as t1 unidirectional, BankTxn.win:time(30) t2 
+  where t1.customerName = t2.customerName</pre><p>
+				    When a security event comes in, it applies to all context partitions and not any specific context partition, since the <code class="literal">SecurityEvent</code> event type is not part of the context declaration.
+				  </p></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="context_def_hashed"/>4.2.3. Hash Segmented Context</h3></div></div></div><p>
+				  This context assigns events to context partitions based on result of a hash function and modulo operation. Each event thus belongs to exactly one context partition or zero context partitions if the event does not match the optional filter predicate expression(s). Each context partition handles exactly one result of hash value modulo granularity. 
+			</p><p>
+				The syntax for creating a hashed segmented context is as follows: 
+			</p><pre class="synopsis">create context <span class="emphasis"><em>context_name</em></span> coalesce [by] 
+  <span class="emphasis"><em>hash_func_name</em></span>(<span class="emphasis"><em>hash_func_param</em></span>) from <span class="emphasis"><em>stream_def</em></span>
+  [, <span class="emphasis"><em>hash_func_name</em></span>(<span class="emphasis"><em>hash_func_param</em></span>) from <span class="emphasis"><em>stream_def</em></span> ]
+  [, ...]
+  granularity <span class="emphasis"><em>granularity_value</em></span>
+  [preallocate]</pre><p>
+				The <span class="emphasis"><em>context_name</em></span> you assign to the context can be any identifier.
+			</p><p>
+				Following the context name is one or more lists of hash function name and parameters pairs and a stream definition for each entry, separated by comma (<code class="literal">,</code>).
+			</p><p>
+				The <span class="emphasis"><em>hash_func_name</em></span> can either be <code class="literal">consistent_hash_crc32</code> or <code class="literal">hash_code</code> or a plug-in single-row function. The <span class="emphasis"><em>hash_func_param</em></span> is a list of parameter expressions.
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						If you specify <code class="literal">consistent_hash_crc32</code> the engine computes a consistent hash code using the CRC-32 algorithm. 
+					</p></li><li><p>
+						If you specify <code class="literal">hash_code</code> the engine uses the Java object hash code. 
+					</p></li><li><p>
+						If you specify the name of a plug-in single-row function your function must return an integer value that is the hash code. You may use the wildcard <code class="literal">(*)</code> character among the parameters to pass the underlying event to the single-row function.
+					</p></li></ul></div><p>
+				The <span class="emphasis"><em>stream_def</em></span> is a stream definition which consists of an event type name optionally followed by parenthesis that contains filter expressions. If providing filter expressions, only events matching the provided filter expressions for that event type are considered by context partitions.
+			</p><p>				
+				You may list multiple stream definitions. Please refer to usage guidelines below when specifying multiple stream definitions.
+			</p><p>
+			  The <code class="literal">granularity</code> is required and is an integer number that defines the maximum number of context partitions. The engine computes hash code modulo granularity <code class="literal">hash(</code><span class="emphasis"><em>params</em></span><code class="literal">) mod </code><span class="emphasis"><em>granularity</em></span> to determine the context partition. When you specify the <code class="literal">hash_code</code> function the engine uses the object hash code and the computation is <span class="emphasis"><em>params.</em></span><code class="literal">hashCode() %</code><span class="emphasis"><em>granularity</em></span>.
+			</p><p>
+			  Since the engine locks on the level of context partition to protect state, the granularity defines the maximum degree of parallelism. For example, a granularity of 1024 means that 1024 context partitions handle events and thus a maximum 1024 threads can process each assigned statement concurrently.
+			</p><p>
+			  The optional <code class="literal">preallocate</code> keyword instructs the engine to allocate all context partitions at once at the time a statement refers to the context. This is beneficial for performance as the engine does not need to determine whether a context partition exists and dynamically allocate, but may require more memory. 
+			</p><p>
+				The next statement creates a context <code class="literal">SegmentedByCustomerHash</code> that considers the CRC-32 hash code of the <code class="literal">custId</code> property of the <code class="literal">BankTxn</code> event type to pick the context partition to assign events to, with up to 16 different context partitions that are preallocated:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context SegmentedByCustomerHash
+  coalesce by consistent_hash_crc32(custId) from BankTxn granularity 16 preallocate</pre><p>
+			    The following statement refers to the context created as above to compute a total withdrawal amount per account for each customer:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context SegmentedByCustomerHash
+select custId, account, sum(amount) from BankTxn group by custId, account</pre><p>
+			  Note that the statement above groups by <code class="literal">custId</code>: Since the events for different customer ids can be assigned to the same context partition, it is necessary that the EPL statement also groups by customer id.
+			</p><p>
+				The context declaration shown next assumes that the application provides a <code class="literal">computeHash</code> single-row function that accepts BankTxn as a parameter, wherein the result of this function must be an integer value that returns the context partition id for each event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context MyHashContext
+  coalesce by computeHash(*) from BankTxn granularity 16 preallocate</pre><p>
+				The EPL statement that refers to a hash segmented context must have at least one filter expression, at any place within the EPL statement that looks for events of any of the event types listed in the context declaration.
+			</p><p>
+			    For example, the following is not valid:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Neither LoginEvent nor LogoutEvent are listed in the context declaration
+context SegmentedByCustomerHash
+select * from pattern [every a=LoginEvent -&gt; b=LogoutEvent where timer:within(10 minutes)]</pre><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="context_def_hashed_multitype"/>4.2.3.1. Multiple Stream Definitions</h4></div></div></div><p>				
+					If the context declaration lists multiple streams, each event type must be unrelated: You may not list the same event type twice and you may not list a sub- or super-type of any event type already listed.
+				</p><p>
+					If the context declaration lists multiple streams, the hash code function should return the same hash code for the related keys of all streams.
+				</p><p>
+					The next statement creates a context <code class="literal">HashedByCustomer</code> that also considers <code class="literal">LoginEvent</code> and <code class="literal">LogoutEvent</code>:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context HashedByCustomer as coalesce
+  consistent_hash_crc32(custId) from BankTxn,
+  consistent_hash_crc32(loginId) from LoginEvent, 
+  consistent_hash_crc32(loginId) from LogoutEvent
+  granularity 32 preallocate</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="context_def_hashed_filter"/>4.2.3.2. Filters</h4></div></div></div><p>
+				  You may add a filter expression to each of the event types listed. The engine applies the filter expression to the EPL statement that refers to the context and to the same event type.
+				</p><p>
+					The next statement creates a context <code class="literal">HashedByCustomer </code> that does not consider login events that indicate that the login failed.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context HashedByCustomer 
+  coalesce consistent_hash_crc32(loginId) from LoginEvent(failed = false) 
+  granularity 1024 preallocate</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="context_def_hashed_builtin"/>4.2.3.3. Built-In Context Properties</h4></div></div></div><p>
+				  The following context properties are available in your EPL statement when it refers to a keyed segmented context:
+				</p><div class="table"><a id="d0e3536"/><p class="title"><b>Table 4.2. Keyed Segmented Context Properties</b></p><div class="table-contents"><table summary="Keyed Segmented Context Properties" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">name</code></td><td>The string-type context name.</td></tr><tr><td><code class="literal">id</code></td><td>The integer-type internal context id that the engine assigns to the context partition.</td></tr></tbody></table></div></div><br class="table-break"/><p>
+					Assume the hashed segmented context is declared as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context ByCustomerHash coalesce consistent_hash_crc32(custId) from BankTxn granularity 1024</pre><p>
+					You may, for example, select the context properties as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context ByCustomerHash
+  select context.name, context.id from BankTxn</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="context_def_hashed_perf"/>4.2.3.4. Performance Considerations</h4></div></div></div><p>
+				  The <code class="literal">hash_code</code> function based on the Java object hash code is generally faster then the CRC32 algorithm. The CRC32 algorithm, when used with a non-String parameter or with multiple parameters, requires the engine to serialize all expression results to a byte array to compute the CRC32 hash code.
+				</p><p>
+				  We recommend keeping the granularity small (1k and under) when using <code class="literal">preallocate</code>.
+				</p><p>
+				  When specifying a granularity greater then <code class="literal">65536</code> (64k) the engine switches to a Map-based lookup of context partition state which can slow down statement processing.
+				</p></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="context_def_category"/>4.2.4. Category Segmented Context</h3></div></div></div><p>
+				  This context assigns events to context partitions based on the values of one or more event properties, using a predicate expression(s) to define context partition membership. Each event can thus belong to zero, one or many context partitions depending on the outcome of the predicate expression(s).
+			</p><p>
+				The syntax for creating a category segmented context is as follows: 
+			</p><pre class="synopsis">create context <span class="emphasis"><em>context_name</em></span>
+  group [by] <span class="emphasis"><em>group_expression</em></span> as <span class="emphasis"><em>category_label</em></span>
+  [, group [by] <span class="emphasis"><em>group_expression</em></span> as <span class="emphasis"><em>category_label</em></span>]
+  [, ...]
+  from <span class="emphasis"><em>stream_def</em></span></pre><p>
+				The <span class="emphasis"><em>context_name</em></span> you assign to the context can be any identifier.
+			</p><p>
+				Following the context name is a list of groups separated by the <code class="literal">group</code> keyword. The list of group is followed by the <code class="literal">from</code> keyword and a stream definition.
+			</p><p>
+				The <span class="emphasis"><em>group_expression</em></span> is an expression that categorizes events. Each group expression must be followed by the <code class="literal">as</code> keyword and a category label which can be any identifier.
+			</p><p>
+				Group expressions are predicate expression and must return a Boolean true or false when applied to an event. For a given event, any number of the group expressions may return true thus categories can be overlapping.
+			</p><p>
+				The <span class="emphasis"><em>stream_def</em></span> is a stream definition which consists of an event type name optionally followed by parenthesis that contains filter expressions. If providing filter expressions, only events matching the provided filter expressions for that event type are considered by context partitions.
+			</p><p>
+				The next statement creates a context <code class="literal">CategoryByTemp</code> that consider the value of the <code class="literal">temperature</code> property of the <code class="literal">SensorEvent</code> event type to pick context partitions to assign events to:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context CategoryByTemp
+  group temp &lt; 65 as cold,
+  group temp between 65 and 85 as normal,
+  group temp &gt; 85 as large
+  from SensorEvent</pre><p>
+				The following statement simply counts, for each category, the number of events and outputs the category label and count:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context CategoryByTemp select context.label, count(*) from SensorEvent</pre><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="context_def_category_builtin"/>4.2.4.1. Built-In Context Properties</h4></div></div></div><p>
+				  The following context properties are available in your EPL statement when it refers to a category segmented context:
+				</p><div class="table"><a id="d0e3663"/><p class="title"><b>Table 4.3. Category Segmented Context Properties</b></p><div class="table-contents"><table summary="Category Segmented Context Properties" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">name</code></td><td>The string-type context name.</td></tr><tr><td><code class="literal">id</code></td><td>The integer-type internal context id that the engine assigns to the context partition.</td></tr><tr><td><code class="literal">label</code></td><td>The category label is the string identifier value after the <code class="literal">as</code> keyword that is specified for each group.</td></tr></tbody></table></div></div><br class="table-break"/><p>
+					You may, for example, select the context properties as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context CategoryByTemp
+  select context.name, context.id, context.label from SensorEvent</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="context_def_nonoverlapping"/>4.2.5. Non-Overlapping Context</h3></div></div></div><p>
+				  You may declare a non-overlapping context that exists once or that repeats in a regular fashion as controlled by start and end conditions. The number of context partitions is always either one or zero: Context partitions do not overlap.
+			</p><p>
+				The syntax for creating a non-overlapping context is as follows: 
+			</p><pre class="synopsis">create context <span class="emphasis"><em>context_name</em></span>
+  start <span class="emphasis"><em>start_condition</em></span> end <span class="emphasis"><em>end_condition</em></span></pre><p>
+				The <span class="emphasis"><em>context_name</em></span> you assign to the context can be any identifier.
+			</p><p>
+				Following the context name is the <code class="literal">start</code> keyword, a <span class="emphasis"><em>start_condition</em></span>, the <code class="literal">end</code> keyword and an <span class="emphasis"><em>end_condition</em></span>.
+			</p><p>
+			  Both the start and end condition can be an event filter, a pattern, a crontab or a time period. The syntax of start and end conditions is described in <a class="xref" href="context.html#context_def_condition" title="4.2.7. Context Conditions">Section 4.2.7, “Context Conditions”</a>.
+			</p><p>
+			  Once the start condition occurs, the engine no longer observes the start condition and begins observing the end condition. Once the end condition occurs, the engine observes the start condition again.
+			</p><p>
+			    If you specified an event filter as the start condition, then the event also counts towards the statement(s) that refer to that context. If you specified a pattern as the start condition, then the events that may constitute the pattern match can also count towards the statement(s) that refer to the context provided that <code class="literal">@inclusive</code> and event tags are both specified (see below).
+			</p><p>
+			  At the time of context activation when your application creates a statement that utilizes the context, the engine checks whether the start and end condition are crontab expressions. The engine evaluates the start and end crontab expressions and determines whether the current time is a time between start and end. If the current time
+			  is between start and end times, the engine allocates the context partition and waits for observing the end time. Otherwise the engine waits to observe the start time and does not allocate a context partition.
+			</p><p>
+				The built-in context properties that are available are the same as described in <a class="xref" href="context.html#context_def_overlapping_builtin" title="4.2.6.1. Built-In Context Properties">Section 4.2.6.1, “Built-In Context Properties”</a>.
+			</p><p>
+  				The next statement creates a context <code class="literal">NineToFive</code> that declares a daily time period that starts at 9 am and ends at 5 pm: 
+  			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context NineToFive start (0, 9, *, *, *) end (0, 17, *, *, *)</pre><p>
+  				The following statement outputs speed violations between 9 am and 5 pm, considering a speed of 100 or greater as a violation:
+  			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context NineToFive select * from TrafficEvent(speed &gt;= 100)</pre><p>
+			  The example that follows demonstrates the use of an event filter as the start condition and a pattern as the end condition.
+			</p><p>
+  				The next statement creates a context <code class="literal">PowerOutage</code> that declares a context that starts when the first <code class="literal">PowerOutageEvent</code> event arrives and that ends 5 seconds after a subsequent <code class="literal">PowerOnEvent</code> arrives:
+  			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context PowerOutage start PowerOutageEvent end pattern [PowerOnEvent -&gt; timer:interval(5)]</pre><p>
+  				The following statement outputs the temperature during a power outage and for 5 seconds after the power comes on:
+  			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context PowerOutage select * from TemperatureEvent</pre><p>
+			  To output only the last value when a context partition ends (terminates, expires), please read on to the description of output rate limiting.
+			</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>
+					If you specified an event filter or pattern as the end condition for a context partition, and statements that refer to the context specify an event filter or pattern that matches the same conditions,
+					use @Priority to instruct the engine whether the context management or the statement evaluation takes priority (see below for configuring prioritized execution).
+				</p><p>
+					For example, if your context declaration looks like this:
+				</p><pre xmlns="" class="">create context MyCtx start MyStartEvent end MyEndEvent</pre><p>
+					And a statement managed by the context is this:
+				</p><pre class="synopsis">context MyCtx select count(*) as cnt from MyEndEvent output when terminated</pre><p> 
+					By using <code class="literal">@Priority(1)</code> for create-context and <code class="literal">@Priority(0)</code> for the counting statement the counting statement does not count the last <code class="literal">MyEndEvent</code>
+					since context partition management takes priority.
+				</p><p> 
+					By using <code class="literal">@Priority(0)</code> for create-context and <code class="literal">@Priority(1)</code> for the counting statement the counting statement will count the last <code class="literal">MyEndEvent</code>
+					since the statement evaluation takes priority.
+				</p></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="context_def_overlapping"/>4.2.6. Overlapping Context</h3></div></div></div><p>
+				  This context initiates a new context partition when an initiating condition occurs, and terminates one or more context partitions when the terminating condition occurs. The engine maintains as many context partitions as the initiating condition fired, and discards context partitions that terminate when the termination condition fires.
+			</p><p>
+				The syntax for creating an overlapping context is as follows: 
+			</p><pre class="synopsis">create context <span class="emphasis"><em>context_name</em></span>
+  initiated [by] <span class="emphasis"><em>initiating_condition</em></span>
+  terminated [by] <span class="emphasis"><em>terminating_condition</em></span></pre><p>
+				The <span class="emphasis"><em>context_name</em></span> you assign to the context can be any identifier.
+			</p><p>
+				Following the context name is the <code class="literal">initiated</code> keyword followed by the initiating condition. It follows the <code class="literal">terminated</code> keyword followed by the terminating condition.
+			</p><p>
+			  Both the initiating and terminating condition can be an event filter, a pattern, a crontab or a time period. The syntax of initiating and terminating conditions is described in <a class="xref" href="context.html#context_def_condition" title="4.2.7. Context Conditions">Section 4.2.7, “Context Conditions”</a>.
+			</p><p>
+			    If you specified an event filter for the initiating condition, then the event that initiates a new context partition also counts towards the statement(s) that refer to that context. If you specified a pattern to initiate a new context partition, then the events that may constitute the pattern match can also count towards the statement(s) that refer to the context provided that <code class="literal">@inclusive</code> and event tags are both specified (see below).
+			</p><p>
+				The next statement creates a context <code class="literal">CtxTrainEnter</code> that allocates a new context partition when a train enters a station, and that terminates each context partition 5 minutes after the time the context partition was allocated:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context CtxTrainEnter
+  initiated by TrainEnterEvent as te
+  terminated after 5 minutes</pre><p>
+				The context declared above assigns the stream name <code class="literal">te</code>. Thereby the initiating event's properties can be accessed, for example, by specifying <code class="literal">context.te.trainId</code>.
+			</p><p>
+				The following statement detects when a train enters a station as indicated by a <code class="literal">TrainEnterEvent</code>, but does not leave the station within 5 minutes as would be indicated by a matching <code class="literal">TrainLeaveEvent</code>:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context CtxTrainEnter
+select t1 from pattern [
+  t1=TrainEnterEvent -&gt; timer:interval(5 min) and not TrainLeaveEvent(trainId = context.te.trainId)
+  ]</pre><p>
+			  Since the <code class="literal">TrainEnterEvent</code> that initiates a new context partition also counts towards the statement, the first part of the pattern (the <code class="literal">t1=TrainEnterEvent</code>) is satisfied by that initiating event.
+			</p><p>
+				The next statement creates a context <code class="literal">CtxEachMinute</code> that allocates a new context partition every 1 minute, and that terminates each context partition 5 minutes after the time the context partition was allocated:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context CtxEachMinute
+  initiated by pattern [every timer:interval(1 minute)]
+  terminated after 1 minutes</pre><p>
+				The following statement averages the temperature, starting anew every 1 minute and outputs the aggregate value continuously:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context CtxEachMinute select avg(temp) from SensorEvent</pre><p>
+			  To output only the last value when a context partition ends (terminates, expires), please read on to the description of output rate limiting.
+			</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>
+					If you specified an event filter or pattern as the termination condition for a context partition, and statements that refer to the context specify an event filter or pattern that matches the same conditions,
+					use @Priority to instruct the engine whether the context management or the statement evaluation takes priority (see below for configuring prioritized execution). See the note above for more information.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="context_def_overlapping_builtin"/>4.2.6.1. Built-In Context Properties</h4></div></div></div><p>
+				  The following context properties are available in your EPL statement when it refers to a context:
+				</p><div class="table"><a id="d0e3912"/><p class="title"><b>Table 4.4. Context Properties</b></p><div class="table-contents"><table summary="Context Properties" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">name</code></td><td>The string-type context name.</td></tr><tr><td><code class="literal">startTime</code></td><td>The start time of the context partition.</td></tr><tr><td><code class="literal">endTime</code></td><td>The end time of the context partition. This field is only available in the case that it can be computed from the crontab or time period expression that is provided.
+								</td></tr></tbody></table></div></div><br class="table-break"/><p>
+					You may, for example, select the context properties as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context NineToFive 
+select context.name, context.startTime, context.endTime from TrafficEvent(speed &gt;= 100)</pre><p>
+					The following statement looks for the next train leave event for the same train id and selects a few of the context properties: 
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context CtxTrainEnter
+select *, context.te.trainId, context.id, context.name
+from TrainLeaveEvent(trainId = context.te.trainId)</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="context_def_condition"/>4.2.7. Context Conditions</h3></div></div></div><p>
+			  Context start/initiating and end/terminating conditions are for use with overlapping and non-overlapping contexts. Any combination of conditions may be specified.
+			</p><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="context_def_condition_filter"/>4.2.7.1. Filter Context Condition</h4></div></div></div><p>
+					Use the syntax described here to define the stream that starts/initiates a context partition or that ends/terminates a context partition.
+				</p><p>
+					The syntax is: 
+				</p><pre class="synopsis"><span class="emphasis"><em>event_stream_name</em></span> [(<span class="emphasis"><em>filter_criteria</em></span>)] [as <span class="emphasis"><em>stream_name</em></span>]</pre><p>
+				  The <span class="emphasis"><em>event_stream_name</em></span> is either the name of an event type or name of an event stream populated by an insert into statement. The <span class="emphasis"><em>filter_criteria</em></span> is optional and consists of a list of expressions filtering the events of the event stream, within
+parenthesis after the event stream name.
+				</p><p>
+				  Two examples are:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// A non-overlapping context that starts when MyStartEvent arrives and ends when MyEndEvent arrives
+create context MyContext start MyStartEvent end MyEndEvent</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// An overlapping context where each MyEvent with level greater zero 
+// initiates a new context partition that terminates after 10 seconds
+create context MyContext initiated MyEvent(level &gt; 0) terminated after 10 seconds</pre><p>
+				  You may correlate the start/initiating and end/terminating streams by providing a stream name following the <code class="literal">as</code> keyword, and by referring to that stream name in the filter criteria of the end condition.
+				</p><p>
+				  Two examples that correlate the start/initiating and end/terminating condition are:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// A non-overlapping context that starts when MyEvent arrives
+// and ends when a matching MyEvent arrives (same id)
+create context MyContext 
+start MyEvent as myevent
+end MyEvent(id=myevent.id)</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// An overlapping context where each MyInitEvent initiates a new context partition 
+// that terminates when a matching MyTermEvent arrives 
+create context MyContext 
+initiated by MyInitEvent as e1 
+terminated by MyTermEvent(id=e1.id, level &lt;&gt; e1.level)</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="context_def_condition_pattern"/>4.2.7.2. Pattern Context Condition</h4></div></div></div><p>
+					You can define a pattern that starts/initiates a context partition or that ends/terminates a context partition.
+				</p><p>
+					The syntax is: 
+				</p><pre class="synopsis">pattern [<span class="emphasis"><em>pattern_expression</em></span>] [@inclusive]</pre><p>
+				  The <span class="emphasis"><em>pattern_expression</em></span> is a pattern at <a class="xref" href="event_patterns.html" title="Chapter 6. EPL Reference: Patterns">Chapter 6, <i>EPL Reference: Patterns</i></a>.
+				</p><p>
+				  Specify <code class="literal">@inclusive</code> after the pattern to have those same events that constitute the pattern match also count towards any statements that are associated to the context.
+				  You must also provide a tag for each event in a pattern that should be included.
+				</p><p>
+				  Examples are:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// A non-overlapping context that starts when either StartEventOne or StartEventTwo arrive
+// and that ends after 5 seconds.
+// Here neither StartEventOne or StartEventTwo count towards any statements
+// that are referring to the context.
+create context MyContext 
+  start pattern [StartEventOne or StartEventTwo] 
+  end after 5 seconds</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Same as above. 
+// Here both StartEventOne or StartEventTwo do count towards any statements
+// that are referring to the context.
+create context MyContext 
+  start pattern [a=StartEventOne or b=StartEventTwo] @inclusive 
+  end after 5 seconds</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// An overlapping context where each distinct MyInitEvent initiates a new context 
+// and each context partition terminates after 20 seconds
+// We use @inclusive to say that the same MyInitEvent that fires the pattern
+// also applies to statements that are associated to the context.
+create context MyContext
+  initiated by pattern [every-distinct(a.id, 20 sec) a=MyInitEvent]@inclusive
+  terminated after 20 sec</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// An overlapping context where each pattern match initiates a new context 
+// and all context partitions terminate when MyTermEvent arrives.
+// The MyInitEvent and MyOtherEvent that trigger the pattern are themselves not included 
+// in any statements that are associated to the context.
+create context MyContext
+  initiated by pattern [every MyInitEvent -&gt; MyOtherEvent where timer:within(5)]
+  terminated by MyTermEvent</pre><p>
+				  You may correlate the start and end streams by providing tags as part of the pattern, and by referring to the tag name(s) in the filter criteria of the end condition.
+				</p><p>
+				  An example that correlates the start and end condition is:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// A non-overlapping context that starts when either StartEventOne or StartEventTwo arrive
+// and that ends when either a matching EndEventOne or EndEventTwo arrive
+create context MyContext 
+  start pattern [a=StartEventOne or b=StartEventTwo]@inclusive
+  end pattern [EndEventOne(id=a.id) or EndEventTwo(id=b.id)]</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="context_def_condition_crontab"/>4.2.7.3. Crontab Context Condition</h4></div></div></div><p>
+					 Crontab expression are described in <a class="xref" href="event_patterns.html#pattern-timer-at" title="6.6.2.2. timer:at">Section 6.6.2.2, “timer:at”</a>.
+				</p><p>
+				  Examples are:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// A non-overlapping context started daily between 9 am to 5 pm
+// and not started outside of these hours:
+create context NineToFive start (0, 9, *, *, *) end (0, 17, *, *, *)</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// An overlapping context where crontab initiates a new context every 1 minute
+// and each context partition terminates after 10 seconds:
+create context MyContext initiated (*, *, *, *, *) terminated after 10 seconds</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="context_def_condition_after"/>4.2.7.4. Time Period Context Condition</h4></div></div></div><p>
+					You may specify a time period that the engine observes before the condition fires. Time period expressions are described in <a class="xref" href="epl_clauses.html#epl-syntax-time-periods" title="5.2.1. Specifying Time Periods">Section 5.2.1, “Specifying Time Periods”</a>.
+				</p><p>
+					The syntax is: 
+				</p><pre class="synopsis">after <span class="emphasis"><em>time_period_expression</em></span></pre><p>
+				  Examples are:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// A non-overlapping context started after 10 seconds 
+// that ends 1 minute after it starts and that again starts 10 seconds thereafter.
+create context NonOverlap10SecFor1Min start after 10 seconds end after 1 minute</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// An overlapping context that starts a new context partition every 5 seconds
+// and each context partition lasts 1 minute
+create context Overlap5SecFor1Min initiated after 5 seconds terminated after 1 minute</pre></div></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="context_nesting"/>4.3. Context Nesting</h2></div></div></div><p>
+		  A nested context is a context that is composed from two or more contexts.
+		</p><p>
+			The syntax for creating a nested context is as follows: 
+		</p><pre class="synopsis">create context <span class="emphasis"><em>context_name</em></span>
+  context <span class="emphasis"><em>nested_context_name</em></span> [as] <span class="emphasis"><em>nested_context_definition</em></span> ,
+  context <span class="emphasis"><em>nested_context_name</em></span> [as] <span class="emphasis"><em>nested_context_definition</em></span> [, ...]</pre><p>
+			The <span class="emphasis"><em>context_name</em></span> you assign to the context can be any identifier.
+		</p><p>
+			Following the context name is a comma-separated list of nested contexts. For each nested context specify the <code class="literal">context</code> keyword followed a nested context name and the nested context declaration. Any of the context declarations as outlined in <a class="xref" href="context.html#context_decl" title="4.2. Context Declaration">Section 4.2, “Context Declaration”</a> are allowed for nested contexts.
+			The order of nested context declarations matters as outlined below.
+		</p><p>
+			The next statement creates a nested context <code class="literal">NineToFiveSegmented</code> that, between 9 am and 5 pm, allocates a new context partition for each customer id:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context NineToFiveSegmented
+  context NineToFive start (0, 9, *, *, *) end (0, 17, *, *, *),
+  context SegmentedByCustomer partition by custId from BankTxn</pre><p>
+			The following statement refers to the nested context to compute a total withdrawal amount per account for each customer but only between 9 am and 5 pm:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context NineToFiveSegmented
+select custId, account, sum(amount) from BankTxn group by account</pre><p>
+		    Esper implements nested contexts as a context tree: The context declared first controls the lifecycle of the context(s) declared thereafter. Thereby, in the above example, outside of the 9am-to-5pm time the engine has no memory and consumes no resources in relationship to bank transactions or customer ids.
+		</p><p>
+		    When combining segmented contexts, the set of context partitions for the nested context effectively is the Cartesian product of the partition sets of the nested segmented contexts.
+		</p><p>
+		    When combining temporal contexts with other contexts, since temporal contexts may overlap and may terminate, it is important to understand that temporal contexts control the lifecycle of sub-contexts (contexts declared thereafter). The order of declaration of contexts in a nested context 
+		    can thereby change resource usage and output result.
+		</p><p>
+			The next statement creates a context that allocates context partition only when a train enters a station and then for each hash of the tag id of a passenger as indicated by PassengerScanEvent events, and terminates all context partitions after 5 minutes:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context CtxNestedTrainEnter
+  context InitCtx initiated by TrainEnterEvent as te terminated after 5 minutes,
+  context HashCtx coalesce by consistent_hash_crc32(tagId) from PassengerScanEvent
+    granularity 16 preallocate</pre><p>
+		   In the example above the engine does not start tracking PassengerScanEvent events or hash codes or allocate context partitions until a TrainEnterEvent arrives.
+		</p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="context_nesting_builtin"/>4.3.1. Built-In Nested Context Properties</h3></div></div></div><p>
+			  Context properties of all nested contexts are available for use. Specify <code class="literal">context.</code><span class="emphasis"><em>nested_context_name</em></span><code class="literal">.</code><span class="emphasis"><em>property_name</em></span> or if nested context declaration provided stream names or tags for patterns then <code class="literal">context.</code><span class="emphasis"><em>nested_context_name</em></span><code class="literal">.</code><span class="emphasis"><em>stream_name</em></span><code class="literal">.</code><span class="emphasis"><em>property_name</em></span>.
+			</p><p>
+			  For example, consider the <code class="literal">CtxNestedTrainEnter</code> context declared earlier. The following statement selects a few of the context properties:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context CtxNestedTrainEnter
+select context.InitCtx.te.trainId, context.HashCtx.id,
+  tagId, count(*) from PassengerScanEvent group by tagId</pre><p>
+			  In a second example, consider the <code class="literal">NineToFiveSegmented</code> context declared earlier. The following statement selects a few of the context properties:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context NineToFiveSegmented
+select context.NineToFive.startTime, context.SegmentedByCustomer.key1 from BankTxn</pre><p>
+			  The following context properties are available in your EPL statement when it refers to a nested context:
+			</p><div class="table"><a id="d0e4172"/><p class="title"><b>Table 4.5. Nested Context Properties</b></p><div class="table-contents"><table summary="Nested Context Properties" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">name</code></td><td>The string-type context name.</td></tr><tr><td><code class="literal">id</code></td><td>The integer-type internal context id that the engine assigns to the context partition.</td></tr></tbody></table></div></div><br class="table-break"/><p>
+			  This example selects the nested context name and context partition id:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context NineToFiveSegmented select context.name, context.id from BankTxn</pre></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="context_other"/>4.4. Partitioning Without Context Declaration</h2></div></div></div><p>
+		  You do not need to declare a context to partition data windows, aggregation values or patterns themselves individually. You may mix-and-match partitioning as needed.
+		</p><p>
+		  The table below outlines other partitioning syntax supported by EPL:
+		</p><div class="table"><a id="d0e4208"/><p class="title"><b>Table 4.6. Partition in EPL without the use of Context Declaration</b></p><div class="table-contents"><table summary="Partition in EPL without the use of Context Declaration" border="1"><colgroup><col/><col/><col/></colgroup><thead><tr><th>Partition Type</th><th>Description</th><th>Example</th></tr></thead><tbody><tr><td>Grouped Data Window</td><td><p>Partitions at the level of data window, only applies to appended data window(s).</p><p>Syntax: <code class="literal">std:groupby(...)</code></p></td><td><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Length window of 2 events per customer
+select * from
+  BankTxn.std:groupwin(custId).win:length(2)</pre></td></tr><tr><td>Grouped Aggregation</td><td><p>Partitions at the level of aggregation, only applies to any aggregations.</p><p>Syntax: <code class="literal">group by ....</code></p></td><td><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select avg(price), window(*)
+  from BankTxn group by custId</pre></td></tr><tr><td>Pattern</td><td><p>Partitions pattern subexpressions.</p><p>Syntax: <code class="literal">every</code> or <code class="literal">every-distinct</code></p></td><td><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from pattern [
+  every a=BankTxn -&gt; BankTxn(custId = a.custId)...]</pre></td></tr><tr><td>Match-Recognize</td><td><p>Partitions match-recognize patterns.</p><p>Syntax: <code class="literal">partition by</code></p></td><td><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from match_recognize 
+  ... partition by custId</pre></td></tr><tr><td>Join and Subquery</td><td><p>Partitions join and subqueries.</p><p>Syntax: <code class="literal">where ...</code></p></td><td><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from ... where a.custId = b.custId</pre></td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="context_outputterminated"/>4.5. Output When Context Partition Ends</h2></div></div></div><p>
+          You may use output rate limiting to trigger output when a context partition ends, as further described in <a class="xref" href="epl_clauses.html#epl-output-rate" title="5.7. Stabilizing and Controlling Output: the Output Clause">Section 5.7, “Stabilizing and Controlling Output: the Output Clause”</a>.
+        </p><p>
+          Consider the fixed temporal context:  A new context partition gets allocated at the designated start time and the current context partition ends at the designated end time. To trigger output when the context partition ends and before it gets removed, read on.
+        </p><p>
+          The same is true for the initiated temporal context:  That context starts a new context partition when trigger events arrive or when a pattern matches. Each context partition expires (ends, terminates) after the specified time period passed. To trigger output at the time the context partition expires, read on.
+        </p><p>
+		  You may use the <code class="literal">when terminated</code> syntax with output rate limiting to trigger output when a context partition ends. The following example demonstrates the idea by declaring an initiated temporal context.
+		</p><p>
+			The next statement creates a context <code class="literal">CtxEachMinute</code> that initiates a new context partition every 1 minute, and that expires each context partition after 5 minutes:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context CtxEachMinute
+initiated by pattern [every timer:interval(1 min)]
+terminated after 5 minutes</pre><p>
+			The following statement computes an ongoing average temperature however only outputs the last value of the average temperature after 5 minutes when a context partition ends:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context CtxEachMinute
+select context.id, avg(temp) from SensorEvent output snapshot when terminated</pre><p>
+			The <code class="literal">when terminated</code> syntax can be combined with other output rates.
+		</p><p>
+			The next example outputs every 1 minute and also when the context partition ends:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context CtxEachMinute
+select context.id, avg(temp) from SensorEvent output snapshot every 1 minute and when terminated</pre><p>
+			In the case that the end/terminating condition of the context partition is an event or pattern, the context properties contain the information of the tagged events in the pattern or the single event that ended/terminated the context partition. 
+		</p><p>
+			For example, consider the following context wherein the engine initializes a new context partition for each arriving <code class="literal">MyStartEvent</code> event and that terminates a context partition when a matching <code class="literal">MyEndEvent</code> arrives:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context CtxSample
+initiated by MyStartEvent as startevent
+terminated by MyEndEvent(id = startevent.id) as endevent</pre><p>
+			The following statement outputs the id property of the initiating and terminating event and only outputs when a context partition ends:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context CtxSample 
+select context.startevent.id, context.endevent.id, count(*) from MyEvent
+output snapshot when terminated</pre><p>
+			You may in addition specify a termination expression that the engine evaluates when a context partition terminates. Only when the terminaton expression evaluates to true does output occur. The expression may refer to built-in properties as described in <a class="xref" href="epl_clauses.html#epl-output-expression" title="5.7.1.1. Controlling Output Using an Expression">Section 5.7.1.1, “Controlling Output Using an Expression”</a>. The syntax is as follows:
+		</p><pre class="synopsis">...output when terminated and <span class="emphasis"><em>termination_expression</em></span></pre><p>
+			The next example statement outputs when a context partition ends but only if at least two events are available for output:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context CtxEachMinute
+select * from SensorEvent output when terminated and count_insert &gt;= 2</pre><p>
+			The final example EPL outputs when a context partition ends and sets the variable <code class="literal">myvar</code> to a new value:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context CtxEachMinute
+select * from SensorEvent output when terminated then set myvar=3</pre></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="context_named_windows"/>4.6. Context and Named Window</h2></div></div></div><p>
+			Named windows are globally-visible data window that may be referred to by multiple statements. You may refer to named windows in statements that declare a context without any special considerations.
+		</p><p>
+			You may also create a named window and declare a context for the named window. In this case the engine in effect manages separate named windows, one for each context partition. Limitations apply in this case that we discuss herein.
+		</p><p>
+		  For example, consider the 9 am to 5 pm fixed temoral context as shown earlier:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context NineToFive start (0, 9, *, *, *) end (0, 17, *, *, *)</pre><p>
+		  You may create a named window that only exists between 9 am and 5 pm:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context NineToFive create window SpeedingEvents1Hour.win:time(30 min) as TrafficEvent</pre><p>
+		  You can insert into the named window:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">insert into SpeedingEvents1Hour select * from TrafficEvent(speed &gt; 100)</pre><p>
+		  Any on-merge, on-select, on-update and on-delete statements must however declare the same context.
+		</p><p>
+		  The following is not a valid statement as it does not declare the same context that was used to declare the named window:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// You must declare the same context for on-trigger statements
+on TruncateEvent delete from SpeedingEvents1Hour</pre><p>
+		  The following is valid:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context NineToFive on TruncateEvent delete from SpeedingEvents1Hour</pre></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="context_selection"/>4.7. Operations on Specific Context Partitions</h2></div></div></div><p>
+			  Selecting specific context partitions and interrogating context partitions is useful for:
+        </p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+				  Iterating a specific context partition or a specific set of context partitions. Iterating a statement is described in <a class="xref" href="api.html#api-admin-iterators" title="14.3.5. Using Iterators">Section 14.3.5, “Using Iterators”</a>.
+				</p></li><li><p>
+				 Executing an on-demand (fire-and-forget) query against specific context partition(s). On-demand queries are described in <a class="xref" href="api.html#api-runtime-ondemand" title="14.4.3. On-Demand Fire-And-Forget Query Execution">Section 14.4.3, “On-Demand Fire-And-Forget Query Execution”</a>.
+				</p></li></ol></div><p>
+			  Esper provides APIs to identify, filter and select context partitions for statement iteration and on-demand queries. The APIs are described in detail at <a class="xref" href="api.html#api-contextpartitionselection" title="14.18. Context Partition Selection">Section 14.18, “Context Partition Selection”</a>.
+        </p><p>
+             For statement iteration, your application can provide context selector objects to the <code class="literal">iterate</code> and <code class="literal">safeIterate</code> methods on <code class="literal">EPStatement</code>. If your code does not provide context selectors
+             the iteration considers all context partitions. At the time of iteration, the engine obtains the current set of context partitions and iterates each independently. If your statement has an order-by clause, the order-by clause orders within the context partition and does not order across context partitions.
+        </p><p>
+             For on-demand queries, your application can provide context selector objects to the <code class="literal">executeQuery</code> method on <code class="literal">EPRuntime</code> and to the <code class="literal">execute</code> method on <code class="literal">EPOnDemandPreparedQuery</code>. If your code does not provide context selectors the on-demand query considers all context partitions. At the time of on-demand query execution, the engine obtains the current set of context partitions and queries each independently. If the on-demand query has an order-by clause, the order-by clause orders within the context partition and does not order across context partitions.
+        </p></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="processingmodel.html"><strong>Prev</strong>Chapter 3. Processing Model</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="epl_clauses.html"><strong>Next</strong>Chapter 5. EPL Reference: Clauses</a></li></ul></body></html>

@@ -1,0 +1,991 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 10. EPL Reference: Enumeration Methods</title><link rel="stylesheet" href="css/espertech.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Esper Reference"/><link rel="up" href="index.html" title="Esper Reference"/><link rel="prev" href="functionreference.html" title="Chapter 9. EPL Reference: Functions"/><link rel="next" href="datetimereference.html" title="Chapter 11. EPL Reference: Date-Time Methods"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.espertech.com" class="site_href"><strong>esper.codehaus.org and espertech.com</strong></a><a href="http://esper.codehaus.org/esper/documentation/documentation.html" class="doc_href"><strong>Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="functionreference.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="datetimereference.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="enumerationreference"/>Chapter 10. EPL Reference: Enumeration Methods</h2></div></div></div><div class="toc"><dl><dt><span class="sect1"><a href="enumerationreference.html#enumeration-intro">10.1. Overview</a></span></dt><dt><span class="sect1"><a href="enumerationreference.html#enumeration-exampledata">10.2. Example Events</a></span></dt><dt><span class="sect1"><a href="enumerationreference.html#enumeration-howtouse">10.3. How to Use</a></span></dt><dd><dl><dt><span class="sect2"><a href="enumerationreference.html#enumeration-howtouse-synopsis">10.3.1. Syntax</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-howtouse-example">10.3.2. Introductory Examples</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-howtouse-output">10.3.3. Input, Output and Limitations</a></span></dt></dl></dd><dt><span class="sect1"><a href="enumerationreference.html#enumeration-inputs">10.4. Inputs</a></span></dt><dd><dl><dt><span class="sect2"><a href="enumerationreference.html#enumeration-ds-subquery">10.4.1. Subquery Results</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-ds-namedwindow">10.4.2. Named Window</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-ds-property">10.4.3. Event Property</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-ds-accessagg">10.4.4. Event Aggregation Function</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-ds-prev">10.4.5. prev, prevwindow and prevtail Single-Row Functions as Input</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-ds-udf">10.4.6. Single-Row Function, User-Defined Function and Enum Types</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-ds-lambda">10.4.7. Declared Expression</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-ds-variable">10.4.8. Variables</a></span></dt></dl></dd><dt><span class="sect1"><a href="enumerationreference.html#enumeration-example">10.5. Example</a></span></dt><dt><span class="sect1"><a href="enumerationreference.html#enumeration-method">10.6. Reference</a></span></dt><dd><dl><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-aggregate">10.6.1. Aggregate</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-allof">10.6.2. AllOf</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-anyof">10.6.3. AnyOf</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-average">10.6.4. Average</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-countof">10.6.5. CountOf</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-except">10.6.6. Except</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-firstof">10.6.7. FirstOf</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-groupby">10.6.8. GroupBy</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-intersect">10.6.9. Intersect</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-lastof">10.6.10. LastOf</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-leastfrequent">10.6.11. LeastFrequent</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-max">10.6.12. Max</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-maxby">10.6.13. MaxBy</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-min">10.6.14. Min</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-minby">10.6.15. MinBy</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-mostfrequent">10.6.16. MostFrequent</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-orderby">10.6.17. OrderBy and OrderByDesc</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-reverse">10.6.18. Reverse</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-selectfrom">10.6.19. SelectFrom</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-sequenceequal">10.6.20. SequenceEqual</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-sumof">10.6.21. SumOf</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-take">10.6.22. Take</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-takelast">10.6.23. TakeLast</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-takewhile">10.6.24. TakeWhile</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-takewhilelast">10.6.25. TakeWhileLast</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-tomap">10.6.26. ToMap</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-union">10.6.27. Union</a></span></dt><dt><span class="sect2"><a href="enumerationreference.html#enumeration-method-where">10.6.28. Where</a></span></dt></dl></dd></dl></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="enumeration-intro"/>10.1. Overview</h2></div></div></div><a id="d0e22801" class="indexterm"/><p>
+			EPL provides enumeration methods that work with lambda expressions to perform common tasks on subquery results, named windows, event properties or inputs that are or can be projected to a collection of events, scalar values or objects.
+		</p><p>
+			A lambda expression is an anonymous expression.  Lambda expressions are useful for encapsulating user-defined expressions that are applied to each element in a collection. This section discusses built-in enumeration methods and their lambda expression parameters.
+		</p><p>
+			Lambda expressions use the lambda operator <code class="literal">=&gt;</code>, which is read as "goes to". The left side of the lambda operator specifies the lambda expression input parameter(s) (if any) and the right side holds the expression. The lambda expression x =&gt; x * x is read "x goes to x times x.". 
+			Lambda expressions are also used for expression declaration as discussed in <a class="xref" href="epl_clauses.html#epl-syntax-expression-decl" title="5.2.8. Expression Declaration">Section 5.2.8, “Expression Declaration”</a>.
+		</p><p>
+			When writing lambdas, you do not have to specify a type for the input parameter(s) or output result(s) because the engine can infer all types based on the input and the expression body. So if you are querying an RFIDEvent, for example, then the input variable is inferred to be an RFIDEvent event, which means you have access to its properties and methods.
+		</p><p>
+			The term <span class="emphasis"><em>element</em></span> in respect to enumeration methods means a single event, scalar value or object in a collection that is the input to an enumeraton method. The term <span class="emphasis"><em>collection</em></span> means a sequence or group of elements.
+		</p><p>
+			The below table summarizes the built-in enumeration methods available:
+		</p><div class="table"><a id="enumeration_method_table"/><p class="title"><b>Table 10.1. Enumeration Methods</b></p><div class="table-contents"><table summary="Enumeration Methods" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Method</th><th>Result</th></tr></thead><tbody><tr><td>aggregate(seed, accumulator lambda)</td><td>
+							<p>
+								Aggregate elements by using seed as an initial accumulator value and applying an accumulator expression.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-aggregate" title="10.6.1. Aggregate">Section 10.6.1, “Aggregate”</a>.
+							</p>
+						</td></tr><tr><td>allof(predicate lambda)</td><td>
+							<p>
+								Return true when all elements satisfy a condition.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-allof" title="10.6.2. AllOf">Section 10.6.2, “AllOf”</a>.
+							</p>
+						</td></tr><tr><td>anyof(predicate lambda)</td><td>
+							<p>
+								Return true when any element satisfies a condition.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-anyof" title="10.6.3. AnyOf">Section 10.6.3, “AnyOf”</a>.
+							</p>
+						</td></tr><tr><td>average()</td><td>
+							<p>
+								Computes the average of values obtained from numeric elements.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-average" title="10.6.4. Average">Section 10.6.4, “Average”</a>.
+							</p>
+						</td></tr><tr><td>average(projection lambda)</td><td>
+							<p>
+								Computes the average of values obtained from elements by invoking a projection expression on each element.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-average" title="10.6.4. Average">Section 10.6.4, “Average”</a>.
+							</p>
+						</td></tr><tr><td>countof()</td><td>
+							<p>
+								Returns the number of elements.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-countof" title="10.6.5. CountOf">Section 10.6.5, “CountOf”</a>.
+							</p>
+						</td></tr><tr><td>countof(predicate lambda)</td><td>
+							<p>
+								Returns the number of elements that satisfy a condition.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-countof" title="10.6.5. CountOf">Section 10.6.5, “CountOf”</a>.
+							</p>
+						</td></tr><tr><td>except(source)</td><td>
+							<p>
+								Produces the set difference of the two collections.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-except" title="10.6.6. Except">Section 10.6.6, “Except”</a>.
+							</p>
+						</td></tr><tr><td>firstof()</td><td>
+							<p>
+								Returns the first element.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-firstof" title="10.6.7. FirstOf">Section 10.6.7, “FirstOf”</a>.
+							</p>
+						</td></tr><tr><td>firstof(predicate lambda)</td><td>
+							<p>
+								Returns the first element that satisfies a condition.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-firstof" title="10.6.7. FirstOf">Section 10.6.7, “FirstOf”</a>.
+							</p>
+						</td></tr><tr><td>groupby(key-selector lambda)</td><td>
+							<p>
+								Groups the elements according to a specified key-selector expression.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-groupby" title="10.6.8. GroupBy">Section 10.6.8, “GroupBy”</a>.
+							</p>
+						</td></tr><tr><td>groupby(key-selector lambda, value-selector lambda)</td><td>
+							<p>
+								Groups the elements according to a key-selector expression mapping each element to a value according to a value-selector.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-groupby" title="10.6.8. GroupBy">Section 10.6.8, “GroupBy”</a>.
+							</p>
+						</td></tr><tr><td>intersect(source)</td><td>
+							<p>
+								Produces the set intersection of the two collections.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-intersect" title="10.6.9. Intersect">Section 10.6.9, “Intersect”</a>.
+							</p>
+						</td></tr><tr><td>lastof()</td><td>
+							<p>
+								Returns the last element.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-lastof" title="10.6.10. LastOf">Section 10.6.10, “LastOf”</a>.
+							</p>
+						</td></tr><tr><td>lastof(predicate lambda)</td><td>
+							<p>
+								Returns the last element that satisfies a condition.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-lastof" title="10.6.10. LastOf">Section 10.6.10, “LastOf”</a>.
+							</p>
+						</td></tr><tr><td>leastFrequent()</td><td>
+							<p>
+								Returns the least frequent value among a collection of values.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-leastfrequent" title="10.6.11. LeastFrequent">Section 10.6.11, “LeastFrequent”</a>.
+							</p>
+						</td></tr><tr><td>leastFrequent(transform lambda)</td><td>
+							<p>
+								Returns the least frequent value returned by the transform expression when applied to each element.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-leastfrequent" title="10.6.11. LeastFrequent">Section 10.6.11, “LeastFrequent”</a>.
+							</p>
+						</td></tr><tr><td>max()</td><td>
+							<p>
+								Returns the maximum value among a collection of elements.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-max" title="10.6.12. Max">Section 10.6.12, “Max”</a>.
+							</p>
+						</td></tr><tr><td>max(value-selector lambda)</td><td>
+							<p>
+								Returns the maximum value returned by the value-selector expression when applied to each element.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-max" title="10.6.12. Max">Section 10.6.12, “Max”</a>.
+							</p>
+						</td></tr><tr><td>maxby(value-selector lambda)</td><td>
+							<p>
+								Returns the element that provides the maximum value returned by the value-selector expression when applied to each element.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-maxby" title="10.6.13. MaxBy">Section 10.6.13, “MaxBy”</a>.
+							</p>
+						</td></tr><tr><td>min()</td><td>
+							<p>
+								Returns the minimum value among a collection of elements.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-max" title="10.6.12. Max">Section 10.6.12, “Max”</a>.
+							</p>
+						</td></tr><tr><td>min(value-selector lambda)</td><td>
+							<p>
+								Returns the minimum value returned by the value-selector expression when applied to each element.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-min" title="10.6.14. Min">Section 10.6.14, “Min”</a>.
+							</p>
+						</td></tr><tr><td>minby(value-selector lambda)</td><td>
+							<p>
+								Returns the element that provides the minimum value returned by the value-selector expression when applied to each element..
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-minby" title="10.6.15. MinBy">Section 10.6.15, “MinBy”</a>.
+							</p>
+						</td></tr><tr><td>mostFrequent()</td><td>
+							<p>
+								Returns the most frequent value among a collection of values.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-mostfrequent" title="10.6.16. MostFrequent">Section 10.6.16, “MostFrequent”</a>.
+							</p>
+						</td></tr><tr><td>mostFrequent(transform lambda)</td><td>
+							<p>
+								Returns the most frequent value returned by the transform expression when applied to each element.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-mostfrequent" title="10.6.16. MostFrequent">Section 10.6.16, “MostFrequent”</a>.
+							</p>
+						</td></tr><tr><td>orderBy()</td><td>
+							<p>
+								Sorts the elements in ascending order.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-orderby" title="10.6.17. OrderBy and OrderByDesc">Section 10.6.17, “OrderBy and OrderByDesc”</a>.
+							</p>
+						</td></tr><tr><td>orderBy(key-selector lambda)</td><td>
+							<p>
+								Sorts the elements in ascending order according to a key.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-orderby" title="10.6.17. OrderBy and OrderByDesc">Section 10.6.17, “OrderBy and OrderByDesc”</a>.
+							</p>
+						</td></tr><tr><td>orderByDesc()</td><td>
+							<p>
+								Sorts the elements in descending order.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-orderby" title="10.6.17. OrderBy and OrderByDesc">Section 10.6.17, “OrderBy and OrderByDesc”</a>.
+							</p>
+						</td></tr><tr><td>orderByDesc(key-selector lambda)</td><td>
+							<p>
+								Sorts the elements in descending order according to a key.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-orderby" title="10.6.17. OrderBy and OrderByDesc">Section 10.6.17, “OrderBy and OrderByDesc”</a>.
+							</p>
+						</td></tr><tr><td>reverse</td><td>
+							<p>
+								Reverses the order of elements.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-reverse" title="10.6.18. Reverse">Section 10.6.18, “Reverse”</a>.
+							</p>
+						</td></tr><tr><td>selectFrom(transform lambda)</td><td>
+							<p>
+								Transforms each element resulting in a collection of transformed elements.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-selectfrom" title="10.6.19. SelectFrom">Section 10.6.19, “SelectFrom”</a>.
+							</p>
+						</td></tr><tr><td>sequenceEqual(second)</td><td>
+							<p>
+								Determines whether two collections are equal by comparing each element (<code class="literal">equals</code> semantics apply).
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-sequenceequal" title="10.6.20. SequenceEqual">Section 10.6.20, “SequenceEqual”</a>.
+							</p>
+						</td></tr><tr><td>sumOf()</td><td>
+							<p>
+								Computes the sum from a collection of numeric elements.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-sumof" title="10.6.21. SumOf">Section 10.6.21, “SumOf”</a>.
+							</p>
+						</td></tr><tr><td>sumOf(projection lambda)</td><td>
+							<p>
+								Computes the sum by invoking a projection expression on each element.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-sumof" title="10.6.21. SumOf">Section 10.6.21, “SumOf”</a>.
+							</p>
+						</td></tr><tr><td>take(numElements)</td><td>
+							<p>
+								Returns a specified number of contiguous elements from the start.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-take" title="10.6.22. Take">Section 10.6.22, “Take”</a>.
+							</p>
+						</td></tr><tr><td>takeLast(numElements)</td><td>
+							<p>
+								Returns a specified number of contiguous elements from the end.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-takelast" title="10.6.23. TakeLast">Section 10.6.23, “TakeLast”</a>.
+							</p>
+						</td></tr><tr><td>takeWhile(predicate lambda)</td><td>
+							<p>
+								Returns elements from the start as long as a specified condition is true.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-takewhile" title="10.6.24. TakeWhile">Section 10.6.24, “TakeWhile”</a>.
+							</p>
+						</td></tr><tr><td>takeWhile( (predicate, index) lambda)</td><td>
+							<p>
+								Returns elements from the start as long as a specified condition is true, allowing each element's index to be used in the logic of the predicate expression.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-takewhile" title="10.6.24. TakeWhile">Section 10.6.24, “TakeWhile”</a>.
+							</p>
+						</td></tr><tr><td>takeWhileLast(predicate)</td><td>
+							<p>
+								Returns elements from the end as long as a specified condition is true.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-takewhilelast" title="10.6.25. TakeWhileLast">Section 10.6.25, “TakeWhileLast”</a>.
+							</p>
+						</td></tr><tr><td>takeWhileLast( (predicate,index) lambda)</td><td>
+							<p>
+								Returns elements from the end as long as a specified condition is true, allowing each element's index to be used in the logic of the predicate expression.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-takewhilelast" title="10.6.25. TakeWhileLast">Section 10.6.25, “TakeWhileLast”</a>.
+							</p>
+						</td></tr><tr><td>toMap(key-selector lambda, value-selector lambda)</td><td>
+							<p>
+								Returns a Map according to specified key selector and value-selector expressions.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-tomap" title="10.6.26. ToMap">Section 10.6.26, “ToMap”</a>.
+							</p>
+						</td></tr><tr><td>union(source)</td><td>
+							<p>
+								Forms a union of the input elements with source elements.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-union" title="10.6.27. Union">Section 10.6.27, “Union”</a>.
+							</p>
+						</td></tr><tr><td>where(predicate lambda)</td><td>
+							<p>
+								Filters elements based on a predicate.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-where" title="10.6.28. Where">Section 10.6.28, “Where”</a>.
+							</p>
+						</td></tr><tr><td>where( (predicate,index) lambda)</td><td>
+							<p>
+								Filters elements based on a predicate, allowing each element's index to be used in the logic of the predicate expression.
+							</p>
+							<p>
+								<a class="xref" href="enumerationreference.html#enumeration-method-where" title="10.6.28. Where">Section 10.6.28, “Where”</a>.
+							</p>
+						</td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="enumeration-exampledata"/>10.2. Example Events</h2></div></div></div><p>
+			The examples in this section come out of the domain of location report (aka. RFID, asset tracking etc.) processing: 
+		</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+					The <code class="literal">Item</code> event is a report of the location of a certain item. An item can be either a piece of luggage or a passenger. 
+				</p></li><li><p>
+					The <code class="literal">LocationReport</code> event contains a list of <code class="literal">Item</code> items for which it reports location. 
+				</p></li><li><p>
+					The <code class="literal">Zone</code> event describes areas that items may move through.
+				</p></li></ol></div><p>
+			The examples use example single-row functions for computing the distance (<code class="literal">distance</code>) and for determining if a location falls within a rectangle (<code class="literal">inrect</code>) that are not provided by the EPL language. These example UDF functions are not enumeration methods
+			and are used in EPL statements to provide a sensible example.
+		</p><p>
+			The <code class="literal">Item</code> event contains an <code class="literal">assetId</code> id, a (x,y) <code class="literal">location</code>, a <code class="literal">luggage</code> flag to indicate whether the item represents a luggage (true) or passenger (false), and the <code class="literal">assetIdPassenger</code> that holds the asset id of the associated passenger when the item is a piece of luggage.
+		</p><p>
+			The <code class="literal">Item</code> event is defined as follows (access methods not shown for brevity):
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class Item {
+  String assetId;             // passenger or luggage asset id
+  Location location;          // (x,y) location
+  boolean luggage;            // true if this item is a luggage piece
+  String assetIdPassenger;    // if the item is luggage, contains passenger associated
+...</pre><p>
+			The <code class="literal">LocationReport</code> event contains a list of <code class="literal">Item</code> items for which it reports events.
+		</p><p>
+			The <code class="literal">LocationReport</code> event is defined as follows:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class LocationReport {
+  List&lt;Item&gt; items;
+...</pre><p>
+			The <code class="literal">Zone</code> event contains a zone <code class="literal">name</code> and (x1, y1, x2, y2) <code class="literal">rectangle</code>.
+		</p><p>
+			The <code class="literal">Zone</code> event is defined as follows:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class Zone {
+  String name;
+  Rectangle rectangle;
+...</pre><p>
+			The <code class="literal">Location</code> object is a nested object to <code class="literal">Item</code> and provides the current (x,y) location:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class Location {
+  int x;
+  int y;
+...</pre><p>
+			The <code class="literal">Rectangle</code> object is a nested object to <code class="literal">Zone</code> and provides a zone rectangle(x1,y1,x2,y2):
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class Rectangle {
+  int x1;
+  int y1;
+  int x2;
+  int y2;
+...</pre></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="enumeration-howtouse"/>10.3. How to Use</h2></div></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-howtouse-synopsis"/>10.3.1. Syntax</h3></div></div></div><p>
+				The syntax for enumeration methods is the same syntax as for any chained invocation:
+			</p><pre class="synopsis"><span class="emphasis"><em>input_coll</em></span>.<span class="emphasis"><em>enum_method_name</em></span>( [<span class="emphasis"><em>method_parameter</em></span> [, <span class="emphasis"><em>method_parameter</em></span> [,...]]])
+	  .[ [<span class="emphasis"><em>enum_method_name</em></span>(...) [...]] | <span class="emphasis"><em>property_name</em></span>] </pre><p>
+				Following the <span class="emphasis"><em>input_coll</em></span> input collection (options outlined below), is the <code class="literal">.</code> (dot) operator and the <span class="emphasis"><em>enum_method_name</em></span> enumeration method name. It follows in parenthesis a comma-separated list of method parameter expressions. Additional enumeration methods can be chained thereafter. An event property name can follow for those enumeration methods returning an event-typed (non-scalar) element.
+			</p><p>
+				If the method parameter is a lambda expression with a single lambda-parameter, specify the lambda-parameter name followed by the <code class="literal">=&gt;</code> lambda operator and followed by the expression. The synopsis for use with a single lambda-parameter is:
+			</p><pre class="synopsis">method_parameter: <span class="emphasis"><em>lamda_param</em></span> =&gt; <span class="emphasis"><em>lamda_expression</em></span></pre><p>
+				If the method parameter is a lambda expression with two or more lambda-parameters, specify the lambda parameter names in parenthesis followed by the =&gt; lambda operator followed by the expression. The synopsis for use with multiple lambda-parameters is:
+			</p><pre class="synopsis">method_parameter: (<span class="emphasis"><em>lamda_param</em></span> [,<span class="emphasis"><em>lamda_param</em></span> [,...]]) =&gt; <span class="emphasis"><em>lamda_expression</em></span></pre><p>
+				Generally for lambda expressions, the engine applies the lambda expression to each element in the input collection. The expression yields a result that, depending on the particular enumeration method, is used for aggregation, as a filter or for output, for example.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-howtouse-example"/>10.3.2. Introductory Examples</h3></div></div></div><p>
+				Let's look at an EPL statement that employs the <code class="literal">where</code> enumeration method and a lambda expression. This example returns items that have a (x, y) location of (0, 0):
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.where(i =&gt; i.location.x = 0 and i.location.y = 0) as zeroloc
+from LocationReport</pre><p>
+				As enumeration methods can be chained, this selection is equivalent:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.where(i =&gt; i.location.x = 0).where(i =&gt; i.location.y = 0) as zeroloc
+from LocationReport</pre><p>
+				According to above statement the engine outputs in field <code class="literal">zeroloc</code> a collection of <code class="literal">Item</code> objects matching the condition. 
+			</p><p>
+				The <code class="literal">where</code> enumeration method has a second version that has two lambda-parameters. The second parameter is the name of the index property which represents the current index of the element within the collection.
+			</p><p>
+				This sample query returns a collection that consists of the first 3 items. This sample query does not use the <code class="literal">item</code> lambda parameter:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.where( (item, indexElement) =&gt; indexElement &lt; 3) as firstThreeItems
+from LocationReport</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-howtouse-output"/>10.3.3. Input, Output and Limitations</h3></div></div></div><p>
+				It is not necessary to use classes for event representation. The example above applies the same to Object-array, Map or XML underlying events.
+			</p><p>
+			   For most enumeration methods the input can be any collection of events, scalar values or objects. For some enumeration methods limitations apply that are documented below. For example, the <code class="literal">sumOf</code> enumeration method requires a collection of numeric scalar values if used without parameters.
+			   If the input to <code class="literal">sumOf</code> is a collection of events or scalar values the enumeration method requires a lambda expression as parameter that yields the numeric value to use to compute the sum.
+			</p><p>
+				Many examples of this section operate on the collection returned by the event property <code class="literal">items</code> in the <code class="literal">LocationReport</code> event class. 
+				There are many other inputs yielding collections as listed below. Most examples herein use an event property as a input simply because the example can thus be brief and does not need to refer to a subquery or named window or other concept.
+			</p><p>
+				For enumeration methods that return a collection, for example <code class="literal">where</code> and <code class="literal">orderBy</code>, the engine outputs an implementation of the <code class="literal">Collection</code> interface that contains the selected value(s). The collection returned must be considered read-only. As Java does not allow resettable iterators, the <code class="literal">Collection</code> interface allows more flexibility to query size and navigate among collection elements. We recommend against down-casting a collection returned by the engine to a more specific subclass of the <code class="literal">Collection</code> interface.
+			</p><p>
+				For enumeration methods that return an element, for example <code class="literal">firstOf</code>, <code class="literal">lastOf</code>, <code class="literal">minBy</code> and <code class="literal">maxBy</code> the engine outputs the scalar value or the underlying event if operating on events. You may add an event property name after the enumeration method to return a property value.
+			</p><p>
+				Enumeration methods generally retain the order of elements provided by the collection.
+			</p><p>
+				The following restrictions apply to enumeration methods:
+			</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+						Enumeration methods returning a collection return a read-only implementation of the <code class="literal">Collection</code> interface. You may not use any of the write-methods such as <code class="literal">add</code> or <code class="literal">remove</code> on a result collection.
+					</p></li></ol></div></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="enumeration-inputs"/>10.4. Inputs</h2></div></div></div><p>
+			The input of data for built-in enumeration methods is a collection of scalar values, events or other objects. Input can originate from any of the following:
+		</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+					A subquery.
+				</p></li><li><p>
+					A named window.
+				</p></li><li><p>
+					A property of an event that is itself a collection of events or classes, i.e. an indexed property.
+				</p></li><li><p>
+					Any of the event aggregation functions (<code class="literal">window</code>, <code class="literal">first</code>, <code class="literal">last</code>, <code class="literal">sorted</code>, <code class="literal">maxby</code>, <code class="literal">minby</code>, <code class="literal">maxbyever</code>, <code class="literal">minbyever</code>).
+				</p></li><li><p>
+					The special <code class="literal">prevwindow</code>, <code class="literal">prev</code> and <code class="literal">prevtail</code> single-row functions.
+				</p></li><li><p>
+					A plug-in single-row function, a user-defined function or an enum type.
+				</p></li><li><p>
+					A declared expression.
+				</p></li><li><p>
+					Another enumeration method that returns a collection.
+				</p></li><li><p>
+					An array returned by the <code class="literal">{}</code> array operator.
+				</p></li><li><p>
+					A collection or array returned by a method call on an event.
+				</p></li><li><p>
+					A variable. Usually variables declared as an array.
+				</p></li></ol></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-ds-subquery"/>10.4.1. Subquery Results</h3></div></div></div><p>
+				Subqueries can return the rows of another stream's data window or rows from a named window. By providing a where-clause the rows returned by a subquery can be correlated to data provided by stream(s) in the from-clause. See <a class="xref" href="epl_clauses.html#epl-subqueries" title="5.11. Subqueries">Section 5.11, “Subqueries”</a>.
+			</p><p>
+				A subquery that selects <code class="literal">(*)</code> wildcard provides a collection of events as input. A subquery that selects a single value expression provides a collection of scalar values as input. Subqueries that selects multiple value expressions are not allowed as input to enumeration methods.
+			</p><p>
+				The following example uses a subquery to retrieve all zones for each location report item where the location falls within the rectangle of the zone. Please see a description of example events and functions above.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select assetId,
+  (select * from Zone.std:unique(name)).where(z =&gt; inrect(z.rectangle, location)) as zones
+from Item</pre><p>
+				You may place the subquery in an expression declaration to reuse the subquery in multiple places of the same EPL statement.
+			</p><p>
+				This sample EPL declares the same query as above in an expression declaration:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">expression myquery {itm =&gt;
+  (select * from Zone.std:unique(name)).where(z =&gt; inrect(z.rectangle, itm.location))
+}
+select assetId, myquery(item) as subq, 
+    myquery(item).where(z =&gt; z.zone = 'Z01') as assetItem
+from Item as item</pre><p>
+				The above query also demonstrates how an enumeration method, in the example the <code class="literal">where</code>-method, can be run across the results returned by a subquery in an expression declaration.
+			</p><p>
+				Place a single column in the subquery select-clause to provide a collection of scalar values as input.
+			</p><p>
+				The next example selects all names of zones and orders the names returning an order collection of string names every 30 seconds:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select (select name from Zone.std:unique(name)).orderBy() as orderedZones
+from pattern[every timer:interval(30)]</pre><p>
+				Note that the engine can cache intermediate results thereby is not forced to re-evaluate the subquery for each occurrence in the <code class="literal">select</code>-clause.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-ds-namedwindow"/>10.4.2. Named Window</h3></div></div></div><p>
+				Named windows are globally-visible data windows. See <a class="xref" href="epl_clauses.html#named_overview" title="5.15. Creating and Using Named Windows">Section 5.15, “Creating and Using Named Windows”</a>.
+			</p><p>
+				You may specify the named window name as input for an enumeration method and can optionally provide a correlation where-clause. The syntax is equivalent to a sub-query against a named window but much shorter.
+			</p><p>
+				Synopsis:
+			</p><pre class="synopsis"><span class="emphasis"><em>named-window-name</em></span>[(<span class="emphasis"><em>correlation-expression</em></span>)].<span class="emphasis"><em>enum-method-name</em></span>(...)</pre><p>
+				When selecting all events in a named window you do not need the <span class="emphasis"><em>correlation-expression</em></span>. To select a subset of data in the named window, specify a <span class="emphasis"><em>correlation-expression</em></span>.
+				From the perspective of best runtime performance, a correlation expression is preferred to reduce the number of rows returned.
+			</p><p>
+				The following example first declares a named window to hold the last zone event per zone name:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create window ZoneWindow.std:unique(name) as Zone</pre><p>
+				Then we create a statement to insert zone events that arrive to the named window:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">insert into ZoneWindow select * from Zone</pre><p>
+				Finally this statement queries the named window to retrieve all zones for each location report item where the location falls within the rectangle of the zone:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select ZoneWindow.where(z =&gt; inrect(z.rectangle, location)) as zones from Item</pre><p>
+				If you have a filter or correlation expression, append the expression to the named window name and place in parenthesis.
+			</p><p>
+				This slightly modified query is the example above except that it adds a filter expression such that only zones with name Z1, Z2 or Z3 are considered:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select ZoneWindow(name in ('Z1', 'Z2', 'Z3')).where(z =&gt; inrect(z.rectangle, location)) as zones 
+from Item</pre><p>
+				You may prefix property names provided by the named window with the name to disambiguate property names.
+			</p><p>
+				This sample query prefixed the <code class="literal">name</code> property and returns the count of matching zones:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select ZoneWindow(ZoneWindow.name in ('Z1', 'Z2', 'Z3')).countof()) as zoneCount
+from Item</pre><p>
+				The engine internally interprets the shortcut syntax and creates a subquery from it. Thus all indexing and query planning for subqueries against named windows apply here as well.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-ds-property"/>10.4.3. Event Property</h3></div></div></div><p>
+				Indexed event properties are event properties that are a collection, array or iterable of scalar values or objects. 
+			</p><p>
+				The <code class="literal">LocationReport</code> event from the example contains a list of <code class="literal">Item</code> events. Any indexed property (list, array, collection, iterable) is eligible for use as input  to an enumeration method. If the indexed property contains non-scalar objects the objects are treated as events and can be used as input to enumeration methods as a collection of events.
+			</p><p>
+			   The next sample query returns items that are less then 20 units away from the center, taking the <code class="literal">items</code> event property provided by each <code class="literal">LocationReport</code> event as input:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.where(p =&gt; distance(0, 0, p.location.x, p.location.y) &lt; 20) as centeritems
+from LocationReport</pre><p>
+			   The following example consists of two statements: The first statement declares an a new event type and the second statement invokes the <code class="literal">sequenceEqual</code> method to compare sequences contained in two properties of the same event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create schema MyEvent (seqone String[], seqtwo String[])</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select seqone.sequenceEqual(seqtwo) from MyEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-ds-accessagg"/>10.4.4. Event Aggregation Function</h3></div></div></div><p>
+				Event aggregation functions return an event or multiple events. They are aggregation functions and as such sensitive to the presence of <code class="literal">group by</code>. See <a class="xref" href="functionreference.html#epl-function-aggregation-event" title="9.2.2. Event Aggregation Functions">Section 9.2.2, “Event Aggregation Functions”</a>.
+			</p><p>
+				You can use <code class="literal">window</code>, <code class="literal">first</code> or <code class="literal">last</code> event aggregation functions as input to an enumeration method. Specify the <code class="literal">*</code> wildcard as the parameter to the event aggregation function to provide a collection of events as input. Or specify a property name as the parameter to event aggregation function to provide a collection of scalar values as input. 
+			</p><p>
+				You can use the <code class="literal">sorted</code>, <code class="literal">maxby</code>, <code class="literal">minby</code>, <code class="literal">maxbyever</code> or <code class="literal">minbyever</code> event aggregation functions as input to an enumeration method. Specify one or more criteria expressions that provide the sort order as parameters to the event aggregation function. 
+			</p><p>
+				In this example query the <code class="literal">window(*)</code> aggregation function returns the last 10 seconds of item location reports for the same asset id as the incoming event. Among that last 10 seconds of events for the same asset id, the 
+				enumeration method returns those item location reports where the distance to center is less then 20, for each arriving Item event.
+			</p><p>
+				Sample query:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select window(*).where(p =&gt; distance(0, 0, p.location.x, p.location.y) &lt; 20) as centeritems
+from Item(type='P').win:time(10) group by assetId</pre><p>
+				The next sample query instead selects the asset id property of all events and returns an ordered collection:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select window(assetId).orderBy() as orderedAssetIds
+from Item.win:time(10) group by assetId</pre><p>
+				The following example outputs the 5 highest prices per symbol among the last 10 seconds of stock ticks:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select sorted(price desc).take(5) as highest5PricesPerSymbol
+from StockTick.win:time(10) group by symbol</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-ds-prev"/>10.4.5. <code class="literal">prev</code>, <code class="literal">prevwindow</code> and <code class="literal">prevtail</code> Single-Row Functions as Input</h3></div></div></div><p>
+				The <code class="literal">prev</code>, <code class="literal">prevwindow</code> and <code class="literal">prevtail</code> single-row functions allow access into a stream's data window however are not aggregation functions and and as such not sensitive to the presence of <code class="literal">group by</code>. See <a class="xref" href="functionreference.html#epl-single-row-function-ref-previouswindow" title="9.1.11. The Previous-Window Function">Section 9.1.11, “The Previous-Window Function”</a>.
+			</p><p>
+				When using any of the <code class="literal">prev</code> single-row functions as input to a built-in enumeration method you can specify the stream name as a parameter to the function or an event property. The input to the enumeration method is a collection of events if you specify the stream name, or a collection of scalar value if you specify an event property.
+			</p><p>
+				In this example query the <code class="literal">prevwindow(stream)</code> single-row function returns the last 10 seconds of item location reports, among which the 
+				enumeration method filters those item location reports where the distance to center is less then 20, for each Item event that arrived in the last 10 seconds considering passenger-type Item events only (see filter type = 'P').
+			</p><p>
+				Sample query:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prevwindow(items)
+    .where(p =&gt; distance(0, 0, p.location.x, p.location.y) &lt; 20) as centeritems
+from Item(type='P').win:time(10) as items</pre><p>
+				This sample query demonstrates the use of the <code class="literal">prevwindow</code> function to return a collection of scalar values (collection of asset id) as input to <code class="literal">orderby</code>:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prevwindow(assetId).orderBy() as orderedAssetIds
+from Item.win:time(10) as items</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-ds-udf"/>10.4.6. Single-Row Function, User-Defined Function and Enum Types</h3></div></div></div><p>
+				Your single-row or user-defined function can return either an array or any collection that implements either the <code class="literal">Collection</code> or <code class="literal">Iterable</code> interface. For arrays, the array component type and for collections, the collection or iterable generic type should be the class providing event properties.
+			</p><p>
+				As an example, assume a <code class="literal">ZoneFactory</code> class exists and a static method <code class="literal">getZones()</code> returns a list of zones to filter items, for example:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class ZoneFactory {
+  public static Iterable&lt;Zone&gt; getZones() {
+    List&lt;Zone&gt; zones = new ArrayList&lt;Zone&gt;();
+    zones.add(new Zone("Z1", new Rectangle(0, 0, 20, 20)));
+    return zones;
+  }
+}</pre><p>
+				Import the class through runtime or static configuration, or add the method above as a plug-in single-row function.
+			</p><p>
+				The following query returns for each Item event all zones that the item belongs to:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select ZoneFactory.getZones().where(z =&gt; inrect(z.rectangle, item.location)) as zones
+from Item as item</pre><p>
+				If the class and method were registered as a plug-in single-row function, you can leave the class name off, for example:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select getZones().where(z =&gt; inrect(z.rectangle, item.location)) as zones
+from Item as item</pre><p>
+				Your single-row or user-defined function can also return an array, collection or iterable or scalar values.
+			</p><p>
+				For example, the static method <code class="literal">getZoneNames()</code> returns a list of zone names:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public static String[] getZoneNames() { 
+  return new String[] { "Z1", "Z2"};
+}</pre><p>
+				The following query returns zone names every 30 seconds and excludes zone Z1:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select getZoneNames().where(z =&gt; z != "Z1")
+from pattern[every timer:interval(30)]</pre><p>
+				An enum type can also be a useful source for enumerable values.
+			</p><p>
+				The following sample Java declares an enum type <code class="literal">EnumOfZones</code>:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public enum EnumOfZones {
+  ZONES_OUTSIDE(new String[] {"z1", "z2"}),
+  ZONES_INSIDE(new String[] {"z3", "z4"})
+
+  private final String[] zones;
+
+  private EnumOfZones(String[] zones) {
+	  this.zones = zones;
+  }
+
+  public String[] getZones() {
+    return zones;
+  }
+}</pre><p>
+				A sample statement that utilizes the enum type is shown next:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select EnumOfZones.ZONES_OUTSIDE.getZones().anyOf(v =&gt; v = zone) from Item</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-ds-lambda"/>10.4.7. Declared Expression</h3></div></div></div><p>
+				A declared expression may return input data for an enumeration method.
+			</p><p>
+				The below query declares an expression that returns all passenger location reports among the items in the location report event in a column named <code class="literal">passengerCollection</code>. The query uses the result returned by the declared expression
+				a second time to filter through the list returning the passenger location report where the asset id is a given value in a column named <code class="literal">passengerP01</code>.
+			</p><p>
+				Sample query:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">expression passengers {
+  lr =&gt; lr.items.where(l =&gt; l.type='P')
+}
+select passengers(lr) as passengerCollection,
+  passengers(lr).where(x =&gt; assetId = 'P01') as passengerP01
+from LocationReport lr</pre><p>
+				The engine applies caching techniques to avoid re-evaluating the declared expression multiple times.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-ds-variable"/>10.4.8. Variables</h3></div></div></div><p>
+				A variable may provide input data for an enumeration method.
+			</p><p>
+				This constant of array type carries a list of invalid zones:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create constant variable string[] invalid_zones = { 'Z1', 'Z2' };</pre><p>
+				Sample query:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select invalid_zones.anyOf(v =&gt; v = name) as flagged from Zone</pre></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="enumeration-example"/>10.5. Example</h2></div></div></div><p>
+			Following the RFID asset tracking example as introduced earlier, this section introduces two use cases solved by enumeration methods.
+		</p><p>
+			The first use case requires us to find any luggage that is more then 20 units away from the passenger that the luggage belongs to.
+			The declared expression <code class="literal">lostLuggage</code> solves this question.
+		</p><p>
+			The second question to answer is: For each of such lost luggage what single other passenger is nearest to that luggage.
+			The declared expression <code class="literal">nearestOwner</code> which uses <code class="literal">lostLuggage</code> answers this question.
+		</p><p>
+			Below is the complete EPL statement (one statement not multiple):
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// expression to return a collection of lost luggage
+expression lostLuggage {
+  lr =&gt; lr.items.where(l =&gt; l.type='L' and
+    lr.items.some(p =&gt; p.type='P' and p.assetId=l.assetIdPassenger 
+      and LRUtil.distance(l.location.x, l.location.y, p.location.x, p.location.y) &gt; 20))
+}
+
+// expression to return all passengers
+expression passengers {
+  lr =&gt; lr.items.where(l =&gt; l.type='P')
+}
+
+// expression to find the nearest owner
+expression nearestOwner {
+  lr =&gt; lostLuggage(lr).toMap(key =&gt; key.assetId,
+    value =&gt; passengers(lr).minBy(
+        p =&gt; LRUtil.distance(value.location.x, value.location.y, p.location.x, p.location.y))
+    )
+}
+
+select lostLuggage(lr) as val1, nearestOwner(lr) as val2 from LocationReport lr</pre></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="enumeration-method"/>10.6. Reference</h2></div></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-aggregate"/>10.6.1. Aggregate</h3></div></div></div><p>
+				The <code class="literal">aggregate</code> enumeration method takes an expression providing the initialization value (seed) and an accumulator lambda expression. The return value is the final accumulator value. 
+			</p><p>
+				Via the <code class="literal">aggregate</code> method you may perform a calculation over elements. The method initializes the aggregated value by evaluating the expression provided in the first parameter. The method then calls the lambda expression of the second parameter once for each element in the input. The lambda expression receives the last aggregated value and the element from the input. The result of the expression replaces the previous aggregated value and returns the final result after completing all elements.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.aggregate(0, (result, value) =&gt; result + value)  // Returns 6</pre><p>
+				The example below aggregates price of each OrderEvent in the last 10 seconds computing a total price:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Initialization value is zero.
+// Aggregate by adding up the price.
+select window(*).aggregate(0, (result, order) =&gt; result + order.price) as totalPrice
+from OrderEvent.win:time(10)</pre><p>
+				In the query above, the initialization value is zero, <code class="literal">result</code> is used for the last aggregated value and <code class="literal">order</code> denotes the element that the expression adds the value of the price property.
+			</p><p>
+				This example aggregation builds a comma-separated list of all asset ids of all items:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.aggregate('', 
+  (result, item) =&gt; result || (case when result='' then '' else ',' end) || item.assetId) as assets			
+from LocationReport</pre><p>
+				In above query, the empty string <code class="literal">''</code> represents the initialization value. The name <code class="literal">result</code> is used for the last aggregated value and the name <code class="literal">item</code> is used to denote the element.
+			</p><p>
+				The type value returned by the initialization expression must match to the type of value returned by the accumulator lambda expression. 
+			</p><p>
+				If the input is null the method returns null. If the input is empty the method returns the initialization value.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-allof"/>10.6.2. AllOf</h3></div></div></div><p>
+				The <code class="literal">allof</code> enumeration method determines whether all elements satisfy the predicate condition.
+			</p><p>
+				The method takes a single parameter: The predicate lambda expression that must yield a Boolean result. The enumeration method applies the lambda expression to each element and if the expression returns true for all elements, the method returns true.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.allOf(v =&gt; v &gt; 0)    // Returns true as all values are &gt; 0
+{1, 2, 3}.allOf(v =&gt; v &gt; 1)    // Returns false</pre><p>
+				The EPL statement below returns true when all items are within 1000 unit distance of center:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.allof(i =&gt; distance(i.location.x, i.location.y, 0, 0) &lt; 1000) as centered			
+from LocationReport</pre><p>
+				If the input is null the method returns null. If the input is empty the method returns true.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-anyof"/>10.6.3. AnyOf</h3></div></div></div><p>
+				The <code class="literal">anyof</code> enumeration method determines whether any element satisfies the predicate condition.
+			</p><p>
+				The only parameter is the predicate lambda expression that must yield a Boolean result. The enumeration method applies the lambda expression to each element and if the expression returns true for all elements, the method returns true.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.anyOf(v =&gt; v &gt; 0)    // Returns true
+{1, 2, 3}.anyOf(v =&gt; v &gt; 1)    // Returns true
+{1, 2, 3}.anyOf(v =&gt; v &gt; 3)    // Returns false</pre><p>
+				The EPL statement below return true when any of the items are within 10 unit distance of center:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.anyof(i =&gt; distance(i.location.x, i.location.y, 0, 0) &lt; 10) as centered			
+from LocationReport</pre><p>
+				If the input is null the method returns null. If the input is empty the method returns false.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-average"/>10.6.4. Average</h3></div></div></div><p>
+				The <code class="literal">average</code> enumeration method computes the average of scalar values. If passing a projection lambda expression the method computes the average obtained by invoking the projection lambda expression on each element.
+			</p><p>
+				The method takes a projection lambda expression yielding a numeric value as a parameter. It applies the lambda expression to each element and computes the average of the result, returning a Double value. A BigDecimal is returned for expressions returning BigInteger or BigDecimal.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.average()    // Returns 2</pre><p>
+				The EPL statement as shown next computes the average distance from center among all items in the location report event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.average(i =&gt; distance(i.location.x, i.location.y, 0, 0)) as avgdistance
+from LocationReport</pre><p>
+				If the input is null the method returns null. If the input is empty the method returns double zero or BigDecimal zero. For BigDecimal precision and rounding, please see <a class="xref" href="configuration.html#config-engine-expression-mathcontext" title="15.4.21.6. Math Context">Section 15.4.21.6, “Math Context”</a>.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-countof"/>10.6.5. CountOf</h3></div></div></div><p>
+				The <code class="literal">countof</code> enumeration method returns the number of elements, or the number of elements that satisfy a condition.
+			</p><p>
+				The enumeration method has two versions: The first version takes no parameters and computes the number of elements. The second version takes a predicate lambda expression that must yield Boolean true or false, and computes the number of elements that satisfy the condition.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.countOf()    // Returns 3
+{1, 2, 3}.countOf(v =&gt; v &lt; 2)    // Returns 1</pre><p>
+				The next sample statement counts the number of items:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.countOf() as cnt from LocationReport</pre><p>
+				This example statement counts the number of items that have a distance to center that is less then 20 units:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.countOf(i =&gt; distance(i.location.x, i.location.y, 0, 0) &lt; 20) as cntcenter
+from LocationReport</pre><p>
+				If the input is null the method returns null. If the input is empty the method returns integer zero.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-except"/>10.6.6. Except</h3></div></div></div><p>
+				The <code class="literal">except</code> enumeration method forms a set difference of the input elements with the elements that the parameter expression yields.
+			</p><p>
+				The enumeration method takes a single parameter that must itself return a collection of events, objects or scalar values. The method returns the elements of the first collection that do not appear in the second collection.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.except({1})   // Returns {2, 3}</pre><p>
+				The following statement compares the items of the last location report against all items in the previous 10 location reports, and reports for each combination only those items in the current item report that are not also in the location report compared to:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select za.items.except(zb.items) as itemsCompared 
+from LocationReport as za unidirectional, LocationReport.win:length(10) as zb</pre><p>
+				If the input is null the method returns null. For scalar values and objects equals-semantics apply.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-firstof"/>10.6.7. FirstOf</h3></div></div></div><p>
+				The <code class="literal">firstOf</code> enumeration method returns the first element or the first element that satisfies a condition.
+			</p><p>
+				The method has two versions: The first version takes no parameters and returns the first element. The second version takes a predicate lambda expression yielding true or false. It applies the lambda expression to each element and returns the first element for which the expression returns true. The return type is the element itself and not a collection. You may append a property name to return the property value for the first element.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.firstOf()   // Returns 1
+{1, 2, 3}.firstOf(v =&gt; v / 2 &gt; 1)   // Returns 3</pre><p>
+				In the following EPL sample the query returns the first item that has a distance to center that is less then 20 units:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.firstof(i =&gt; distance(i.location.x, i.location.y, 0, 0) &lt; 20) as firstcenter
+from LocationReport</pre><p>
+				The next sample EPL returns the first item's asset id:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.firstof().assetId as firstAssetId from LocationReport</pre><p>
+				If the input is null, empty or if none of the elements match the condition the method returns null.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-groupby"/>10.6.8. GroupBy</h3></div></div></div><p>
+				The <code class="literal">groupby</code> enumeration method groups the elements according to a specified key-selector lambda expression. There are two version of the <code class="literal">groupby</code> method.
+			</p><p>
+				The first version of the method takes a key-selector lambda expression and returns a Map of key with each value a list of objects, one for each distinct key that was encountered. The result is a <code class="literal">Map&lt;Object, Collection&lt;Object&gt;&gt;</code> wherein object is the event underlying object.
+			</p><p>
+				The second version of the method takes a key-selector lambda expression and value-selector lambda expression and returns a Map of key with each value a list of values, one for each distinct key that was encountered. The result is a <code class="literal">Map&lt;Object, Collection&lt;Object&gt;&gt;</code> wherein object is the result of applying the value-selector expression.
+			</p><p>
+				The next query filters out all luggage items using a <code class="literal">where</code> method and then groups by the luggage's passenger asset id. It returns a map of
+				passenger asset id and the collection of luggage items for each passenger:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.where(type='L').groupby(i =&gt; assetIdPassenger) as luggagePerPerson
+from LocationReport</pre><p>
+				The query shown below generates a map of item asset id and distance to center:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.groupby(
+    k =&gt; assetId, v =&gt; distance(v.location.x, v.location.y, 0, 0)) as distancePerItem
+from LocationReport</pre><p>
+				If the input is null the method returns null. Null values as key and value are allowed.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-intersect"/>10.6.9. Intersect</h3></div></div></div><p>
+				The <code class="literal">intersect</code> enumeration method forms a set intersection of the input elements with the elements that the parameter expression yields.
+			</p><p>
+				The enumeration method takes a single parameter that must itself return a collection of events, objects or scalar values. The method returns the elements of the first collection that also appear in the second collection.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.intersect({2, 3})   // Returns {2, 3}</pre><p>
+				The following statement compares the items of the last location report against all items in the previous 10 location reports, and reports for each combination all items in the current item report that also occur in the other location report:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select za.items.intersect(zb.items) as itemsCompared 
+from LocationReport as za unidirectional, LocationReport.win:length(10) as zb</pre><p>
+				If the input is null the method returns null. For scalar values and objects equals-semantics apply.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-lastof"/>10.6.10. LastOf</h3></div></div></div><p>
+				The <code class="literal">lastOf</code> enumeration method returns the last element or the last element that satisfies a condition.
+			</p><p>
+				The method has two versions: The first version takes no parameters and returns the last element. The second version takes a predicate lambda expression yielding true or false. It applies the lambda expression to each element and returns the last element for which the expression returns true. The return type is the element itself and not a collection. You may append a property name to return the property value for the last element.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.lastOf()   // Returns 3
+{1, 2, 3}.lastOf(v =&gt; v &lt; 3)   // Returns 2</pre><p>
+				In the following EPL sample the query returns the last item that has a distance to center that is less then 20 units:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.lastof(i =&gt; distance(i.location.x, i.location.y, 0, 0) &lt; 20) as lastcenter 
+from LocationReport</pre><p>
+				The next sample EPL returns the last item's asset id:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.lastof().assetId as lastAssetId from LocationReport</pre><p>
+				If the input is null, empty or if none of the elements match the condition the method returns null.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-leastfrequent"/>10.6.11. LeastFrequent</h3></div></div></div><p>
+				The <code class="literal">leastFrequent</code> enumeration method returns the least frequent value among a collection of values, or the least frequent value after applying a transform expression to each element.
+			</p><p>
+				The method has two versions: The first version takes no parameters and returns the least frequent value. The second version takes a transform lambda expression yielding the value to count occurrences for. The method applies the lambda expression to each element and returns the expression result value with the least number of occurrences. The return type is the type of value in the collection or the type of value returned by the transform lambda expression if one was provided.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3, 2, 1}.leastFrequent()   // Returns 3</pre><p>
+				The example EPL below returns the least frequent item type, counting the distinct item types among all items for the current LocationReport event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.leastFrequent(i =&gt; type) as leastFreqType from LocationReport</pre><p>
+				If the input is null or empty the method returns null. The transform expression may also yield null. A null value can be returned as the most frequent value if the most frequent value is null. If multiple values have the same number of occurrences the method returns the first value with the least number of occurrences considering the ordering of the collection.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-max"/>10.6.12. Max</h3></div></div></div><p>
+				The <code class="literal">max</code> enumeration method returns the maximum value among a collection of values.
+			</p><p>
+				If no value-selector lambda expression is provided, the method finds the maximum.
+			</p><p>
+				If a value-selector lambda expression is provided, the enumeration method invokes a value-selector lambda expression on each element and returns the maximum value. The type of value returned follows the return type of the lambda expression that was provided as parameter.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3, 2, 1}.max()   // Returns 3</pre><p>
+				The next query returns the maximum distance of any item from center:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.max(i =&gt; distance(i.location.x, i.location.y, 0, 0)) as maxcenter 
+from LocationReport</pre><p>
+				The value-selector lambda expression must return a comparable type: Any primitive or boxed type or <code class="literal">Comparable</code> type is permitted.
+			</p><p>
+				If the input is null, empty or if none of the elements when transformed return a non-null value the method returns null.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-maxby"/>10.6.13. MaxBy</h3></div></div></div><p>
+				The <code class="literal">maxBy</code> enumeration method returns the element that provides the maximum value returned by the value-selector lambda expression when applied to each element.
+			</p><p>
+				The enumeration method returns the element itself. You may append an event property name to return a property value of the element.
+			</p><p>
+				The next query returns the first item with the maximum distance to center:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.maxBy(i =&gt; distance(i.location.x, i.location.y, 0, 0)) as maxItemCenter 
+from LocationReport</pre><p>
+				The next sample returns the type of the item with the largest asset id (string comparison) among all items:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.maxBy(i =&gt; assetId).type as minAssetId from LocationReport</pre><p>
+				The transform expression must return a comparable type: Any primitive or boxed type or <code class="literal">Comparable</code> type is permitted.
+			</p><p>
+				If the input is null, empty or if none of the elements when transformed return a non-null value the method returns null.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-min"/>10.6.14. Min</h3></div></div></div><p>
+				The <code class="literal">min</code> enumeration method returns the minimum value among a collection of values.
+			</p><p>
+				If no value-selector lambda expression is provided, the method finds the minimum.
+			</p><p>
+				If a value-selector lambda expression is provided, the enumeration method invokes a value-selector lambda expression on each element and returns the minimum value. The type of value returned follows the return type of the lambda expression that was provided as parameter.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3, 2, 1}.min()   // Returns 1</pre><p>
+				The next query returns the minimum distance of any item to center:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.min(i =&gt; distance(i.location.x, i.location.y, 0, 0)) as mincenter 
+from LocationReport</pre><p>
+				The transform expression must return a comparable type: Any primitive or boxed type or <code class="literal">Comparable</code> type is permitted.
+			</p><p>
+				If the input is null, empty or if none of the elements when transformed return a non-null value the method returns null.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-minby"/>10.6.15. MinBy</h3></div></div></div><p>
+				The <code class="literal">minBy</code> enumeration method returns the element that provides the minimum value returned by the value-selector lambda expression when applied to each element.				
+			</p><p>
+				The enumeration method returns the element itself. You may append an event property name to return a property value of the element.
+			</p><p>
+				The next query returns the first item with the minimum distance to center:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.minBy(i =&gt; distance(i.location.x, i.location.y, 0, 0)) as minItemCenter 
+from LocationReport</pre><p>
+				The next sample returns the type of the item with the smallest asset id (string comparison) among all items:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.minBy(i =&gt; assetId).type as minAssetId from LocationReport</pre><p>
+				The transform expression must return a comparable type: Any primitive or boxed or <code class="literal">Comparable</code> type is permitted.
+			</p><p>
+				If the input is null, empty or if none of the elements when transformed return a non-null value the method returns null.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-mostfrequent"/>10.6.16. MostFrequent</h3></div></div></div><p>
+				The <code class="literal">mostFrequent</code> enumeration method returns the most frequent value among a collection of values, or the most frequent value after applying a transform expression to each element.
+			</p><p>
+				The method has two versions: The first version takes no parameters and returns the most frequent value. The second version takes a transform lambda expression yielding the value to count occurrences for. The method applies the lambda expression to each element and returns the expression result value with the most number of occurrences. The return type is the type of value in the collection or the type of value returned by the transform lambda expression if one was provided.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3, 2, 1, 2}.mostFrequent()   // Returns 2</pre><p>
+				The example EPL below returns the least frequent item type, counting the distinct item types among all items for the current LocationReport event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.leastFrequent(i =&gt; type) as leastFreqType from LocationReport</pre><p>
+				If the input is null or empty the method returns null. The transform expression may also yield null. A null value can be returned as the most frequent value if the most frequent value is null. If multiple values have the same number of occurrences the method returns the first value with the most number of occurrences considering the ordering of the collection.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-orderby"/>10.6.17. OrderBy and OrderByDesc</h3></div></div></div><p>
+				The <code class="literal">orderBy</code> enumeration method sorts elements in ascending order according to a key. The <code class="literal">orderByDesc</code> enumeration method sorts elements in descending order according to a key.
+			</p><p>
+				The enumeration method takes a single key-selector lambda expression as parameter and orders elements according to the key yielded by the expression. For same-value keys, it maintains the existing order.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{2, 3, 2, 1}.orderBy()   // Returns {1, 2, 2, 3}</pre><p>
+				This example orders all items from a location report according to their distance from center:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.orderBy(i =&gt; distance(i.location.x, i.location.y, 0, 0)) as itemsNearFirst,
+  items.orderByDesc(i =&gt; distance(i.location.x, i.location.y, 0, 0)) as itemsFarFirst
+from LocationReport</pre><p>
+				The key-selector lambda expression must return a comparable type: Any primitive or boxed or <code class="literal">Comparable</code> type is permitted.
+			</p><p>
+				If the input is null the method returns null. If the input is empty the method returns an empty collection.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-reverse"/>10.6.18. Reverse</h3></div></div></div><p>
+				The <code class="literal">reverse</code> enumeration method simply reverses the order of elements returning a collection.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{2, 3, 2, 1}.reverse()   // Returns {1, 2, 3, 2}</pre><p>
+				The following EPL reverses the items:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.reverse() as reversedItems from LocationReport</pre><p>
+				If the input is null the method returns null. If the input is empty the method returns an empty collection.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-selectfrom"/>10.6.19. SelectFrom</h3></div></div></div><p>
+				The <code class="literal">selectFrom</code> enumeration method transforms each element resulting in a collection of transformed elements.
+			</p><p>
+				The enumeration method applies a transformation lambda expression to each element and returns the result of each transformation as a collection. Use the <code class="literal">new</code> operator to yield multiple values for each element, see <a class="xref" href="epl-operator.html#epl-operator-new" title="8.13. The 'new' Keyword">Section 8.13, “The 'new' Keyword”</a>.
+			</p><p>
+				The next EPL query returns a collection of asset ids:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.selectFrom(i =&gt; assetId) as itemAssetIds from LocationReport</pre><p>
+				This sample EPL query evaluates each item and returns the asset id as well as the distance from center for each item:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.selectFrom(i =&gt; 
+  new {
+    assetId, 
+    distanceCenter = distance(i.location.x, i.location.y, 0, 0)
+  } ) as itemInfo from LocationReport</pre><p>
+				If the input is null the method returns null. If the input is empty the method returns an empty collection.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-sequenceequal"/>10.6.20. SequenceEqual</h3></div></div></div><p>
+				The <code class="literal">sequenceEqual</code> enumeration method determines whether two collections are equal by comparing each element.
+			</p><p>
+				The method enumerates the two source collections in parallel and compares corresponding elements by using the <code class="literal">equals</code> method to compare. The method takes a single parameter expression that must return a collection containing elements of the same type as the input. The method returns true if the two source sequences are of equal length and their corresponding elements are equal.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.sequenceEqual({1})   // Returns false
+{1, 2, 3}.sequenceEqual({1, 2, 3})   // Returns true</pre><p>
+				The following example compares the asset id of all items to the asset ids returned by a method <code class="literal">ItemUtil.redListed()</code> which is assumed to return a list of asset id of string type:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.selectFrom(i =&gt; assetId).sequenceEquals(ItemUtil.redListed()) from LocationReport</pre><p>
+				If the input is null the method returns null.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-sumof"/>10.6.21. SumOf</h3></div></div></div><p>
+				The <code class="literal">sumOf</code> enumeration method computes the sum. If a projection lambda expression is provided, the method invokes the projection lambda expression on each element and computes the sum on each returned value.
+			</p><p>
+				The projection lambda expression should yield a numeric value, BigDecimal or BigInteger value. Depending on the type returned by the projection lambda expression the method returns either Integer, Long, Double, BigDecimal or BigInteger.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.sumOf()   // Returns 6</pre><p>
+				The following example computes the sum of the distance of each item to center:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.sum(i =&gt; distance(i.location.x, i.location.y, 0, 0) as totalAllDistances
+from LocationReport</pre><p>
+				If the input is null or empty the method returns null.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-take"/>10.6.22. Take</h3></div></div></div><p>
+				The <code class="literal">take</code> enumeration method returns a specified number of contiguous elements from the start.
+			</p><p>
+				The enumeration method takes a single size (non-lambda) expression that returns an Integer value.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.take(2)   // Returns {1, 2}</pre><p>
+				The following example returns the first 5 items:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.take(5) as first5Items from LocationReport</pre><p>
+				If the input is null the method returns null. If the input is empty the method returns an empty collection.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-takelast"/>10.6.23. TakeLast</h3></div></div></div><p>
+				The <code class="literal">takeLast</code> enumeration method returns a specified number of contiguous elements from the end.
+			</p><p>
+				The enumeration method takes a single size (non-lambda) expression that returns an Integer value.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.takeLast(2)   // Returns {2, 3}</pre><p>
+				The following example returns the last 5 items:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.takeLast(5) as last5Items from LocationReport</pre><p>
+				If the input is null the method returns null. If the input is empty the method returns an empty collection.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-takewhile"/>10.6.24. TakeWhile</h3></div></div></div><p>
+				The <code class="literal">takeWhile</code> enumeration method returns elements from the start as long as a specified condition is true.
+			</p><p>
+				The enumeration method has two versions. The first version takes a predicate lambda expression and the second version takes a predicate lambda expression and index for use within the predicate expression. Both versions return elements from the start as long as the specified condition is true.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.takeWhile(v =&gt; v &lt; 3)   // Returns {1, 2}
+{1, 2, 3}.takeWhile((v,ind) =&gt; ind &gt; 2)   // Returns {1, 2}
+{1, 2, -1, 4, 5, 6}.takeWhile((v,ind) =&gt; ind &lt; 5 and v &gt; 0)  // Returns {1, 2} (Take while index&lt;5 amd value&gt;0)</pre><p>
+				This example selects all items from a location report in the order provided until the first item that has a distance to center greater then 20 units:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.takeWhile(i =&gt; distance(i.location.x, i.location.y, 0, 0) &lt; 20)
+from LocationReport</pre><p>
+				The second version of the <code class="literal">where</code> represents the index of the input element starting at zero for the first element.
+			</p><p>
+				The next example is similar to the query above but also limits the result to the first 10 items:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.takeWhile((i, ind) =&gt; distance(i.location.x, i.location.y, 0, 0) &lt; 20) and ind &lt; 10)
+from LocationReport</pre><p>
+				If the input is null the method returns null. If the input is empty the method returns an empty collection.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-takewhilelast"/>10.6.25. TakeWhileLast</h3></div></div></div><p>
+				The <code class="literal">takeWhileLast</code> enumeration method returns elements from the end as long as a specified condition is true.
+			</p><p>
+				The enumeration method has two versions. The first version takes a predicate lambda expression and the second version takes a predicate lambda expression and index for use within the predicate expression. Both versions return elements from the end as long as the specified condition is true.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.takeWhileLast(v =&gt; v &lt; 3)   // Returns {} (empty collection)
+{1, 2, 3}.takeWhileLast(v =&gt; v &gt; 1)   // Returns {2, 3}
+{1, 2, 3}.takeWhileLast((v,ind) =&gt; ind &gt; 2)   // Returns {2, 3}
+{1, 2, -1, 4, 5, 6}.takeWhileLast((v,ind) =&gt; ind &lt; 5 and v &gt; 0)  // Returns {4, 5, 6} (Take while index&lt;5 amd value&gt;0)</pre><p>
+				This example selects all items from a location report, starting from the last element and proceeding backwards, until the first item that has a distance to center greater then 20 units:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.takeWhile(i =&gt; distance(i.location.x, i.location.y, 0, 0) &lt; 20)
+from LocationReport</pre><p>
+				The second version provides the index of the input element starting at zero for the last element (reverse index).
+			</p><p>
+				The next example is similar to the query above but also limits the result to the last 10 items:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.takeWhile((i, ind) =&gt; distance(i.location.x, i.location.y, 0, 0) &lt; 20) and ind &lt; 10)
+from LocationReport</pre><p>
+				If the input is null the method returns null. If the input is empty the method returns an empty collection.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-tomap"/>10.6.26. ToMap</h3></div></div></div><p>
+				The <code class="literal">toMap</code> enumeration method returns a Map according to specified key-selector lambda expression and value-selector lambda expression.
+			</p><p>
+				The enumeration method takes a key-selector expression and a value-selector expression. For each element the method applies the key-selector expression to determine the map key and the value-selector expression to determine the map value. If the key already exists in the map the value is overwritten.
+			</p><p>
+				The next example EPL outputs a map of item asset id and distance to center for each item:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.toMap(k =&gt; k.assetId, v =&gt; distance(v.location.x, v.location.y, 0, 0)) as assetDistance
+from LocationReport</pre><p>
+				If the input is null the method returns null. If the input is empty the method returns an empty map.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-union"/>10.6.27. Union</h3></div></div></div><p>
+				The <code class="literal">union</code> enumeration method forms a union of the input elements with the elements that the parameter expression yields.
+			</p><p>
+				The enumeration method takes a single parameter that must itself return a collection of events (input), objects or scalar values. It appends the collection to the input elements and returns the appended collection of elements.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.union({4, 5})   // Returns {1, 2, 3, 4, 5}</pre><p>
+				This example selects a union of all items that have an asset id of L001 or that are of type passenger:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.where(i =&gt; i.assetId = 'L001')
+    .union(items.where(i =&gt; i.type = 'P')) as itemsUnion
+from LocationReport</pre><p>
+				If the input is null the method returns null.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="enumeration-method-where"/>10.6.28. Where</h3></div></div></div><p>
+				The <code class="literal">where</code> enumeration method filters elements based on a predicate.
+			</p><p>
+				The enumeration method has two versions. The first version takes a predicate lambda expression and the second version takes a predicate lambda expression and index for use within the predicate expression. Both version returns all elements for which the predicate expression is true.
+			</p><p>
+				An expression example with scalar values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">{1, 2, 3}.where(v =&gt; v != 2)   // Returns {1, 3}</pre><p>
+				This example selects all items from a location report that are passenger-type:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.where(p =&gt; p.type = 'P') from LocationReport</pre><p>
+				The second version of the <code class="literal">where</code> represents the index of the input element starting at zero for the first element.
+			</p><p>
+				The example below selects all items from a location report that are passenger-type but ignores the first 3 elements:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select items.where((p, ind) =&gt; p.type = 'P' and ind &gt; 2) from LocationReport</pre><p>
+				If the input is null the method returns null. If the input is empty the method returns an empty collection.
+			</p></div></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="functionreference.html"><strong>Prev</strong>Chapter 9. EPL Reference: Functions</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="datetimereference.html"><strong>Next</strong>Chapter 11. EPL Reference: Date-Time Methods</a></li></ul></body></html>

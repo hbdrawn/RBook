@@ -1,0 +1,1654 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Appendix A. Output Reference and Samples</title><link rel="stylesheet" href="css/espertech.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Esper Reference"/><link rel="up" href="index.html" title="Esper Reference"/><link rel="prev" href="references.html" title="Chapter 21. References"/><link rel="next" href="appendix_keywords.html" title="Appendix B. Reserved Keywords"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.espertech.com" class="site_href"><strong>esper.codehaus.org and espertech.com</strong></a><a href="http://esper.codehaus.org/esper/documentation/documentation.html" class="doc_href"><strong>Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="references.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="appendix_keywords.html"><strong>Next</strong></a></li></ul><div class="appendix" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="appendix_outputspec"/>Appendix A. Output Reference and Samples</h2></div></div></div><p>
+		This section specifies the output of a subset of EPL continuous queries, for two purposes: First, to help application developers understand streaming engine output in response to incoming events and in response to time passing. Second, to document and standardize output for EPL queries in a testable and trackable fashion. 
+    </p><p>
+		The section focuses on a subset of features, namely the time window, aggregation, grouping, and output rate limiting. The section does not currently provide examples for many of the other language features, thus there is no example for other data windows (the time window is used here), joins, sub-selects or named windows etc.
+    </p><p>
+		Rather then just describe syntax and output, this section provides detailed examples for each of the types of queries presented. The input for each type of query is always the same set of events, and the same timing. Each event has three properties: symbol, volume and price. The property types are string, long and double, respectively.
+    </p><p>
+		The chapters are organized by the type of query: The presence or absence of aggregation functions, as well as the presence or absence of a <code class="literal">group by</code> clause change statement output as 
+		described in <a class="xref" href="processingmodel.html#processingmodel_aggregation_output" title="3.7.2. Output for Aggregation and Group-By">Section 3.7.2, “Output for Aggregation and Group-By”</a>.
+	</p><p>
+		You will notice that some queries utilize the <code class="literal">order by</code> clause for sorting output. The reason is that when multiple output rows are produced at once, the output can be easier to read if it is sorted.
+	</p><p>
+	    With output rate limiting, the engine invokes your listener even if there are no results to indicate when the output condition has been reached. Such is indicated as <code class="literal">(empty result)</code> in the output result columns.
+	</p><p>
+	    The output columns show both insert and remove stream events. Insert stream events are delivered as an array of <code class="literal">EventBean</code> instances to listeners in the <code class="literal">newData</code> parameter, while remove stream events are delivered to the <code class="literal">oldData</code> parameter of listeners. Delivery to observers follows similar rules.
+	</p><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="outputspec-intro"/>A.1. Introduction and Sample Data</h2></div></div></div><p>
+			For the purpose of illustration and documentation, the example data set demonstrates input and remove streams based on a time window of a 5.5 second interval. The statement utilizing the time window 
+			could look as follows:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select symbol, volume, price from MarketData.win:time(5.5 sec)</pre><p>
+			We have picked a time window to demonstrate the output for events entering and leaving a data window with an expiration policy. The time window provides a simple expiration policy based on time: if an event resides in the time window more then 5.5 seconds, the engine expires the event from the time window.
+		</p><p>
+			The input events and their timing are below. The table should be read, starting from top, as "The time starts at 0.2 seconds. Event E1 arrives at 0.2 seconds with properties [S1, 100, 25]. At 0.8 second event E2 arrives with properties [S2, 5000, 9.0]" and so on.
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">
+                       Input                                 
+-----------------------------------------------  
+ Time Symbol  Volume   Price
+  0.2                          
+          S1     100    25.0   Event E1 arrives
+  0.8                          
+          S2    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+  1.5                          
+          S1     150    24.0   Event E3 arrives
+          S3   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+          S1     155    26.0   Event E5 arrives
+  2.2                          
+  2.5                          
+  3.0                          
+  3.2                          
+  3.5                          
+          S3   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+  4.3                          
+          S1     150    22.0   Event E7 arrives
+  4.9                          
+          S3   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+  5.7                          Event E1 leaves the time window
+  5.9                          
+          S3   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          </pre><p>
+			  The event data set assumes a time window of 5.5 seconds. Thus at time 5.7 seconds the first arriving event (E1) leaves the time window.
+		  </p><p>
+			The data set as above shows times between 0.2 seconds and 7.2 seconds. Only a couple of time points have been picked for the table to keep the set of time points constant between statements, and thus make the test data and output easier to understand. 
+			</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="outputspec-simple"/>A.2. Output for Un-aggregated and Un-grouped Queries</h2></div></div></div><p>
+			This chapter provides sample output for queries that do not have aggregation functions and do not have a <code class="literal">group by</code> clause.
+        </p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-simple-none"/>A.2.1. No Output Rate Limiting</h3></div></div></div><p>
+				Without an <code class="literal">output</code> clause, the engine dispatches to listeners as soon as events arrive, or as soon as time passes such that events leave data windows.
+			</p><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, volume, price from MarketData.win:time(5.5 sec)</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+                                                 [IBM, 100, 25.0]                       
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+                                                 [MSFT, 5000, 9.0]                      
+  1.0                          
+  1.2                          
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+                                                 [IBM, 150, 24.0]                       
+         YAH   10000     1.0   Event E4 arrives
+                                                 [YAH, 10000, 1.0]                      
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+                                                 [IBM, 155, 26.0]                       
+  2.2                          
+  2.5                          
+  3.0                          
+  3.2                          
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+                                                 [YAH, 11000, 2.0]                      
+  4.0                          
+  4.2                          
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+                                                 [IBM, 150, 22.0]                       
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+                                                 [YAH, 11500, 3.0]                      
+  5.0                          
+  5.2                          
+  5.7                          Event E1 leaves the time window
+                                                                    [IBM, 100, 25.0]    
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+                                                 [YAH, 10500, 1.0]                      
+  6.0                          
+  6.2                          
+  6.3                          Event E2 leaves the time window
+                                                                    [MSFT, 5000, 9.0]   
+  7.0                          Event E3 and E4 leave the time window
+                                                                    [IBM, 150, 24.0]    
+                                                                    [YAH, 10000, 1.0]   
+  7.2                          </pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-simple-default"/>A.2.2. Output Rate Limiting - Default</h3></div></div></div><p>
+				With an <code class="literal">output</code> clause, the engine dispatches to listeners when the output condition occurs. Here, the output condition is a 1-second time interval. The engine thus outputs every 1 second, starting from the first event, even if there are no new events or no expiring events to output.
+			</p><p>
+				The default (no keyword) and the <code class="literal">ALL</code> keyword result in the same output.
+			</p><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, volume, price from MarketData.win:time(5.5 sec) 
+output every 1 seconds</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [IBM, 100, 25.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [IBM, 150, 24.0]                       
+                                                 [YAH, 10000, 1.0]                      
+                                                 [IBM, 155, 26.0]                       
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 (empty result)     (empty result)      
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [YAH, 11000, 2.0]                      
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [IBM, 150, 22.0]                       
+                                                 [YAH, 11500, 3.0]                      
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [YAH, 10500, 1.0]  [IBM, 100, 25.0]    
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                                    [MSFT, 5000, 9.0]   
+                                                                    [IBM, 150, 24.0]    
+                                                                    [YAH, 10000, 1.0] </pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-simple-last"/>A.2.3. Output Rate Limiting - Last</h3></div></div></div><p>
+				Using the <code class="literal">LAST</code> keyword in the <code class="literal">output</code> clause, the engine dispatches to listeners only the last event of each insert and remove stream.
+			</p><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, volume, price from MarketData.win:time(5.5 sec) 
+output last every 1 seconds</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [MSFT, 5000, 9.0]                      
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [IBM, 155, 26.0]                       
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 (empty result)     (empty result)      
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [YAH, 11000, 2.0]                      
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [YAH, 11500, 3.0]                      
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [YAH, 10500, 1.0]  [IBM, 100, 25.0]    
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                                    [YAH, 10000, 1.0] </pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-simple-first"/>A.2.4. Output Rate Limiting - First</h3></div></div></div><p>
+				Using the <code class="literal">FIRST</code> keyword in the <code class="literal">output</code> clause, the engine dispatches to listeners only the first event of each insert or remove stream, and does not output further
+				events until the output condition is reached.
+			</p><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, volume, price from MarketData.win:time(5.5 sec)
+output first every 1 seconds</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                      Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+                                                 [IBM, 100, 25.0]                       
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+                                                 [IBM, 150, 24.0]                       
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 (empty result)     (empty result)      
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+                                                 [YAH, 11000, 2.0]                      
+  4.0                          
+  4.2                          
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+                                                 [IBM, 150, 22.0]                       
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+  5.7                          Event E1 leaves the time window
+                                                                    [IBM, 100, 25.0]    
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+  6.3                          Event E2 leaves the time window
+                                                                    [MSFT, 5000, 9.0]   
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          			</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-simple-snapshot"/>A.2.5. Output Rate Limiting - Snapshot</h3></div></div></div><p>
+				Using the <code class="literal">SNAPSHOT</code> keyword in the <code class="literal">output</code> clause, the engine posts data window contents when the output condition is reached.
+			</p><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, volume, price from MarketData.win:time(5.5 sec)
+output snapshot every 1 seconds</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [IBM, 100, 25.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [IBM, 100, 25.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+                                                 [IBM, 150, 24.0]                       
+                                                 [YAH, 10000, 1.0]                      
+                                                 [IBM, 155, 26.0]                       
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 [IBM, 100, 25.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+                                                 [IBM, 150, 24.0]                       
+                                                 [YAH, 10000, 1.0]                      
+                                                 [IBM, 155, 26.0]                       
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [IBM, 100, 25.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+                                                 [IBM, 150, 24.0]                       
+                                                 [YAH, 10000, 1.0]                      
+                                                 [IBM, 155, 26.0]                       
+                                                 [YAH, 11000, 2.0]                      
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [IBM, 100, 25.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+                                                 [IBM, 150, 24.0]                       
+                                                 [YAH, 10000, 1.0]                      
+                                                 [IBM, 155, 26.0]                       
+                                                 [YAH, 11000, 2.0]                      
+                                                 [IBM, 150, 22.0]                       
+                                                 [YAH, 11500, 3.0]                      
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [MSFT, 5000, 9.0]                      
+                                                 [IBM, 150, 24.0]                       
+                                                 [YAH, 10000, 1.0]                      
+                                                 [IBM, 155, 26.0]                       
+                                                 [YAH, 11000, 2.0]                      
+                                                 [IBM, 150, 22.0]                       
+                                                 [YAH, 11500, 3.0]                      
+                                                 [YAH, 10500, 1.0]                      
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                 [IBM, 155, 26.0]                       
+                                                 [YAH, 11000, 2.0]                      
+                                                 [IBM, 150, 22.0]                       
+                                                 [YAH, 11500, 3.0]                      
+                                                 [YAH, 10500, 1.0] 			</pre></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="outputspec-rowforall"/>A.3. Output for Fully-aggregated and Un-grouped Queries</h2></div></div></div><p>
+			This chapter provides sample output for queries that have aggregation functions, and that do not have a <code class="literal">group by</code> clause, and in which all event properties are under aggregation.
+        </p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-rowforall-none"/>A.3.1. No Output Rate Limiting</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream sum(price) from MarketData.win:time(5.5 sec)</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+                                                 [25.0]             [null]              
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+                                                 [34.0]             [25.0]              
+  1.0                          
+  1.2                          
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+                                                 [58.0]             [34.0]              
+         YAH   10000     1.0   Event E4 arrives
+                                                 [59.0]             [58.0]              
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+                                                 [85.0]             [59.0]              
+  2.2                          
+  2.5                          
+  3.0                          
+  3.2                          
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+                                                 [87.0]             [85.0]              
+  4.0                          
+  4.2                          
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+                                                 [109.0]            [87.0]              
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+                                                 [112.0]            [109.0]             
+  5.0                          
+  5.2                          
+  5.7                          Event E1 leaves the time window
+                                                 [87.0]             [112.0]             
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+                                                 [88.0]             [87.0]              
+  6.0                          
+  6.2                          
+  6.3                          Event E2 leaves the time window
+                                                 [79.0]             [88.0]              
+  7.0                          Event E3 and E4 leave the time window
+                                                 [54.0]             [79.0]              
+  7.2                         			</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-rowforall-default"/>A.3.2. Output Rate Limiting - Default</h3></div></div></div><p>
+				Output occurs when the output condition is reached after each 1-second time interval. For each event arriving, the new aggregation value is output as part of the insert stream. As part of the remove stream, the prior aggregation value is output. This is useful for getting a delta-change for each event or group. If there is a <code class="literal">having</code> clause, the filter expression applies to each row.
+			</p><p>
+				Here also the default (no keyword) and the <code class="literal">ALL</code> keyword result in the same output.
+			</p><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream sum(price) from MarketData.win:time(5.5 sec)
+output every 1 seconds</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [25.0]             [null]              
+                                                 [34.0]             [25.0]              
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [58.0]             [34.0]              
+                                                 [59.0]             [58.0]              
+                                                 [85.0]             [59.0]              
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 [85.0]             [85.0]              
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [87.0]             [85.0]              
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [109.0]            [87.0]              
+                                                 [112.0]            [109.0]             
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [87.0]             [112.0]             
+                                                 [88.0]             [87.0]              
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                 [79.0]             [88.0]              
+                                                 [54.0]             [79.0] 			</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-rowforall-last"/>A.3.3. Output Rate Limiting - Last</h3></div></div></div><p>
+				With the <code class="literal">LAST</code> keyword, the insert stream carries one event that holds the last aggregation value, and the remove stream carries the prior aggregation value.
+			</p><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream sum(price) from MarketData.win:time(5.5 sec) 
+output last every 1 seconds</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [34.0]             [null]              
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [85.0]             [34.0]              
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 [85.0]             [85.0]              
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [87.0]             [85.0]              
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [112.0]            [87.0]              
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [88.0]             [112.0]             
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                 [54.0]             [88.0]  			 </pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-rowforall-first"/>A.3.4. Output Rate Limiting - First</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream sum(price) from MarketData.win:time(5.5 sec)
+output first every 1 seconds</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+                                                 [25.0]             [null]              
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+                                                 [58.0]             [34.0]              
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 [85.0]             [85.0]              
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+                                                 [87.0]             [85.0]              
+  4.0                          
+  4.2                          
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+                                                 [109.0]            [87.0]              
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+  5.7                          Event E1 leaves the time window
+                                                 [87.0]             [112.0]             
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+  6.3                          Event E2 leaves the time window
+                                                 [79.0]             [88.0]              
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          </pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-rowforall-snapshot"/>A.3.5. Output Rate Limiting - Snapshot</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream sum(price) from MarketData.win:time(5.5 sec)
+output snapshot every 1 seconds</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [34.0]                                 
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [85.0]                                 
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 [85.0]                                 
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [87.0]                                 
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [112.0]                                
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [88.0]                                 
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                 [54.0]                			</pre></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="outputspec-aggregateall"/>A.4. Output for Aggregated and Un-grouped Queries</h2></div></div></div><p>
+			This chapter provides sample output for queries that have aggregation functions, and that do not have a <code class="literal">group by</code> clause, and in which there are event properties that are not under aggregation.
+        </p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-aggregateall-none"/>A.4.1. No Output Rate Limiting</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, sum(price) from MarketData.win:time(5.5 sec)</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+                                                 [IBM, 25.0]                            
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+                                                 [MSFT, 34.0]                           
+  1.0                          
+  1.2                          
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+                                                 [IBM, 58.0]                            
+         YAH   10000     1.0   Event E4 arrives
+                                                 [YAH, 59.0]                            
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+                                                 [IBM, 85.0]                            
+  2.2                          
+  2.5                          
+  3.0                          
+  3.2                          
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+                                                 [YAH, 87.0]                            
+  4.0                          
+  4.2                          
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+                                                 [IBM, 109.0]                           
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+                                                 [YAH, 112.0]                           
+  5.0                          
+  5.2                          
+  5.7                          Event E1 leaves the time window
+                                                                    [IBM, 87.0]         
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+                                                 [YAH, 88.0]                            
+  6.0                          
+  6.2                          
+  6.3                          Event E2 leaves the time window
+                                                                    [MSFT, 79.0]        
+  7.0                          Event E3 and E4 leave the time window
+                                                                    [IBM, 54.0]         
+                                                                    [YAH, 54.0]         
+  7.2                          			</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-aggregateall-default"/>A.4.2. Output Rate Limiting - Default</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, sum(price) from MarketData.win:time(5.5 sec)
+output every 1 seconds</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [IBM, 25.0]                            
+                                                 [MSFT, 34.0]                           
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [IBM, 58.0]                            
+                                                 [YAH, 59.0]                            
+                                                 [IBM, 85.0]                            
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 (empty result)     (empty result)      
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [YAH, 87.0]                            
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [IBM, 109.0]                           
+                                                 [YAH, 112.0]                           
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [YAH, 88.0]        [IBM, 87.0]         
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                                    [MSFT, 79.0]        
+                                                                    [IBM, 54.0]         
+                                                                    [YAH, 54.0] 			</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-aggregateall-last"/>A.4.3. Output Rate Limiting - Last</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, sum(price) from MarketData.win:time(5.5 sec) 
+output last every 1 seconds</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [MSFT, 34.0]                           
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [IBM, 85.0]                            
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 (empty result)     (empty result)      
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [YAH, 87.0]                            
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [YAH, 112.0]                           
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [YAH, 88.0]        [IBM, 87.0]         
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                                    [YAH, 54.0] 			 </pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-aggregateall-first"/>A.4.4. Output Rate Limiting - First</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select symbol, sum(price) from MarketData.win:time(5.5 sec)
+output first every 1 seconds</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+                                                 [IBM, 25.0]                            
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+                                                 [IBM, 58.0]                            
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 (empty result)     (empty result)      
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+                                                 [YAH, 87.0]                            
+  4.0                          
+  4.2                          
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+                                                 [IBM, 109.0]                           
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+  5.7                          Event E1 leaves the time window
+                                                                    [IBM, 87.0]         
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+  6.3                          Event E2 leaves the time window
+                                                                    [MSFT, 79.0]        
+  7.0                          Event E3 and E4 leave the time window
+  7.2     			</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-aggregateall-snapshot"/>A.4.5. Output Rate Limiting - Snapshot</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, sum(price) from MarketData.win:time(5.5 sec)
+output snapshot every 1 seconds</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [IBM, 34.0]                            
+                                                 [MSFT, 34.0]                           
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [IBM, 85.0]                            
+                                                 [MSFT, 85.0]                           
+                                                 [IBM, 85.0]                            
+                                                 [YAH, 85.0]                            
+                                                 [IBM, 85.0]                            
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 [IBM, 85.0]                            
+                                                 [MSFT, 85.0]                           
+                                                 [IBM, 85.0]                            
+                                                 [YAH, 85.0]                            
+                                                 [IBM, 85.0]                            
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [IBM, 87.0]                            
+                                                 [MSFT, 87.0]                           
+                                                 [IBM, 87.0]                            
+                                                 [YAH, 87.0]                            
+                                                 [IBM, 87.0]                            
+                                                 [YAH, 87.0]                            
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [IBM, 112.0]                           
+                                                 [MSFT, 112.0]                          
+                                                 [IBM, 112.0]                           
+                                                 [YAH, 112.0]                           
+                                                 [IBM, 112.0]                           
+                                                 [YAH, 112.0]                           
+                                                 [IBM, 112.0]                           
+                                                 [YAH, 112.0]                           
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [MSFT, 88.0]                           
+                                                 [IBM, 88.0]                            
+                                                 [YAH, 88.0]                            
+                                                 [IBM, 88.0]                            
+                                                 [YAH, 88.0]                            
+                                                 [IBM, 88.0]                            
+                                                 [YAH, 88.0]                            
+                                                 [YAH, 88.0]                            
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                 [IBM, 54.0]                            
+                                                 [YAH, 54.0]                            
+                                                 [IBM, 54.0]                            
+                                                 [YAH, 54.0]                            
+                                                 [YAH, 54.0]           			</pre></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="outputspec-groupedrowpergroup"/>A.5. Output for Fully-aggregated and Grouped Queries</h2></div></div></div><p>
+			This chapter provides sample output for queries that have aggregation functions, and that have a <code class="literal">group by</code> clause, and in which all event properties are under aggregation or appear in the <code class="literal">group by</code> clause.
+        </p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-groupedrowpergroup-none"/>A.5.1. No Output Rate Limiting</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, sum(price) from MarketData.win:time(5.5 sec) 
+group by symbol
+order by symbol</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+                                                 [IBM, 25.0]        [IBM, null]         
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+                                                 [MSFT, 9.0]        [MSFT, null]        
+  1.0                          
+  1.2                          
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+                                                 [IBM, 49.0]        [IBM, 25.0]         
+         YAH   10000     1.0   Event E4 arrives
+                                                 [YAH, 1.0]         [YAH, null]         
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+                                                 [IBM, 75.0]        [IBM, 49.0]         
+  2.2                          
+  2.5                          
+  3.0                          
+  3.2                          
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+                                                 [YAH, 3.0]         [YAH, 1.0]          
+  4.0                          
+  4.2                          
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+                                                 [IBM, 97.0]        [IBM, 75.0]         
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+                                                 [YAH, 6.0]         [YAH, 3.0]          
+  5.0                          
+  5.2                          
+  5.7                          Event E1 leaves the time window
+                                                 [IBM, 72.0]        [IBM, 97.0]         
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+                                                 [YAH, 7.0]         [YAH, 6.0]          
+  6.0                          
+  6.2                          
+  6.3                          Event E2 leaves the time window
+                                                 [MSFT, null]       [MSFT, 9.0]         
+  7.0                          Event E3 and E4 leave the time window
+                                                 [IBM, 48.0]        [IBM, 72.0]         
+                                                 [YAH, 6.0]         [YAH, 7.0]          
+  7.2                          		</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-groupedrowpergroup-default"/>A.5.2. Output Rate Limiting - Default</h3></div></div></div><p>
+				The default (no keyword) and the <code class="literal">ALL</code> keyword do not result in the same output. The default generates an output row per input event, while the <code class="literal">ALL</code> keyword
+				generates a row for all groups.
+			</p><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, sum(price) from MarketData.win:time(5.5 sec) 
+group by symbol 
+output every 1 seconds</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">			                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [IBM, 25.0]        [IBM, null]         
+                                                 [MSFT, 9.0]        [MSFT, null]        
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [IBM, 49.0]        [IBM, 25.0]         
+                                                 [YAH, 1.0]         [YAH, null]         
+                                                 [IBM, 75.0]        [IBM, 49.0]         
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 (empty result)     (empty result)      
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [YAH, 3.0]         [YAH, 1.0]          
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [IBM, 97.0]        [IBM, 75.0]         
+                                                 [YAH, 6.0]         [YAH, 3.0]          
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [IBM, 72.0]        [IBM, 97.0]         
+                                                 [YAH, 7.0]         [YAH, 6.0]          
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                 [MSFT, null]       [MSFT, 9.0]         
+                                                 [YAH, 6.0]         [YAH, 7.0]          
+                                                 [IBM, 48.0]        [IBM, 72.0]  </pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-groupedrowpergroup-all"/>A.5.3. Output Rate Limiting - All</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, sum(price) from MarketData.win:time(5.5 sec) 
+group by symbol 
+output all every 1 seconds 
+order by symbol</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [IBM, 25.0]        [IBM, null]         
+                                                 [MSFT, 9.0]        [MSFT, null]        
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [IBM, 75.0]        [IBM, 25.0]         
+                                                 [MSFT, 9.0]        [MSFT, 9.0]         
+                                                 [YAH, 1.0]         [YAH, null]         
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 [IBM, 75.0]        [IBM, 75.0]         
+                                                 [MSFT, 9.0]        [MSFT, 9.0]         
+                                                 [YAH, 1.0]         [YAH, 1.0]          
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [IBM, 75.0]        [IBM, 75.0]         
+                                                 [MSFT, 9.0]        [MSFT, 9.0]         
+                                                 [YAH, 3.0]         [YAH, 1.0]          
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [IBM, 97.0]        [IBM, 75.0]         
+                                                 [MSFT, 9.0]        [MSFT, 9.0]         
+                                                 [YAH, 6.0]         [YAH, 3.0]          
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [IBM, 72.0]        [IBM, 97.0]         
+                                                 [MSFT, 9.0]        [MSFT, 9.0]         
+                                                 [YAH, 7.0]         [YAH, 6.0]          
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                 [IBM, 48.0]        [IBM, 72.0]         
+                                                 [MSFT, null]       [MSFT, 9.0]         
+                                                 [YAH, 6.0]         [YAH, 7.0]  			 </pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-groupedrowpergroup-last"/>A.5.4. Output Rate Limiting - Last</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, sum(price) from MarketData.win:time(5.5 sec)
+group by symbol 
+output last every 1 seconds 
+order by symbol</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [IBM, 25.0]        [IBM, null]         
+                                                 [MSFT, 9.0]        [MSFT, null]        
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [IBM, 75.0]        [IBM, 25.0]         
+                                                 [YAH, 1.0]         [YAH, null]         
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 (empty result)     (empty result)      
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [YAH, 3.0]         [YAH, 1.0]          
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [IBM, 97.0]        [IBM, 75.0]         
+                                                 [YAH, 6.0]         [YAH, 3.0]          
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [IBM, 72.0]        [IBM, 97.0]         
+                                                 [YAH, 7.0]         [YAH, 6.0]          
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                 [IBM, 48.0]        [IBM, 72.0]         
+                                                 [MSFT, null]       [MSFT, 9.0]         
+                                                 [YAH, 6.0]         [YAH, 7.0]     			 </pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-groupedrowpergroup-first"/>A.5.5. Output Rate Limiting - First</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, sum(price) from MarketData.win:time(5.5 sec)
+group by symbol
+output first every 1 seconds
+			</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+                                                 [IBM, 25.0]        [IBM, null]         
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+                                                 [MSFT, 9.0]        [MSFT, null]        
+  1.0                          
+  1.2                          
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+                                                 [IBM, 49.0]        [IBM, 25.0]         
+         YAH   10000     1.0   Event E4 arrives
+                                                 [YAH, 1.0]         [YAH, null]         
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+  2.5                          
+  3.0                          
+  3.2                          
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+                                                 [YAH, 3.0]         [YAH, 1.0]          
+  4.0                          
+  4.2                          
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+                                                 [IBM, 97.0]        [IBM, 75.0]         
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+                                                 [YAH, 6.0]         [YAH, 3.0]          
+  5.0                          
+  5.2                          
+  5.7                          Event E1 leaves the time window
+                                                 [IBM, 72.0]        [IBM, 97.0]         
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+                                                 [YAH, 7.0]         [YAH, 6.0]          
+  6.0                          
+  6.2                          
+  6.3                          Event E2 leaves the time window
+                                                 [MSFT, null]       [MSFT, 9.0]         
+  7.0                          Event E3 and E4 leave the time window
+                                                 [IBM, 48.0]        [IBM, 72.0]         
+                                                 [YAH, 6.0]         [YAH, 7.0]          
+  7.2                          </pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-groupedrowpergroup-snapshot"/>A.5.6. Output Rate Limiting - Snapshot</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, sum(price) from MarketData.win:time(5.5 sec) 
+group by symbol 
+output snapshot every 1 seconds 
+order by symbol</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [IBM, 25.0]                            
+                                                 [MSFT, 9.0]                            
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [IBM, 75.0]                            
+                                                 [MSFT, 9.0]                            
+                                                 [YAH, 1.0]                             
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 [IBM, 75.0]                            
+                                                 [MSFT, 9.0]                            
+                                                 [YAH, 1.0]                             
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [IBM, 75.0]                            
+                                                 [MSFT, 9.0]                            
+                                                 [YAH, 3.0]                             
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [IBM, 97.0]                            
+                                                 [MSFT, 9.0]                            
+                                                 [YAH, 6.0]                             
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [IBM, 72.0]                            
+                                                 [MSFT, 9.0]                            
+                                                 [YAH, 7.0]                             
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                 [IBM, 48.0]                            
+                                                 [YAH, 6.0]    			</pre></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="outputspec-aggregategrouped"/>A.6. Output for Aggregated and Grouped Queries</h2></div></div></div><p>
+			This chapter provides sample output for queries that have aggregation functions, and that have a <code class="literal">group by</code> clause, and in which some event properties are not under aggregation.
+        </p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-aggregategrouped-none"/>A.6.1. No Output Rate Limiting</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, volume, sum(price) from MarketData.win:time(5.5 sec) group by symbol</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+                                                 [IBM, 100, 25.0]                       
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+                                                 [MSFT, 5000, 9.0]                      
+  1.0                          
+  1.2                          
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+                                                 [IBM, 150, 49.0]                       
+         YAH   10000     1.0   Event E4 arrives
+                                                 [YAH, 10000, 1.0]                      
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+                                                 [IBM, 155, 75.0]                       
+  2.2                          
+  2.5                          
+  3.0                          
+  3.2                          
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+                                                 [YAH, 11000, 3.0]                      
+  4.0                          
+  4.2                          
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+                                                 [IBM, 150, 97.0]                       
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+                                                 [YAH, 11500, 6.0]                      
+  5.0                          
+  5.2                          
+  5.7                          Event E1 leaves the time window
+                                                                    [IBM, 100, 72.0]    
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+                                                 [YAH, 10500, 7.0]                      
+  6.0                          
+  6.2                          
+  6.3                          Event E2 leaves the time window
+                                                                    [MSFT, 5000, null]  
+  7.0                          Event E3 and E4 leave the time window
+                                                                    [IBM, 150, 48.0]    
+                                                                    [YAH, 10000, 6.0]   
+  7.2                          			</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-aggregategrouped-default"/>A.6.2. Output Rate Limiting - Default</h3></div></div></div><p>
+				The default (no keyword) and the <code class="literal">ALL</code> keyword do not result in the same output. The default generates an output row per input event, while the <code class="literal">ALL</code> keyword
+				generates a row for all groups based on the last new event for each group.
+			</p><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, volume, sum(price) from MarketData.win:time(5.5 sec) 
+group by symbol 
+output every 1 seconds</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [IBM, 100, 25.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [IBM, 150, 49.0]                       
+                                                 [YAH, 10000, 1.0]                      
+                                                 [IBM, 155, 75.0]                       
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 (empty result)     (empty result)      
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [YAH, 11000, 3.0]                      
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [IBM, 150, 97.0]                       
+                                                 [YAH, 11500, 6.0]                      
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [YAH, 10500, 7.0]  [IBM, 100, 72.0]    
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                                    [MSFT, 5000, null]  
+                                                                    [IBM, 150, 48.0]    
+                                                                    [YAH, 10000, 6.0]   			</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-aggregategrouped-all"/>A.6.3. Output Rate Limiting - All</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, volume, sum(price) from MarketData.win:time(5.5 sec) 
+group by symbol 
+output all every 1 seconds 
+order by symbol</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [IBM, 100, 25.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [IBM, 150, 49.0]                       
+                                                 [IBM, 155, 75.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+                                                 [YAH, 10000, 1.0]                      
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 [IBM, 155, 75.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+                                                 [YAH, 10000, 1.0]                      
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [IBM, 155, 75.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+                                                 [YAH, 11000, 3.0]                      
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [IBM, 150, 97.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+                                                 [YAH, 11500, 6.0]                      
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [IBM, 150, 72.0]   [IBM, 100, 72.0]    
+                                                 [MSFT, 5000, 9.0]                      
+                                                 [YAH, 10500, 7.0]                      
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                 [IBM, 150, 48.0]   [IBM, 150, 48.0]    
+                                                 [MSFT, 5000, null] [MSFT, 5000, null]  
+                                                 [YAH, 10500, 6.0]  [YAH, 10000, 6.0]   </pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-aggregategrouped-last"/>A.6.4. Output Rate Limiting - Last</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, volume, sum(price) from MarketData.win:time(5.5 sec)
+group by symbol 
+output last every 1 seconds 
+order by symbol</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [IBM, 100, 25.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [IBM, 155, 75.0]                       
+                                                 [YAH, 10000, 1.0]                      
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 (empty result)     (empty result)      
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [YAH, 11000, 3.0]                      
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [IBM, 150, 97.0]                       
+                                                 [YAH, 11500, 6.0]                      
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [YAH, 10500, 7.0]  [IBM, 100, 72.0]    
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                                    [IBM, 150, 48.0]    
+                                                                    [MSFT, 5000, null]  
+                                                                    [YAH, 10000, 6.0] </pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-aggregategrouped-first"/>A.6.5. Output Rate Limiting - First</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, volume, sum(price) from MarketData.win:time(5.5 sec) 
+group by symbol 
+output first every 1 seconds</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+                                                 [IBM, 100, 25.0]                       
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+                                                 [MSFT, 5000, 9.0]                      
+  1.0                          
+  1.2                          
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+                                                 [IBM, 150, 49.0]                       
+         YAH   10000     1.0   Event E4 arrives
+                                                 [YAH, 10000, 1.0]                      
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+  2.5                          
+  3.0                          
+  3.2                          
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+                                                 [YAH, 11000, 3.0]                      
+  4.0                          
+  4.2                          
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+                                                 [IBM, 150, 97.0]                       
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+                                                 [YAH, 11500, 6.0]                      
+  5.0                          
+  5.2                          
+  5.7                          Event E1 leaves the time window
+                                                 [IBM, 100, 72.0]                       
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+                                                 [YAH, 10500, 7.0]                      
+  6.0                          
+  6.2                          
+  6.3                          Event E2 leaves the time window
+                                                 [MSFT, 5000, null]                     
+  7.0                          Event E3 and E4 leave the time window
+                                                 [IBM, 150, 48.0]                       
+                                                 [YAH, 10000, 6.0]                      
+  7.2                          </pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="outputspec-aggregategrouped-snapshot"/>A.6.6. Output Rate Limiting - Snapshot</h3></div></div></div><p>
+				The statement for this sample reads:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream symbol, volume, sum(price) from MarketData.win:time(5.5 sec) 
+group by symbol 
+output snapshot every 1 seconds</pre><p>
+				The output is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">                       Input                                  Output
+                                                 Insert Stream    Remove Stream
+-----------------------------------------------  ----------------------------------
+ Time Symbol  Volume   Price
+  0.2                          
+         IBM     100    25.0   Event E1 arrives
+  0.8                          
+        MSFT    5000     9.0   Event E2 arrives
+  1.0                          
+  1.2                          
+                                                 [IBM, 100, 25.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+  1.5                          
+         IBM     150    24.0   Event E3 arrives
+         YAH   10000     1.0   Event E4 arrives
+  2.0                          
+  2.1                          
+         IBM     155    26.0   Event E5 arrives
+  2.2                          
+                                                 [IBM, 100, 75.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+                                                 [IBM, 150, 75.0]                       
+                                                 [YAH, 10000, 1.0]                      
+                                                 [IBM, 155, 75.0]                       
+  2.5                          
+  3.0                          
+  3.2                          
+                                                 [IBM, 100, 75.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+                                                 [IBM, 150, 75.0]                       
+                                                 [YAH, 10000, 1.0]                      
+                                                 [IBM, 155, 75.0]                       
+  3.5                          
+         YAH   11000     2.0   Event E6 arrives
+  4.0                          
+  4.2                          
+                                                 [IBM, 100, 75.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+                                                 [IBM, 150, 75.0]                       
+                                                 [YAH, 10000, 3.0]                      
+                                                 [IBM, 155, 75.0]                       
+                                                 [YAH, 11000, 3.0]                      
+  4.3                          
+         IBM     150    22.0   Event E7 arrives
+  4.9                          
+         YAH   11500     3.0   Event E8 arrives
+  5.0                          
+  5.2                          
+                                                 [IBM, 100, 97.0]                       
+                                                 [MSFT, 5000, 9.0]                      
+                                                 [IBM, 150, 97.0]                       
+                                                 [YAH, 10000, 6.0]                      
+                                                 [IBM, 155, 97.0]                       
+                                                 [YAH, 11000, 6.0]                      
+                                                 [IBM, 150, 97.0]                       
+                                                 [YAH, 11500, 6.0]                      
+  5.7                          Event E1 leaves the time window
+  5.9                          
+         YAH   10500     1.0   Event E9 arrives
+  6.0                          
+  6.2                          
+                                                 [MSFT, 5000, 9.0]                      
+                                                 [IBM, 150, 72.0]                       
+                                                 [YAH, 10000, 7.0]                      
+                                                 [IBM, 155, 72.0]                       
+                                                 [YAH, 11000, 7.0]                      
+                                                 [IBM, 150, 72.0]                       
+                                                 [YAH, 11500, 7.0]                      
+                                                 [YAH, 10500, 7.0]                      
+  6.3                          Event E2 leaves the time window
+  7.0                          Event E3 and E4 leave the time window
+  7.2                          
+                                                 [IBM, 155, 48.0]                       
+                                                 [YAH, 11000, 6.0]                      
+                                                 [IBM, 150, 48.0]                       
+                                                 [YAH, 11500, 6.0]                      
+                                                 [YAH, 10500, 6.0]  </pre></div></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="references.html"><strong>Prev</strong>Chapter 21. References</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="appendix_keywords.html"><strong>Next</strong>Appendix B. Reserved Keywords</a></li></ul></body></html>

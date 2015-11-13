@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 18. Script Support</title><link rel="stylesheet" href="css/espertech.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Esper Reference"/><link rel="up" href="index.html" title="Esper Reference"/><link rel="prev" href="extension.html" title="Chapter 17. Integration and Extension"/><link rel="next" href="examples.html" title="Chapter 19. Examples, Tutorials, Case Studies"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.espertech.com" class="site_href"><strong>esper.codehaus.org and espertech.com</strong></a><a href="http://esper.codehaus.org/esper/documentation/documentation.html" class="doc_href"><strong>Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="extension.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="examples.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="script"/>Chapter 18. Script Support</h2></div></div></div><div class="toc"><dl><dt><span class="sect1"><a href="script.html#script-overview">18.1. Overview</a></span></dt><dt><span class="sect1"><a href="script.html#script-syntax">18.2. Syntax</a></span></dt><dt><span class="sect1"><a href="script.html#script-examples">18.3. Examples</a></span></dt><dt><span class="sect1"><a href="script.html#script-variablevisibility">18.4. Built-In EPL Script Attributes</a></span></dt><dt><span class="sect1"><a href="script.html#script-performance">18.5. Performance Notes</a></span></dt><dt><span class="sect1"><a href="script.html#script-other">18.6. Additional Notes</a></span></dt></dl></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="script-overview"/>18.1. Overview</h2></div></div></div><a id="d0e39542" class="indexterm"/><a id="d0e39545" class="indexterm"/><a id="d0e39548" class="indexterm"/><a id="d0e39551" class="indexterm"/><a id="d0e39554" class="indexterm"/><a id="d0e39557" class="indexterm"/><a id="d0e39560" class="indexterm"/><p>
+			Esper allows the use scripting languages within EPL. You may use scripts for imperative programming to execute certain code as part of EPL processing by the engine.
+		</p><p>
+		    The syntax and examples outlined below discuss how to declare a script that is visible to the same EPL statement that listed the script.
+		</p><p>
+			For declaring scripts that are visible across multiple EPL statements i.e. globally visible scripts please consult <a class="xref" href="epl_clauses.html#create-exprglobal-script" title="5.19.2. Declaring a Global Script">Section 5.19.2, “Declaring a Global Script”</a> 
+			that explains the <code class="literal">create expression</code> clause.
+		</p><p>
+			Any scripting language that supports JSR 223 and also the MVEL scripting language can be specified in EPL. This section provides MVEL and JavaScript examples.
+		</p><p>
+			For more information on the MVEL scripting language and its syntax, please refer to 
+			<a class="link" href="http://mvel.codehaus.org/" target="">MVEL At Codehaus</a>. MVEL is an expression language that has a natural syntax for Java-based applications and compiles to provide fast execution times. To use MVEL with Esper, please make sure to add the MVEL jar file to the application classpath.
+		</p><p>
+			For more information on JSR 223 scripting languages, please refer to external resources. As JSR 223 defines a standard API for script engines, your application may use any script engine that implements the API. Current JVM versions ship with a JavaScript script engine. Other script engines such as Groovy, Ruby and Python scripts can be used as implementations of JSR 223.
+		</p><p>
+		  As an alternative to a script consider providing a custom single row function as described in <a class="xref" href="extension.html#custom-singlerow-function" title="17.3. Single-Row Function">Section 17.3, “Single-Row Function”</a>
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="script-syntax"/>18.2. Syntax</h2></div></div></div><p>
+		The syntax for scripts is:
+		</p><pre class="synopsis">expression [<span class="emphasis"><em>return_type</em></span>] [<span class="emphasis"><em>dialect_identifier</em></span>:] script_name [ (<span class="emphasis"><em>parameters</em></span>) ] [ script_body ]</pre><p>
+		  Use the <code class="literal">expression</code> keyword to declare a script.
+		</p><p>
+			The <span class="emphasis"><em>return_type</em></span> is optional. If the script declaration provides a return type the engine can perform strong type checking: Any expressions that invoke the script and use the return value are aware of the return type. If no return type is provided the engine assumes the script returns <code class="literal">java.lang.Object</code>.
+		</p><p>
+			The <span class="emphasis"><em>dialect_identifier</em></span> is optional and identifies the scripting language. Use <code class="literal">mvel</code> for MVEL , <code class="literal">js</code> for JavaScript and <code class="literal">python</code> for Python and similar for other JSR 223 scripting languages.
+			If no dialect identifier is specified, the default dialect that is configured applies, which is <code class="literal">js</code> unless your application changes the default configuration.
+		</p><p>
+			It follows the script name. You may use the same script name multiple times and thus overload providing multiple signatures under the same script name. The combination of script name and number of parameters must be unique however.
+		</p><p>
+		   If you have script parameters, specify the parameter names for the script as a comma-separated list of identifiers in parenthesis. It is not necessary to list parameter types.
+		</p><p>
+		  The <span class="emphasis"><em>script body</em></span> is the actual MVEL or JavaScript or other scripting language script and is placed in square brackets: <code class="literal">[ ... script body ...]</code>.
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="script-examples"/>18.3. Examples</h2></div></div></div><p>
+			The next example shows an EPL statement that calls a JavaScript script which computes the Fibonacci total for a given number:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">expression double js:fib(num) [
+fib(num);
+function fib(n) {
+  if(n &lt;= 1)
+    return n;
+  return fib(n-1) + fib(n-2);
+}
+]
+select fib(intPrimitive) from SupportBean;
+</pre><p>
+		  The <code class="literal">expression</code> keyword is followed by the return type (<code class="literal">double</code>), the dialect (<code class="literal">js</code>) and the script name (<code class="literal">fib</code>) that declares a single parameter (<code class="literal">num</code>).
+		  The JavaScript code that computes the Fibonacci total is between square brackets <code class="literal">[]</code>.
+		</p><p>
+			The following example shows an EPL statement that calls a MVEL script which outputs all the different colors that are listed in the <code class="literal">colors</code> property of each <code class="literal">ColorEvent</code>:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">expression mvel:printColors(colors) [
+String c = null;
+for (c : colors) {
+   System.out.println(c);
+}
+]
+select printColors(colors) from ColorEvent;</pre><p>
+			This example instead uses JavaScript to print colors and passes the event itself as a script parameter:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">expression js:printColors(colorEvent) [
+importClass (java.lang.System);
+importClass (java.util.Arrays);
+System.out.println(Arrays.toString(colorEvent.getColors()));
+]
+select printColors(colorEvent) from ColorEvent as colorEvent</pre></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="script-variablevisibility"/>18.4. Built-In EPL Script Attributes</h2></div></div></div><p>
+		  The engine provides a built-in script object under the variable name <code class="literal">epl</code> to all scripts. Your scripts may use this script object to share and retain state by setting and reading script attributes.
+		</p><p>
+		  The <code class="literal">epl</code> script object implements the interface <code class="literal">com.espertech.esper.client.hook.EPLScriptContext</code>. The <code class="literal">EPLScriptContext</code> interface has two methods: The <code class="literal">void setScriptAttribute(String attribute, Object value)</code> method to set an attribute value and the <code class="literal">Object getScriptAttribute(String attribute)</code> method to read an attribute value.
+		</p><p>
+		  The engine maintains a separate script object per context partition, or per statement if not declaring a context. Therefore script attributes are not shared between statements.
+		</p><p>
+		  The next example demonstrates the use of the <code class="literal">epl</code> script object. It outputs a flag value <code class="literal">true</code> when an RFID event matched because the location is <code class="literal">A</code>, 
+		  and outputs a flag value <code class="literal">false</code> when an RFID event matched because the location is <code class="literal">B</code>. The example works the same for either MVEL or JavaScript dialects: You may simple replace the <code class="literal">js</code> dialect with <code class="literal">mvel</code>.
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">expression boolean js:setFlag(name, value, returnValue) [
+  if (returnValue) epl.setScriptAttribute(name, value);
+  returnValue;
+]
+expression js:getFlag(name) [
+  epl.getScriptAttribute(name);
+]
+select getFlag('locA') as flag from RFIDEvent(zone = 'Z1' and
+  (setFlag('locA', true, location = 'A') or setFlag('locA', false, location = 'B')) )</pre><p>
+		  The example above utilizes two scripts: The <code class="literal">setFlag</code>  script receives an attribute name, attribute value and a return value. The script sets the script attribute only when the return value is true. The  <code class="literal">getFlag</code> script simply returns the script attribute value.
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="script-performance"/>18.5. Performance Notes</h2></div></div></div><p>
+			Upon EPL statement compilation, the engine resolves script parameter types and performs script compilation. At runtime the engine evaluates the script in its compiled form.
+		</p><p>
+		  As the engine cannot inspect scripts if is not possible for the engine to perform query planning or many optimizations based on the information in scripts. It is thus recommended to structure EPL such that basic filter and join expressions are
+		  EPL expressions and not script expressions.
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="script-other"/>18.6. Additional Notes</h2></div></div></div><p>
+		  Your EPL may declare a return type for the script. If no return type is declared and when using the MVEL dialect, the engine will infer the return type from the MVEL expression analysis result. If the return type is not provided and cannot be inferred or the dialect is not MVEL, the return type is <code class="literal">Object</code>.
+		</p><p>
+		  If the EPL declares a numeric return type then engine performs coercion of the numeric result to the return type that is specified.
+		</p><p>
+		  In the case that the EPL declares a return type that does not match the type of the actual script return value, the engine does not check return value type.
+		</p></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="extension.html"><strong>Prev</strong>Chapter 17. Integration and Extension</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="examples.html"><strong>Next</strong>Chapter 19. Examples, Tutorials, Case Studies</a></li></ul></body></html>

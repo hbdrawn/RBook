@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 20. Performance</title><link rel="stylesheet" href="css/espertech.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Esper Reference"/><link rel="up" href="index.html" title="Esper Reference"/><link rel="prev" href="examples.html" title="Chapter 19. Examples, Tutorials, Case Studies"/><link rel="next" href="references.html" title="Chapter 21. References"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.espertech.com" class="site_href"><strong>esper.codehaus.org and espertech.com</strong></a><a href="http://esper.codehaus.org/esper/documentation/documentation.html" class="doc_href"><strong>Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="examples.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="references.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="performance"/>Chapter 20. Performance</h2></div></div></div><div class="toc"><dl><dt><span class="sect1"><a href="performance.html#performance-results">20.1. Performance Results</a></span></dt><dt><span class="sect1"><a href="performance.html#performance-tips">20.2. Performance Tips</a></span></dt><dd><dl><dt><span class="sect2"><a href="performance.html#perf-tips-1">20.2.1. Understand how to tune your Java virtual machine</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-3">20.2.2. Input and Output Bottlenecks</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-3-a">20.2.3. Advanced Theading</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-4">20.2.4. Select the underlying event rather than individual fields</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-5">20.2.5. Prefer stream-level filtering over post-data-window filtering</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-6">20.2.6. Reduce the use of arithmetic in expressions</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-6a">20.2.7. Remove Unneccessary Constructs</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-6b">20.2.8. End Pattern Sub-Expressions</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-7">20.2.9. Consider using EventPropertyGetter for fast access to event properties</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-8">20.2.10. Consider casting the underlying event</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-9">20.2.11. Turn off logging and audit</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-10">20.2.12. Disable view sharing</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-11">20.2.13. Tune or disable delivery order guarantees</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-12">20.2.14. Use a Subscriber Object to Receive Events</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-12b">20.2.15. Consider Data Flows</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-13">20.2.16. High-Arrival-Rate Streams and Single Statements</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-13a">20.2.17. Subqueries versus Joins And Where-clause And Data Windows</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-13b">20.2.18. Patterns and Pattern Sub-Expression Instances</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-13b2">20.2.19. Pattern Sub-Expression Instance Versus Data Window Use</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-13c">20.2.20. The Keep-All Data Window</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-13d">20.2.21. Statement Design for Reduced Memory Consumption - Diagnosing OutOfMemoryError</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-14">20.2.22. Performance, JVM, OS and hardware</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-15">20.2.23. Consider using Hints</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-16">20.2.24. Optimizing Stream Filter Expressions</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-17">20.2.25. Statement and Engine Metric Reporting</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-18">20.2.26. Expression Evaluation Order and Early Exit</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-19">20.2.27. Large Number of Threads</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-20">20.2.28. Context Partition Related Information</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-21">20.2.29. Prefer Constant Variables over Non-Constant Variables</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-22">20.2.30. Prefer Object-array Events</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-23">20.2.31. Composite or Compound Keys</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-24">20.2.32. Notes on Query Planning</a></span></dt><dt><span class="sect2"><a href="performance.html#perf-tips-25">20.2.33. Query Planning Index Hints</a></span></dt></dl></dd><dt><span class="sect1"><a href="performance.html#performance-kit">20.3. Using the performance kit</a></span></dt><dd><dl><dt><span class="sect2"><a href="performance.html#how-to-kit">20.3.1. How to use the performance kit</a></span></dt><dt><span class="sect2"><a href="performance.html#how-we-kit">20.3.2. How we use the performance kit</a></span></dt></dl></dd></dl></div><p>
+        Esper has been highly optimized to handle very high throughput streams with very little latency between event receipt and output result posting.
+        It is also possible to use Esper on a soft-real-time or hard-real-time JVM to maximize predictability even
+        further.
+    </p><p>
+        This section describes performance best practices and explains how to assess Esper performance by using our
+        provided performance kit.
+    </p><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="performance-results"/>20.1. Performance Results</h2></div></div></div><p>
+            For a complete understanding of those results, consult the next sections.
+        </p><p>
+            </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Esper exceeds over 500 000 event/s on a dual CPU 2GHz Intel based hardware,
+with engine latency below 3 microseconds average (below 10us with more than 
+99% predictability) on a VWAP benchmark with 1000 statements registered in the system 
+- this tops at 70 Mbit/s at 85% CPU usage.
+
+Esper also demonstrates linear scalability from 100 000 to 500 000 event/s on this 
+hardware, with consistent results accross different statements.
+
+Other tests demonstrate equivalent performance results
+(straight through processing, match all, match none, no statement registered,
+VWAP with time based window or length based windows).
+                
+Tests on a laptop demonstrated about 5x time less performance - that is 
+between 70 000 event/s and 200 000 event/s - which still gives room for easy 
+testing on small configuration.</pre><p>
+        </p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="performance-tips"/>20.2. Performance Tips</h2></div></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-1"/>20.2.1. Understand how to tune your Java virtual machine</h3></div></div></div><p>
+				Esper runs on a JVM and you need to be familiar with JVM tuning.
+				Key parameters to consider include minimum and maximum heap memory and nursery heap sizes.
+				Statements with time-based or length-based data windows can consume large amounts of memory as their size or length can be large.
+			</p><p>
+				For time-based data windows, one needs to be aware that the memory consumed depends on the actual event stream input
+				throughput. Event pattern instances also consume memory, especially when using the "every"
+				keyword in patterns to repeat pattern sub-expressions - which again will depend on the actual event stream input throughput.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-3"/>20.2.2. Input and Output Bottlenecks</h3></div></div></div><p>
+				Your application receives output events from Esper statements through the <code class="literal">UpdateListener</code> interface or via the strongly-typed subscriber POJO object. Such output events are delivered by the application or timer thread(s) that sends an input event into the engine instance.
+			</p><p>
+				The processing of output events that your listener or subscriber performs temporarily blocks the thread until the processing completes, and may thus reduce throughput. It can therefore be beneficial for your application to process output events asynchronously and not block the Esper engine while an output event is being processed by your listener, especially if your listener code performs blocking IO operations.
+			</p><p>
+				For example, your application may want to send output events to a JMS destination or write output event data to a relational database. For optimal throughput, consider performing such blocking operations in a separate thread.
+			</p><p>
+				Additionally, when reading input events from a store or network in a performance test, you may find that Esper processes events faster then you are able to feed events into Esper. In such case you may want to consider an in-memory driver for use in performance testing. Also consider decoupling your read operation from the event processing operation (sendEvent method) by having multiple readers or by pre-fetching your data from the store.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-3-a"/>20.2.3. Advanced Theading</h3></div></div></div><p>
+				Esper provides the configuration option to use engine-level queues and threadpools for inbound, outbound and internal executions. See <a class="xref" href="api.html#api-threading-advanced" title="14.6.1. Advanced Threading">Section 14.6.1, “Advanced Threading”</a> for more information.
+			</p><p>
+				We recommend the inbound threading if your application does not already employ threading.
+			</p><p>
+				We recommend the outbound threading if your listeners are blocking. For outbound threading also see the section below on tuning and disabling listener delivery guarantees.
+			</p><p>
+				If enabling advanced threading options keep in mind that the engine will maintain a queue and thread pool. There is additional overhead associated with entering work units into the queue, maintaining the queue and the hand-off between threads. It is not necessarily true that
+				your application will perform better with any of the advanced threading options. 
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-4"/>20.2.4. Select the underlying event rather than individual fields</h3></div></div></div><p>
+				By selecting the underlying event in the select-clause we can reduce load on the engine, since the 
+				engine does not need to generate a new output event for each input event.
+			</p><p>
+				For example, the following statement returns the underlying event to update listeners:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Better performance
+select * from RFIDEvent</pre><p>
+				In comparison, the next statement selects individual properties. This statement requires the engine to generate an output event that 
+				contains exactly the required properties:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Less good performance
+select assetId, zone, xlocation, ylocation from RFIDEvent </pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-5"/>20.2.5. Prefer stream-level filtering over post-data-window filtering</h3></div></div></div><p>
+				Esper stream-level filtering is very well optimized, while filtering via the where-clause post any data windows is not optimized. 				
+			</p><p>
+				The same is true for named windows. If your application is only interested in a subset of named window data and such filters
+				are not correlated to arriving events, place the filters into parenthesis after the named window name.
+			</p><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="perf-tips-5-nonnamedwindowexample"/>20.2.5.1. Examples without named windows</h4></div></div></div><p>
+					Consider the example below, which performs stream-level filtering:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Better performance : stream-level filtering
+select * from MarketData(ticker = 'GOOG')</pre><p>
+					The example below is the equivalent (same semantics) statement and performs post-data-window filtering without a data window.
+					The engine does not optimize statements that filter in the where-clause for the reason that data window views are generally present.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Less good performance : post-data-window filtering
+select * from Market where ticker = 'GOOG'</pre><p>
+					Thus this optimization technique applies to statements without any data window. 
+				</p><p>
+					When a data window is used, the semantics change. Let's look at an example to better understand the difference:
+					In the next statement only GOOG market events enter the length window:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select avg(price) from MarketData(ticker = 'GOOG').win:length(100)</pre><p>
+					The above statement computes the average price of GOOG market data events for the last 100 GOOG market data events. 
+				</p><p>
+					Compare the filter position to a filter in the where clause. 
+					The following statement is NOT equivalent as all events enter the data window (not just GOOG events):
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select avg(price) from Market.win:length(100) where ticker = 'GOOG'</pre><p>
+					The statement above computes the average price of all market data events for the last 100 market data events, and outputs results only for GOOG.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="perf-tips-5-namedwindowexample"/>20.2.5.2. Examples using named windows</h4></div></div></div><p>
+					The next two example EPL queries put the account number filter criteria directly into parenthesis following the named window name:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Better performance : stream-level filtering
+select * from WithdrawalNamedWindow(accountNumber = '123')</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Better performance : example with subquery
+select *, (select * from LoginSucceededWindow(accountNumber = '123'))
+from WithdrawalNamedWindow(accountNumber = '123')</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-6"/>20.2.6. Reduce the use of arithmetic in expressions</h3></div></div></div><p>
+				Esper does not yet attempt to pre-evaluate arithmetic expressions that produce constant results.
+			</p><p>
+				Therefore, a filter expression as below is optimized:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Better performance : no arithmetic
+select * from MarketData(price&gt;40) </pre><p>
+				While the engine cannot currently optimize this expression:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Less good performance : with arithmetic
+select * from MarketData(price+10&gt;50) </pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-6a"/>20.2.7. Remove Unneccessary Constructs</h3></div></div></div><p>
+				If your statement uses <code class="literal">order by</code> to order output events, consider removing <code class="literal">order by</code> unless your application does indeed require the events it receives to be ordered.
+			</p><p>
+				If your statement specifies <code class="literal">group by</code> but does not use aggregation functions, consider removing <code class="literal">group by</code>.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-6b"/>20.2.8. End Pattern Sub-Expressions</h3></div></div></div><p>
+				In patterns, the <code class="literal">every</code> keyword in conjunction with followed by (<code class="literal">-&gt;</code>) starts a new sub-expression per match. 				
+			</p><p>
+				For example, the following pattern starts a sub-expression looking for a B event for every A event that arrives.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">every A -&gt; B</pre><p>
+				Determine under what conditions a subexpression should end so the engine can stop looking for a B event. Here are a few generic examples:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">every A -&gt; (B and not C)
+every A -&gt; B where timer:within(1 sec)</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-7"/>20.2.9. Consider using EventPropertyGetter for fast access to event properties</h3></div></div></div><p>
+				The EventPropertyGetter interface is useful for obtaining an event property value without property name table lookup 
+				given an EventBean instance that is of the same event type that the property getter was obtained from.
+			</p><p>
+				When compiling a statement, the EPStatement instance lets us know the EventType via the getEventType() method.
+				From the EventType we can obtain EventPropertyGetter instances for named event properties.
+			</p><p>
+				To demonstrate, consider the following simple statement:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select symbol, avg(price) from Market group by symbol</pre><p>
+				After compiling the statement, obtain the EventType and pass the type to the listener:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EPStatement stmt = epService.getEPAdministrator().createEPL(stmtText);
+MyGetterUpdateListener listener = new MyGetterUpdateListener(stmt.getEventType());</pre><p>
+				The listener can use the type to obtain fast getters for property values of events for the same type:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyGetterUpdateListener implements StatementAwareUpdateListener {
+    private final EventPropertyGetter symbolGetter;
+    private final EventPropertyGetter avgPriceGetter;
+
+    public MyGetterUpdateListener(EventType eventType) {
+        symbolGetter = eventType.getGetter("symbol");
+        avgPriceGetter = eventType.getGetter("avg(price)");
+    }</pre><p>
+				Last, the update method can invoke the getters to obtain event property values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">    public void update(EventBean[] eventBeans, EventBean[] oldBeans, EPStatement epStatement, EPServiceProvider epServiceProvider) {
+        String symbol = (String) symbolGetter.get(eventBeans[0]);
+        long volume = (Long) volumeGetter.get(eventBeans[0]);
+        // some more logic here
+    }</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-8"/>20.2.10. Consider casting the underlying event</h3></div></div></div><p>
+				When an application requires the value of most or all event properties, it can often be best to simply select the underlying event via wildcard
+				and cast the received events.
+			</p><p>
+				Let's look at the sample statement:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from MarketData(symbol regexp 'E[a-z]')</pre><p>
+				An update listener to the statement may want to cast the received events to the expected underlying event class:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">    public void update(EventBean[] eventBeans, EventBean[] eventBeans) {
+        MarketData md = (MarketData) eventBeans[0].getUnderlying();
+        // some more logic here
+    }</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-9"/>20.2.11. Turn off logging and audit</h3></div></div></div><p>
+	Since Esper 1.10, even if you don't have a log4j configuration file in place, Esper will make sure to minimize execution path logging overhead.
+	For prior versions, and to reduce logging overhead overall, we recommend the "WARN" log level or the "INFO" log level.
+			</p><p>
+	Please see the log4j configuration file in "etc/infoonly_log4j.xml" for example log4j settings.
+			</p><p>
+				Esper provides the <code class="literal">@Audit</code> annotation for statements. For performance testing and production deployment, we recommend removing <code class="literal">@Audit</code>.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-10"/>20.2.12. Disable view sharing</h3></div></div></div><p>
+				By default, Esper compares streams and views in use with existing statement's streams and views, and then reuses views to efficiently share resources between statements. The benefit is reduced resources usage, however the potential cost is that in multithreaded applications a shared view may mean excessive locking of multiple processing threads.
+			</p><p>
+				Consider disabling view sharing for better threading performance if your application overall uses fewer statements and statements have very similar streams, filters and views. 
+			</p><p>
+				View sharing can be disabled via XML configuration or API, and the next code snippet shows how, using the API:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getViewResources().setShareViews(false);</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-11"/>20.2.13. Tune or disable delivery order guarantees</h3></div></div></div><p>
+				If your application is not a multithreaded application, or you application is not sensitive to the order of delivery of result events to your application listeners, then consider disabling the delivery order guarantees the engine makes towards ordered delivery of results to listeners:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getThreading().setListenerDispatchPreserveOrder(false);</pre><p>
+				If your application is not a multithreaded application, or your application uses the <code class="literal">insert into</code> clause to make results of one statement available for further consuming statements but does not require ordered delivery of results from producing statements to consuming statements, you may disable delivery order guarantees between statements: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getThreading().setInsertIntoDispatchPreserveOrder(false);</pre><p>
+				Additional configuration options are available and described in the configuration section that specify timeout values and spin or thread context switching.
+			</p><p>
+				Esper logging will log the following informational message when guaranteed delivery order to listeners is enabled and spin lock times exceed the default or configured timeout : <code class="literal">Spin wait timeout exceeded in listener dispatch</code>.
+				The respective message for delivery from <code class="literal">insert into</code> statements to consuming statements is <code class="literal">Spin wait timeout exceeded in insert-into dispatch</code>.
+			</p><p>
+				If your application sees messages that spin lock times are exceeded, your application has several options: First, disabling preserve order is an option. Second, ensure your listener does not perform (long-running) blocking operations before returning, for example by performing output event processing in a separate thread. Third, change the timeout value to a larger number to block longer without logging the message.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-12"/>20.2.14. Use a Subscriber Object to Receive Events</h3></div></div></div><p>
+				The subscriber object is a technique to receive result data that has performance advantages over the <code class="literal">UpdateListener</code> interface. Please refer to <a class="xref" href="api.html#api-admin-subscriber" title="14.3.3. Setting a Subscriber Object">Section 14.3.3, “Setting a Subscriber Object”</a>.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-12b"/>20.2.15. Consider Data Flows</h3></div></div></div><p>
+				Data flows offer a high-performance means to execute EPL select statements and use other built-in data flow operators. The data flow <code class="literal">Emitter</code> operator allows sending underlying event objects directly into a data flow. Thereby the engine does not need to wrap each underlying event into a <code class="literal">EventBean</code> instance and the engine does not need to match events to statements. Instead, the underling event directly applies to only that data flow instance that your application submits the event to, and no other continuous query statements or data flows see the same event.
+			</p><p>
+			  Data flows are described in <a class="xref" href="dataflow.html" title="Chapter 13. EPL Reference: Data Flow">Chapter 13, <i>EPL Reference: Data Flow</i></a>.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-13"/>20.2.16. High-Arrival-Rate Streams and Single Statements</h3></div></div></div><p>
+				A context partition is associated with certain context partition state that consists of current aggregation values, partial pattern matches, data windows or other view state depending on whether your statement uses such constructs. When an engine receives events it updates context partition state under locking such that context partition state remains consistent under concurrent multi-threaded access.
+			</p><p>
+				For high-volume streams, the locking required to protected context partition state may slow down or introduce blocking for very high arrival rates of events that apply to the very same context partition and its state.
+			</p><p>
+				Your first choice should be to utilize a context that allows for multiple context partitions, such as the keyed segmented context or the category segmented context.
+			</p><p>
+				Your second choice is to split the statement into multiple statements that each perform part of the intended function or that each look for a certain subset of the high-arrival-rate stream. There is very little cost in terms of memory or CPU resources per statement, the engine can handle larger number of statements usually as efficiently as single statements.
+			</p><p>
+				For example, consider the following statement:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// less effective in a highly threaded environment 
+select venue, ccyPair, side, sum(qty)
+from CumulativePrice
+where side='O'
+group by venue, ccyPair, side</pre><p>
+				The engine protects state of each context partition by a separate lock for each context partition, as discussed in the API section. In highly threaded applications threads may block on a specific context partition. You would therefore want to use multiple context partitions.
+			</p><p>
+				Consider creating a keyed segmented context, for example:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create context MyContext partition by venue, ccyPair, side from CumulativePrice(side='O')</pre><p>
+				The keyed segmented context instructs the engine to employ a context partition per <code class="literal">venue, ccyPair, side</code> key combination. As locking is on the level of context partition, the locks taken by the engine are very fine grained allowing for highly concurrent processing.
+			</p><p>
+				The new statement that refers to the context as created above is:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">context MyContext select venue, ccyPair, side, sum(qty) from CumulativePrice</pre><p>
+			  For testing purposes or if your application controls concurrency, you may disable context partition locking, see <a class="xref" href="configuration.html#config-engine-execution-disablelock" title="15.4.22.3. Disable Locking">Section 15.4.22.3, “Disable Locking”</a>.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-13a"/>20.2.17. Subqueries versus Joins And Where-clause And Data Windows</h3></div></div></div><p>
+				When joining streams the engine builds a product of the joined data windows based on the <code class="literal">where</code> clause. It analyzes the <code class="literal">where</code> clause at time of statement compilation and
+				builds the appropriate indexes and query strategy. Avoid using expressions in the join <code class="literal">where</code> clause that require evaluation, such as user-defined functions or arithmatic expressions.
+			</p><p>
+				When joining streams and not providing a <code class="literal">where</code> clause, consider using the <code class="literal">std:unique</code> data window or <code class="literal">std:lastevent</code> data window to join only the last event or the last event per unique key(s) of each stream. 
+			</p><p>
+				The sample query below can produce up to 5,000 rows when both data windows are filled and an event arrives for either stream:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Avoid joins between streams with data windows without where-clause
+select * from StreamA.win:length(100), StreamB.win:length(50)</pre><p>
+				Consider using a subquery, consider using separate statements with insert-into and consider providing a <code class="literal">where</code> clause to limit the product of rows.
+			</p><p>
+				Below examples show different approaches, that are not semantically equivalent, assuming that an <code class="literal">MyEvent</code> is defined with the properties symbol and value:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Replace the following statement as it may not perform well
+select a.symbol, avg(a.value), avg(b.value) 
+from MyEvent.win:length(100) a, MyEvent.win:length(50) b
+
+// Join with where-clause
+select a.symbol, avg(a.value), avg(b.value) 
+from MyEvent.win:length(100) a, MyEvent.win:length(50) b 
+where a.symbol = b.symbol
+
+// Unidirectional join with where-clause
+select a.symbol, avg(b.value) 
+from MyEvent unidirectional, MyEvent.win:length(50) b 
+where a.symbol = b.symbol
+
+// Subquery
+select 
+  (select avg(value) from MyEvent.win:length(100)) as avgA, 
+  (select avg(value) from MyEvent.win:length(50)) as avgB,
+  a.symbol
+from MyEvent
+
+// Since streams cost almost nothing, use insert-into to populate and a unidirectional join 
+insert into StreamAvgA select symbol, avg(value) as avgA from MyEvent.win:length(100)
+insert into StreamAvgB select symbol, avg(value) as avgB from MyEvent.win:length(50)
+select a.symbol, avgA, avgB from StreamAvgA unidirectional, StreamAvgB.std:unique(symbol) b
+where a.symbol = b.symbol</pre><p>
+				A join is multidirectionally evaluated: When an event of any of the streams participating in the join arrive, the join gets evaluated, unless using the unidirectional keyword.
+				Consider using a subquery instead when evaluation only needs to take place when a certain event arrives:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Rewrite this join since we don't need to join when a LoginSucceededWindow arrives
+// Also rewrite because the account number always is the value 123.
+select * from LoginSucceededWindow as l, WithdrawalWindow as w
+where w.accountNumber = '123' and w.accountNumber = l.accountNumber
+
+// Rewritten as a subquery, 
+select *, (select * from LoginSucceededWindow where accountNumber=’123’) 
+from WithdrawalWindow(accountNumber=’123’) as w</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-13b"/>20.2.18. Patterns and Pattern Sub-Expression Instances</h3></div></div></div><p>
+				The <code class="literal">every</code> and repeat operators in patterns control the number of sub-expressions that are active. Each sub-expression can consume memory as it may retain, depending on the use of tags in the pattern,
+				the matching events. A large number of active sub-expressions can reduce performance or lead to out-of-memory errors. 
+			</p><p>
+				During the design of the pattern statement consider the use of <code class="literal">timer:within</code> to reduce the amount of time a sub-expression lives, or consider the <code class="literal">not</code> operator to end a sub-expression.
+			</p><p>
+				The examples herein assume an <code class="literal">AEvent</code> and a <code class="literal">BEvent</code> event type that have an <code class="literal">id</code> property that may correlate between arriving events of the two event types.
+			</p><p>
+				In the following sample pattern the engine starts, for each arriving AEvent, a new pattern sub-expression looking for a matching BEvent. Since the AEvent is tagged with <code class="literal">a</code> the engine retains
+				each AEvent until a match is found for delivery to listeners or subscribers:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">every a=AEvent -&gt; b=BEvent(b.id = a.id)</pre><p>
+				One way to end a sub-expression is to attach a time how long it may be active.
+			</p><p>
+				The next statement ends sub-expressions looking for a matching BEvent 10 seconds after arrival of the AEvent event that started the sub-expression:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">every a=AEvent -&gt; (b=BEvent(b.id = a.id) where timer:within(10 sec))</pre><p>
+				A second way to end a sub-expression is to use the <code class="literal">not</code> operator. You can use the <code class="literal">not</code> operator together with the <code class="literal">and</code> operator to end a sub-expression when a certain event arrives.
+			</p><p>
+				The next statement ends sub-expressions looking for a matching BEvent when, in the order of arrival, the next BEvent that arrives after the AEvent event that started the sub-expression does not match the id of the AEvent:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">every a=AEvent -&gt; (b=BEvent(b.id = a.id) and not BEvent(b.id != a.id))</pre><p>
+				The <code class="literal">every-distinct</code> operator can be used to keep one sub-expression alive per one or more keys. The next pattern demonstrates an alternative to <code class="literal">every-distinct</code>. It ends sub-expressions looking for a matching BEvent when an AEvent arrives that matches the id of the AEvent that started the sub-expression:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">every a=AEvent -&gt; (b=BEvent(b.id = a.id) and not AEvent(b.id = a.id))</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-13b2"/>20.2.19. Pattern Sub-Expression Instance Versus Data Window Use</h3></div></div></div><p>
+			  For some use cases you can either specify one or more data windows as the solution, or you can specify a pattern that also solves your use case.
+			</p><p>
+			  For patterns, you should understand that the engine employs a dynamic state machine. For data windows, the engine employs a delta network and collections. Generally you may find patterns that require a large number of sub-expression instances to consume more memory and more CPU then data windows.
+			</p><p>
+			  For example, consider the following EPL statement that filters out duplicate transaction ids that occur within 20 seconds of each other:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from TxnEvent.std:firstunique(transactionId).win:time(20 sec)</pre><p>
+			  You could also address this solution using a pattern:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from pattern [every-distinct(a.transactionId) a=TxnEvent where timer:within(20 sec)]</pre><p>
+			  If you have a fairly large number of different transaction ids to track, you may find the pattern to perform less well then the data window solution as the pattern asks the engine to manage a pattern sub-expression per transaction id. The data window solution
+			  asks the engine to manage expiry, which can give better performance in many cases.
+			</p><p>
+			  Similar to this, it is generally preferable to use EPL join syntax over a pattern that cardinally detects relationships i.e. <code class="literal">pattern [every-distinct(...) ... -&gt; every-distinct(...) ...]</code>. Join query planning is a powerful Esper feature that implements fast relational joins.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-13c"/>20.2.20. The Keep-All Data Window</h3></div></div></div><p>
+				The <code class="literal">std:keepall</code> data window is a data window that retains all arriving events. The data window can be useful during the development phase and to implement a custom expiry policy using <code class="literal">on-delete</code> and named windows. Care should be taken to timely remove from the keep-all data window however. Use <code class="literal">on-select</code> or on-demand queries to count the number of rows currently held by a named window with keep-all expiry policy.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-13d"/>20.2.21. Statement Design for Reduced Memory Consumption - Diagnosing OutOfMemoryError</h3></div></div></div><p>
+			  This section describes common sources of out-of-memory problems.
+			</p><p>
+				If using the keep-all data window please consider the information above. If using pattern statements please consider pattern sub-expression instantiation and lifetime as discussed prior to this section.
+			</p><p>
+			  When using the <code class="literal">group-by</code> clause or <code class="literal">std:groupwin</code> grouped data windows please consider the hints as described below. Make sure your grouping criteria are fields that don't have an unlimited number of possible values or specify hints otherwise.
+			</p><p>
+				The <code class="literal">std:unique</code> unique data window can also be a source for error. If your uniqueness criteria include a field which is never unique the memory use of the data window can grow, unless your application deletes events.
+			</p><p>
+			  When using the <code class="literal">every-distinct</code> pattern construct parameterized by distinct value expressions that generate an unlimited number of distinct values, consider specifying a time period as part of the parameters to indicate to the pattern engine how long a distinct value should be considered.
+			</p><p>
+			  In a match-recognize pattern consider limiting the number of optional events if optional events are part of the data reported in the <code class="literal">measures</code> clause. Also when using the partition clause, if your partitioning criteria include a field which is never unique the memory use of the match-recognize pattern engine can grow.
+			</p><p>
+				A further source of memory use is when your application creates new statements but fails to destroy created statements when they are no longer needed.
+			</p><p>
+				In your application design you may also want to be conscious when the application listener or subscriber objects retain output data.
+			</p><p>
+			    An engine instance, uniquely identified by an <code class="literal">engine URI</code> is a relatively heavyweight object. Optimally your application allocates only one or a few engine instances per JVM.
+			    A statement instance is associated to one engine instance, is uniquely identified by a statement name and is a medium weight object. We have seen applications allocate 100,000 statements easily.
+			    A statement's context partition instance is associated to one statement, is uniquely identified by a context partition id and is a light weight object. We have seen applications allocate 5000 context partitions for 100 statements easily, i.e. 5,000,000 context partitions.
+			    An aggregation row, data window row, pattern etc. is associated to a statement context partition and is a very lightweight object itself. 
+			</p><p>
+			  The <code class="literal">prev</code>, <code class="literal">prevwindow</code> and <code class="literal">prevtail</code> functions access a data window directly. The engine does not need to maintain a separate data structure and grouping is based on the use of the <code class="literal">std:groupwin</code> grouped data window. 
+			  Compare this to the use of event aggregation functions such as <code class="literal">first</code>, <code class="literal">window</code> and <code class="literal">last</code> which group according to the <code class="literal">group by</code> clause. If your statement utilizes both together consider reformulating to use <code class="literal">prev</code> instead.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-14"/>20.2.22. Performance, JVM, OS and hardware</h3></div></div></div><p>
+				Performance will also depend on your JVM (Sun HotSpot, BEA JRockit, IBM J9), your operating system and your hardware.
+				A JVM performance index such as specJBB at <a class="link" href="http://www.spec.org" target="">spec.org</a> can be used. For memory intensive statement, you may want
+				to consider 64bit architecture that can address more than 2GB or 3GB of memory, although a 64bit JVM usually comes with a slow performance penalty due to
+				more complex pointer address management.
+			</p><p>
+				The choice of JVM, OS and hardware depends on a number of factors and therefore a definite suggestion is hard to make.
+				The choice depends on the number of statements, and number of threads.
+				A larger number of threads would benefit of more CPU and cores. If you have very low latency requirements, you should consider
+				getting more GHz per core, and possibly soft real-time JVM to enforce GC determinism at the JVM level, or even consider dedicated hardware such as Azul.
+				If your statements utilize large data windows, more RAM and heap space will be utilized hence you should clearly plan and account for that and possibly consider 64bit architectures or consider
+				<a class="link" href="http://www.espertech.com/products/" target="">EsperHA</a>.
+			</p><p>
+				The number and type of statements is a factor that cannot be generically accounted for.
+				The benchmark kit can help test out some requirements and establish baselines, and for more complex use cases
+				a simulation or proof of concept would certainly works best.
+				<a class="link" href="http://www.espertech.com/support/services.php" target="">EsperTech' experts</a> can be available to help write interfaces in a consulting relationship.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-15"/>20.2.23. Consider using Hints</h3></div></div></div><p>
+				The @Hint annotation provides a single keyword or a comma-separated list of keywords that provide instructions to the engine towards statement execution
+				that affect runtime performance and memory-use of statements. Also see <a class="xref" href="epl_clauses.html#epl-syntax-annotation-hint" title="5.2.7.8. @Hint">Section 5.2.7.8, “@Hint”</a>.
+			</p><p>
+				The hints for use with joins, outer joins, unidirectional joins, relational and non-relational join query planning are described in <a class="xref" href="epl_clauses.html#epl-join-hints" title="5.12.5. Hints Related to Joins">Section 5.12.5, “Hints Related to Joins”</a>.
+			</p><p>
+				The hint for use with <code class="literal">group by</code> to specify how state for groups is reclaimed is described in <a class="xref" href="epl_clauses.html#epl-groupby-hints" title="5.6.2.1. Hints Pertaining to Group-By">Section 5.6.2.1, “Hints Pertaining to Group-By”</a> and <a class="xref" href="epl-views.html#view-std-groupwin" title="12.3.2. Grouped Data Window (std:groupwin)">Section 12.3.2, “Grouped Data Window (std:groupwin)”</a>.
+			</p><p>
+				The hint for use with <code class="literal">group by</code> to specify aggregation state reclaim for unbound streams and timestamp groups is described in <a class="xref" href="epl_clauses.html#epl-groupby-hints" title="5.6.2.1. Hints Pertaining to Group-By">Section 5.6.2.1, “Hints Pertaining to Group-By”</a>.
+			</p><p>
+				The hint for use with <code class="literal">match_recognize</code> to specify iterate-only is described in <a class="xref" href="match-recognize.html#match-recognize-patternops-iterator" title="7.4.6. Eliminating Duplicate Matches">Section 7.4.6, “Eliminating Duplicate Matches”</a>.
+			</p><p>
+				To tune subquery performance when your subquery selects from a named window, consider the hints discussed in <a class="xref" href="epl_clauses.html#epl-subqueries-hints" title="5.11.7. Hints Related to Subqueries">Section 5.11.7, “Hints Related to Subqueries”</a>.
+			</p><p>
+				The <code class="literal">@NoLock</code> hint to remove context partition locking (also read caution note) is described at <a class="xref" href="api.html#api-threading" title="14.6. Engine Threading and Concurrency">Section 14.6, “Engine Threading and Concurrency”</a>.
+			</p><p>
+			  The hint for influencing query planning is elaborated in <a class="xref" href="performance.html#perf-tips-25" title="20.2.33. Query Planning Index Hints">Section 20.2.33, “Query Planning Index Hints”</a> and query planning is described in <a class="xref" href="performance.html#perf-tips-24" title="20.2.32. Notes on Query Planning">Section 20.2.32, “Notes on Query Planning”</a>.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-16"/>20.2.24. Optimizing Stream Filter Expressions</h3></div></div></div><p>
+				Assume your EPL statement invokes a static method in the stream filter as the below statement shows as an example:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from MyEvent(MyHelperLibrary.filter(field1, field2, field3, field4*field5))</pre><p>
+				As a result of starting above statement, the engine must evaluate each MyEvent event invoking the <code class="literal">MyHelperLibrary.filter</code> method and passing certain event properties. The same applies to pattern filters that 
+				specify functions to evaluate.
+			</p><p>
+				If possible, consider moving some of the checking performed by the function back into the filter or consider splitting the function into a two parts separated by <code class="literal">and</code> conjunction. In general for all expressions, the engine evaluates expressions left of the <code class="literal">and</code> first and can skip evaluation of the 
+				further expressions in the conjunction in the case when the first expression returns false. In addition the engine can build a reverse index for fields provided in stream or pattern filters.
+			</p><p>
+				For example, the below statement could be faster to evaluate:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from MyEvent(field1="value" and 
+  MyHelperLibrary.filter(field1, field2, field3, field4*field5))</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-17"/>20.2.25. Statement and Engine Metric Reporting</h3></div></div></div><p>
+					You can use statement and engine metric reporting as described in <a class="xref" href="api.html#api-instrumentation" title="14.14. Engine and Statement Metrics Reporting">Section 14.14, “Engine and Statement Metrics Reporting”</a> to monitor performance or identify slow statements.
+				</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-18"/>20.2.26. Expression Evaluation Order and Early Exit</h3></div></div></div><p>
+				The term "early exit" or "short-circuit evaluation" refers to when the engine can evaluate an expression without a complete evaluation of all sub-expressions.
+			</p><p>
+				Consider an expression such as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">where expr1 and expr2 and expr3</pre><p>
+				If expr1 is false the engine does not need to evaluate expr2 and expr3. Therefore when using the <code class="literal">AND</code> logical operator consider reordering expressions placing the most-selective expression first and less selective expressions thereafter.
+			</p><p>
+				The same is true for the <code class="literal">OR</code> logical operator: If expr1 is true the engine does not need to evaluate expr2 and expr3. Therefore when using the <code class="literal">OR</code> logical operator consider reordering expressions placing the least-selective expression first and more selective expressions thereafter. 
+			</p><p>
+				The order of expressions (here: expr1, expr2 and expr3) does not make a difference for the join and subquery query planner.
+			</p><p>
+				Note that the engine does not guarantee short-circuit evaluation in all cases. The engine may rewrite the where-clause or filter conditions into another order of evaluation so that it can perform index or reverse index lookups.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-19"/>20.2.27. Large Number of Threads</h3></div></div></div><p>
+					When using a large number of threads with the engine, such as more then 100 threads, we provide a setting in the configuration that instructs the engine to reduce the use of thread-local variables. Please see  <a class="xref" href="configuration.html#config-engine-execution" title="15.4.22. Engine Settings related to Execution of Statements">Section 15.4.22, “Engine Settings related to Execution of Statements”</a> for more information.
+				</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-20"/>20.2.28. Context Partition Related Information</h3></div></div></div><p>
+					As the engine locks on the level of context partition, high concurrency under threading can be achieved by using context partitions.
+				</p><p>
+					Generally context partitions require more memory then the more fine-grained grouping that can be achieved by <code class="literal">group by</code> or <code class="literal">std:groupwin</code>.
+				</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-21"/>20.2.29. Prefer Constant Variables over Non-Constant Variables</h3></div></div></div><p>
+				The create-variable syntax as well as the APIs can identify a variable as a constant value. When a variable's value is not intended to change it is best to declare the variable as constant.
+			</p><p>
+				For example, consider the following two EPL statements that each declares a variable. The first statement declares a constant variable and the second statement declares a non-constant variable:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// declare a constant variable
+create constant variable CONST_DEPARTMENT = 'PURCHASING'</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// declare a non-constant variable
+create variable VAR_DEPARTMENT = 'SALES'</pre><p>
+				When your application creates a statement that has filters for events according to variable values, the engine internally inspects such expressions and performs filter optimizations for constant variables that are more effective in evaluation.
+			</p><p>
+				For example, consider the following two EPL statements that each look for events related to persons that belong to a given department:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// perfer the constant
+select * from PersonEvent(department=CONST_DEPARTMENT)</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// less efficient
+select * from PersonEvent(department=VAR_DEPARTMENT)</pre><p>
+				The engine can more efficiently evaluate the expression using a variable declared as constant. The same observation can be made for subquery and join query planning.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-22"/>20.2.30. Prefer Object-array Events</h3></div></div></div><p>
+				Object-array events offer the best read access performance for access to event property values. In addition, object-array events use much less memory then Map-type events. They also offer the best write access performance. 
+			</p><p>
+			  A comparison of different event representations is in <a class="xref" href="event_representation.html#eventrep_comparing" title="2.13. Comparing Event Representations">Section 2.13, “Comparing Event Representations”</a>.
+			</p><p>
+			    First, we recommend that your application sends object-array events into the engine, instead of Map-type events. See <a class="xref" href="event_representation.html#eventrep-objectarray" title="2.7. Object-array (Object[]) Events">Section 2.7, “Object-array (Object[]) Events”</a> for more information.
+			</p><p>
+			    Second, we recommend that your application sets the engine-wide configuration of the default event representation to object array, as described in <a class="xref" href="configuration.html#config-engine-eventmeta-representation" title="15.4.11.1. Default Event Representation">Section 15.4.11.1, “Default Event Representation”</a>. Alternatively you can use the <code class="literal">@EventRepresentation(array=true)</code> annotation with individual statements.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-23"/>20.2.31. Composite or Compound Keys</h3></div></div></div><p>
+					If your uniqueness, grouping, sorting or partitioning keys are composite keys or compound keys, this section may apply. A composite key is a key that consists of 2 or more properties or expressions.
+				</p><p>
+					In the example below the <code class="literal">firstName</code> and <code class="literal">lastName</code> expressions are part of a composite key: 
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">... group by firstName, lastName
+...std:unique(firstName, lastName)...
+...order by firstName, lastName</pre><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2>
+				  The example above is not a comprehensive discussion where composite or compound keys may be used in EPL. Other places where composite keys may apply are
+				  patterns, partitioned contexts and grouped data windows (we may have missed one).
+				</div><p>
+					You application could change the EPL to instead refer to a single value <code class="literal">fullName</code>:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">... group by fullName
+...std:unique(fullName)...
+...order by fullName</pre><p>
+					The advantage in using a single expression as the uniqueness, grouping and sorting key is that the engine does not need to compute multiple expressions 
+					and retain a separate data structure in memory that represents the composite key, resulting in reduced memory use and increased throughput.
+				</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-24"/>20.2.32. Notes on Query Planning</h3></div></div></div><p>
+				  Query planning takes place for subqueries, joins (any type), named window on-actions (on-select, on-merge, on-insert, on-update, on-select) and fire-and-forget queries. Query planning
+				  affects query execution speed. Enable query plan logging to output query plan information.
+				</p><p>
+				  For query planning, the engine draws information from:
+				</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+							The <code class="literal">where</code>-clauses, if any are specified. <code class="literal">Where</code>-clauses correlate streams, patterns, named windows etc. with more streams, patterns and named windows and are thus the main source of information for query planning.
+						</p></li><li><p>
+							The data window(s) declared on streams and named windows. 
+							The <code class="literal">std:unique</code> and the <code class="literal">std:firstunique</code> data window instruct the engine to retain the last event per unique criteria.
+						</p></li><li><p>
+							For named windows, the explicit indexes created via <code class="literal">create unique index</code> or <code class="literal">create index</code>.
+						</p></li><li><p>
+							For named windows, the previously created implicit indexes. The engine can create implicit indexes automatically if explicit indexes do not match correlation requirements.
+						</p></li><li><p>
+							Any hints specified for the statement in question and including hints specified during the creation of named windows with <code class="literal">create window</code>.
+						</p></li></ol></div><p>
+				   The engine prefers unique indexes over non-unique indexes.
+				</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="perf-tips-25"/>20.2.33. Query Planning Index Hints</h3></div></div></div><p>
+				  Currently index hints are only supported for the following types of statements:
+				</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+							Named window on-action statements (on-select, on-merge, on-insert, on-update, on-select).
+						</p></li><li><p>
+							Statements that have subselects against named windows that have index sharing enabled (the default is disabled).
+						</p></li><li><p>
+							Fire-and-forget queries.
+						</p></li></ol></div><p>
+				  For the above statements, you may dictate to the engine which explicit index (created via <code class="literal">create index</code> syntax) to use.
+				</p><p>
+				  Specify the name of the explicit index in parentheses following <code class="literal">@Hint</code> and the <code class="literal">index</code> literal.
+				</p><p>
+				  The following example instructs the engine to use the <code class="literal">UserProfileIndex</code> if possible:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">@Hint('index(UserProfileIndex)')</pre><p>
+				  Add the literal <code class="literal">bust</code> to instruct the engine to use the index, or if the engine cannot use the index fail query planning with an exception and therefore fail statement creation.
+				</p><p>
+				  The following example instructs the engine to use the <code class="literal">UserProfileIndex</code> if possible or fail with an exception if the index cannot be used:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">@Hint('index(UserProfileIndex, bust)')</pre><p>
+				  Multiple indexes can be listed separated by comma (<code class="literal">,</code>). 
+				</p><p>
+				  The next example instructs the engine to consider the <code class="literal">UserProfileIndex</code> and the <code class="literal">SessionIndex</code> or fail with an exception if either index cannot be used:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">@Hint('index(UserProfileIndex, SessionIndex, bust)')</pre><p>
+				  The literal <code class="literal">explicit</code> can be added to instruct the engine to use only explicitly created indexes.
+				</p><p>
+				  The final example instructs the engine to consider any explicitly create index or fail with an exception if any of the explicitly created indexes cannot be used:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">@Hint('index(explicit, bust)')</pre></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="performance-kit"/>20.3. Using the performance kit</h2></div></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="how-to-kit"/>20.3.1. How to use the performance kit</h3></div></div></div><p>
+            The benchmark application is basically an Esper event server build with Esper that listens to remote clients
+            over TCP.
+            Remote clients send MarketData(ticker, price, volume) streams to the event server.
+            The Esper event server is started with 1000 statements of one single kind (unless otherwise written),
+            with one statement per ticker symbol, unless the statement kind does not depend on the symbol.
+            The statement prototype is provided along the results with a '$' instead of the actual ticker symbol value.
+            The Esper event server is entirely multithreaded and can leverage the full power of 32bit or 64bit
+            underlying hardware multi-processor multi-core architecture.
+        </p><p>
+                The kit also prints out when starting up the event size and the theoretical maximal throughput you can get on a
+                100 Mbit/s and 1 Gbit/s network. Keep in mind a 100 Mbit/s network will be overloaded at about 400 000 event/s when using our kit despite
+                the small size of events.
+            </p><p>
+            Results are posted on our Wiki page at <a class="link" href="http://docs.codehaus.org/display/ESPER/Esper+performance" target="">Performance Wiki</a>.
+            Reported results do not represent best ever obtained results. Reported results may help you better compare
+            Esper to other solutions (for latency, throughput and CPU utilization) and also assess your target hardware and JVMs.
+        </p><p>
+                The Esper event server, client and statement prototypes are provided in the source repository
+                <code class="literal">esper/trunk/examples/benchmark/</code>. 
+                Refer to <a class="link" href="http://xircles.codehaus.org/projects/esper/repo" target="">http://xircles.codehaus.org/projects/esper/repo</a>
+                for source access.
+            </p><p>
+                A built is provided for convenience (without sources) as an attachment to the Wiki page
+                at <a class="link" href="http://docs.codehaus.org/pages/viewpageattachments.action?pageId=8356191" target="">Performance Wiki</a>.
+                It contains Ant script to start client, server in simulation mode and server. For real measurement we
+                advise
+                to start from a shell script (because Ant is pipelining stdout/stderr when you invoke a JVM from Ant -
+                which
+                is costly). Sample scripts are provided for you to edit and customize.
+            </p><p>
+                If you use the kit you should:
+            </p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+                        Choose the statement you want to benchmark, add it to
+                        <code class="literal">etc/statements.properties</code>
+                        under
+                        your own KEY and use the
+                        <code class="literal">-mode KEY</code>
+                        when you start the Esper event server.
+                    </p></li><li><p>
+                        Prepare your runServer.sh/runServer.cmd and runClient.sh/runclient.cmd scripts. You'll need to
+                        drop required
+                        jar libraries in
+                        <code class="literal">lib/</code>
+                        , make sure the classpath is configured in those script to include
+                        <code class="literal">build</code>
+                        and
+                        <code class="literal">etc</code>
+                        . The required libraries are Esper (any compatible version, we have tested started with Esper
+                        1.7.0)
+                        and its dependencies as in the sample below (with Esper 2.1) :
+                        </p><pre xmlns="" class=""># classpath on Unix/Linux (on one single line)
+etc:build:lib/esper-4.9.0.jar:lib/commons-logging-1.1.1.jar:lib/cglib-nodep-2.2.jar
+   :lib/antlr-runtime-3.2.jar:lib/log4j-1.2.16.jar
+@rem  classpath on Windows (on one single line)
+etc;build;lib\esper-4.9.0.jar;lib\commons-logging-1.1.1.jar;lib\cglib-nodep-2.2.jar
+   ;lib\antlr-runtime-3.2.jar;lib\log4j-1.2.16.jar</pre><p>
+                        Note that <code class="literal">./etc</code> and <code class="literal">./build</code> have to be in the classpath.
+                        At that stage you should also start to set min and max JVM heap. A good start is 1GB as in
+                        <code class="literal">-Xms1g -Xmx1g</code>
+                    </p></li><li><p>
+                        Write the statement you want to benchmark given that client will send a stream MarketData(String
+                        ticker, int volume, double price), add it to
+                        <code class="literal">etc/statements.properties</code>
+                        under
+                        your own KEY and use the
+                        <code class="literal">-mode KEY</code>
+                        when you start the Esper event server.
+                        Use <code class="literal">'$'</code> in the statement to create a prototype. For every symbol, a statement
+                        will get registered with all <code class="literal">'$'</code> replaced by the actual symbol value (f.e. <code class="literal">'GOOG'</code>)
+                    </p></li><li><p>
+                        Ensure client and server are using the same
+                        <code class="literal">-Desper.benchmark.symbol=1000</code> value.
+                        This sets the number of symbol to use (thus may set the number of statement if you are using
+                        a statement prototype, and governs how MarketData event are represented over the network.
+                        Basically all events will have the same size over the network to ensure predictability and will be ranging
+                        between <code class="literal">S0AA</code> and <code class="literal">S999A</code> if you use 1000 as a value here (prefix with S and padded with A up to
+                        a fixed length string. Volume and price attributes will be randomized.
+                    </p></li><li><p>
+                        By default the benchmark registers a subscriber to the statement(s). Use <code class="literal">-Desper.benchmark.ul</code> to use
+                        an UpdateListener instead. Note that the subscriber contains suitable update(..) methods for the default
+                        proposed statement in the <code class="literal">etc/statements.properties</code> file but might not be suitable if you change statements due
+                        to the strong binding with statement results. Refer to <a class="xref" href="api.html#api-receive-results" title="14.3.2. Receiving Statement Results">Section 14.3.2, “Receiving Statement Results”</a>.
+                    </p></li><li><p>
+                        Establish a performance baseline in simulation mode (without clients). Use the
+                        <code class="literal">-rate 1x5000</code>
+                        option
+                        to simulate one client (one thread) sending 5000 evt/s. You can ramp up both the number of client simulated
+                        thread and their emission rate to maximize CPU
+                        utilization.
+                        The right number should mimic the client emission rate you will use in the client/server benchmark
+                        and should thus be
+                        consistent with what your client machine and network will be able to send.
+                        On small hardware, having a lot of thread with slow rate will not help getting high throughput in this
+                        simulation mode.
+                    </p></li><li><p>
+                        Do performance runs with client/server mode. Remove the
+                        <code class="literal">-rate NxM</code>
+                        option from the runServer script or Ant task.
+                        Start the server with
+                        <code class="literal">-help</code>
+                        to display the possible server options (listen port, statistics, fan out options etc).
+                        On the remote machine, start one or more client. Use
+                        <code class="literal">-help</code>
+                        to display the possible client options (remote port, host,
+                        emission rate). The client will output the actual number of event it is sending to the server.
+                        If the server gets overloaded (or if you turned on
+                        <code class="literal">-queue</code>
+                        options on the server) the client will likely
+                        not be able to reach its target rate.
+                    </p><p>
+                        Usually you will get better performance by using server side <code class="literal">-queue -1</code> option so as to have
+                        each client connection handled by a single thread pipeline. If you change to 0 or more, there will be
+                        intermediate structures to pass the event stream in an asynchronous fashion. This will increase context
+                        switching, although if you are using many clients, or are using the <code class="literal">-sleep xxx</code> (xxx in
+                        milliseconds) to simulate a listener delay you may get better performance.
+                    </p><p>
+                        The most important server side option is <code class="literal">-stat xxx</code> (xxx in seconds) to print out
+                        throughput and latency statistics aggregated over the last xxx seconds (and reset every time).
+                        It will produce both internal Esper latency (in nanosecond) and also end to end latency (in millisecond, including network time).
+                        If you are measuring end to end latency you should make sure your server and client machine(s) are having the same time
+                        with f.e. ntpd with a good enough precision.
+                        The stat format is like:
+                     </p><pre xmlns="" class="">---Stats - engine (unit: ns)
+  Avg: 2528 #4101107
+        0 &lt;    5000:  97.01%  97.01% #3978672
+     5000 &lt;   10000:   2.60%  99.62% #106669
+    10000 &lt;   15000:   0.35%  99.97% #14337
+    15000 &lt;   20000:   0.02%  99.99% #971
+    20000 &lt;   25000:   0.00%  99.99% #177
+    25000 &lt;   50000:   0.00% 100.00% #89
+    50000 &lt;  100000:   0.00% 100.00% #41
+   100000 &lt;  500000:   0.00% 100.00% #120
+   500000 &lt; 1000000:   0.00% 100.00% #2
+  1000000 &lt; 2500000:   0.00% 100.00% #7
+  2500000 &lt; 5000000:   0.00% 100.00% #5
+  5000000 &lt;    more:   0.00% 100.00% #18
+---Stats - endToEnd (unit: ms)
+  Avg: -2704829444341073400 #4101609
+        0 &lt;       1:  75.01%  75.01% #3076609
+        1 &lt;       5:   0.00%  75.01% #0
+        5 &lt;      10:   0.00%  75.01% #0
+       10 &lt;      50:   0.00%  75.01% #0
+       50 &lt;     100:   0.00%  75.01% #0
+      100 &lt;     250:   0.00%  75.01% #0
+      250 &lt;     500:   0.00%  75.01% #0
+      500 &lt;    1000:   0.00%  75.01% #0
+     1000 &lt;    more:  24.99% 100.00% #1025000
+Throughput 412503 (active 0 pending 0 cnx 4)</pre><p>
+                          This one reads as:
+						</p><pre xmlns="" class="">"Throughput is 412 503 event/s with 4 client connected. No -queue options 
+was used thus no event is pending at the time the statistics are printed. 
+Esper latency average is at 2528 ns (that is 2.5 us) for 4 101 107 events 
+(which means we have 10 seconds stats here). Less than 10us latency 
+was achieved for 106 669 events that is 99.62%. Latency between 5us 
+and 10us was achieved for those 2.60% of all the events in the interval."
+
+"End to end latency was ... in this case likely due to client clock difference
+we ended up with unusable end to end statistics."</pre><p>
+		Consider the second output paragraph on end-to-end latency:
+	</p><pre xmlns="" class="">---Stats - endToEnd (unit: ms)
+  Avg: 15 #863396
+        0 &lt;       1:   0.75%   0.75% #6434
+        1 &lt;       5:   0.99%   1.74% #8552
+        5 &lt;      10:   2.12%   3.85% #18269
+       10 &lt;      50:  91.27%  95.13% #788062
+       50 &lt;     100:   0.10%  95.22% #827
+      100 &lt;     250:   4.36%  99.58% #37634
+      250 &lt;     500:   0.42% 100.00% #3618
+      500 &lt;    1000:   0.00% 100.00% #0
+     1000 &lt;    more:   0.00% 100.00% #0</pre><p>
+		 This would read:
+     </p><pre xmlns="" class="">"End to end latency average is at 15 milliseconds for the 863 396 events 
+considered for this statistic report. 95.13% ie 788 062 events were handled 
+(end to end) below 50ms, and 91.27% were handled between 10ms and 50ms."</pre></li></ol></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="how-we-kit"/>20.3.2. How we use the performance kit</h3></div></div></div><p>
+                We use the performance kit to track performance progress across Esper versions, as well as to implement
+                optimizations. You can track our work on the Wiki at <a class="link" href="http://docs.codehaus.org/display/ESPER/Home" target="">http://docs.codehaus.org/display/ESPER/Home</a>.
+            </p></div></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="examples.html"><strong>Prev</strong>Chapter 19. Examples, Tutorials, Case Studies</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="references.html"><strong>Next</strong>Chapter 21. References</a></li></ul></body></html>

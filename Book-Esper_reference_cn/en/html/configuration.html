@@ -1,0 +1,1212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 15. Configuration</title><link rel="stylesheet" href="css/espertech.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Esper Reference"/><link rel="up" href="index.html" title="Esper Reference"/><link rel="prev" href="api.html" title="Chapter 14. API Reference"/><link rel="next" href="devlifecycle.html" title="Chapter 16. Development Lifecycle"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.espertech.com" class="site_href"><strong>esper.codehaus.org and espertech.com</strong></a><a href="http://esper.codehaus.org/esper/documentation/documentation.html" class="doc_href"><strong>Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="api.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="devlifecycle.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="configuration"/>Chapter 15. Configuration</h2></div></div></div><div class="toc"><dl><dt><span class="sect1"><a href="configuration.html#configuration-programmatic">15.1. Programmatic Configuration</a></span></dt><dt><span class="sect1"><a href="configuration.html#configuration-via-xml">15.2. Configuration via XML File</a></span></dt><dt><span class="sect1"><a href="configuration.html#configuration-xml">15.3. XML Configuration File</a></span></dt><dt><span class="sect1"><a href="configuration.html#configuration-items">15.4. Configuration Items</a></span></dt><dd><dl><dt><span class="sect2"><a href="configuration.html#config-java">15.4.1. Events represented by Java Classes</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-java-util-map">15.4.2. Events represented by java.util.Map</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-objectarray">15.4.3. Events represented by Object[] (Object-array)</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-xml-dom">15.4.4. Events represented by org.w3c.dom.Node</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-plugineventrep">15.4.5. Events represented by Plug-in Event Representations</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-class--package-imports">15.4.6. Class and package imports</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-method-invocations">15.4.7. Cache Settings for From-Clause Method Invocations</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-variables">15.4.8. Variables</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-database-ref">15.4.9. Relational Database Access</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-engine-threading">15.4.10. Engine Settings related to Concurrency and Threading</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-engine-eventmeta">15.4.11. Engine Settings related to Event Metadata</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-engine-viewresources">15.4.12. Engine Settings related to View Resources</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-engine-logging">15.4.13. Engine Settings related to Logging</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-engine-variables">15.4.14. Engine Settings related to Variables</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-engine-patterns">15.4.15. Engine Settings related to Patterns</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-engine-scripts">15.4.16. Engine Settings related to Scripts</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-engine-stream-selection">15.4.17. Engine Settings related to Stream Selection</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-engine-time-source">15.4.18. Engine Settings related to Time Source</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-engine-instrumentation">15.4.19. Engine Settings related to Metrics Reporting</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-engine-language">15.4.20. Engine Settings related to Language and Locale</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-engine-expression">15.4.21. Engine Settings related to Expression Evaluation</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-engine-execution">15.4.22. Engine Settings related to Execution of Statements</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-engine-exceptionhandling">15.4.23. Engine Settings related to Exception Handling</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-engine-conditionhandling">15.4.24. Engine Settings related to Condition Handling</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-revisionevent">15.4.25. Revision Event Type</a></span></dt><dt><span class="sect2"><a href="configuration.html#config-variantstream">15.4.26. Variant Stream</a></span></dt></dl></dd><dt><span class="sect1"><a href="configuration.html#configuration-type-names">15.5. Type Names</a></span></dt><dt><span class="sect1"><a href="configuration.html#configuration-runtime">15.6. Runtime Configuration</a></span></dt><dt><span class="sect1"><a href="configuration.html#configuration-logging">15.7. Logging Configuration</a></span></dt><dd><dl><dt><span class="sect2"><a href="configuration.html#configuration-logging-log4j">15.7.1. Log4j Logging Configuration</a></span></dt></dl></dd></dl></div><a id="d0e33878" class="indexterm"/><a id="d0e33883" class="indexterm"/><p>
+        Esper engine configuration is entirely optional. Esper has a very small number of configuration parameters that can be used to simplify event 
+        pattern and EPL statements, and to tune the engine behavior to specific requirements. The Esper engine works out-of-the-box without configuration.
+    </p><p>
+        An application can supply configuration at the time of engine allocation using the <code class="literal">Configuration</code> class, and can also use XML files to hold configuration. Configuration can be changed at runtime
+        via the <code class="literal">ConfigurationOperations</code> interface available from <code class="literal">EPAdministrator</code> via the <code class="literal">getConfiguration</code> method.
+    </p><p>
+		The difference between using a <code class="literal">Configuration</code> object and the <code class="literal">ConfigurationOperations</code> interface is that for the latter, all configuration including event types added through that interface are considered runtime configurations. 
+		This means they will be discarded when calling the <code class="literal">initialize</code> method on an <code class="literal">EPServiceProvider</code> instance.
+    </p><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="configuration-programmatic"/>15.1. Programmatic Configuration</h2></div></div></div><a id="d0e33919" class="indexterm"/><p>
+            An instance of <code class="literal">com.espertech.esper.client.Configuration</code> represents all configuration parameters. The <code class="literal">Configuration</code> is used to build an <code class="literal">EPServiceProvider</code>, which provides the administrative and runtime interfaces for an Esper engine instance.
+        </p><p>
+            You may obtain a <code class="literal">Configuration</code> instance by instantiating it directly and adding or setting values on it. The <code class="literal">Configuration</code> instance is then passed to <code class="literal">EPServiceProviderManager</code> to obtain a configured Esper engine.
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration configuration = new Configuration();
+configuration.addEventType("PriceLimit", PriceLimit.class.getName());
+configuration.addEventType("StockTick", StockTick.class.getName());
+configuration.addImport("org.mycompany.mypackage.MyUtility");
+configuration.addImport("org.mycompany.util.*");
+
+EPServiceProvider epService = EPServiceProviderManager.getProvider("sample", configuration);
+</pre><p>
+			Note that <code class="literal">Configuration</code> is meant only as an initialization-time object. The Esper engine represented by an <code class="literal">EPServiceProvider</code> does not retain any association back to the <code class="literal">Configuration</code>.
+        </p><p>
+			The <code class="literal">ConfigurationOperations</code> interface provides runtime configuration options as further described in <a class="xref" href="api.html#api-admin-runtime-config" title="14.3.7. Runtime Configuration">Section 14.3.7, “Runtime Configuration”</a>. Through this interface applications can, for example, add new event types at runtime and then create new statements
+			that rely on the additional configuration. The <code class="literal">getConfiguration</code> method on <code class="literal">EPAdministrator</code> allows access to <code class="literal">ConfigurationOperations</code>.
+        </p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="configuration-via-xml"/>15.2. Configuration via XML File</h2></div></div></div><a id="d0e33978" class="indexterm"/><p>
+			An alternative approach to configuration is to specify a configuration in a XML file. 
+        </p><p>
+			The default name for the XML configuration file is <code class="literal">esper.cfg.xml</code>. Esper reads this file from the root of the <code class="literal">CLASSPATH</code> as an application resource via the <code class="literal">configure</code> method.
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration configuration = new Configuration();		
+configuration.configure();
+</pre><p>
+			The <code class="literal">Configuration</code> class can read the XML configuration file from other sources as well. The <code class="literal">configure</code> method accepts <code class="literal">URL, File and String</code> filename parameters.
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration configuration = new Configuration();		
+configuration.configure("myengine.esper.cfg.xml");
+</pre></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="configuration-xml"/>15.3. XML Configuration File</h2></div></div></div><p>
+			Here is an example configuration file.
+            The schema for the configuration file can be found in the <code class="literal">etc</code> folder and is named <code class="literal">esper-configuration-4-0.xsd</code>.
+            It is also available online at <code class="literal">http://www.espertech.com/schema/esper/esper-configuration-2.0.xsd</code> so that IDE can fetch it automatically.
+            The namespace used is <code class="literal">http://www.espertech.com/schema/esper</code>.
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;esper-configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.espertech.com/schema/esper"
+    xsi:schemaLocation="
+http://www.espertech.com/schema/esper
+http://www.espertech.com/schema/esper/esper-configuration-2.0.xsd"&gt;
+  &lt;event-type name="StockTick" class="com.espertech.esper.example.stockticker.event.StockTick"/&gt;
+  &lt;event-type name="PriceLimit" class="com.espertech.esper.example.stockticker.event.PriceLimit"/&gt;
+  &lt;auto-import import-name="org.mycompany.mypackage.MyUtility"/&gt;
+  &lt;auto-import import-name="org.mycompany.util.*"/&gt;
+&lt;/esper-configuration&gt;		
+</pre><p>
+			The example above is only a subset of the configuration items available. The next chapters outline the available configuration in greater detail.
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="configuration-items"/>15.4. Configuration Items</h2></div></div></div><a id="d0e34035" class="indexterm"/><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-java"/>15.4.1. Events represented by Java Classes</h3></div></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-java-package-alias"/>15.4.1.1. Package of Java Event Classes</h4></div></div></div><p>
+					Via this configuration an application can make the Java package or packages that contain an application's Java event classes known to an engine. 
+					Thereby an application can simply refer to event types in statements by using the simple class name of
+					each Java class representing an event type.
+				</p><p>
+					For example, consider an order-taking application that places all event classes in package <code class="literal">com.mycompany.order.event</code>. One Java class representing an event is the class <code class="literal">OrderEvent</code>. 
+					The application can simply issue a statement as follows to select <code class="literal">OrderEvent</code> events:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from OrderEvent</pre><p>
+					The XML configuration for defining the Java packages that contain Java event classes is:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;event-type-auto-name package-name="com.mycompany.order.event"/&gt;</pre><p>
+					The same configuration but using the <code class="literal">Configuration</code> class:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.addEventTypeAutoName("com.mycompany.order.event");
+// ... or ...
+config.addEventTypeAutoName(MyEvent.getPackage().getName());</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-java-event-name"/>15.4.1.2. Event type name to Java class mapping</h4></div></div></div><p>
+					This configuration item can be used to allow event pattern statements and EPL statements to use an event type name rather then the fully qualified Java class name. Note that Java Interface classes and abstract classes are also supported as event types via the fully qualified Java class name, and an event type name can also be defined for such classes.
+				</p><p>
+					The example pattern statement below first shows a pattern that uses the name <code class="literal">StockTick</code>. The second pattern statement is equivalent but specifies the fully-qualified Java class name.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">every StockTick(symbol='IBM')"</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">every com.espertech.esper.example.stockticker.event.StockTick(symbol='IBM')</pre><p>
+					The event type name can be listed in the XML configuration file as shown below. The <code class="literal">Configuration</code> API can also be used to programatically specify an event type name, as shown in an earlier code snippet.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;event-type name="StockTick" class="com.espertech.esper.example.stockticker.event.StockTick"/&gt;</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-java-legacy"/>15.4.1.3. Non-JavaBean and Legacy Java Event Classes</h4></div></div></div><p>
+					Esper can process Java classes that provide event properties through other means then through JavaBean-style getter methods. It is not necessary that the method and member variable names in your Java class adhere to the JavaBean convention - any public methods and public member variables can be exposed as event properties via the below configuration.
+				</p><p>
+					A Java class can optionally be configured with an accessor style attribute. This attribute instructs the engine how it should expose methods and fields for use as event properties in statements.
+				</p><div class="table"><a id="d0e34100"/><p class="title"><b>Table 15.1. Accessor Styles</b></p><div class="table-contents"><table summary="Accessor Styles" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Style Name</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">javabean</code></td><td>As the default setting, the engine exposes an event property for each public method following the JavaBean getter-method conventions</td></tr><tr><td><code class="literal">public</code></td><td>The engine exposes an event property for each public method and public member variable of the given class</td></tr><tr><td><code class="literal">explicit</code></td><td>The engine exposes an event property only for the explicitly configured public methods and public member variables</td></tr></tbody></table></div></div><br class="table-break"/><p>
+					Using the <code class="literal">public</code> setting for the <code class="literal">accessor-style</code> attribute instructs the engine to expose an event property for each public method and public member variable of a Java class. The engine assigns event property names of the same name as the name of the method or member variable in the Java class.
+				</p><p>					
+					For example, assuming the class <code class="literal">MyLegacyEvent</code> exposes a method named <code class="literal">readValue</code> and a member variable named <code class="literal">myField</code>, we can then use properties as shown. 
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select readValue, myField from MyLegacyEvent</pre><p>
+					Using the <code class="literal">explicit</code> setting for the <code class="literal">accessor-style</code> attribute requires that event properties are declared via configuration. This is outlined in the next chapter.
+				</p><p>
+					When configuring an engine instance from a XML configuration file, the XML snippet below demonstrates the use of the <code class="literal">legacy-type</code> element and the <code class="literal">accessor-style</code> attribute.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;event-type name="MyLegacyEvent" class="com.mycompany.mypackage.MyLegacyEventClass"&gt;
+  &lt;legacy-type accessor-style="public"/&gt;
+&lt;/event-type&gt;</pre><p>
+					When configuring an engine instance via Configuration API, the sample code below shows how to set the accessor style.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration configuration = new Configuration();
+ConfigurationEventTypeLegacy legacyDef = new ConfigurationEventTypeLegacy();
+legacyDef.setAccessorStyle(ConfigurationEventTypeLegacy.AccessorStyle.PUBLIC);
+config.addEventType("MyLegacyEvent", MyLegacyEventClass.class.getName(), legacyDef);
+
+EPServiceProvider epService = EPServiceProviderManager.getProvider("sample", configuration);
+</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-java-spec-properties"/>15.4.1.4. Specifying Event Properties for Java Classes</h4></div></div></div><p>
+					Sometimes it may be convenient to use event property names in pattern and EPL statements that are backed up by a given public method or member variable (field) in a Java class. And it can be useful to declare multiple event properties that each map to the same method or member variable.
+				</p><p>
+					We can configure properties of events via <code class="literal">method-property</code> and <code class="literal">field-property</code> elements, as the next example shows.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;event-type name="StockTick" class="com.espertech.esper.example.stockticker.event.StockTickEvent"&gt;
+	&lt;legacy-type accessor-style="javabean" code-generation="enabled"&gt;
+		&lt;method-property name="price" accessor-method="getCurrentPrice" /&gt;
+		&lt;field-property name="volume" accessor-field="volumeField" /&gt;
+	&lt;/legacy-type&gt;
+&lt;/event-type&gt;</pre><p>
+					The XML configuration snippet above declared an event property named <code class="literal">price</code> backed by a getter-method named <code class="literal">getCurrentPrice</code>, and a second event property named <code class="literal">volume</code> that is backed by a public member variable named <code class="literal">volumeField</code>. Thus the price and volume properties can be used in a statement:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select avg(price * volume) from StockTick</pre><p>
+					As with all configuration options, the API can also be used:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration configuration = new Configuration();
+ConfigurationEventTypeLegacy legacyDef = new ConfigurationEventTypeLegacy();
+legacyDef.addMethodProperty("price", "getCurrentPrice");
+legacyDef.addFieldProperty("volume", "volumeField");
+config.addEventType("StockTick", StockTickEvent.class.getName(), legacyDef);</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-java-codegen"/>15.4.1.5. Turning off Code Generation</h4></div></div></div><p>
+					Esper employes the <code class="literal">CGLIB</code> library for very fast read access to event property values. For certain legacy Java classes it may be desirable to disable the use of this library and instead use Java reflection to obtain event property values from event objects.
+				</p><p>
+					In the XML configuration, the optional <code class="literal">code-generation</code> attribute in the <code class="literal">legacy-type</code> section can be set to <code class="literal">disabled</code> as shown next.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;event-type name="MyLegacyEvent" class="com.mycompany.package.MyLegacyEventClass"&gt;
+	&lt;legacy-type accessor-style="javabean" code-generation="disabled" /&gt;
+&lt;/event-type&gt;
+</pre><p>
+					The sample below shows how to configure this option via the API.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration configuration = new Configuration();
+ConfigurationEventTypeLegacy legacyDef = new ConfigurationEventTypeLegacy();
+legacyDef.setCodeGeneration(ConfigurationEventTypeLegacy.CodeGeneration.DISABLED);
+config.addEventType("MyLegacyEvent", MyLegacyEventClass.class.getName(), legacyDef);</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-java-property-case-sensitivity"/>15.4.1.6. Case Sensitivity and Property Names</h4></div></div></div><p>
+					By default the engine resolves Java event properties case sensitive. That is, property names in statements must match JavaBean-convention property names in name and case. This option controls case sensitivity per Java class.
+				</p><p>
+					In the configuration XML, the optional <code class="literal">property-resolution-style</code> attribute in the <code class="literal">legacy-type</code> element can be set to any of these values:
+				</p><div class="table"><a id="d0e34247"/><p class="title"><b>Table 15.2. Property Resolution Case Sensitivity Styles</b></p><div class="table-contents"><table summary="Property Resolution Case Sensitivity Styles" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Style Name</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">case_sensitive (default)</code></td><td>As the default setting, the engine matches property names for the exact name and case only.</td></tr><tr><td><code class="literal">case_insensitive</code></td><td>Properties are matched if the names are identical.  A case insensitive search is used and will choose the first property that matches the name exactly 
+											or the first property that matches case insensitively should no match be found.
+								</td></tr><tr><td><code class="literal">distinct_case_insensitive</code></td><td>Properties are matched if the names are identical.  A case insensitive search is used and will choose the first property that matches the name exactly case insensitively.  If more than one 'name' can be mapped to the property an exception is thrown.</td></tr></tbody></table></div></div><br class="table-break"/><p>
+					The sample below shows this option in XML configuration, however the setting can also be changed via API:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;event-type name="MyLegacyEvent" class="com.mycompany.package.MyLegacyEventClass"&gt;
+  &lt;legacy-type property-resolution-style="case_insensitive"/&gt;
+&lt;/event-type&gt;</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-java-factory-copy-method"/>15.4.1.7. Factory and Copy Method</h4></div></div></div><p>
+					The <code class="literal">insert into</code> clause and directly instantiate and populate your event object. By default the engine invokes the default constructor to instantiate an event object. To change this behavior, you may configure
+					a factory method. The factory method is a method name or a class name plus a method name (in the format class.method) that returns an instance of the class.
+				</p><p>
+					The <code class="literal">update</code> clause can change event properties on an event object. For the purpose of maintaining consistency, the engine may have to copy your event object via serialization (implement the <code class="literal">java.io.Serializable</code> interface). If instead you do not want any copy operations to occur, or your application needs to control the copy operation, you may configure a copy method. The copy method is the name of a method on the event object that copies the event object.
+				</p><p>
+					The sample below shows this option in XML configuration, however the setting can also be changed via <code class="literal">ConfigurationEventTypeLegacy</code>:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;event-type name="MyLegacyEvent" class="com.mycompany.package.MyLegacyEventClass"&gt;
+  &lt;legacy-type factory-method="com.mycompany.myapp.MySampleEventFactory.createMyLegacyTypeEvent" copy-method="myCopyMethod"/&gt;
+&lt;/event-type&gt;</pre><p>
+				  The copy method should be a public method that takes no parameters and returns a new event object (it may not return <code class="literal">this</code>). The copy method may not be a static method and may not take parameters.
+				</p><p>
+				  The <code class="literal">Beacon</code> data flow operator in connection with the Sun JVM can use <code class="literal">sun.reflect.ReflectionFactory</code> if the class has no default no-argument constructor.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-java-startendtimestamp"/>15.4.1.8. Start and End Timestamp</h4></div></div></div><p>
+					For use with date-time interval methods, for example, you may let the engine know which property of your class carries the start and end timestamp value.
+				</p><p>
+					The sample below shows this option in XML configuration, however the setting can also be changed via API. The sample sets the name of the property providing the start timestamp to <code class="literal">startts</code> and the name of the property providing the end timestamp <code class="literal">endts</code>:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;event-type name="MyLegacyEvent" class="com.mycompany.package.MyLegacyEventClass"&gt;
+  &lt;legacy-type start-timestamp-property-name="startts" end-timestamp-property-name="endts"/&gt;
+&lt;/event-type&gt;
+</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-java-util-map"/>15.4.2. Events represented by <code class="literal">java.util.Map</code></h3></div></div></div><p>
+				The engine can process <code class="literal">java.util.Map</code> events via the <code class="literal">sendEvent(Map map, String eventTypeName)</code> method on the <code class="literal">EPRuntime</code> interface. Entries in the Map represent event properties. Keys must be of type <code class="literal">java.util.String</code> for the engine to be able to look up event property names in pattern or EPL statements. Values can be of any type. JavaBean-style objects as values in a <code class="literal">Map</code> can be processed by the engine, and strongly-typed nested maps are also supported. Please see the <a class="xref" href="event_representation.html" title="Chapter 2. Event Representations">Chapter 2, <i>Event Representations</i></a> section for details on how to use <code class="literal">Map</code> events with the engine.
+			</p><p>
+				Via configuration you can provide an event type name for <code class="literal">Map</code> events for use in statements, and the event property names and types enabling the engine to validate properties in statements.
+			</p><p>
+				The below snippet of XML configuration configures an event named <code class="literal">MyMapEvent</code>.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;event-type name="MyMapEvent"&gt;
+  &lt;java-util-map&gt;
+    &lt;map-property name="carId" class="int"/&gt;
+    &lt;map-property name="carType" class="string"/&gt;
+    &lt;map-property name="assembly" class="com.mycompany.Assembly"/&gt;    
+  &lt;/java-util-map&gt;
+&lt;/event-type&gt;</pre><p>
+				This configuration defines the <code class="literal">carId</code> property of <code class="literal">MyMapEvent</code> events to be of type <code class="literal">int</code>, and the <code class="literal">carType</code> property to be of type <code class="literal">java.util.String</code>. The <code class="literal">assembly</code> property of the Map event will contain instances of <code class="literal">com.mycompany.Assembly</code> for the engine to query.
+			</p><p>
+				The valid types for the <code class="literal">class</code> attribute are listed in <a class="xref" href="configuration.html#configuration-type-names" title="15.5. Type Names">Section 15.5, “Type Names”</a>. In addition, any fully-qualified Java class name that can be resolved via <code class="literal">Class.forName</code> is allowed.
+			</p><p>
+				 You can also use the configuration API to configure <code class="literal">Map</code> event types, as the short code snippet below demonstrates:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Map&lt;String, Object&gt; properties = new Map&lt;String, Object&gt;();
+properties.put("carId", "int");
+properties.put("carType", "string");
+properties.put("assembly", Assembly.class.getName());
+
+Configuration configuration = new Configuration();
+configuration.addEventType("MyMapEvent", properties);</pre><p>
+				 For strongly-typed nested maps (maps-within-maps), the configuration API method <code class="literal">addEventType</code> can also used to define the nested types. The XML configuration does not provide the capability to configure nested maps.
+			</p><p>
+				Finally, here is a sample EPL statement that uses the configured <code class="literal">MyMapEvent</code> map event. This statement uses the <code class="literal">chassisTag</code> and <code class="literal">numParts</code> properties of <code class="literal">Assembly</code> objects in each map.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select carType, assembly.chassisTag, count(assembly.numParts) from MyMapEvent.win:time(60 sec)</pre><p>
+				A Map event type may also become a subtype of one or more supertypes that must also be Map event types. The <code class="literal">java-util-map</code> element provides the optional attribute <code class="literal">supertype-names</code> that accepts a comma-separated list of names of Map event types that are supertypes to the type:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;event-type name="AccountUpdate"&gt;
+&lt;java-util-map supertype-names="BaseUpdate, AccountEvent"&gt;
+...</pre><p>
+				For initialization time configuration, the <code class="literal">addMapSuperType</code> method can be used to add Map hierarchy information. For runtime configuration, pass the supertype names to the <code class="literal">addEventType</code> method in <code class="literal">ConfigurationOperations</code>.
+			</p><p>
+				A Map event type may declare a start and end timestamp property name. The XML shown next instructs the engine that the <code class="literal">startts</code> property carries the event start timestamp and the <code class="literal">endts</code> property carries the event end timestamp:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;event-type name="AccountUpdate"&gt;
+&lt;java-util-map start-timestamp-property-name="startts" end-timestamp-property-name="endts"&gt;
+...</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-objectarray"/>15.4.3. Events represented by <code class="literal">Object[]</code> (Object-array)</h3></div></div></div><p>
+				The engine can process Object-array (<code class="literal">Object[]</code>) events via the <code class="literal">sendEvent(Object[] array, String eventTypeName)</code> method on the <code class="literal">EPRuntime</code> interface. Elements in the Object array represent event properties. Values can be of any type. JavaBean-style objects as values in an <code class="literal">Object[]</code> can be processed by the engine, and strongly-typed nested map or object-array event types are also supported. Please see the <a class="xref" href="event_representation.html" title="Chapter 2. Event Representations">Chapter 2, <i>Event Representations</i></a> section for details on how to use <code class="literal">Object[]</code> events with the engine.
+			</p><p>
+				Via configuration you can provide an event type name for <code class="literal">Object[]</code> events for use in statements, and the event property names and types enabling the engine to validate properties in statements.
+			</p><p>
+				The below snippet of XML configuration configures an event named <code class="literal">MyObjectArrayEvent</code>.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;event-type name="MyObjectArrayEvent"&gt;
+  &lt;objectarray&gt;
+    &lt;objectarray-property name="carId" class="int"/&gt;
+    &lt;objectarray-property name="carType" class="string"/&gt;
+    &lt;objectarray-property name="assembly" class="com.mycompany.Assembly"/&gt;    
+  &lt;/objectarray&gt;
+&lt;/event-type&gt;</pre><p>
+				This configuration defines the <code class="literal">carId</code> property of <code class="literal">MyObjectArrayEvent</code> events to be of type <code class="literal">int</code> and in the object array first element (<code class="literal">[0]</code>). The <code class="literal">carType</code> property to be of type <code class="literal">java.util.String</code> is expected in the second array element (<code class="literal">[1]</code>) . The <code class="literal">assembly</code> property of the object array event will contain instances of <code class="literal">com.mycompany.Assembly</code> for the engine to query in element two (<code class="literal">[2]</code>).
+			</p><p>
+			  Note that the engine does not verify the length and property values of object array events when your application sends object-array events into the engine. For the example above, the proper object array would look as follows: <code class="literal">new Object[] {carId, carType, assembly}</code>.
+			</p><p>
+				The valid types for the <code class="literal">class</code> attribute are listed in <a class="xref" href="configuration.html#configuration-type-names" title="15.5. Type Names">Section 15.5, “Type Names”</a>. In addition, any fully-qualified Java class name that can be resolved via <code class="literal">Class.forName</code> is allowed.
+			</p><p>
+				 You can also use the configuration API to configure <code class="literal">Object[]</code> event types, as the short code snippet below demonstrates:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">String[] propertyNames = {"carId", "carType", "assembly"};
+Object[] propertyTypes = {int.class, String.class, Assembly.class};
+
+Configuration configuration = new Configuration();
+configuration.addEventType("MyObjectArrayEvent", propertyNames, propertyTypes);</pre><p>
+				Finally, here is a sample EPL statement that uses the configured <code class="literal">MyObjectArrayEvent</code> object-array event. This statement uses the <code class="literal">chassisTag</code> and <code class="literal">numParts</code> properties of <code class="literal">Assembly</code> objects.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select carType, assembly.chassisTag, count(assembly.numParts) from MyObjectArrayEvent.win:time(60 sec)</pre><p>
+				An Object-array event type may also become a subtype of one supertype that must also be an Object-array event type. The <code class="literal">objectarray</code> element provides the optional attribute <code class="literal">supertype-names</code> that accepts a single name of an Object-array event type that is the supertype to the type:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;event-type name="AccountUpdate"&gt;
+&lt;objectarray supertype-names="BaseUpdate"&gt;
+...</pre><p>
+				An Object-array event type may declare a start and end timestamp property name. The XML shown next instructs the engine that the <code class="literal">startts</code> property carries the event start timestamp and the <code class="literal">endts</code> property carries the event end timestamp:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;event-type name="AccountUpdate"&gt;
+&lt;objectarray start-timestamp-property-name="startts" end-timestamp-property-name="endts"&gt;
+...</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-xml-dom"/>15.4.4. Events represented by <code class="literal">org.w3c.dom.Node</code></h3></div></div></div><p>
+				Via this configuration item the Esper engine can natively process <code class="literal">org.w3c.dom.Node</code> instances, i.e. XML document object model (DOM) nodes.
+				Please see the <a class="xref" href="event_representation.html" title="Chapter 2. Event Representations">Chapter 2, <i>Event Representations</i></a> section for details on how to use <code class="literal">Node</code> events with the engine.
+			</p><p>
+				Esper allows configuring XPath expressions as event properties. You can specify arbitrary XPath functions or expressions and provide a property name by which their result values will be available for use in expressions. 
+			</p><p>
+				For XML documents that follow a XML schema, Esper can load and interrogate your schema and validate event property names and types against the schema information. 
+			</p><p>
+				Nested, mapped and indexed event properties are also supported in expressions against <code class="literal">org.w3c.dom.Node</code> events. Thus XML trees can conveniently be
+				interrogated using the existing event property syntax for querying JavaBean objects, JavaBean object graphs or <code class="literal">java.util.Map</code> events.
+			</p><p>
+				In the simplest form, the Esper engine only requires a configuration entry containing the root element name and the event type name in order to process <code class="literal">org.w3c.dom.Node</code> events:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;event-type name="MyXMLNodeEvent"&gt;
+  &lt;xml-dom root-element-name="myevent" /&gt;
+&lt;/event-type&gt;</pre><p>
+				 You can also use the configuration API to configure XML event types, as the short example below demonstrates. 
+				 In fact, all configuration options available through XML configuration can 
+				 also be provided via setter methods on the <code class="literal">ConfigurationEventTypeXMLDOM</code> class.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration configuration = new Configuration();
+ConfigurationEventTypeXMLDOM desc = new ConfigurationEventTypeXMLDOM();
+desc.setRootElementName("myevent");
+desc.addXPathProperty("name1", "/element/@attribute", XPathConstants.STRING);
+desc.addXPathProperty("name2", "/element/subelement", XPathConstants.NUMBER);
+configuration.addEventType("MyXMLNodeEvent", desc);</pre><p>
+				 The next example presents configuration options in a sample configuration entry.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;event-type name="AutoIdRFIDEvent"&gt;
+  &lt;xml-dom root-element-name="Sensor" schema-resource="data/AutoIdPmlCore.xsd" 
+       default-namespace="urn:autoid:specification:interchange:PMLCore:xml:schema:1"&gt;
+    &lt;namespace-prefix prefix="pmlcore" 
+       namespace="urn:autoid:specification:interchange:PMLCore:xml:schema:1"/&gt;
+    &lt;xpath-property property-name="countTags" 
+       xpath="count(/pmlcore:Sensor/pmlcore:Observation/pmlcore:Tag)" type="number"/&gt;
+  &lt;/xml-dom&gt;
+&lt;/event-type&gt;</pre><p>
+				 This example configures an event property named <code class="literal">countTags</code> whose value is computed by an XPath expression. The namespace prefixes
+				 and default namespace are for use with XPath expressions and must also be made known to the engine in order for the engine to compile XPath expressions. 
+				 Via the <code class="literal">schema-resource</code> attribute we instruct the engine to load a schema file. You may also use <code class="literal">schema-text</code> instead to 
+				 provide the actual text of the schema.
+			</p><p>
+				 Here is an example EPL statement using the configured event type named <code class="literal">AutoIdRFIDEvent</code>.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select ID, countTags from AutoIdRFIDEvent.win:time(30 sec)</pre><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-xml-dom-schema"/>15.4.4.1. Schema Resource</h4></div></div></div><p>
+					 The <code class="literal">schema-resource</code> attribute takes a schema resource URL or classpath-relative filename. 
+					 The engine attempts to resolve the schema resource as an URL. If the schema resource name is not a valid URL, the engine attempts to resolve the resource from classpath via the <code class="literal">ClassLoader.getResource</code> method using the thread context class loader. If the name could not be resolved, the engine uses the Configuration class classloader. Use the <code class="literal">schema-text</code> attribute instead when it is more practical to provide the actual text of the schema. 
+				</p><p>
+					 By configuring a schema file for the engine to load, the engine performs these additional services:
+				</p><div class="itemizedlist"><ul compact="compact"><li><p>
+							Validates the event properties in a statement, ensuring the event property name matches an attribute or element in the XML
+						</p></li><li><p>
+							Determines the type of the event property allowing event properties to be used in type-sensitive expressions such as expressions involving arithmetic (Note: XPath properties are also typed)
+						</p></li><li><p>
+							Matches event property names to either element names or attributes
+						</p></li></ul></div><p>
+					 If no schema resource is specified, none of the event properties specified in statements are validated at statement creation time and their type defaults to <code class="literal">java.lang.String</code>. Also, attributes are not supported
+					 if no schema resource is specified and must thus be declared via XPath expression.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-xml-dom-xpathprop"/>15.4.4.2. Explicit XPath Property</h4></div></div></div><p>
+					 The <code class="literal">xpath-property</code> element adds explicitly-names event properties to the event type that are computed via an XPath expression.
+					 In order for the XPath expression to compile, be sure to specify the <code class="literal">default-namespace</code> attribute and use the 
+					 <code class="literal">namespace-prefix</code> to declare namespace prefixes.
+				</p><p>
+					 XPath expression properties are strongly typed. The <code class="literal">type</code> attribute allows the following values. These values correspond to those declared by 
+					 <code class="literal">javax.xml.xpath.XPathConstants</code>.
+				</p><div class="itemizedlist"><ul compact="compact"><li><p>
+							number (Note: resolves to a <code class="literal">double</code>)
+						</p></li><li><p>
+							string
+						</p></li><li><p>
+							boolean
+						</p></li><li><p>
+							node
+						</p></li><li><p>
+							nodeset
+						</p></li></ul></div><p>
+					 In case you need your XPath expression to return a type other then the types listed above, an optional cast-to type can be specified. If specified, the operation firsts obtains the result of the XPath expression as the defined type (number, string, boolean) and then casts or parses the returned type to the specified cast-to-type. At runtime, a warning message is logged if the XPath expression returns a result object that cannot be casted or parsed.
+				</p><p>
+					 The next line shows how to return a long-type property for an XPath expression that returns a string:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">desc.addXPathProperty("name", "/element/sub", XPathConstants.STRING, "long");</pre><p>
+					 The equivalent configuration XML is:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;xpath-property property-name="name"  xpath="/element/sub" type="string" cast="long"/&gt;</pre><p>
+				  See <a class="xref" href="configuration.html#configuration-type-names" title="15.5. Type Names">Section 15.5, “Type Names”</a> for a list of cast-to type names.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-xml-dom-absolute"/>15.4.4.3. Absolute or Deep Property Resolution</h4></div></div></div><p>
+					This setting indicates that when properties are compiled to XPath expressions that the compilation should generate an absolute XPath expression or a deep (find element) XPath expression. 					
+				</p><p>
+					For example, consider the following statement against an event type that is represented by a XML DOM document, assuming the event type GetQuote has been configured with the engine as a XML DOM event type:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select request, request.symbol from GetQuote</pre><p>
+					By default, the engine compiles the "request" property name to an XPath expression "/GetQuote/request". It compiles the nested property named "request.symbol" to an XPath expression "/GetQuote/request/symbol", wherein the root element node is "GetQuote".
+				</p><p>
+					By setting absolute property resolution to false, the engine compiles the "request" property name to an XPath expression "//request". It compiles the nested property named "request.symbol" to an XPath expression "//request/symbol".
+					This enables these elements to be located anywhere in the XML document.
+				</p><p>
+					The setting is available in XML via the attribute <code class="literal">resolve-properties-absolute</code>.
+				</p><p>
+					The configuration API provides the above settings as shown here in a sample code:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">ConfigurationEventTypeXMLDOM desc = new ConfigurationEventTypeXMLDOM();
+desc.setRootElementName("GetQuote");
+desc.setDefaultNamespace("http://services.samples/xsd");
+desc.setRootElementNamespace("http://services.samples/xsd");
+desc.addNamespacePrefix("m0", "http://services.samples/xsd");
+desc.setResolvePropertiesAbsolute(false);
+configuration.addEventType("GetQuote", desc);</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-xml-dom-xpathresolver"/>15.4.4.4. XPath Variable and Function Resolver</h4></div></div></div><p>
+					If your XPath expressions require variables or functions, your application may provide the class name of an <code class="literal">XPathVariableResolver</code> and <code class="literal">XPathFunctionResolver</code>. At type initialization time 
+					the engine instantiates the resolver instances and provides these to the XPathFactory.
+				</p><p>
+					This example shows the API to set this configuration.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">ConfigurationEventTypeXMLDOM desc = new ConfigurationEventTypeXMLDOM();
+desc.setXPathFunctionResolver(MyXPathFunctionResolver.class.getName());
+desc.setXPathVariableResolver(MyXPathVariableResolver.class.getName());</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-xml-dom-autofragment"/>15.4.4.5. Auto Fragment</h4></div></div></div><p>
+					This option is for use when a XSD schema is provided and determines whether the engine automatically creates an event type when a property expression transposes a property that is a complex type according to the schema.
+				</p><p>
+					An example:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">ConfigurationEventTypeXMLDOM desc = new ConfigurationEventTypeXMLDOM();
+desc.setAutoFragment(false);</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-xml-dom-xpathpropertyexpr"/>15.4.4.6. XPath Property Expression</h4></div></div></div><p>
+					By default Esper employs the built-in DOM walker implementation to evaluate XPath expressions, which is not namespace-aware.
+				</p><p>
+					This configuration setting, when set to true, instructs the engine to rewrite property expressions into XPath.
+				</p><p>
+					An example:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">ConfigurationEventTypeXMLDOM desc = new ConfigurationEventTypeXMLDOM();
+desc.setXPathPropertyExpr(true);</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-xml-dom-eventsendervalidatesroot"/>15.4.4.7. Event Sender Setting</h4></div></div></div><p>
+					By default an <code class="literal">EventSender</code> for a given XML event type validates the root element name for which the type has been declared against the one provided by the <code class="literal">org.w3c.Node</code> sent into the engine.
+				</p><p>
+					This configuration setting, when set to false, instructs an <code class="literal">EventSender</code> to not validate.
+				</p><p>
+					An example:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">ConfigurationEventTypeXMLDOM desc = new ConfigurationEventTypeXMLDOM();
+desc.setEventSenderValidatesRoot(false);</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-xml-dom-startendtimestamp"/>15.4.4.8. Start and End Timestamp</h4></div></div></div><p>
+					You may configure the name of the properties that provides the event start timestamp and the event end timestamp as part of the configuration.
+				</p><p>
+					An example that configures <code class="literal">startts</code> as the property name providing the start timestamp and <code class="literal">endts</code> as the property name providing the end timestamp:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">ConfigurationEventTypeXMLDOM desc = new ConfigurationEventTypeXMLDOM();
+desc.setStartTimestampPropertyName("startts");
+desc.setEndTimestampPropertyName("endts");</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-plugineventrep"/>15.4.5. Events represented by Plug-in Event Representations</h3></div></div></div><p>
+				As part of the extension API plug-in event representations allows an application to create new event types and event instances based on information available elsewhere. Please see <a class="xref" href="extension.html#custom-event-representation" title="17.8. Event Type And Event Object">Section 17.8, “Event Type And Event Object”</a> for details.
+			</p><p>
+				The configuration examples shown next use the configuration API to select settings. All options are also configurable via XML, please refer to the sample configuration XML in file <code class="literal">esper.sample.cfg.xml</code>.
+			</p><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-plugineventrep-enable"/>15.4.5.1. Enabling an Custom Event Representation</h4></div></div></div><p>
+					Use the method <code class="literal">addPlugInEventRepresentation</code> to enable a custom event representation, like this:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">URI rootURI = new URI("type://mycompany/myproject/myname");
+config.addPlugInEventRepresentation(rootURI, 
+    MyEventRepresentation.class.getName(), null);</pre><p>
+					The <code class="literal">type://</code> part of the URI is an optional convention for the scheme part of an URI. 
+				</p><p>
+					If your event representation takes initialization parameters, these are passed in as the last parameter. Initialization parameters can also be stored in the configuration XML, in which case
+					they are passed as an XML string to the plug-in class.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-plugineventrep-types"/>15.4.5.2. Adding Plug-in Event Types</h4></div></div></div><p>
+					To register event types that your plug-in event representation creates in advance of creating an EPL statement (either at runtime or at configuration time), use the method <code class="literal">addPlugInEventType</code>:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">URI childURI = new URI("type://mycompany/myproject/myname/MyEvent");
+configuration.addPlugInEventType("MyEvent", new URI[] {childURI}, null);</pre><p>
+					Your plug-in event type may take initialization parameters, these are passed in as the last parameter. Initialization parameters can also be stored in the configuration XML.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-plugineventrep-resolution"/>15.4.5.3. Setting Resolution URIs</h4></div></div></div><p>
+					The engine can invoke your plug-in event representation when an EPL statement is created with an event type name that the engine has not seen before. Plug-in event representations can resolve such names to an actual event type. In order to do this, you need to supply a list of resolution URIs. Use the method <code class="literal">setPlugInEventTypeNameResolutionURIs</code>, at runtime or at configuration time:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">URI childURI = new URI("type://mycompany/myproject/myname");
+configuration.setPlugInEventTypeNameResolutionURIs(new URI[] {childURI});</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-class--package-imports"/>15.4.6. Class and package imports</h3></div></div></div><p>
+				Esper allows invocations of static Java library functions in expressions, as outlined in <a class="xref" href="functionreference.html#epl-single-row-function-ref" title="9.1. Single-row Function Reference">Section 9.1, “Single-row Function Reference”</a>. This configuration 
+				item can be set to allow a partial rather than a fully qualified class name in such invocations. The imports work in the same way as in Java files, so both packages and classes can be imported.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select Math.max(priceOne, PriceTwo)
+// via configuration equivalent to
+select java.lang.Math.max(priceOne, priceTwo)</pre><p>
+				Esper auto-imports the following Java library packages. Any additional imports that are specified in configuration files or through the API are added to the configuration
+				in addition to the imports below.
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						java.lang.*
+					</p></li><li><p>
+						java.math.*
+					</p></li><li><p>
+						java.text.*
+					</p></li><li><p>
+						java.util.*
+					</p></li></ul></div><p>
+				In a XML configuration file the auto-import configuration may look as below:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;auto-import import-name="com.mycompany.mypackage.*"/&gt;
+&lt;auto-import import-name="com.mycompany.myapp.MyUtilityClass"/&gt;</pre><p>
+				Here is an example of providing imports via the API:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.addImport("com.mycompany.mypackage.*");	// package import
+config.addImport("com.mycompany.mypackage.MyLib");   // class import</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-method-invocations"/>15.4.7. Cache Settings for From-Clause Method Invocations</h3></div></div></div><p>
+				Method invocations are allowed in the <code class="literal">from</code> clause in EPL, such that your application may join event streams to the data returned by a web service, or to data read from a distributed cache or object-oriented database, or obtain data by other means. A local cache may be placed in front of such method invocations through the configuration settings described herein.
+			</p><p>
+				The LRU cache is described in detail in <a class="xref" href="configuration.html#config-database-cache-lru" title="15.4.9.6.1. LRU Cache">Section 15.4.9.6.1, “LRU Cache”</a>. The expiry-time cache documentation can be found in <a class="xref" href="configuration.html#config-database-cache-expiry" title="15.4.9.6.2. Expiry-time Cache">Section 15.4.9.6.2, “Expiry-time Cache”</a>
+			</p><p>
+				The next XML snippet is a sample cache configuration that applies to methods provided by the classes 'MyFromClauseLookupLib'  and 'MyFromClauseWebServiceLib'. The XML and API configuration understand both the fully-qualified Java class name, as well as the simple class name:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;method-reference class-name="com.mycompany.MyFromClauseLookupLib"&gt;
+  &lt;expiry-time-cache max-age-seconds="10" purge-interval-seconds="10" ref-type="weak"/&gt;
+&lt;/method-reference&gt; 	
+&lt;method-reference class-name="MyFromClauseWebServiceLib"&gt;
+  &lt;lru-cache size="1000"/&gt;
+&lt;/method-reference&gt; </pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-variables"/>15.4.8. Variables</h3></div></div></div><p>
+				Variables can be created dynamically in EPL via the <code class="literal">create variable</code> syntax but can also be configured at runtime and at configuration time.
+			</p><p>
+				A variable is declared by specifying a variable name, the variable type, an optional initialization value and an optional boolean-type flag indicating whether the variable is a constant (false by default). The initialization value can be of the same or compatible type as the variable type, or can also be a String value that, when parsed, is compatible to the type declared for the variable. Declare each variable a constant to achieve the best performance.
+			</p><p>
+				In a XML configuration file the variable configuration may look as below. The <code class="literal">Configuration</code> API can also be used to configure variables.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;variable name="var_threshold" type="long" initialization-value="100"/&gt;
+&lt;variable name="var_key" type="string"/&gt;
+&lt;variable name="test" type="int" constant="true"/&gt;</pre><p>
+				Please find the list of valid values for the <code class="literal">type</code> attribute in <a class="xref" href="configuration.html#configuration-type-names" title="15.5. Type Names">Section 15.5, “Type Names”</a>.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-database-ref"/>15.4.9. Relational Database Access</h3></div></div></div><p>
+				Esper has the capability to join event streams against historical data sources, such as a relational database. This section describes the configuration entries that the engine requires to access data stored in your database. Please see <a class="xref" href="epl_clauses.html#histdata_overview" title="5.13. Accessing Relational Data via SQL">Section 5.13, “Accessing Relational Data via SQL”</a> for information on the use of EPL queries that include historical data sources.
+			</p><p>
+					EPL queries that poll data from a relational database specify the name of the database as part of the EPL statement. The engine uses the configuration information described here to resolve the database name in the statement to database settings. The required and optional database settings are summarized below. 
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						Database connections can be obtained via JDBC <code class="literal">javax.xml.DataSource</code>, via <code class="literal">java.sql.DriverManager</code> and via data source factory. Either one of these methods to obtain database connections is a required configuration.
+					</p></li><li><p>
+						Optionally, JDBC connection-level settings such as auto-commit, transaction isolation level, read-only and the catalog name can be defined.
+					</p></li><li><p>
+						Optionally, a connection lifecycle can be set to indicate to the engine whether the engine must retain connections or must obtain a new connection for each lookup and close the connection when the lookup is done (pooled).
+					</p></li><li><p>
+						Optionally, define a cache policy to allow the engine to retrieve data from a query cache, reducing the number of query executions.
+					</p></li></ul></div><p>
+				Some of the settings can have important performance implications that need to be carefully considered in relationship to your database software, JDBC driver and runtime environment. This section attempts to outline such implications where appropriate.
+			</p><p>
+				The sample XML configuration file in the "etc" folder can be used as a template for configuring database settings. All settings are also available by means of the configuration API through the classes <code class="literal">Configuration</code> and <code class="literal">ConfigurationDBRef</code>.
+			</p><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-database-datasource"/>15.4.9.1. Connections obtained via DataSource</h4></div></div></div><p>
+					This configuration causes Esper to obtain a database connection from a <code class="literal">javax.sql.DataSource</code> available from your JNDI provider.
+				</p><p>
+					The setting is most useful when running within an application server or when a JNDI directory is otherwise present in your Java VM. If your application environment does not provide an available <code class="literal">DataSource</code>, the next section outlines how to use Apache DBCP as a <code class="literal">DataSource</code> implementation with connection pooling options and outlines how to use a custom factory for <code class="literal">DataSource</code> implementations.
+				</p><p>
+					If your <code class="literal">DataSource</code> provides connections out of a connection pool, your configuration should set the collection lifecycle setting to <code class="literal">pooled</code>.
+				</p><p>
+				The snippet of XML below configures a database named <code class="literal">mydb1</code> to obtain connections via a <code class="literal">javax.sql.DataSource</code>. The <code class="literal">datasource-connection</code> element instructs the engine to obtain new connections to the database <code class="literal">mydb1</code> by performing a lookup via <code class="literal">javax.naming.InitialContext</code> for the given object lookup name. Optional environment properties for the <code class="literal">InitialContext</code> are also shown in the example.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;database-reference name="mydb1"&gt;
+  &lt;datasource-connection context-lookup-name="java:comp/env/jdbc/mydb"&gt;
+    &lt;env-property name="java.naming.factory.initial" value ="com.myclass.CtxFactory"/&gt;
+    &lt;env-property name="java.naming.provider.url" value ="iiop://localhost:1050"/&gt;
+  &lt;/datasource-connection&gt;
+&lt;/database-reference&gt;</pre><p>
+					To help you better understand how the engine uses this information to obtain connections, we have included the logic below.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">if (envProperties.size() &gt; 0) {
+  initialContext = new InitialContext(envProperties);
+}
+else {
+  initialContext = new InitialContext();
+}
+DataSource dataSource = (DataSource) initialContext.lookup(lookupName);
+Connection connection = dataSource.getConnection();</pre><p>
+					In order to plug-in your own implementation of the <code class="literal">DataSource</code> interface, your application may use an existing JNDI provider as provided by an application server if running in a J2EE environment.
+				</p><p>
+					In case your application does not have an existing JNDI implementation to register a <code class="literal">DataSource</code> to provide connections, you may set the <code class="literal">java.naming.factory.initial</code> property in the configuration to point to your application's own implementation of the <code class="literal">javax.naming.spi.InitialContextFactory</code> interface that can return your application <code class="literal">DataSource</code> though the <code class="literal">javax.naming.Context</code> provided by the factory implementation. Please see Java Naming and Directory Interface (JNDI) API documentation for further information.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-database-datasourcefactory"/>15.4.9.2. Connections obtained via DataSource Factory</h4></div></div></div><p>
+					This section describes how to use <em class="citetitle"><a class="link" href="http://commons.apache.org/dbcp" target="">Apache Commons Database Connection Pooling (Apache DBCP)</a></em> with Esper. We also explain how to provide a custom application-specific <code class="literal">DataSource</code> factory if not using Apache DBCP.
+				</p><p>
+					If your <code class="literal">DataSource</code> provides connections out of a connection pool, your configuration should set the collection lifecycle setting to <code class="literal">pooled</code>.
+				</p><p>
+					Apache DBCP provides comprehensive means to test for dead connections or grow and shrik a connection pool. Configuration properties for Apache DBCP can be found at <em class="citetitle"><a class="link" href="http://commons.apache.org/dbcp/configuration.html" target="">Apache DBCP configuration</a></em>. The listed properties are passed to Apache DBCP via the properties list provided as part of the Esper configuration.
+				</p><p>
+				   The snippet of XML below is an example that configures a database named <code class="literal">mydb3</code> to obtain connections via the pooling <code class="literal">DataSource</code> provided by Apache DBCP <code class="literal">BasicDataSourceFactory</code>.
+				</p><p>
+				   The listed properties are passed to DBCP to instruct DBCP how to manage the connection pool. The settings below initialize the connection pool to 2 connections and provide the validation query <code class="literal">select 1 from dual</code> for DBCP to validate a connection before providing a connection from the pool to Esper:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;database-reference name="mydb3"&gt;
+  &lt;!-- For a complete list of properties see Apache DBCP. --&gt;
+  &lt;datasourcefactory-connection class-name="org.apache.commons.dbcp.BasicDataSourceFactory"&gt;	
+    &lt;env-property name="username" value ="myusername"/&gt;
+    &lt;env-property name="password" value ="mypassword"/&gt;
+    &lt;env-property name="driverClassName" value ="com.mysql.jdbc.Driver"/&gt;
+    &lt;env-property name="url" value ="jdbc:mysql://localhost/test"/&gt;
+    &lt;env-property name="initialSize" value ="2"/&gt;
+    &lt;env-property name="validationQuery" value ="select 1 from dual"/&gt;
+  &lt;/datasourcefactory-connection&gt;
+  &lt;connection-lifecycle value="pooled"/&gt;
+&lt;/database-reference&gt;</pre><p>
+					The same configuration options provided through the API:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Properties props = new Properties();
+props.put("username", "myusername");
+props.put("password", "mypassword");
+props.put("driverClassName", "com.mysql.jdbc.Driver");
+props.put("url", "jdbc:mysql://localhost/test");
+props.put("initialSize", 2);
+props.put("validationQuery", "select 1 from dual");
+
+ConfigurationDBRef configDB = new ConfigurationDBRef();
+// BasicDataSourceFactory is an Apache DBCP import
+configDB.setDataSourceFactory(props, BasicDataSourceFactory.class.getName());
+configDB.setConnectionLifecycleEnum(ConfigurationDBRef.ConnectionLifecycleEnum.POOLED);
+
+Configuration configuration = new Configuration();;
+configuration.addDatabaseReference("mydb3", configDB);</pre><p>
+					Apache Commons DBCP is a separate download and not provided as part of the Esper distribution. The Apache Commons DBCP jar file requires the Apache Commons Pool jar file.
+				</p><p>
+					Your application can provide its own factory implementation for <code class="literal">DataSource</code> instances: Set the class name to the name of the application class that provides a public static method named <code class="literal">createDataSource</code> which takes a single <code class="literal">Properties</code> object as parameter and returns a  <code class="literal">DataSource</code> implementation. For example:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">configDB.setDataSourceFactory(props, MyOwnDataSourceFactory.class.getName());
+...
+class MyOwnDataSourceFactory {
+  public static DataSource createDataSource(Properties properties) {
+    return new MyDataSourceImpl(properties);
+  }
+}</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-database-drivermanager"/>15.4.9.3. Connections obtained via DriverManager</h4></div></div></div><p>
+				The next snippet of XML configures a database named <code class="literal">mydb2</code> to obtain connections via <code class="literal">java.sql.DriverManager</code>. The <code class="literal">drivermanager-connection</code> element instructs the engine to obtain new connections to the database <code class="literal">mydb2</code> by means of <code class="literal">Class.forName</code> and <code class="literal">DriverManager.getConnection</code> using the class name, URL and optional username, password and connection arguments.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;database-reference name="mydb2"&gt;
+  &lt;drivermanager-connection class-name="my.sql.Driver" 
+        url="jdbc:mysql://localhost/test?user=root&amp;amp;password=mypassword" 
+        user="myuser" password="mypassword"&gt;
+    &lt;connection-arg name="user" value ="myuser"/&gt;
+    &lt;connection-arg name="password" value ="mypassword"/&gt;
+    &lt;connection-arg name="somearg" value ="someargvalue"/&gt;
+  &lt;/drivermanager-connection&gt;
+&lt;/database-reference&gt;</pre><p>
+					The username and password are shown in multiple places in the XML only as an example. Please check with your database software on the required information in
+					URL and connection arguments.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-database-connections"/>15.4.9.4. Connections-level settings</h4></div></div></div><p>
+					Additional connection-level settings can optionally be provided to the engine which the engine will apply to new connections. When the engine obtains a new connection, it applies only those settings to the connection that are explicitly configured. The engine leaves all other connection settings at default values.
+				</p><p>
+					The below XML is a sample of all available configuration settings. Please refer to the Java API JavaDocs for <code class="literal">java.sql.Connection</code> for more information to each option or check the documentation of your JDBC driver and database software.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;database-reference name="mydb2"&gt;
+... configure data source or driver manager settings...
+  &lt;connection-settings auto-commit="true" catalog="mycatalog" 
+      read-only="true" transaction-isolation="1" /&gt;
+&lt;/database-reference&gt;</pre><p>
+					The <code class="literal">read-only</code> setting can be used to indicate to your database engine that SQL statements are read-only. The <code class="literal">transaction-isolation</code> and <code class="literal">auto-commit</code> help you database software perform the right level of locking and lock release. Consider setting these values to reduce transactional overhead in your database queries.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-database-connections-lifecycle"/>15.4.9.5. Connections lifecycle settings</h4></div></div></div><p>
+					By default the engine retains a separate database connection for each started EPL statement. However, it is possible to override this behavior and require the engine to obtain a new database connection for each lookup, and to close that database connection after the lookup is completed. This often makes sense when you have a large number of EPL statements and require pooling of connections via a connection pool.
+				</p><p>
+					In the <code class="literal">pooled</code> setting, the engine obtains a database connection from the data source or driver manager for every query, and closes the connection when done, returning the database connection to the pool if using a pooling data source.
+				</p><p>
+					In the <code class="literal">retain</code> setting, the engine retains a separate dedicated database connection for each statement and does not close the connection between uses.
+				</p><p>
+					The XML for this option is below. The connection lifecycle allows the following values: <code class="literal">pooled</code> and <code class="literal">retain</code>.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;database-reference name="mydb2"&gt;
+... configure data source or driver manager settings...
+    &lt;connection-lifecycle value="pooled"/&gt;
+&lt;/database-reference&gt;</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-database-cache"/>15.4.9.6. Cache settings</h4></div></div></div><p>
+					Cache settings can dramatically reduce the number of database queries that the engine executes for EPL statements. If no cache setting is specified, the engine does not cache query results and executes a separate database query for every event.
+				</p><p>
+					Caches store the results of database queries and make these results available to subsequent queries using the exact same query parameters as the query for which
+					the result was stored. If your query returns one or more rows, the cache keep the result rows of the query keyed to the parameters of the query. If your query returns no rows, the cache also keeps the empty result. Query results are held by a cache until the cache entry is evicted. The strategies available for evicting cached 
+					query results are listed next.
+				</p><div class="sect4" lang="en-US"><div class="titlepage"><div><div><h5 class="title"><a id="config-database-cache-lru"/>15.4.9.6.1. LRU Cache</h5></div></div></div><p>
+						The least-recently-used (LRU) cache is configured by a maximum size. The cache discards the least recently used query results first once the cache reaches the maximum size.
+					</p><p>
+						The XML configuration entry for a LRU cache is as below. This entry configures an LRU cache holding up to 1000 query results.
+					</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;database-reference name="mydb"&gt;
+... configure data source or driver manager settings...
+    &lt;lru-cache size="1000"/&gt;
+&lt;/database-reference&gt;</pre></div><div class="sect4" lang="en-US"><div class="titlepage"><div><div><h5 class="title"><a id="config-database-cache-expiry"/>15.4.9.6.2. Expiry-time Cache</h5></div></div></div><p>
+						The expiry time cache is configured by a maximum age in seconds, a purge interval and an optional reference type. The cache discards (on the get operation) any query results that are older then the maximum age so that stale data is not used. If the cache is not empty, then every purge interval number of seconds the engine purges any expired entries from the cache.
+					</p><p>
+						The XML configuration entry for an expiry-time cache is as follows. The example configures an expiry time cache in which prior query results are valid for 60 seconds and which the engine inspects every 2 minutes to remove query results older then 60 seconds.
+					</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;database-reference name="mydb"&gt;
+... configure data source or driver manager settings...
+    &lt;expiry-time-cache max-age-seconds="60" purge-interval-seconds="120" /&gt;
+&lt;/database-reference&gt;</pre><p>
+						By default, the expiry-time cache is backed by a <code class="literal">java.util.WeakHashMap</code> and thus relies on weak references. That means that cached SQL results can be freed during garbage collection. 
+					</p><p>
+						Via XML or using the configuration API the type of reference can be configured to not allow entries to be garbage collected, by setting the <code class="literal">ref-type</code> property to <code class="literal">hard</code>:
+					</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;database-reference name="mydb"&gt;
+... configure data source or driver manager settings...
+    &lt;expiry-time-cache max-age-seconds="60" purge-interval-seconds="120" ref-type="hard"/&gt;
+&lt;/database-reference&gt;</pre><p>
+						The last setting for the cache reference type is <code class="literal">soft</code>: This strategy allows the garbage collection of cache entries only when all other weak references have been collected.
+					</p></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-database-columnchangecase"/>15.4.9.7. Column Change Case</h4></div></div></div><p>
+					This setting instructs the engine to convert to lower- or uppercase any output column names returned by your database system. When using Oracle relational database software, for example, column names
+					can be changed to lowercase via this setting.
+				</p><p>
+					A sample XML configuration entry for this setting is:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;column-change-case value="lowercase"/&gt;</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-database-sqltypes"/>15.4.9.8. SQL Types Mapping</h4></div></div></div><p>
+					By providing a mapping of SQL types (<code class="literal">java.sql.Types</code>) to Java built-in types your code can avoid using sometimes awkward default database types and can easily change the way Esper
+					returns Java types for columns returned by a SQL query.
+				</p><p>
+					The mapping maps a constant as defined by <code class="literal">java.sql.Types</code> to a Java built-in type of any of the following Java type names: <code class="literal">String, BigDecimal, Boolean, Byte, Short, Int, Long, Float, Double, ByteArray, SqlDate, SqlTime, SqlTimestamp</code>.  The Java type names are not case-sensitive.
+				</p><p>
+					A sample XML configuration entry for this setting is shown next. The sample maps <code class="literal">Types.NUMERIC</code> which is a constant value of <code class="literal">2</code> per JDBC API to the Java <code class="literal">int</code> type.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;sql-types-mapping sql-type="2" java-type="int" /&gt;</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-database-metadata"/>15.4.9.9. Metadata Origin</h4></div></div></div><p>
+					This setting controls how the engine retrieves SQL statement metadata from JDBC prepared statements.
+				</p><div class="table"><a id="epl-grouping-aggregate-func"/><p class="title"><b>Table 15.3. Syntax and results of aggregate functions</b></p><div class="table-contents"><table summary="Syntax and results of aggregate functions" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Option</th><th>Description</th></tr></thead><tbody><tr><td>default</td><td>
+									<p>
+										By default, the engine detects the driver name and queries prepared statement metadata if the driver is not an Oracle database driver. For Oracle drivers, the engine uses
+										lexical analysis of the SQL statement to construct a sample SQL statement and then fires that statement to retrieve statement metadata.
+									</p>
+								</td></tr><tr><td>metadata</td><td>
+									<p>
+										The engine always queries prepared statement metadata regardless of the database driver used.
+									</p>
+								</td></tr><tr><td>sample</td><td>
+									<p>
+										The engine always uses lexical analysis of the SQL statement to construct a sample SQL statement, and then fires that statement to retrieve statement metadata.
+									</p>
+								</td></tr></tbody></table></div></div><br class="table-break"/></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-engine-threading"/>15.4.10. Engine Settings related to Concurrency and Threading</h3></div></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-threading-dispatch"/>15.4.10.1. Preserving the order of events delivered to listeners</h4></div></div></div><p>
+					In multithreaded environments, this setting controls whether dispatches of statement result events to listeners preserve the ordering in which a statement processes events. By default the engine guarantees that it delivers a statement's result events to statement listeners in the order in which the result is generated. This behavior can be turned off via configuration as below. 
+				</p><p>
+					The next code snippet shows how to control this feature:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getThreading().setListenerDispatchPreserveOrder(false);
+engine = EPServiceProviderManager.getDefaultProvider(config);</pre><p>
+					And the XML configuration file can also control this feature by adding the following elements:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;threading&gt;
+      &lt;listener-dispatch preserve-order="true" timeout-msec="1000" locking="spin"/&gt;
+    &lt;/threading&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+					As discussed, by default the engine can temporarily block another processing thread when delivering result events to listeners in order to preserve the order in which results are delivered to a given statement. The maximum time the engine blocks a thread can also be configured, and by default is set to 1 second.
+				</p><p>
+					As such delivery locks are typically held for a very short amount of time, the default blocking technique employs a spin lock (There are two techniques for implementing blocking; having the operating system suspend the thread until it is awakened later or using spin locks). While spin locks are CPU-intensive and appear inefficient, a spin lock can be more efficient than suspending the thread and subsequently waking it up, especially if the lock in question is held for a very short time. That is because there is significant overhead to suspending and rescheduling a thread.  
+				</p><p>
+					The locking technique can be changed to use a blocking strategy that suspends the thread, by means of setting the locking property to 'suspend'.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-threading-insert-into"/>15.4.10.2. Preserving the order of events for insert-into streams</h4></div></div></div><p>
+					In multithreaded environments, this setting controls whether statements producing events for other statements via insert-into preserve the order of delivery within the producing and consuming statements, allowing statements that consume other statement's events to behave deterministic in multithreaded applications, if the consuming statement requires such determinism. By default, the engine makes this guarantee (the setting is on).
+				</p><p>
+					Take, for example, an application where a single statement (S1) inserts events into a stream that another statement (S2) further evaluates. A multithreaded application may have multiple threads processing events into statement S1. As statement S1 produces events for consumption by statement S2, such results may need to be delivered in the exact order produced as the consuming statement may rely on the order received. For example, if the first statement counts the number of events, the second statement may employ a pattern that inspects counts and thus expect the counts posted by statement S1 to continuously increase by 1 even though multiple threads process events. 
+				</p><p>
+					The engine may need to block a thread such that order of delivery is maintained, and statements that require order (such as pattern detection, previous and prior functions) receive a deterministic order of events. The settings available control the blocking technique and parameters. As described in the section immediately prior, the default blocking technique employs spin locks per statement inserting events for consumption, as the locks in questions are typically held a very short time. The 'suspend' blocking technique can be configured and a timeout value can also defined.
+				</p><p>
+					The XML configuration file may change settings via the following elements:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;threading&gt;
+      &lt;insert-into-dispatch preserve-order="true" timeout-msec="100" locking="spin"/&gt;
+    &lt;/threading&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-threading-internal-timer"/>15.4.10.3. Internal Timer Settings</h4></div></div></div><p>
+					This option can be used to disable the internal timer thread and such have the application supply external time events, as well as to set a timer resolution.
+				</p><p>
+					The next code snippet shows how to disable the internal timer thread via the configuration API:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+  config.getEngineDefaults().getThreading().setInternalTimerEnabled(false);</pre><p>
+					This snippet of XML configuration leaves the internal timer enabled (the default) and sets a resolution of 200 milliseconds (the default is 100 milliseconds):
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;threading&gt;
+      &lt;internal-timer enabled="true" msec-resolution="200"/&gt;
+    &lt;/threading&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+					We recommend that when disabling the internal timer, applications send an external timer event setting the start time before creating statements,
+					such that statement start time is well-defined.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-threading-advanced"/>15.4.10.4. Advanced Threading Options</h4></div></div></div><p>
+					The settings described herein are for enabling advanced threading options for inbound, outbound, timer and route executions.
+				</p><p>
+					Take the next snippet of XML configuration as an example. It configures all threading options to 2 threads, which may not be suitable to your application, however demonstrates the configuration:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;threading&gt;
+      &lt;threadpool-inbound enabled="true" num-threads="2"/&gt;
+      &lt;threadpool-outbound enabled="true" num-threads="2" capacity="1000"/&gt;
+      &lt;threadpool-timerexec enabled="true" num-threads="2"/&gt;
+      &lt;threadpool-routeexec enabled="true" num-threads="2"/&gt;
+    &lt;/threading&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+					By default, queues are unbound and backed by <code class="literal">java.util.concurrent.LinkedBlockingQueue</code>. 
+					The optional <code class="literal">capacity</code> attribute can be set to instruct the threading option to configure a capacity-bound queue with a sender-wait (blocking put) policy, backed <code class="literal">ArrayBlockingQueue</code>.
+				</p><p>
+					This example uses the API for configuring inbound threading :
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getThreading().setThreadPoolInbound(true);
+config.getEngineDefaults().getThreading().setThreadPoolInboundNumThreads(2);</pre><p>
+					With a bounded work queue, the queue size and pool size should be tuned together. A large queue coupled with a small pool can help reduce memory usage, CPU usage, and context switching, at the cost of potentially constraining throughput.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-execution-enginefairlock"/>15.4.10.5. Engine Fair Locking</h4></div></div></div><p>
+					By default Esper configures the engine-level lock without fair locking. The engine-level lock coordinates event processing threads (threads that send events) with threads that perform administrative functions (threads that start or destroy statements, for example).
+					A fair lock is generally less performing that an unfair lock thus the default configuration is an unfair lock.
+				</p><p>				
+					If your application is multi-threaded and multiple threads sends events without gaps and if the per-event processing time is significant, then configuring a fair lock can help prioritize administrative functions. Administrative functions exclude event-processing threads until the administrative function completed. You may need to set this flag to prevent lock starvation to perform an administrative function in the face of concurrent event processing. Please consult the Java API documentation under <code class="literal">ReentrantReadWriteLock</code> and <span class="emphasis"><em>Fair Mode</em></span> for more information.
+				</p><p>
+					 The XML configuration to enable fair locking, which is disabled by default, is as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;threading engine-fairlock="true"/&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+				 The API to change the setting:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getThreading().setEngineFairlock(true);</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-engine-eventmeta"/>15.4.11. Engine Settings related to Event Metadata</h3></div></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-eventmeta-representation"/>15.4.11.1. Default Event Representation</h4></div></div></div><p>
+				  The default event representation is the Map event representation. In a future release the default event representation is likely to switch to Object-array.
+				</p><p>
+				  The default event representation is relevant when your query outputs individual properties to a listener and it does not specify a specific event representation in an annotation.
+				  The default event representation is also relevant for <code class="literal">create schema</code> and <code class="literal">create window</code>.
+				</p><p>
+				  Note that the engine may still use the Map representation for certain types of statements even when the default event representation is object array.
+				</p><p>
+				  For example, consider the following query:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select propertyOne, propertyTwo from MyEvent</pre><p>
+				  Listeners to the statement above currently receive a Map-type event. By setting the configuration flag to object-array as described herein, listeners to the statement receive an Object-array-type event instead.
+				</p><p>The XML snippet below is an example of setting the default event representation to Object-array:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;esper-configuration
+  &lt;engine-settings&gt;
+    &lt;defaults&gt;
+      &lt;event-meta&gt;
+        &lt;event-representation type="objectarray"/&gt;
+      &lt;/event-meta&gt;
+    &lt;/defaults&gt;
+  &lt;/engine-settings&gt;
+&lt;/esper-configuration&gt;</pre><p>The code snippet shown next sets the default event representation to Object-array in the configuration object:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">configuration.getEngineDefaults().getEventMeta().
+    setDefaultEventRepresentation(Configuration.EventRepresentation.OBJECTARRAY);</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-eventmeta-propertyreso"/>15.4.11.2. Java Class Property Names, Case Sensitivity and Accessor Style</h4></div></div></div><p>
+					The engine-wide settings discussed here are used when you want to control case sensitivity or accessor style for all event classes as a default. The two settings are found under <code class="literal">class-property-resolution</code> under <code class="literal">event-meta</code> in the XML configuration.
+				</p><p>
+				  To control the case sensitivity as discussed in <a class="xref" href="configuration.html#config-java-property-case-sensitivity" title="15.4.1.6. Case Sensitivity and Property Names">Section 15.4.1.6, “Case Sensitivity and Property Names”</a>, add the <code class="literal">style</code> attribute in the XML configuration to set a default case sensitivity applicable to all event classes unless specifically overridden by class-specific configuration. 
+				  The default case sensitivity is <code class="literal">case_sensitive</code> (case sensitivity turned on).
+				</p><p>
+				  To control the accessor style as discussed in <a class="xref" href="configuration.html#config-java-legacy" title="15.4.1.3. Non-JavaBean and Legacy Java Event Classes">Section 15.4.1.3, “Non-JavaBean and Legacy Java Event Classes”</a>, add the <code class="literal">accessor-style</code> attribute in the XML configuration to set a default accessor style applicable to all event classes unless specifically overridden by class-specific configuration. The default accessor style is <code class="literal">javabean</code> JavaBean accessor style.
+				</p><p>
+					The next code snippet shows how to control this feature via the API:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getEventMeta().setClassPropertyResolutionStyle(
+    Configuration.PropertyResolutionStyle.CASE_INSENSITIVE);
+config.getEngineDefaults().getEventMeta().setDefaultAccessorStyle(
+    ConfigurationEventTypeLegacy.AccessorStyle.PUBLIC);</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-eventmeta-anonymouscache"/>15.4.11.3. Cache Size for Anonymous Event Types</h4></div></div></div><p>
+					By default the engine maintains a cache of the last 5 recently allocated anonymous event types. Anonymous event types are unnamed output event types associated to statements.
+					The <code class="literal">anonymous-cache</code> element under the <code class="literal">event-meta</code> element in the XML configuration contols the cache size.
+					The cache size can be set to zero to disable the cache.
+				</p><p>
+					The next code snippet shows how to control this setting via the API:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getEventMeta().setAnonymousCacheSize(5);</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-engine-viewresources"/>15.4.12. Engine Settings related to View Resources</h3></div></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-viewresources-sharing"/>15.4.12.1. Sharing View Resources between Statements</h4></div></div></div><p>
+				   The engine by default attempts to optimize resource usage and thus re-uses or shares views between statements that declare same views. However, in multi-threaded environments, this can lead to reduced concurrency as 
+				   locking for shared view resources must take place. Via this setting this behavior can be turned off for higher concurrency in multi-threaded processing.
+				</p><p>
+					The next code snippet outlines the API to turn off view resource sharing between statements:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getViewResources().setShareViews(false);</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-viewresources-multipolicy"/>15.4.12.2. Configuring Multi-Expiry Policy Defaults</h4></div></div></div><p>
+				   By default, when combining multiple data window views, Esper applies an intersection of the data windows unless the <code class="literal">retain-union</code> keyword is provided which instructs to apply an union. The setting described herein may be used primarily for backward compatibility to instruct that intersection should not be the default.
+				</p><p>
+				   Here is a sample statement that specifies multiple expiry policies:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from MyEvent.std:unique(price).std:unique(quantity)</pre><p>
+				   By default Esper applies intersection as described in <a class="xref" href="epl_clauses.html#epl-from-clause-view-multidatawindow" title="5.4.4. Multiple Data Window Views">Section 5.4.4, “Multiple Data Window Views”</a>. 
+				</p><p>
+				   Here is the setting to allow multiple data windows without the intersection default:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getViewResources().setAllowMultipleExpiryPolicies(true);</pre><p>
+				   When setting this option to true, and when using multiple data window views for a given stream, the behavior is as follows: The top-most data window receives an insert stream of events. It passes each insert stream event to each further data window view in the chain. Each data window view may remove events according to its expiry policy. Such remove stream events are only passed to data window views further in the chain, and are not made available to data window views earlier in the chain.
+				</p><p>
+				   It is recommended to leave the default setting at false.
+				</p></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-engine-logging"/>15.4.13. Engine Settings related to Logging</h3></div></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-logging-execpath"/>15.4.13.1. Execution Path Debug Logging</h4></div></div></div><p>
+				   By default, the engine does not produce debug output for the event processing execution paths even when Log4j or Logger configurations have been set to output debug level logs.
+				   To enable debug level logging, set this option in the configuration as well as in your Log4j configuration file.
+				</p><p>
+					Statement-level processing information can be output via the <code class="literal">@Audit</code> annotation, please see <a class="xref" href="devlifecycle.html#devlifecycle-debugging-audit" title="16.3.1. @Audit Annotation">Section 16.3.1, “@Audit Annotation”</a>.
+				</p><p>
+				   When debug-level logging is enabled by setting the flag as below and by setting DEBUG in the Log4j configuration file, then the timer processing may produce extensive debug output that
+				   you may not want to have in the log file. The <code class="literal">timer-debug</code> setting in the XML or via API as below disables timer debug output which is enabled by default.
+				</p><p>
+					The API to use to enable debug logging and disable timer event output is shown here:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getLogging().setEnableExecutionDebug(true);
+config.getEngineDefaults().getLogging().setEnableTimerDebug(false);</pre><p>
+					Note: this is a configuration option that applies to all engine instances of a given Java module or VM.
+				</p><p>
+					The XML snippet is:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;esper-configuration&gt;
+  &lt;engine-settings&gt;
+    &lt;defaults&gt;
+      &lt;logging&gt;
+        &lt;execution-path enabled="true"/&gt;
+        &lt;timer-debug enabled="false"/&gt;
+    &lt;/logging&gt;
+    &lt;/defaults&gt;
+  &lt;/engine-settings&gt;
+&lt;/esper-configuration&gt;</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-logging-queryplan"/>15.4.13.2. Query Plan Logging</h4></div></div></div><p>
+				   By default, the engine does not produce query plan output unless logging at debug-level. 
+				   To enable query plan logging, set this option in the configuration. When enabled, the engine reports, at INFO level, any query plans under the log name <code class="literal">com.espertech.esper.queryplan</code>.
+				</p><p>
+					The API to use to enable query plan logging is shown here:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getLogging().setEnableQueryPlan(true);</pre><p>
+					The XML snippet is:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;esper-configuration&gt;
+  &lt;engine-settings&gt;
+    &lt;defaults&gt;
+      &lt;logging&gt;
+        &lt;query-plan enabled="true"/&gt;
+    &lt;/logging&gt;
+    &lt;/defaults&gt;
+  &lt;/engine-settings&gt;
+&lt;/esper-configuration&gt;</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-logging-jdbc"/>15.4.13.3. JDBC Logging</h4></div></div></div><p>
+				   By default, the engine does not measure JDBC query execution times or report the number of rows returned from a JDBC query through logging. 
+				   To enable JDBC logging, set this option in the configuration. When enabled, the engine reports, at INFO level, any JDBC query performance and number of rows returned under the log name <code class="literal">com.espertech.esper.jdbc</code>.
+				</p><p>
+					The API to use to enable query plan logging is shown here:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getLogging().setEnableJDBC(true);</pre><p>
+					The XML snippet is:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;esper-configuration&gt;
+  &lt;engine-settings&gt;
+    &lt;defaults&gt;
+      &lt;logging&gt;
+        &lt;jdbc enabled="true"/&gt;
+    &lt;/logging&gt;
+    &lt;/defaults&gt;
+  &lt;/engine-settings&gt;
+&lt;/esper-configuration&gt;</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-logging-audit"/>15.4.13.4. Audit Logging</h4></div></div></div><p>
+				   The settings herein control the output format of <code class="literal">@Audit</code> logs.
+				</p><p>
+					This setting applies to all engine instances in the same JVM. Please also see the API documentation for information on pattern conversion characters.
+				</p><div class="table"><a id="d0e35623"/><p class="title"><b>Table 15.4. Audit Log Conversion Characters</b></p><div class="table-contents"><table summary="Audit Log Conversion Characters" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Character</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">m</code></td><td>Audit message.</td></tr><tr><td><code class="literal">s</code></td><td>Statement name.</td></tr><tr><td><code class="literal">u</code></td><td>Engine URI.</td></tr></tbody></table></div></div><br class="table-break"/><p>
+					The API to use to set am audit log format is shown here:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getLogging().setAuditPattern("[%u] [%s] %m");</pre><p>
+					The XML snippet is:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;esper-configuration&gt;
+  &lt;engine-settings&gt;
+    &lt;defaults&gt;
+      &lt;logging&gt;
+        &lt;audit pattern="[%u] [%s]%m"/&gt;
+    &lt;/logging&gt;
+    &lt;/defaults&gt;
+  &lt;/engine-settings&gt;
+&lt;/esper-configuration&gt;</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-engine-variables"/>15.4.14. Engine Settings related to Variables</h3></div></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-variables-lifetimeold"/>15.4.14.1. Variable Version Release Interval</h4></div></div></div><p>
+				   This setting controls the length of time that the engine retains variable versions for use by statements that use variables and that execute, within the same statement for the same event, longer then the time interval.
+				   By default, the engine retains 15 seconds of variable versions.
+				</p><p>
+				   For statements that use variables and that execute (in response to a single timer or other event) longer then the time period, the engine returns the current variable version at the time the statement executes, thereby softening the guarantee of consistency of variable values within the long-running statement. Please see <a class="xref" href="epl_clauses.html#variable_using" title="5.18.3. Using Variables">Section 5.18.3, “Using Variables”</a> for more information.
+				</p><p>
+					The XML configuration for this setting is shown below:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;variables&gt;
+      &lt;msec-version-release value="15000"/&gt;
+    &lt;/variables&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-engine-patterns"/>15.4.15. Engine Settings related to Patterns</h3></div></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-patterns-max"/>15.4.15.1. Followed-By Operator Maximum Subexpression Count</h4></div></div></div><p>
+				   You may use this setting to limit the total engine-wide number of pattern sub-expressions that all followed-by operators may manage. When the limit is reached, a condition is raised by the engine through the condition callback API.
+				</p><p>
+				  By default, when the limit is reached, the engine also prevents the start of new pattern sub-expressions, until pattern sub-expressions end and the limit is no longer reached. By setting the <code class="literal">prevent-start</code> flag to false you can instruct the engine to only raise a condition and continue to allow the start of new pattern sub-expressions.
+				</p><p>
+				  The implications of the settings described herein are also detailed in <a class="xref" href="event_patterns.html#pattern-temporal-followed-by-engine-max" title="6.5.8.2. Limiting Engine-wide Sub-Expression Count">Section 6.5.8.2, “Limiting Engine-wide Sub-Expression Count”</a>.
+				</p><p>
+					A sample XML configuration for this setting is shown below:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;patterns&gt;
+      &lt;max-subexpression value="100" prevent-start="false"/&gt;
+    &lt;/patterns&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+				  The limit can be changed and disabled or enabled at runtime via the runtime configuration API. Pass a null value as the limit to disable limit checking.
+				</p><p>
+				  A sample code snippet that sets a new limit is:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">epService.getEPAdministrator().getConfiguration().setPatternMaxSubexpressions(100L);</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-engine-scripts"/>15.4.16. Engine Settings related to Scripts</h3></div></div></div><p>
+			   You may configure a default script dialect as described herein. The default script dialect is <code class="literal">js</code> which stands for JavaScript, since most JVM ship with an integrated JavaScript engine.
+			</p><p>
+				A sample XML configuration for this setting is shown below:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+&lt;defaults&gt;
+  &lt;scripts default-dialect="js"/&gt;
+&lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+			  A sample code snippet that sets a new script dialect is:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">config.getEngineDefaults().getScripts().setDefaultDialect("js");</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-engine-stream-selection"/>15.4.17. Engine Settings related to Stream Selection</h3></div></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-streamselect-choices"/>15.4.17.1. Default Statement Stream Selection</h4></div></div></div><p>
+				   Statements can produce both insert stream (new data) and remove stream (old data) results. Remember that insert stream refers to arriving events and new aggregation values, while remove stream refers to events leaving data windows and prior aggregation values. By default, the engine delivers only the insert stream to listeners and observers of a statement.
+				</p><p>
+				   There are keywords in the <code class="literal">select</code> clause that instruct the engine to not generate insert stream and/or remove stream results if your application does not need either one of the streams. These keywords are the <code class="literal">istream</code>, <code class="literal">rstream</code> and the <code class="literal">irstream</code> keywords. 
+				</p><p>
+				   By default, the engine only generates insert stream results equivalent to using the optional <code class="literal">istream</code> keyword in the <code class="literal">select</code> clause.
+				   If you application requires insert and remove stream results for many statements, your application can add the <code class="literal">irstream</code> keyword to the <code class="literal">select</code> clause of each statement,
+				   or you can set a new default stream selector via this setting.
+				</p><p>
+					The XML configuration for this setting is shown below:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;stream-selection&gt;
+      &lt;stream-selector value="irstream" /&gt;
+    &lt;/stream-selection&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+					The equivalent code snippet using the configuration API is here:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getStreamSelection()
+    .setDefaultStreamSelector(StreamSelector.RSTREAM_ISTREAM_BOTH);</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-engine-time-source"/>15.4.18. Engine Settings related to Time Source</h3></div></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-timesource-choices"/>15.4.18.1. Default Time Source</h4></div></div></div><p>
+				   This setting only applies if internal timer events control engine time (default). If external timer events provide engine clocking, the setting does not apply.
+				</p><p>
+				   By default, the internal timer uses the call <code class="literal">System.currentTimeMillis()</code> to determine engine time in milliseconds. Via this setting the internal timer can be instructed to use <code class="literal">System.nanoTime()</code> instead. Please see <a class="xref" href="api.html#api-time-resolution" title="14.8. Time Resolution">Section 14.8, “Time Resolution”</a> for more information. 
+				</p><p>
+					Note: This is a Java VM global setting. If running multiple engine instances in a Java VM, the timer setting is global and applies to all engine instances in the same Java VM, for performance reasons.
+				</p><p>
+					A sample XML configuration for this setting is shown below, whereas the sample setting sets the time source to the nanosecond time provider:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;time-source&gt;
+      &lt;time-source-type value="nano" /&gt;
+    &lt;/time-source&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+					The equivalent code snippet using the configuration API is here:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getTimeSource().
+      setTimeSourceType(ConfigurationEngineDefaults.TimeSourceType.NANO);</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-engine-instrumentation"/>15.4.19. Engine Settings related to Metrics Reporting</h3></div></div></div><p>
+				This section explains how to enable and configure metrics reporting, which is by default disabled. Please see <a class="xref" href="api.html#api-instrumentation" title="14.14. Engine and Statement Metrics Reporting">Section 14.14, “Engine and Statement Metrics Reporting”</a> for more information on the metrics data reported to your application.
+			</p><p>
+				The flag that enables metrics reporting is global to a Java virtual machine. If metrics reporting is enabled, the overhead incurred for reporting metrics is carried by all engine instances per Java VM.
+			</p><p>
+				Metrics reporting occurs by an engine-controlled separate daemon thread that each engine instance starts at engine initialization time, if metrics reporting and threading is enabled (threading enabled is the default).
+			</p><p>
+			    Engine and statement metric intervals are in milliseconds. A negative or zero millisecond interval value may be provided to disable reporting.
+			</p><p>
+			    To control statement metric reporting for individual statements or groups of statements, the engine provides a facility that groups statements by statement name. 
+			    Each such statement group may have different reporting intervals configured, and intervals can be
+			    changed at runtime through runtime configuration. A statement group is assigned a group name at configuration time to identify the group.
+			</p><p>
+			    Metrics reporting configuration is part of the engine default settings. All configuration options are also available via the <code class="literal">Configuration</code> API.
+			</p><p>
+			    A sample XML configuration is shown below:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;metrics-reporting enabled="true" engine-interval="1000" statement-interval="1000" 
+        threading="true"/&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+			    The <code class="literal">engine-interval</code> setting (defaults to 10 seconds) determines the frequency in milliseconds at which the engine reports engine metrics, in this example every 1 second. The <code class="literal">statement-interval</code> is for statement metrics. The <code class="literal">threading</code> flag is true by default since reporting takes place by a dedicated engine thread and can be set to false to use the external or internal timer thread instead.
+			</p><p>
+			    The next example XML declares a statement group: The statements that have statement names that fall within the group follow a different reporting frequency:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;metrics-reporting enabled="true" statement-interval="0"&gt;
+  &lt;stmtgroup name="MyStmtGroup" interval="2000" default-include="true" num-stmts="100" 
+        report-inactive="true"&gt;
+    &lt;exclude-regex&gt;.*test.*&lt;/exclude-regex&gt;
+  &lt;/stmtgroup&gt;
+&lt;/metrics-reporting&gt;</pre><p>
+			    The above example configuration sets the <code class="literal">statement-interval</code> to zero to disable reporting for all statements. It defines a statement group by name <code class="literal">MyStmtGroup</code> and specifies a 2-second interval. The example sets the <code class="literal">default-include</code> flag to true (by default false) to include all statements in the statement group. The example also sets <code class="literal">report-inactive</code> to true (by default false) to report inactive statements.
+			</p><p>
+			  The <code class="literal">exclude-regex</code> element may be used to specify a regular expression that serves to exclude statements from the group. Any statement whose statement name matches the exclude regular expression is not included in the group. In the above example, all statements with the characters 'test' inside their statement name are excluded from the group.
+			</p><p>
+			  Any statement not belonging to any of the statement groups follow the configured statement interval. 
+			</p><p>
+			 There are additional elements available to include and exclude statements: <code class="literal">include-regex</code>, <code class="literal">include-like</code> and <code class="literal">exclude-like</code>. The latter two apply SQL-like matching. All patterns are case-sensitive.
+			</p><p>
+			 Here is a further example of a possible statement group definition, which includes statements whose statement name have the characters <code class="literal">@REPORT</code> or <code class="literal">@STREAM</code>, and excludes statements whose statement name have the characters <code class="literal">@IGNORE</code> or <code class="literal">@METRICS</code> inside.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;metrics-reporting enabled="true"&gt;
+  &lt;stmtgroup name="MyStmtGroup" interval="1000"&gt;
+    &lt;include-like&gt;%@REPORT%&lt;/include-like&gt;
+    &lt;include-regex&gt;.*@STREAM.*&lt;/include-like&gt;
+    &lt;exclude-like&gt;%@IGNORE%&lt;/exclude-like&gt;
+    &lt;exclude-regex&gt;.*@METRICS.*&lt;/exclude-regex&gt;
+  &lt;/stmtgroup&gt;
+&lt;/metrics-reporting&gt;</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-engine-language"/>15.4.20. Engine Settings related to Language and Locale</h3></div></div></div><p>
+				Locale-dependence in Esper can be present in the sort order of string values by the <code class="literal">order by</code> clause and by the sort view.
+			</p><p>
+				By default, Esper sorts string values using the <code class="literal">compare</code> method that is not locale dependent. To enable local dependent sorting you must set the configuration flag as described below.
+			</p><p>
+			 The XML configuration sets the locale dependent sorting as shown below:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;language sort-using-collator="true"/&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+			 The API to change the setting:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getLanguage().setSortUsingCollator(true);</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-engine-expression"/>15.4.21. Engine Settings related to Expression Evaluation</h3></div></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-expression-division"/>15.4.21.1. Integer Division and Division by Zero</h4></div></div></div><p>
+					By default Esper returns double-typed values for divisions regardless of operand types. Division by zero returns positive or negative double infinity.
+				</p><p>
+					To have Esper use Java-standard integer division instead, use this setting as described here. In Java integer division, when dividing integer types, the result is an integer type. This means that if you divide an integer unevenly by another integer, it returns the whole number part of the result, does not perform any rounding and the fraction part is dropped. If Java-standard integer division is enabled, when dividing an integer numerator by an integer denominator, the result is an integer number. Thus the expression <code class="literal">1 / 4</code> results in an integer zero. Your EPL must then convert at least one of the numbers to a double value before the division, for example by specifying <code class="literal">1.0 / 4</code> or by using <code class="literal">cast(myint, double)</code>.
+				</p><p>
+					When using Java integer division, division by zero for integer-typed operands always returns null. However division by zero for double-type operands still returns positive or negative double infinity. To also return null upon division by zero for double-type operands, set the flag to true as below (default is false).
+				</p><p>
+				 The XML configuration is as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;expression integer-division="false" division-by-zero-is-null="false"/&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+				 The API to change the setting:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getExpression().setIntegerDivision(true);
+config.getEngineDefaults().getExpression().setDivisionByZeroReturnsNull(true);</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-expression-subselecteval"/>15.4.21.2. Subselect Evaluation Order</h4></div></div></div><p>
+					By default Esper updates sub-selects with new events before evaluating the enclosing statement. This is relevant for statements that look for the same event in both the <code class="literal">from</code> clause and subselects.
+				</p><p>
+					To have Esper evaluate the enclosing clauses before updating the subselect in a subselect expression, set the flag as indicated herein.
+				</p><p>
+					 The XML configuration as below sets the same as the default value:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;expression self-subselect-preeval="true"/&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+					 Here is a sample statement that utilitzes a sub-select against the same-events:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from MyEvent where prop not in (select prop from MyEvent.std:unique(otherProp))</pre><p>
+					 By default the subselect data window updates first before the <code class="literal">where</code> clause is evaluated, thereby above statement never returns results.
+				</p><p>
+					 Changing the setting described here causes the <code class="literal">where</code> clause to evaluate before the subselect data window updates, thereby the statement does post results.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-expression-udfcache"/>15.4.21.3. User-Defined Function or Static Method Cache</h4></div></div></div><p>
+					By default Esper caches the result of an user-defined function if the parameter set to that function is empty or all parameters are constant values. Results of custom plug-in single-row functions are not cached according to the default configuration, unless the single-row function is explicitly configured with value cache enabled.
+				</p><p>
+					To have Esper evaluate the user-defined function regardless of constant parameters, set the flag to false as indicated herein.
+				</p><p>
+					 The XML configuration as below sets the same as the default value:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;expression udf-cache="true"/&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-expression-extendedagg"/>15.4.21.4. Extended Built-in Aggregation Functions</h4></div></div></div><p>
+					By default Esper provides a number of additional aggregation functions over the SQL standards. To have Esper only allow the standard SQL aggregation functions and not the additional ones,
+					disable the setting as described here.
+				</p><p>
+					 The XML configuration as below sets the same as the default value:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;expression extend-agg="true"/&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-expression-ducktype"/>15.4.21.5. Duck Typing</h4></div></div></div><p>
+					By default Esper validates method references when using the dot operator syntax at time of statement creation. With duck typing, the engine resolves method references at runtime.
+				</p><p>
+					 The XML configuration as below sets the same as the default value:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;expression ducktyping="false"/&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-expression-mathcontext"/>15.4.21.6. Math Context</h4></div></div></div><p>
+					By default, when computing the average of BigDecimal values, the engine does not pass a <code class="literal">java.math.MathContext</code>.
+					Use the setting herein to specify a default math context.
+				</p><p>
+					 The below XML configuration sets precision to 2 and rounding mode ceiling:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;expression math-context="precision=2 roundingMode=CEILING"/&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+					 An example API configuration is shown next:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">config.getEngineDefaults().getExpression().setMathContext();</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-engine-execution"/>15.4.22. Engine Settings related to Execution of Statements</h3></div></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-execution-prioritized"/>15.4.22.1. Prioritized Execution</h4></div></div></div><p>
+					By default Esper ignores @Priority and @Drop annotations and executes unprioritized, that is the engine does not attempt to interpret assigned priorities and reorder executions based on priority. Use this setting if your application requires prioritized execution.
+				</p><p>
+					By setting this configuration, the engine executes statements, when an event or schedule matches multiple statements, according to the assigned priority, starting from the highest priority value. See built-in EPL annotations in <a class="xref" href="epl_clauses.html#epl-syntax-annotation-priority" title="5.2.7.6. @Priority">Section 5.2.7.6, “@Priority”</a>.
+				</p><p>
+					By enabling this setting view sharing between statements as described in <a class="xref" href="configuration.html#config-engine-viewresources-sharing" title="15.4.12.1. Sharing View Resources between Statements">Section 15.4.12.1, “Sharing View Resources between Statements”</a> is disabled.
+				</p><p>
+					 The XML configuration to enable the flag, which is disabled by default, is as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;execution prioritized="true"/&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+				 The API to change the setting:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getExecution().setPrioritized(true);</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-execution-fairlock"/>15.4.22.2. Context Partition Fair Locking</h4></div></div></div><p>
+					By default Esper configures context partition locks without fair locking. If your application is multi-threaded and performs very frequent reads via iterator or fire-and-forget queries, you may need to set this flag to prevent lock starvation in the face of concurrent reads and writes. Please consult the Java API documentation under <code class="literal">ReentrantReadWriteLock</code> and <span class="emphasis"><em>Fair Mode</em></span> for more information.
+				</p><p>
+					 The XML configuration to enable fair locking, which is disabled by default, is as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;execution fairlock="true"/&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+				 The API to change the setting:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getExecution().setFairlock(true);</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-execution-disablelock"/>15.4.22.3. Disable Locking</h4></div></div></div><p>
+					By default Esper configures context partition locks as required after analyzing your EPL statements. You may disable context partition locks engine-wide using the setting described here. Use the <code class="literal">@NoLock</code> annotation instead to disable locking for a given statement or named window only.
+				</p><p>
+					CAUTION: We provide this setting for the purpose of identifying locking overhead, or when your application is single-threaded, or when using an external mechanism for concurrency control.
+					Setting disable-locking to true may have unpredictable results unless your application is taking concurrency under consideration.
+				</p><p>
+					 The XML configuration to disable context level locking is as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;execution disable-locking="false"/&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+				 The API to change the setting:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getExecution().setDisableLocking(true);</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="config-engine-execution-threadingprofile"/>15.4.22.4. Threading Profile</h4></div></div></div><p>
+					This setting is for performance tuning when using a large number of threads, such as 100 or more threads.
+				</p><p>
+					The configuration provides a setting that instructs the engine to reduce the use of thread-local variables. As the engine may use thread-local variables to reduce temporary object allocation, it can potentially use too much memory when a large number of threads are used with the engine. By setting the threading profile to large, the engine will allocate temporary objects instead of using thread-local variables for certain logic. Currently this setting applies exclusively to patterns and their filter expressions.
+				</p><p>
+					 The XML configuration to set a large threading profile is as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;execution threading-profile="large"/&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+				 The API to change the setting:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getExecution().setThreadingProfile(
+    ConfigurationEngineDefaults.ThreadingProfile.LARGE);</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-engine-exceptionhandling"/>15.4.23. Engine Settings related to Exception Handling</h3></div></div></div><p>
+				Use the settings as described here to register an exception handler factory class that provides an exception handler. The engine invokes exception handlers in the order they are listed to handle a continues-query unchecked exception, as further described in <a class="xref" href="api.html#api-exception" title="14.10. Exception Handling">Section 14.10, “Exception Handling”</a>.
+			</p><p>
+				Please provide the full-qualified class name of each class that implements the <code class="literal">com.espertech.esper.client.hook.ExceptionHandlerFactory</code> interface in the engine defaults configuration as below.
+			</p><p>
+				 The XML configuration is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;exceptionHandling&gt;
+      &lt;handlerFactory class="my.company.cep.MyCEPEngineExceptionHandlerFactory"/&gt;
+    &lt;/exceptionHandling&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+			 The API calls to register an exception handler factory are as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getExceptionHandling().addClass(MyCEPEngineExceptionHandlerFactory.class);</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-engine-conditionhandling"/>15.4.24. Engine Settings related to Condition Handling</h3></div></div></div><p>
+				Use the settings as described here to register a condition handler factory class that provides a condition handler. The engine invokes condition handlers in the order they are listed to indicate conditions, which is the term used for notification when certain predefined limits are reached, as further described in <a class="xref" href="api.html#api-condition" title="14.11. Condition Handling">Section 14.11, “Condition Handling”</a>.
+			</p><p>
+				Please provide the full-qualified class name of each class that implements the <code class="literal">com.espertech.esper.client.hook.ConditionHandlerFactory</code> interface in the engine defaults configuration as below.
+			</p><p>
+				 The XML configuration is as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;engine-settings&gt;
+  &lt;defaults&gt;
+    &lt;conditionHandling&gt;
+      &lt;handlerFactory class="my.company.cep.MyCEPEngineConditionHandlerFactory"/&gt;
+    &lt;/conditionHandling&gt;
+  &lt;/defaults&gt;
+&lt;/engine-settings&gt;</pre><p>
+			 The API calls to register a condition handler factory are as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.getEngineDefaults().getConditionHandling().addClass(MyCEPEngineConditionHandlerFactory.class);</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-revisionevent"/>15.4.25. Revision Event Type</h3></div></div></div><p>
+			   Revision event types reflect a versioning relationship between events of same or different event types. Please refer to <a class="xref" href="event_representation.html#eventrep-update" title="2.10. Updating, Merging and Versioning Events">Section 2.10, “Updating, Merging and Versioning Events”</a> and <a class="xref" href="epl_clauses.html#named_versioning" title="5.15.13. Versioning and Revision Event Type Use with Named Windows">Section 5.15.13, “Versioning and Revision Event Type Use with Named Windows”</a>.
+			</p><p>
+				The configuration consists of the following:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						An name of an event type whose events are <span class="emphasis"><em>base</em></span> events.
+					</p></li><li><p>
+						Zero, one or more names of event types whose events are <span class="emphasis"><em>delta</em></span> events.
+					</p></li><li><p>
+						One or more property names that supply the key values that tie base and delta events to existing revision events. Properties must exist on the event type as simple properties. Nested, indexed or mapped properties are not allowed.
+					</p></li><li><p>
+						Optionally, a strategy for overlaying or merging properties. The default strategy is <span class="emphasis"><em>Overlay Declared</em></span> as described below.
+					</p></li></ul></div><p>
+				The XML configuration for this setting is shown below:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;revision-event-type name="UserProfileRevisions"&gt;
+  &lt;base-event-type name="ProfileCreation"/&gt;
+  &lt;delta-event-type name="ProfileUpdate"/&gt;
+  &lt;key-property name="userid"/&gt;
+&lt;/revision-event-type&gt;</pre><p>
+				If configuring via runtime or initialization-time API, this code snippet explains how:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+ConfigurationRevisionEventType configRev = new ConfigurationRevisionEventType();
+configRev.setNameBaseEventType("ProfileCreation");
+configRev.addNameDeltaEventType("ProfileUpdate");
+configRev.setKeyPropertyNames(new String[] {"userid"});
+config.addRevisionEventType("UserProfileRevisions", configRev);</pre><p>
+				As the configuration provides names of base and delta event types, such names must be configured for JavaBean, Map or XML events as the previous sections outline.
+			</p><p>
+				The next table outlines the available strategies:
+			</p><div class="table"><a id="d0e36164"/><p class="title"><b>Table 15.5. Property Revision Strategies</b></p><div class="table-contents"><table summary="Property Revision Strategies" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody><tr><td>Overlay Declared (default)</td><td>
+								<p>A fast strategy for revising events that groups properties provided by base and delta events and overlays contributed properties to compute a revision.</p>
+								<p>For use when there is a limited number of combinations of properties that change on an event, and such combinations are known in advance.</p>
+							    <p>The properties available on the output revision events are all properties of the base event type. Delta event types do not add any additional properties that are not present on the base event type.</p>
+								<p>Any null values or non-existing property on a delta (or base) event results in a null values for the same property on the output revision event.</p>
+							</td></tr><tr><td>Merge Declared</td><td> 
+							    <p>A strategy for revising events by merging properties provided by base and delta events, considering null values and non-existing (dynamic) properties as well.</p>
+							    <p>For use when there is a limited number of combinations of properties that change on an event, and such combinations are known in advance.</p>
+							    <p>The properties available on the output revision events are all properties of the base event type plus all additional properties that any of the delta event types provide.</p>
+								<p>Any null values or non-existing property on a delta (or base) event results in a null values for the same property on the output revision event.</p>
+							</td></tr><tr><td>Merge Non-null</td><td>
+							    <p>A strategy for revising events by merging properties provided by base and delta events, considering only non-null values.</p>
+								<p>For use when there is an unlimited number of combinations of properties that change on an event, or combinations are not known in advance.</p>
+							    <p>The properties available on the output revision events are all properties of the base event type plus all additional properties that any of the delta event types provide.</p>
+								<p>Null values returned by delta (or base) event properties provide no value to output revision events, i.e. null values are not merged.</p>
+							</td></tr><tr><td>Merge Exists</td><td>
+								 <p>A strategy for revising events by merging properties provided by base and delta events, considering only values supplied by event properties that exist.</p>
+								 <p>For use when there is an unlimited number of combinations of properties that change on an event, or combinations are not known in advance.</p>
+							    <p>The properties available on the output revision events are all properties of the base event type plus all additional properties that any of the delta event types provide.</p>
+								 <p>All properties are treated as dynamic properties: If an event property does not exist on a delta event (or base) event the property provides no value to output revision events, i.e. non-existing property values are not merged.</p>
+							</td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="config-variantstream"/>15.4.26. Variant Stream</h3></div></div></div><p>
+			   A <span class="emphasis"><em>variant stream</em></span> is a predefined stream into which events of multiple disparate event types can be inserted, and which can be selected from in patterns and the <code class="literal">from</code> clause.
+			</p><p>
+				The name of the variant stream and, optionally, the type of events that the stream may accept, are part of the stream definition. By default, the variant stream accepts only the predefined event types. The engine validates your <code class="literal">insert into</code> clause which inserts into the variant stream against the predefined types.
+			</p><p>
+				A variant stream can be set to accept any type of event, in which case all properties of the variant stream are effectively dynamic properties. Set the <code class="literal">type variance</code> flag to <code class="literal">ANY</code> to indicate the variant stream accepts any type  of event.
+			</p><p>
+				The following XML configuration defines a variant stream by name <code class="literal">OrderStream</code> that carries only <code class="literal">PartsOrder</code> and <code class="literal">ServiceOrder</code> events:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;variant-stream name="OrderStream"&gt;
+  &lt;variant-event-type name="PartsOrder"/&gt;
+  &lt;variant-event-type name="ServiceOrder"/&gt;
+&lt;/variant-stream&gt;</pre><p>
+				This code snippet sets up a variant stream by name <code class="literal">OutgoingEvent</code>:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+ConfigurationVariantStream variant = new ConfigurationVariantStream();
+variant.setTypeVariance(ConfigurationVariantStream.TypeVariance.ANY);
+config.addVariantStream("OutgoingEvent", variant);</pre><p>
+				If specifying variant event type names, make sure such names have been configured for JavaBean, Map or XML events.
+			</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="configuration-type-names"/>15.5. Type Names</h2></div></div></div><p>
+			Certain configuration values accept type names. Type names can occur in the configuration of variable types, Map-event property types as well as XPath cast types, for example. Types names are not case-sensitive.
+		</p><p>
+			The table below outlines all possible type names:
+		</p><div class="table"><a id="d0e36298"/><p class="title"><b>Table 15.6. Variable Type Names</b></p><div class="table-contents"><table summary="Variable Type Names" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Type Name</th><th>Type</th></tr></thead><tbody><tr><td><code class="literal">string</code>, <code class="literal">varchar</code>, <code class="literal">varchar2</code> or <code class="literal">java.lang.String</code></td><td>A string value</td></tr><tr><td><code class="literal">int</code>, <code class="literal">integer</code> or <code class="literal">java.lang.Integer</code></td><td>An integer value</td></tr><tr><td><code class="literal">long</code> or <code class="literal">java.lang.Long</code></td><td>A long value</td></tr><tr><td><code class="literal">bool</code>, <code class="literal">boolean</code> or <code class="literal">java.lang.Boolean</code></td><td>A boolean value</td></tr><tr><td><code class="literal">double</code> or <code class="literal">java.lang.Double</code></td><td>A double value</td></tr><tr><td><code class="literal">float</code> or <code class="literal">java.lang.Float</code></td><td>A float value</td></tr><tr><td><code class="literal">short</code> or <code class="literal">java.lang.Short</code></td><td>A short value</td></tr><tr><td><code class="literal">char</code>, <code class="literal">character</code> or <code class="literal">java.lang.Character</code></td><td>A character value</td></tr><tr><td><code class="literal">byte</code> or <code class="literal">java.lang.Byte</code></td><td>A byte value</td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="configuration-runtime"/>15.6. Runtime Configuration</h2></div></div></div><a id="d0e36410" class="indexterm"/><p>
+			Certain configuration changes are available to perform on an engine instance while in operation. Such configuration operations are available via the <code class="literal">getConfiguration</code> method on <code class="literal">EPAdministrator</code>,
+			which returns an <code class="literal">ConfigurationOperations</code> object. Please consult the JavaDoc documentation for more detail.
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="configuration-logging"/>15.7. Logging Configuration</h2></div></div></div><a id="d0e36429" class="indexterm"/><p>
+		   Esper logs all messages to Apache commons logging under an appropriate log level. To output log messages you can add Log4j to classpath and configure Log4j as below.
+		</p><p>
+			Esper's only direct dependency for logging is the Apache Commons Logging interfaces. You may use Log4j as described here, or you may use SLF4J instead (for example) as described in http://www.slf4j.org/legacy.html. You can also redirect SLF4J to any backend you want - nop, logback, jul as needed.
+		</p><p>
+			Statement-level processing information can be output, please see <a class="xref" href="devlifecycle.html#devlifecycle-debugging-audit" title="16.3.1. @Audit Annotation">Section 16.3.1, “@Audit Annotation”</a>.
+		</p><p>
+		   For performance reasons, Esper does not log any debug-level or informational-level messages for event execution unless explicitly configured via <a class="xref" href="configuration.html#config-engine-logging-execpath" title="15.4.13.1. Execution Path Debug Logging">Section 15.4.13.1, “Execution Path Debug Logging”</a>.
+		</p><p>
+			A callback API for receiving certain critical engine reports is available as described in <a class="xref" href="api.html#api-exception" title="14.10. Exception Handling">Section 14.10, “Exception Handling”</a>.
+		</p><p>
+		  More information on configuring engine-level settings for logging are at <a class="xref" href="configuration.html#config-engine-logging" title="15.4.13. Engine Settings related to Logging">Section 15.4.13, “Engine Settings related to Logging”</a>.
+		</p><p>
+			Apache Commons Logging uses an automatic discovery mechanism to find a log framework that it will delegate to.  If your application has another component using logback, please inspect you logback configuration and add <code class="literal">com.espertech</code>.
+		</p><p>
+		   The next table explains the log levels:
+		</p><div class="table"><a id="d0e36461"/><p class="title"><b>Table 15.7. Log Levels</b></p><div class="table-contents"><table summary="Log Levels" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Log Level</th><th>Use</th></tr></thead><tbody><tr><td>Debug</td><td>Displays detailed engine-internal information that may not be easy to understand for application developers but are useful for engine support.</td></tr><tr><td>Info</td><td>Used for a few critical engine-level log messages.</td></tr><tr><td>Warn</td><td>Certain important warning or informational messages are displayed under the warning level.</td></tr><tr><td>Error</td><td>Exceptions reported within the engine or by plug-in components are reported under the error level. When users enter invalid EPL statements such validation errors are not reported as error logs and are indicated via API exception instead.</td></tr></tbody></table></div></div><br class="table-break"/><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="configuration-logging-log4j"/>15.7.1. Log4j Logging Configuration</h3></div></div></div><p>
+				Log4j is the default logging component. Please find additional information for Log4j configuration and extension in <a class="link" href="http://logging.apache.org/log4j" target="">http://logging.apache.org/log4j</a>.
+			</p><p>
+				The easiest way to configure Log4j is by providing a Log4J configuration file, similar to the <code class="literal">log4j.xml</code> file shipped in the <code class="literal">etc</code> folder of the distribution.
+			</p><p>
+				Add the <code class="literal">log4j.configuration</code> system property to the <code class="literal">java</code> command line and provide the file name of the Log4j configuration file, making sure your classpath also includes the directory of the file:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">java -Dlog4j.configuration=log4j.xml ...</pre></div></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="api.html"><strong>Prev</strong>Chapter 14. API Reference</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="devlifecycle.html"><strong>Next</strong>Chapter 16. Development Lifecycle</a></li></ul></body></html>

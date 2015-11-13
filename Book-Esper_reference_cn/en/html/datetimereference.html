@@ -1,0 +1,745 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 11. EPL Reference: Date-Time Methods</title><link rel="stylesheet" href="css/espertech.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Esper Reference"/><link rel="up" href="index.html" title="Esper Reference"/><link rel="prev" href="enumerationreference.html" title="Chapter 10. EPL Reference: Enumeration Methods"/><link rel="next" href="epl-views.html" title="Chapter 12. EPL Reference: Views"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.espertech.com" class="site_href"><strong>esper.codehaus.org and espertech.com</strong></a><a href="http://esper.codehaus.org/esper/documentation/documentation.html" class="doc_href"><strong>Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="enumerationreference.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="epl-views.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="datetimereference"/>Chapter 11. EPL Reference: Date-Time Methods</h2></div></div></div><div class="toc"><dl><dt><span class="sect1"><a href="datetimereference.html#datetime-intro">11.1. Overview</a></span></dt><dt><span class="sect1"><a href="datetimereference.html#datetime-howtouse">11.2. How to Use</a></span></dt><dd><dl><dt><span class="sect2"><a href="datetimereference.html#datetime-howtouse-synopsis">11.2.1. Syntax</a></span></dt></dl></dd><dt><span class="sect1"><a href="datetimereference.html#datetime-method-calref">11.3. Calendar and Formatting Reference</a></span></dt><dd><dl><dt><span class="sect2"><a href="datetimereference.html#datetime-method-between">11.3.1. Between</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-format">11.3.2. Format</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-get">11.3.3. Get (By Field)</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-getitem">11.3.4. Get (By Name) </a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-minus">11.3.5. Minus</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-plus">11.3.6. Plus</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-roundceiling">11.3.7. RoundCeiling</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-roundfloor">11.3.8. RoundFloor</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-roundhalf">11.3.9. RoundHalf</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-set">11.3.10. Set (By Field)</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-withdate">11.3.11. WithDate</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-withmin">11.3.12. WithMax</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-withmax">11.3.13. WithMin</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-withtime">11.3.14. WithTime</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-tocal">11.3.15. ToCalendar</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-todate">11.3.16. ToDate</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-tomsec">11.3.17. ToMillisec</a></span></dt></dl></dd><dt><span class="sect1"><a href="datetimereference.html#datetime-method-intervalref">11.4. Interval Algebra Reference</a></span></dt><dd><dl><dt><span class="sect2"><a href="datetimereference.html#datetime-method-examples">11.4.1. Examples</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-parameters">11.4.2. Interval Algebra Parameters</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-performance">11.4.3. Performance</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-limitations">11.4.4. Limitations</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-after">11.4.5. After</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-before">11.4.6. Before</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-coincides">11.4.7. Coincides</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-during">11.4.8. During</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-finishes">11.4.9. Finishes</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-finishedby">11.4.10. Finished By</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-includes">11.4.11. Includes</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-meets">11.4.12. Meets</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-metby">11.4.13. Met By</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-overlaps">11.4.14. Overlaps</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-overlappedby">11.4.15. Overlapped By</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-starts">11.4.16. Starts</a></span></dt><dt><span class="sect2"><a href="datetimereference.html#datetime-method-startedby">11.4.17. Started By</a></span></dt></dl></dd></dl></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="datetime-intro"/>11.1. Overview</h2></div></div></div><a id="d0e24805" class="indexterm"/><p>
+			EPL date-time methods work on date-time values to perform common tasks such as comparing times and time periods, adding or subtracting time periods, setting or rounding calendar fields and querying fields.
+		</p><p>
+			Date-time methods operate on:
+		</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+                    Any expression or event property that returns either a long-type millisecond value, a <code class="literal">java.util.Calendar</code> or <code class="literal">java.util.Date</code> including subclasses. Consider the built-in single-row function <code class="literal">current_timestamp</code> for use with date-time methods.
+                </p></li><li><p>
+                    Any event for which the event type declares a start timestamp property name and optionally also an end timestamp property name. Date-time methods operate on events by means of the <span class="emphasis"><em>stream-alias</em></span>.<span class="emphasis"><em>method-name</em></span> syntax.
+                </p></li></ol></div><p>
+			The below table summarizes the built-in date-time methods available:
+		</p><div class="table"><a id="datetime_method_table"/><p class="title"><b>Table 11.1. Date-Time Methods</b></p><div class="table-contents"><table summary="Date-Time Methods" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Method</th><th>Result</th></tr></thead><tbody><tr><td>after(event or timestamp)</td><td>
+							<p>
+								Returns true if an event happens after another event, or a timestamp is after another timestamp.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-after" title="11.4.5. After">Section 11.4.5, “After”</a>.
+							</p>
+						</td></tr><tr><td>before(event or timestamp)</td><td>
+							<p>
+								Returns true if an event happens before another event, or a timestamp is before another timestamp.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-before" title="11.4.6. Before">Section 11.4.6, “Before”</a>.
+							</p>
+						</td></tr><tr><td>between(timestamp, timestamp, boolean, boolean)</td><td>
+							<p>
+								Returns true if a timestamp is between two timestamps. 
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-between" title="11.3.1. Between">Section 11.3.1, “Between”</a>.
+							</p>
+						</td></tr><tr><td>coincides(event or timestamp)</td><td>
+							<p>
+								Returns true if an event and another event happen at the same time, or two timestamps are the same value.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-coincides" title="11.4.7. Coincides">Section 11.4.7, “Coincides”</a>.
+							</p>
+						</td></tr><tr><td>during(event or timestamp)</td><td>
+							<p>
+								Returns true if an event happens during the occurrence of another event, or when a timestamps falls within the occurrence of an event.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-during" title="11.4.8. During">Section 11.4.8, “During”</a>.
+							</p>
+						</td></tr><tr><td>finishes(event or timestamp)</td><td>
+							<p>
+								Returns true if an event starts after another event starts and the event ends at the same time as the other event.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-finishes" title="11.4.9. Finishes">Section 11.4.9, “Finishes”</a>.
+							</p>
+						</td></tr><tr><td>finishedBy(event or timestamp)</td><td>
+							<p>
+								Returns true if an event starts before another event starts and ends at the same time as the other event.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-finishedby" title="11.4.10. Finished By">Section 11.4.10, “Finished By”</a>.
+							</p>
+						</td></tr><tr><td>format()</td><td>
+							<p>
+								Formats the date-time returning a string.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-format" title="11.3.2. Format">Section 11.3.2, “Format”</a>.
+							</p>
+						</td></tr><tr><td>get(field)</td><td>
+							<p>
+								Returns the value of the given date-time value field.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-get" title="11.3.3. Get (By Field)">Section 11.3.3, “Get (By Field)”</a>.
+							</p>
+						</td></tr><tr><td><p>getMillisOfSecond()</p>
+<p>getSecondOfMinute()</p>
+<p>getMinuteOfHour()</p>
+<p>getHourOfDay()</p>
+<p>getDayOfWeek()</p>
+<p>getDayOfMonth()</p>
+<p>getDayOfYear()</p>
+<p>getWeekyear()</p>
+<p>getMonthOfYear()</p>
+<p>getYear()</p>
+<p>getEra()</p></td><td>
+							<p>
+								Returns the value of the given date-time value field.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-getitem" title="11.3.4. Get (By Name)">Section 11.3.4, “Get (By Name) ”</a>.
+							</p>
+						</td></tr><tr><td>includes(event or timestamp)</td><td>
+							<p>
+								Returns true if the parameter event happens during the occurrence of the event, or when a timestamps falls within the occurrence of an event.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-includes" title="11.4.11. Includes">Section 11.4.11, “Includes”</a>.
+							</p>
+						</td></tr><tr><td>meets(event or timestamp)</td><td>
+							<p>
+								Returns true if the event's end time is the same as another event's start time.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-meets" title="11.4.12. Meets">Section 11.4.12, “Meets”</a>.
+							</p>
+						</td></tr><tr><td>metBy(event or timestamp)</td><td>
+							<p>
+								Returns true if the event's start time is the same as another event's end time.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-metby" title="11.4.13. Met By">Section 11.4.13, “Met By”</a>.
+							</p>
+						</td></tr><tr><td>minus(duration-millis)</td><td>
+							<p>
+								Returns a date-time with the specified duration in long-type milliseconds taken away.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-minus" title="11.3.5. Minus">Section 11.3.5, “Minus”</a>.
+							</p>
+						</td></tr><tr><td>minus(time-period)</td><td>
+							<p>
+								Returns a date-time with the specified duration in time-period syntax taken away.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-minus" title="11.3.5. Minus">Section 11.3.5, “Minus”</a>.
+							</p>
+						</td></tr><tr><td>overlaps(event or timestamp)</td><td>
+							<p>
+								Returns true if the event starts before another event starts and finishes after the other event starts, but before the other event finishes (events have an overlapping period of time).
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-overlaps" title="11.4.14. Overlaps">Section 11.4.14, “Overlaps”</a>.
+							</p>
+						</td></tr><tr><td>overlappedBy(event or timestamp)</td><td>
+							<p>
+								Returns true if the parameter event starts before the input event starts and the parameter event finishes after the input event starts, but before the input event finishes (events have an overlapping period of time).
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-overlappedby" title="11.4.15. Overlapped By">Section 11.4.15, “Overlapped By”</a>.
+							</p>
+						</td></tr><tr><td>plus(duration-millis)</td><td>
+							<p>
+								Returns a date-time with the specified duration in long-type milliseconds added.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-plus" title="11.3.6. Plus">Section 11.3.6, “Plus”</a>.
+							</p>
+						</td></tr><tr><td>plus(time-period)</td><td>
+							<p>
+								Returns a date-time with the specified duration in time-period syntax added.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-plus" title="11.3.6. Plus">Section 11.3.6, “Plus”</a>.
+							</p>
+						</td></tr><tr><td>roundCeiling(field)</td><td>
+							<p>
+								Returns a date-time rounded to the highest whole unit of the date-time field.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-roundceiling" title="11.3.7. RoundCeiling">Section 11.3.7, “RoundCeiling”</a>.
+							</p>
+						</td></tr><tr><td>roundFloor(field)</td><td>
+							<p>
+								Returns a date-time rounded to the lowest whole unit of the date-time field.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-roundfloor" title="11.3.8. RoundFloor">Section 11.3.8, “RoundFloor”</a>.
+							</p>
+						</td></tr><tr><td>roundHalf(field)</td><td>
+							<p>
+								Returns a date-time rounded to the nearest whole unit of the date-time field.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-roundhalf" title="11.3.9. RoundHalf">Section 11.3.9, “RoundHalf”</a>.
+							</p>
+						</td></tr><tr><td>set(field, value)</td><td>
+							<p>
+								Returns a date-time with the specified field set to the value returned by a value expression.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-set" title="11.3.10. Set (By Field)">Section 11.3.10, “Set (By Field)”</a>.
+							</p>
+						</td></tr><tr><td>starts(event or timestamp)</td><td>
+							<p>
+								Returns true if an event and another event start at the same time and the event's end happens before the other event's end.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-starts" title="11.4.16. Starts">Section 11.4.16, “Starts”</a>.
+							</p>
+						</td></tr><tr><td>startedBy(event or timestamp)</td><td>
+							<p>
+									Returns true if an event and another event start at the same time and the other event's end happens before the input event's end.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-startedby" title="11.4.17. Started By">Section 11.4.17, “Started By”</a>.
+							</p>
+						</td></tr><tr><td>withDate(year,month,day)</td><td>
+							<p>
+								Returns a date-time with the specified date, retaining the time fields.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-withdate" title="11.3.11. WithDate">Section 11.3.11, “WithDate”</a>.
+							</p>
+						</td></tr><tr><td>withMax(field)</td><td>
+							<p>
+								Returns a date-time with the field set to the maximum value for the field.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-withmin" title="11.3.12. WithMax">Section 11.3.12, “WithMax”</a>.
+							</p>
+						</td></tr><tr><td>withMin(field)</td><td>
+							<p>
+								Returns a date-time with the field set to the minimum value for the field.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-withmax" title="11.3.13. WithMin">Section 11.3.13, “WithMin”</a>.
+							</p>
+						</td></tr><tr><td>withTime(hour,minute,sec,msec)</td><td>
+							<p>
+								Returns a date-time with the specified time, retaining the date fields.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-withtime" title="11.3.14. WithTime">Section 11.3.14, “WithTime”</a>.
+							</p>
+						</td></tr><tr><td>toCalendar()</td><td>
+							<p>
+								Returns the <code class="literal">Calendar</code> object for this date-time value.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-tocal" title="11.3.15. ToCalendar">Section 11.3.15, “ToCalendar”</a>.
+							</p>
+						</td></tr><tr><td>toDate()</td><td>
+							<p>
+								Returns the <code class="literal">Date</code> object for this date-time value.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-todate" title="11.3.16. ToDate">Section 11.3.16, “ToDate”</a>.
+							</p>
+						</td></tr><tr><td>toMillisec()</td><td>
+							<p>
+								Returns the long-type milliseconds value for this date-time value.
+							</p>
+							<p>
+								<a class="xref" href="datetimereference.html#datetime-method-tomsec" title="11.3.17. ToMillisec">Section 11.3.17, “ToMillisec”</a>.
+							</p>
+						</td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="datetime-howtouse"/>11.2. How to Use</h2></div></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-howtouse-synopsis"/>11.2.1. Syntax</h3></div></div></div><p>
+				The syntax for date-time methods is the same syntax as for any chained invocation:
+			</p><pre class="synopsis"><span class="emphasis"><em>input_val</em></span>.<span class="emphasis"><em>datetime_method_name</em></span>( [<span class="emphasis"><em>method_parameter</em></span> [, <span class="emphasis"><em>method_parameter</em></span> [,...]]])
+	  .[ <span class="emphasis"><em>datetime_method_name</em></span>(...) [...]] </pre><p>
+				Following the <span class="emphasis"><em>input_val</em></span> input value is the <code class="literal">.</code> (dot) operator and the <span class="emphasis"><em>datetime_method_name</em></span> date-time method name. It follows in parenthesis a comma-separated list of method parameter expressions. Additional date-time methods can be chained thereafter.
+			</p><p>
+				The input value can be any expression or event property that returns a value of type long or <code class="literal">java.util.Calendar</code> or <code class="literal">java.util.Date</code>. If the input value is null, the expression result is also null.
+			</p><p>
+				The input value can also be an event. In this case the event type of the event must have the start timestamp property name defined and optionally also the end timestamp property name. 
+			</p><p>
+				The following example EPL statement employs the <code class="literal">withTime</code> date-time method. This example returns the current engine time with the time-part set to 1 am:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select current_timestamp.withTime(1, 0, 0, 0) as time1am from MyEvent</pre><p>
+				As date-time methods can be chained, this EPL is equivalent:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select current_timestamp.set('hour', 1).set('min', 0).set('sec', 0).set('msec', 0) as time1am
+from MyEvent</pre><p>
+				The statement above outputs in field <code class="literal">time1am</code> a long-type millisecond-value reflecting 1am on the same date as engine time. Since the input value is provided by the built-in <code class="literal">current_timestamp</code> function which returns current engine date as a long-type millisecond value the output is also a long-type millisecond value.
+			</p><p>
+				You may apply a date-time method to an event property.
+			</p><p>
+				Assume that the <code class="literal">RFIDEvent</code> event type has a <code class="literal">Date</code>-type property by name <code class="literal">timeTaken</code>. The following query rounds each time-taken value down to the nearest minute and outputs a <code class="literal">Date</code>-type value in column <code class="literal">timeTakenRounded</code>:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.roundFloor('min') as timeTakenRounded from RFIDEvent</pre><p>
+				You may apply a date-time method to events. This example assumes that the RFIDEvent and WifiEvent event types both have a timestamp property defined. The EPL compares the timestamps of the RFIDEvent and the WifiEvent: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select rfid.after(wifi) as isAfter 
+from RFIDEvent.std:lastevent() rfid, WifiEvent.std:lastevent() wifi</pre><p>
+			   For comparing date-time values and considering event duration (event start and end timestamps) we recommend any of the interval algebra methods. You may also compare millisecond values using the <code class="literal">between</code> or <code class="literal">in</code> ranges and inverted ranges or relational operators (<code class="literal">&gt; , &lt;, &gt;=, &lt;=)</code>.
+			</p><p>
+				From a performance perspective, the date-time method evaluation ensures that for each unique chain of date-time methods only a single calendar objects is copied or created when necessary.
+			</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="datetime-method-calref"/>11.3. Calendar and Formatting Reference</h2></div></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-between"/>11.3.1. Between</h3></div></div></div><p>
+				The <code class="literal">between</code> date-time method compares the input date-time value to the two date-time values passed in and returns true if the input value falls between the two parameter values.
+			</p><p>
+				The synopsis is:
+			</p><pre class="synopsis"><span class="emphasis"><em>input_val</em></span>.<span class="emphasis"><em>between</em></span>(<span class="emphasis"><em>range_start</em></span>, <span class="emphasis"><em>range_end</em></span> [, <span class="emphasis"><em>include_start</em></span>, <span class="emphasis"><em>include_end</em></span>])</pre><p>
+				The method takes either 2 or 4 parameters. The first two parameters <span class="emphasis"><em>range_start</em></span> and <span class="emphasis"><em>range_end</em></span> are expressions or properties that yield either a long-typed, Date-typed or Calendar-typed range start and end value.
+			</p><p>
+				The next two parameters <span class="emphasis"><em>include_start</em></span> and <span class="emphasis"><em>include_end</em></span> are optional. If not specified, the range start value and range end value are included in the range i.e. specify a closed range where both endpoints are included. If specified, the expressions must return a boolean-value indicating whether to include the range start value and range end value in the range. 
+			</p><p>
+				The example below outputs true when the time-taken property value of the RFID event falls between the time-start property value and the time-end property value (closed range includes endpoints):
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.between(timeStart, timeEnd) from RFIDEvent</pre><p>
+				The example below performs the same test as above but does not include endpoints (open range includes neither endpoint):
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.between(timeStart, timeEnd, false, false) from RFIDEvent</pre><p>
+				If the range end value is less then the range start value, the algorithm reverses the range start and end value.
+			</p><p>
+				If the input date-time value or any of the parameter values evaluate to null the method returns a null result value.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-format"/>11.3.2. Format</h3></div></div></div><p>
+				The <code class="literal">format</code> date-time method formats the date-time returning a string. 
+			</p><p>
+				The method takes no parameters. It returns the date-time value formatted using the default locale format obtained from <code class="literal">new SimpleDateFormat()</code>.
+			</p><p>
+				The example below outputs the time-taken property value of the RFID event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.format() as timeTakenStr from RFIDEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-get"/>11.3.3. Get (By Field)</h3></div></div></div><p>
+				The <code class="literal">get</code> date-time method returns the value of the given date-time value field.
+			</p><p>
+				The method takes a single string-constant field name as parameter. Please see <a class="xref" href="epl_clauses.html#epl-syntax-time-periods" title="5.2.1. Specifying Time Periods">Section 5.2.1, “Specifying Time Periods”</a> for a list of recognized keywords (not case-sensitive).
+			</p><p>
+				The method returns the numeric value of the field within the date-time value. The value returned adheres to <code class="literal">Calendar</code>-class semantics: For example, the value for <code class="literal">month</code> starts at zero and has a maximum of 11.
+			</p><p>
+				The example below outputs the month value of the time-taken property value of the RFID event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.get('month') as timeTakenMonth from RFIDEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-getitem"/>11.3.4. Get (By Name) </h3></div></div></div><p>
+				The following list of getter-methods are available:  <code class="literal">getMillisOfSecond()</code>, <code class="literal">getSecondOfMinute()</code>, <code class="literal">getMinuteOfHour()</code>, <code class="literal">getHourOfDay()</code>, <code class="literal">getDayOfWeek()</code>, <code class="literal">getDayOfMonth()</code>, <code class="literal">getDayOfYear()</code>, <code class="literal">getWeekYear()</code>, <code class="literal">getMonthOfYear()</code>, <code class="literal">getYear()</code> and <code class="literal">getEra()</code>.
+			</p><p>
+				All get-methods take no parameter and return the numeric value of the field within the date-time value. The value returned adheres to <code class="literal">Calendar</code>-class semantics: For example, the value for <code class="literal">month</code> starts at zero and has a maximum of 11.
+			</p><p>
+				The example below outputs the month value of the time-taken property value of the RFID event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.getMonthOfYear() as timeTakenMonth from RFIDEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-minus"/>11.3.5. Minus</h3></div></div></div><p>
+				The <code class="literal">minus</code> date-time method returns a date-time with the specified duration taken away.
+			</p><p>
+				The method has two versions: The first version takes the duration as a long-type millisecond value. The second version takes the duration as a time-period expression, see <a class="xref" href="epl_clauses.html#epl-syntax-time-periods" title="5.2.1. Specifying Time Periods">Section 5.2.1, “Specifying Time Periods”</a>.
+			</p><p>
+				The example below  demonstrates the time-period parameter to subtract two minutes from the time-taken property value of the RFID event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.minus(2 minutes) as timeTakenMinus2Min from RFIDEvent</pre><p>
+				The next example is equivalent but passes a millisecond-value instead:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.minus(2*60*1000) as timeTakenMinus2Min from RFIDEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-plus"/>11.3.6. Plus</h3></div></div></div><p>
+				The <code class="literal">plus</code> date-time method returns a date-time with the specified duration added.
+			</p><p>
+				The method has two versions: The first version takes the duration as a long-type millisecond value. The second version takes the duration as a time-period expression, see <a class="xref" href="epl_clauses.html#epl-syntax-time-periods" title="5.2.1. Specifying Time Periods">Section 5.2.1, “Specifying Time Periods”</a>.
+			</p><p>
+				The next example adds two minutes to the time-taken property value of the RFID event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.plus(2 minutes) as timeTakenPlus2Min from RFIDEvent</pre><p>
+				The next example is equivalent but passes a millisecond-value instead:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.plus(2*60*1000) as timeTakenPlus2Min from RFIDEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-roundceiling"/>11.3.7. RoundCeiling</h3></div></div></div><p>
+				The <code class="literal">roundCeiling</code> date-time method rounds to the highest whole unit of the date-time field.
+			</p><p>
+				The method takes a single string-constant field name as parameter. Please see <a class="xref" href="epl_clauses.html#epl-syntax-time-periods" title="5.2.1. Specifying Time Periods">Section 5.2.1, “Specifying Time Periods”</a> for a list of recognized keywords (not case-sensitive).
+			</p><p>
+				The next example rounds-to-ceiling the minutes of the time-taken property value of the RFID event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.roundCeiling('min') as timeTakenRounded from RFIDEvent</pre><p>
+				If the input time is <code class="literal">2002-05-30 09:01:23.050</code>, for example, the output is <code class="literal">2002-05-30 09:02:00.000</code> (example timestamps are in format <code class="literal">yyyy-MM-dd HH:mm:ss.SSS</code>).
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-roundfloor"/>11.3.8. RoundFloor</h3></div></div></div><p>
+				The <code class="literal">roundFloor</code> date-time method rounds to the lowest whole unit of the date-time field.
+			</p><p>
+				The method takes a single string-constant field name as parameter. Please see <a class="xref" href="epl_clauses.html#epl-syntax-time-periods" title="5.2.1. Specifying Time Periods">Section 5.2.1, “Specifying Time Periods”</a> for a list of recognized keywords (not case-sensitive).
+			</p><p>
+				The next example rounds-to-floor the minutes of the time-taken property value of the RFID event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.roundFloor('min') as timeTakenRounded from RFIDEvent</pre><p>
+				If the input time is <code class="literal">2002-05-30 09:01:23.050</code>, for example, the output is <code class="literal">2002-05-30 09:01:00.000</code> (example timestamps are in format <code class="literal">yyyy-MM-dd HH:mm:ss.SSS</code>).
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-roundhalf"/>11.3.9. RoundHalf</h3></div></div></div><p>
+				The <code class="literal">roundFloor</code> date-time method rounds to the nearest whole unit of the date-time field.
+			</p><p>
+				The method takes a single string-constant field name as parameter. Please see <a class="xref" href="epl_clauses.html#epl-syntax-time-periods" title="5.2.1. Specifying Time Periods">Section 5.2.1, “Specifying Time Periods”</a> for a list of recognized keywords (not case-sensitive).
+			</p><p>
+				The next example rounds the minutes of the time-taken property value of the RFID event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.roundHalf('min') as timeTakenRounded from RFIDEvent</pre><p>
+				The following table provides a few examples of the rounding (example timestamps are in format <code class="literal">yyyy-MM-dd HH:mm:ss.SSS</code>):
+			</p><div class="table"><a id="datetime_roundhalf"/><p class="title"><b>Table 11.2. RoundHalf Examples</b></p><div class="table-contents"><table summary="RoundHalf Examples" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Input</th><th>Output</th></tr></thead><tbody><tr><td>2002-05-30 09:01:23.050</td><td>2002-05-30 09:01:00.000</td></tr><tr><td>2002-05-30 09:01:29.999</td><td>2002-05-30 09:01:00.000</td></tr><tr><td>2002-05-30 09:01:30.000</td><td>2002-05-30 09:02:00.000</td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-set"/>11.3.10. Set (By Field)</h3></div></div></div><p>
+				The <code class="literal">set</code> date-time method returns a date-time with the specified field set to the value returned by an expression.
+			</p><p>
+				The method takes a string-constant field name and an expression returning an integer-value as parameters. Please see <a class="xref" href="epl_clauses.html#epl-syntax-time-periods" title="5.2.1. Specifying Time Periods">Section 5.2.1, “Specifying Time Periods”</a> for a list of recognized keywords (not case-sensitive).
+			</p><p>
+				The method returns the new date-time value with the field set to the provided value. Note that value adheres to <code class="literal">Calendar</code>-class semantics: For example, the value for <code class="literal">month</code> starts at zero and has a maximum of 11.
+			</p><p>
+				The example below outputs the time-taken with the value for month set to April:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.set('month', 3) as timeTakenMonth from RFIDEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-withdate"/>11.3.11. WithDate</h3></div></div></div><p>
+				The <code class="literal">withDate</code> date-time method returns a date-time with the specified date, retaining the time fields.
+			</p><p>
+				The method takes three expressions as parameters: An expression for year, month and day.
+			</p><p>
+				The method returns the new date-time value with the date fields set to the provided values. For expressions returning null the method ignores the field for which null is returned. Note the <code class="literal">Calendar</code>-class semantics: For example, the value for <code class="literal">month</code> starts at zero and has a maximum of 11.
+			</p><p>
+				The example below outputs the time-taken with the date set to May 30, 2002:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.withDate(2002, 4, 30) as timeTakenDated from RFIDEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-withmin"/>11.3.12. WithMax</h3></div></div></div><p>
+				The <code class="literal">withMax</code> date-time method returns a date-time with the field set to the maximum value for the field.
+			</p><p>
+				The method takes a string-constant field name as parameter. Please see <a class="xref" href="epl_clauses.html#epl-syntax-time-periods" title="5.2.1. Specifying Time Periods">Section 5.2.1, “Specifying Time Periods”</a> for a list of recognized keywords (not case-sensitive).
+			</p><p>
+				The method returns the new date-time value with the specific date field set to the maximum value.
+			</p><p>
+				The example below outputs the time-taken property value with the second-part as 59 seconds:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.withMax('sec') as timeTakenMaxSec from RFIDEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-withmax"/>11.3.13. WithMin</h3></div></div></div><p>
+				The <code class="literal">withMin</code> date-time method returns a date-time with the field set to the minimum value for the field.
+			</p><p>
+				The method takes a string-constant field name as parameter. Please see <a class="xref" href="epl_clauses.html#epl-syntax-time-periods" title="5.2.1. Specifying Time Periods">Section 5.2.1, “Specifying Time Periods”</a> for a list of recognized keywords (not case-sensitive).
+			</p><p>
+				The method returns the new date-time value with the specific date field set to the minimum value.
+			</p><p>
+				The example below outputs the time-taken property value with the second-part as 0 seconds:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.withMin('sec') as timeTakenMaxSec from RFIDEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-withtime"/>11.3.14. WithTime</h3></div></div></div><p>
+				The <code class="literal">withTime</code> date-time method returns a date-time with the specified time, retaining the date fields.
+			</p><p>
+				The method takes four expressions as parameters: An expression for hour, minute, second and millisecond.
+			</p><p>
+				The method returns the new date-time value with the time fields set to the provided values. For expressions returning null the method ignores the field for which null is returned.
+			</p><p>
+				The example below outputs the time-taken with the time set to 9am:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.withTime(9, 0, 0, 0) as timeTakenDated from RFIDEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-tocal"/>11.3.15. ToCalendar</h3></div></div></div><p>
+				The <code class="literal">toCalendar</code> date-time method returns the <code class="literal">Calendar</code> object for this date-time value.
+			</p><p>
+				The method takes no parameters.
+			</p><p>
+				The example below outputs the time-taken as a <code class="literal">Calendar</code> object:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.toCalendar() as timeTakenCal from RFIDEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-todate"/>11.3.16. ToDate</h3></div></div></div><p>
+				The <code class="literal">toDate</code> date-time method returns the <code class="literal">Date</code> object for this date-time value.
+			</p><p>
+				The method takes no parameters.
+			</p><p>
+				The example below outputs the time-taken as a <code class="literal">Date</code> object:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.toDate() as timeTakenDate from RFIDEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-tomsec"/>11.3.17. ToMillisec</h3></div></div></div><p>
+				The <code class="literal">toMillisec</code> date-time method returns the long-typed millisecond value for this date-time value.
+			</p><p>
+				The method takes no parameters.
+			</p><p>
+				The example below outputs the time-taken as a long-typed <code class="literal">millisecond</code> value:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timeTaken.toMillisec() as timeTakenLong from RFIDEvent</pre></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="datetime-method-intervalref"/>11.4. Interval Algebra Reference</h2></div></div></div><p>
+			Interval algebra methods compare start and end timestamps of events or timestamps in general.
+		</p><p>
+		  When the expression input is only a timestamp value, such as a long-type value or a <code class="literal">Date</code> or <code class="literal">Calendar</code> object, the start and end timestamp represented by that value are the same timestamp value.
+		</p><p>
+		  When expression input is an event stream alias, the engine determine the event type for the stream. If the event type declares a start timestamp property name, the engine uses that start timestamp property to determine the start timestamp for the event. If the event type also declares an end timestamp property name, the engine uses that end timestamp property to determine the end timestamp for the event (i.e. an event with duration). If an end timestamp property name is not declared, the start and end timestamp for each event is the same value and the event is considered to have zero duration (i.e. a point-in-time event).
+		</p><p>
+			Interval algebra methods all return <code class="literal">Boolean</code>-type value. When the input value start timestamp is null, or the end timestamp (if declared for the event type) is null or any of the start timestamp and end timestamp (if declared for the event type) values of the first parameter is null, the result value is null.
+		</p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-examples"/>11.4.1. Examples</h3></div></div></div><p>
+			  The examples in this section simply use <code class="literal">A</code> and <code class="literal">B</code> as event type names. The alias <code class="literal">a</code> is used to represent <code class="literal">A</code>-type events and respectively the alias <code class="literal">b</code> represents <code class="literal">B</code>-type events.
+		   </p><p>
+		     The <code class="literal">create-schema</code> for types <code class="literal">A</code> and <code class="literal">B</code> is shown next. The two types are declared the same. The example declares the property providing start timestamp values as <code class="literal">startts</code> and the property providing end timestamp values as <code class="literal">endts</code>:
+		   </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create schema A as (startts long, endts long) starttimestamp 'startts' endtimestamp 'endts'</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create schema B as (startts long, endts long) starttimestamp 'startts' endtimestamp 'endts'</pre><p>
+		     The sample EPL below joins the last A and the last B event. It detects A-B event combinations for which, when comparing timestamps, the last A event that occurs before the last B event. The example employs the <code class="literal">before</code> method:
+		   </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.before(b)</pre><p>
+			  For simplicity, the examples in this section refer to <code class="literal">A</code> and the alias <code class="literal">a</code> as the input event. The examples refer to <code class="literal">B</code> and the alias <code class="literal">b</code> as the parameter event.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-parameters"/>11.4.2. Interval Algebra Parameters</h3></div></div></div><p>
+			  The first parameter of each interval algebra methods is the event or timestamp to compare to.
+		   </p><p>
+		     All remaining parameters to interval algebra methods are intervals and can be any of the following:
+		   </p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+						A constant, an event property or more generally any expression returning a numeric value that is the number of seconds. For example, in the expression <code class="literal">a.before(b, 2)</code> the parameter 2 is interpreted to mean 2 seconds. The expression <code class="literal">a.before(b, myIntervalProperty)</code> is interpreted to mean <code class="literal">myIntervalProperty</code> seconds.
+					</p></li><li><p>
+						A time period expression as described in <a class="xref" href="datetimereference.html#datetime-method-includes" title="11.4.11. Includes">Section 11.4.11, “Includes”</a>. For example: <code class="literal">a.before(b, 1 hour 2 minutes)</code>.
+					</p></li></ol></div><p>
+				When an interval parameter is provided and is null, the method result value is null.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-performance"/>11.4.3. Performance</h3></div></div></div><p>
+			  The engine analyzes interval algebra methods as well as the <code class="literal">between</code> date-time method in the where-clause and builds a query plan for execution of joins and subqueries. The query plan can include hash and btree index lookups using the start and end timestamps as computed by expressions or provided by events as applicable. Consider turning on query plan logging to obtain information on the query plan used.
+		   </p><p>
+		     The query planning is generally most effective when no additional thresholds or ranges are provided to interval algebra methods, as the query planner may not consider an interval algebra method that it cannot plan.
+		   </p><p>
+		     The query planner may also not optimally plan the query execution if events or expressions return different types of date representation. Query planning works best if all date representations use the same long, Date or Calendar types.
+		   </p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-limitations"/>11.4.4. Limitations</h3></div></div></div><p>
+			  Date-time method that change date or time fields, such as <code class="literal">withTime</code>, <code class="literal">withDate</code>, <code class="literal">set</code> or <code class="literal">round</code> methods set the end timestamp to the start timestamp.
+		   </p><p>
+		      For example, in the following expression the parameter to the <code class="literal">after</code> method has a zero duration, and not the end timestamp that the event B <code class="literal">endts</code> property provides.
+		   </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">a.after(b.withTime(9, 0, 0, 0))</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-after"/>11.4.5. After</h3></div></div></div><p>
+				The <code class="literal">after</code> date-time method returns true if an event happens after another event, or a timestamp is after another timestamp.
+			</p><p>
+				The method compares the input value's start timestamp (a.startTimestamp) to the first parameter's end timestamp (b.endTimestamp) to determine whether A happens after B.
+			</p><p>
+				If used with one parameter, for example in <code class="literal">a.after(b)</code>, the method returns true if A starts after B ends.
+			</p><p>
+				Sample EPL: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.after(b)
+// Above matches when:
+//   a.startTimestamp - b.endTimestamp &gt; 0</pre><p>
+				If providing two parameters, for example in <code class="literal">a.after(b, 5 sec)</code>, the method returns true if A starts at least 5 seconds after B ends.
+			</p><p>
+				Sample EPL: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.after(b, 5 sec)
+// Above matches when:
+//   a.startTimestamp - b.endTimestamp &gt;= 5 seconds</pre><p>
+				If providing three parameters, for example in <code class="literal">a.after(b, 5 sec, 10 sec)</code>, the method returns true if A starts at least 5 seconds but no more then 10 seconds after B ends.
+			</p><p>
+				Sample EPL: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.after(b, 5 sec, 10 sec)
+// Above matches when:
+//   5 seconds &lt;= a.startTimestamp - b.endTimestamp &lt;= 10 seconds</pre><p>
+			    Negative values for the range are allowed. For example in <code class="literal">a.after(b, -5 sec, -10 sec)</code>, the method returns true if A starts at least 5 seconds but no more then 10 seconds before B ends.
+			</p><p>
+				If the range low endpoint is greater than the range high endpoint, the engine automatically reverses them. Thus <code class="literal">a.after(b, 10 sec, 5 sec)</code> is the same semantics as <code class="literal">a.after(b, 5 sec, 10 sec)</code>.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-before"/>11.4.6. Before</h3></div></div></div><p>
+				 The <code class="literal">before</code> date-time method returns true if an event happens before another event, or a timestamp is before another timestamp.
+			 </p><p>
+				The method compares the input value's end timestamp (a.endTimestamp) and the first parameter's start timestamp (b.startTimestamp) to determine whether A happens before B.
+			</p><p>
+				If used with one parameter, for example in <code class="literal">a.before(b)</code>, the method returns true if A ends before B starts. 
+			</p><p>
+				Sample EPL: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.before(b)
+// Above matches when:
+//   b.startTimestamp - a.endTimestamp &gt; 0</pre><p>
+				If providing two parameters, for example in <code class="literal">a.before(b, 5 sec)</code>, the method returns true if A ends at least 5 seconds before B starts.
+			</p><p>
+				Sample EPL: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.before(b, 5 sec)
+// Above matches when:
+//   b.startTimestamp - a.endTimestamp &gt;= 5 seconds</pre><p>
+				If providing three parameters, for example in <code class="literal">a.before(b, 5 sec, 10 sec)</code>, the method returns true if A ends at least 5 seconds but no more then 10 seconds before B starts.
+			</p><p>
+				Sample EPL: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.before(b, 5 sec, 10 sec)
+// Above matches when:
+//   5 seconds &lt;= b.startTimestamp - a.endTimestamp &lt;= 10 seconds</pre><p>
+			    Negative values for the range are allowed. For example in <code class="literal">a.before(b, -5 sec, -10 sec)</code>, the method returns true if A starts at least 5 seconds but no more then 10 seconds after B starts.
+			</p><p>
+				If the range low endpoint is greater than the range high endpoint, the engine automatically reverses them. Thus <code class="literal">a.before(b, 10 sec, 5 sec)</code> is the same semantics as <code class="literal">a.before(b, 5 sec, 10 sec)</code>.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-coincides"/>11.4.7. Coincides</h3></div></div></div><p>
+				The <code class="literal">coincides</code> date-time method returns true if an event and another event happen at the same time, or two timestamps are the same value.
+			</p><p>
+				The method compares the input value's start and end timestamp with the first parameter's start and end timestamp and determines if they equal.
+			</p><p>
+				If used with one parameter, for example in <code class="literal">a.coincides(b)</code>, the method returns true if the start timestamp of A and B are the same and the end timestamps of A and B are also the same.
+			</p><p>
+				Sample EPL: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.coincides(b)
+// Above matches when:
+//   a.startTimestamp = b.startTimestamp and a.endTimestamp = b.endTimestamp</pre><p>
+				If providing two parameters, for example in <code class="literal">a.coincides(b, 5 sec)</code>, the method returns true if the difference between the start timestamps of A and B is equal to or less then 5 seconds and the difference between the end timestamps of A and B is also equal to or less then 5 seconds.
+			</p><p>
+				Sample EPL: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.coincides(b, 5 sec)
+// Above matches when:
+//   abs(a.startTimestamp - b.startTimestamp) &lt;= 5 sec and 
+//   abs(a.endTimestamp - b.endTimestamp) &lt;= 5 sec</pre><p>
+				If providing three parameters, for example in <code class="literal">a.coincides(b, 5 sec, 10 sec)</code>, the method returns true if the difference between the start timestamps of A and B is equal to or less then 5 seconds and the difference between the end timestamps of A and B is equal to or less then 10 seconds. 
+			</p><p>
+				Sample EPL: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.coincides(b, 5 sec, 10 sec)
+// Above matches when:
+//   abs(a.startTimestamp - b.startTimestamp) &lt;= 5 seconds and 
+//   abs(a.endTimestamp - b.endTimestamp) &lt;= 10 seconds</pre><p>
+			  A negative value for interval parameters is not allowed. If your interval parameter is itself an expression that returns a negative value the engine logs a warning message and returns null.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-during"/>11.4.8. During</h3></div></div></div><p>
+				The <code class="literal">during</code> date-time method returns true if an event happens during the occurrence of another event, or when a timestamps falls within the occurrence of an event..
+			</p><p>
+				The method determines whether the input value's start and end timestamp are during the first parameter's start and end timestamp. The symmetrical opposite is <a class="xref" href="datetimereference.html#datetime-method-includes" title="11.4.11. Includes">Section 11.4.11, “Includes”</a>.
+			</p><p>
+				If used with one parameter, for example in <code class="literal">a.during(b)</code>, the method returns true if the start timestamp of A is after the start timestamp of B and the end timestamp of A is before the end timestamp of B.
+			</p><p>
+				Sample EPL: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.during(b)
+// Above matches when:
+//   b.startTimestamp &lt; a.startTimestamp &lt;= a.endTimestamp &lt; b.endTimestamp</pre><p>
+				If providing two parameters, for example in <code class="literal">a.during(b, 5 sec)</code>, the method returns true if the difference between the start timestamps of A and B is equal to or less then 5 seconds and the difference between the end timestamps of A and B is also equal to or less then 5 seconds.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.during(b, 5 sec)
+// Above matches when:
+//   0 &lt; a.startTimestamp - b.startTimestamp &lt;= 5 sec and 
+//   0 &lt; a.endTimestamp - b.endTimestamp &lt;= 5 sec</pre><p>
+				If providing three parameters, for example in <code class="literal">a.during(b, 5 sec, 10 sec)</code>, the method returns true if the difference between the start timestamps of A and B and the difference between the end timestamps of A and B is between 5 and 10 seconds.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.during(b, 5 sec, 10 sec)
+// Above matches when:
+//   5 seconds &lt;= a.startTimestamp - b.startTimestamp &lt;= 10 seconds and 
+//   5 seconds &lt;= a.endTimestamp - b.endTimestamp &lt;= 10 seconds</pre><p>
+				If providing five parameters, for example in <code class="literal">a.during(b, 5 sec, 10 sec, 20 sec, 30 sec)</code>, the method returns true if the difference between the start timestamps of A and B is between 5 seconds and 10 seconds and the difference between the end timestamps of A and B is between 20 seconds and 30 seconds.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b
+  where a.during(b, 5 sec, 10 sec, 20 sec, 30 sec)
+// Above matches when:
+//   5 seconds &lt;= a.startTimestamp - b.startTimestamp &lt;= 10 seconds and 
+//   20 seconds &lt; a.endTimestamp - b.endTimestamp &lt;= 30 seconds</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-finishes"/>11.4.9. Finishes</h3></div></div></div><p>
+				The <code class="literal">finishes</code> date-time method returns true if an event starts after another event starts and the event ends at the same time as the other event.
+			</p><p>
+				The method determines whether the input value's start timestamp is after the first parameter's start timestamp and the end timestamp of the input value and the first parameter are the same. The symmetrical opposite is <a class="xref" href="datetimereference.html#datetime-method-finishedby" title="11.4.10. Finished By">Section 11.4.10, “Finished By”</a>.
+			</p><p>
+				If used with one parameter, for example in <code class="literal">a.finishes(b)</code>, the method returns true if the start timestamp of A is after the start timestamp of B and the end timestamp of A and B are the same.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.finishes(b)
+// Above matches when:
+//   b.startTimestamp &lt; a.startTimestamp and a.endTimestamp = b.endTimestamp</pre><p>
+				If providing two parameters, for example in <code class="literal">a.finishes(b, 5 sec)</code>, the method returns true if the start timestamp of A is after the start timestamp of B and the difference between the end timestamps of A and B is equal to or less then 5 seconds.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.finishes(b, 5 sec)
+// Above matches when:
+//   b.startTimestamp &lt; a.startTimestamp and 
+//   abs(a.endTimestamp - b.endTimestamp ) &lt;= 5 seconds</pre><p>
+			  A negative value for interval parameters is not allowed. If your interval parameter is itself an expression that returns a negative value the engine logs a warning message and returns null.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-finishedby"/>11.4.10. Finished By</h3></div></div></div><p>
+				The <code class="literal">finishedBy</code> date-time method returns true if an event starts before another event starts and the event ends at the same time as the other event.
+			</p><p>
+				The method determines whether the input value's start timestamp happens before the first parameter's start timestamp and the end timestamp of the input value and the first parameter are the same. The symmetrical opposite is <a class="xref" href="datetimereference.html#datetime-method-finishes" title="11.4.9. Finishes">Section 11.4.9, “Finishes”</a>.
+			</p><p>
+				If used with one parameter, for example in <code class="literal">a.finishedBy(b)</code>, the method returns true if the start timestamp of A is before the start timestamp of B and the end timestamp of A and B are the same.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.finishedBy(b)
+// Above matches when:
+//   a.startTimestamp &lt; b.startTimestamp and a.endTimestamp = b.endTimestamp</pre><p>
+				If providing two parameters, for example in <code class="literal">a.finishedBy(b, 5 sec)</code>, the method returns true if the start timestamp of A is before the start timestamp of B and the difference between the end timestamps of A and B is equal to or less then 5 seconds.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.finishedBy(b, 5 sec)
+// Above matches when:
+//   a.startTimestamp &lt; b.startTimestamp and 
+//   abs(a.endTimestamp - b.endTimestamp ) &lt;= 5 seconds</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-includes"/>11.4.11. Includes</h3></div></div></div><p>
+				The <code class="literal">includes</code> date-time method returns true if the parameter event happens during the occurrence of the input event, or when a timestamps falls within the occurrence of an event.
+			</p><p>
+				The method determines whether the first parameter's start and end timestamp are during the input value's start and end timestamp. The symmetrical opposite is <a class="xref" href="datetimereference.html#datetime-method-during" title="11.4.8. During">Section 11.4.8, “During”</a>.
+			</p><p>
+				If used with one parameter, for example in <code class="literal">a.includes(b)</code>, the method returns true if the start timestamp of B is after the start timestamp of A and the end timestamp of B is before the end timestamp of A.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.includes(b)
+// Above matches when:
+//   a.startTimestamp &lt; b.startTimestamp &lt;= b.endTimestamp &lt; a.endTimestamp </pre><p>
+				If providing two parameters, for example in <code class="literal">a.includes(b, 5 sec)</code>, the method returns true if the difference between the start timestamps of A and B is equal to or less then 5 seconds and the difference between the end timestamps of A and B is also equal to or less then 5 seconds.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.includes(b, 5 sec)
+// Above matches when:
+//   0 &lt; b.startTimestamp - a.startTimestamp &lt;= 5 sec and 
+//   0 &lt; a.endTimestamp - b.endTimestamp &lt;= 5 sec</pre><p>
+				If providing three parameters, for example in <code class="literal">a.includes(b, 5 sec, 10 sec)</code>, the method returns true if the difference between the start timestamps of A and B and the difference between the end timestamps of A and B is between 5 and 10 seconds.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.includes(b, 5 sec, 10 sec)
+// Above matches when:
+//   5 seconds &lt;= a.startTimestamp - b.startTimestamp &lt;= 10 seconds and 
+//   5 seconds &lt;= a.endTimestamp - b.endTimestamp &lt;= 10 seconds</pre><p>
+				If providing five parameters, for example in <code class="literal">a.includes(b, 5 sec, 10 sec, 20 sec, 30 sec)</code>, the method returns true if the difference between the start timestamps of A and B is between 5 seconds and 10 seconds and the difference between the end timestamps of A and B is between 20 seconds and 30 seconds.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b
+  where a.includes(b, 5 sec, 10 sec, 20 sec, 30 sec)
+// Above matches when:
+//   5 seconds &lt;= a.startTimestamp - b.startTimestamp &lt;= 10 seconds and 
+//   20 seconds &lt;= a.endTimestamp - b.endTimestamp &lt;= 30 seconds</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-meets"/>11.4.12. Meets</h3></div></div></div><p>
+				The <code class="literal">meets</code> date-time method returns true if the event's end time is the same as another event's start time.
+			</p><p>
+				The method compares the input value's end timestamp and the first parameter's start timestamp and determines whether they equal.
+			</p><p>
+				If used with one parameter, for example in <code class="literal">a.meets(b)</code>, the method returns true if the end timestamp of A is the same as the start timestamp of B.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.meets(b)
+// Above matches when:
+//   a.endTimestamp = b.startTimestamp</pre><p>
+				If providing two parameters, for example in <code class="literal">a.meets(b, 5 sec)</code>, the method returns true if the difference between the end timestamp of A and the start timestamp of B is equal to or less then 5 seconds.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.meets(b, 5 sec)
+// Above matches when:
+//   abs(b.startTimestamp - a.endTimestamp) &lt;= 5 seconds</pre><p>
+			  A negative value for the interval parameter is not allowed. If your interval parameter is itself an expression that returns a negative value the engine logs a warning message and returns null.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-metby"/>11.4.13. Met By</h3></div></div></div><p>
+				The <code class="literal">metBy</code> date-time method returns true if the event's start time is the same as another event's end time.
+			</p><p>
+				The method compares the input value's start timestamp and the first parameter's end timestamp and determines whether they equal.
+			</p><p>
+				If used with one parameter, for example in <code class="literal">a.metBy(b)</code>, the method returns true if the start timestamp of A is the same as the end timestamp of B.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.metBy(b)
+// Above matches when:
+//   a.startTimestamp = b.endTimestamp</pre><p>
+				If providing two parameters, for example in <code class="literal">a.metBy(b, 5 sec)</code>, the method returns true if the difference between the end timestamps of B and the start timestamp of A is equal to or less then 5 seconds.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.metBy(b, 5 sec)
+// Above matches when:
+//   abs(a.startTimestamp - b.endTimestamp) &lt;= 5 seconds</pre><p>
+			  A negative value for the interval parameter is not allowed. If your interval parameter is itself an expression that returns a negative value the engine logs a warning message and returns null.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-overlaps"/>11.4.14. Overlaps</h3></div></div></div><p>
+				The <code class="literal">overlaps</code> date-time method returns true if the event starts before another event starts and finishes after the other event starts, but before the other event finishes (events have an overlapping period of time).
+			</p><p>
+				The method determines whether the input value's start and end timestamp indicate an overlap with the first parameter's start and end timestamp, such that A starts before B starts and A ends after B started but before B ends.
+			</p><p>
+				If used with one parameter, for example in <code class="literal">a.overlaps(b)</code>, the method returns true if the start timestamp of A is before the start timestamp of B and the end timestamp of A and is before the end timestamp of B.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.overlaps(b)
+// Above matches when:
+//   a.startTimestamp &lt; b.startTimestamp &lt; a.endTimestamp &lt; b.endTimestamp</pre><p>
+				If providing two parameters, for example in <code class="literal">a.overlaps(b, 5 sec)</code>, the method returns true if, in addition, the difference between the end timestamp of A and the start timestamp of B is equal to or less then 5 seconds.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.overlaps(b, 5 sec)
+// Above matches when:
+//   a.startTimestamp &lt; b.startTimestamp &lt; a.endTimestamp &lt; b.endTimestamp and 
+//   0 &lt;= a.endTimestamp - b.startTimestamp &lt;= 5 seconds</pre><p>
+				If providing three parameters, for example in <code class="literal">a.overlaps(b, 5 sec, 10 sec)</code>, the method returns true if, in addition, the difference between the end timestamp of A and the start timestamp of B is between 5 and 10 seconds.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.overlaps(b, 5 sec, 10 sec)
+// Above matches when:
+//   a.startTimestamp &lt; b.startTimestamp &lt; a.endTimestamp &lt; b.endTimestamp and 
+//   5 seconds &lt;= a.endTimestamp - b.startTimestamp &lt;= 10 seconds</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-overlappedby"/>11.4.15. Overlapped By</h3></div></div></div><p>
+				The <code class="literal">overlappedBy</code> date-time method returns true if the parameter event starts before the input event starts and the parameter event finishes after the input event starts, but before the input event finishes (events have an overlapping period of time).
+			</p><p>
+				The method determines whether the input value's start and end timestamp indicate an overlap with the first parameter's start and end timestamp, such that B starts before A starts and B ends after A started but before A ends.
+			</p><p>
+				If used with one parameter, for example in <code class="literal">a.overlappedBy(b)</code>, the method returns true if the start timestamp of B is before the start timestamp of A and the end timestamp of B and is before the end timestamp of A.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.overlappedBy(b)
+// Above matches when:
+//   b.startTimestamp &lt; a.startTimestamp &lt; b.endTimestamp &lt; a.endTimestamp</pre><p>
+				If providing two parameters, for example in <code class="literal">a.overlappedBy(b, 5 sec)</code>, the method returns true if, in addition, the difference between the end timestamp of B and the start timestamp of A is equal to or less then 5 seconds.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.overlappedBy(b, 5 sec)
+// Above matches when:
+//   b.startTimestamp &lt; a.startTimestamp &lt; b.endTimestamp &lt; a.endTimestamp and 
+//   0 &lt;= b.endTimestamp - a.startTimestamp &lt;= 5 seconds</pre><p>
+				If providing three parameters, for example in <code class="literal">a.overlappedBy(b, 5 sec, 10 sec)</code>, the method returns true if, in addition, the difference between the end timestamp of B and the start timestamp of A is between 5 and 10 seconds. 
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.overlappedBy(b, 5 sec, 10 sec)
+// Above matches when:
+//   b.startTimestamp &lt; a.startTimestamp &lt; b.endTimestamp &lt; a.endTimestamp and 
+//   5 seconds &lt;= b.endTimestamp - a.startTimestamp &lt;= 10 seconds</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-starts"/>11.4.16. Starts</h3></div></div></div><p>
+				The <code class="literal">starts</code> date-time method returns true if an event and another event start at the same time and the event's end happens before the other event's end.
+			</p><p>
+				The method determines whether the start timestamps of the input value and the first parameter are the same and the end timestamp of the input value is before the end timestamp of the first parameter.
+			</p><p>
+				If used with one parameter, for example in <code class="literal">a.starts(b)</code>, the method returns true if the start timestamp of A and B are the same and the end timestamp of A is before the end timestamp of B.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.starts(b)
+// Above matches when:
+//   a.startTimestamp = b.startTimestamp and a.endTimestamp &lt; b.endTimestamp</pre><p>
+				If providing two parameters, for example in <code class="literal">a.starts(b, 5 sec)</code>, the method returns true if the difference between the start timestamps of A and B is between is equal to or less then 5 seconds.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.starts(b, 5 sec)
+// Above matches when:
+//   abs(a.startTimestamp - b.startTimestamp) &lt;= 5 seconds and 
+//   a.endTimestamp &lt; b.endTimestamp</pre><p>
+			  A negative value for the interval parameter is not allowed. If your interval parameter is itself an expression that returns a negative value the engine logs a warning message and returns null.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="datetime-method-startedby"/>11.4.17. Started By</h3></div></div></div><p>
+				The <code class="literal">startedBy</code> date-time method returns true if an event and another event start at the same time and the other event's end happens before the input event's end.
+			</p><p>
+				The method determines whether the start timestamp of the input value and the first parameter are the same and the end timestamp of the first parameter is before the end timestamp of the input value.
+			</p><p>
+				If used with one parameter, for example in <code class="literal">a.startedBy(b)</code>, the method returns true if the start timestamp of A and B are the same and the end timestamp of B is before the end timestamp of A.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.startedBy(b)
+// Above matches when:
+//   a.startTimestamp = b.startTimestamp and b.endTimestamp &lt; a.endTimestamp</pre><p>
+				If providing two parameters, for example in <code class="literal">a.startedBy(b, 5 sec)</code>, the method returns true if the difference between the start timestamps of A and B is between is equal to or less then 5 seconds.
+			</p><p>
+				Sample EPL:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from A.std:lastevent() as a, B.std:lastevent() as b where a.startedBy(b, 5 sec)
+// Above matches when:
+//   abs(a.startTimestamp - b.startTimestamp) &lt;= 5 seconds and 
+//    b.endTimestamp &lt; a.endTimestamp</pre><p>
+			  A negative value for the interval parameter is not allowed. If your interval parameter is itself an expression that returns a negative value the engine logs a warning message and returns null.
+			</p></div></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="enumerationreference.html"><strong>Prev</strong>Chapter 10. EPL Reference: Enumeration Methods</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="epl-views.html"><strong>Next</strong>Chapter 12. EPL Reference: Views</a></li></ul></body></html>

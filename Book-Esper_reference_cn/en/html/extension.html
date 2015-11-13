@@ -1,0 +1,1269 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 17. Integration and Extension</title><link rel="stylesheet" href="css/espertech.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Esper Reference"/><link rel="up" href="index.html" title="Esper Reference"/><link rel="prev" href="devlifecycle.html" title="Chapter 16. Development Lifecycle"/><link rel="next" href="script.html" title="Chapter 18. Script Support"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.espertech.com" class="site_href"><strong>esper.codehaus.org and espertech.com</strong></a><a href="http://esper.codehaus.org/esper/documentation/documentation.html" class="doc_href"><strong>Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="devlifecycle.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="script.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="extension"/>Chapter 17. Integration and Extension</h2></div></div></div><div class="toc"><dl><dt><span class="sect1"><a href="extension.html#extension-overview">17.1. Overview</a></span></dt><dt><span class="sect1"><a href="extension.html#extension-virtualdw">17.2. Virtual Data Window</a></span></dt><dd><dl><dt><span class="sect2"><a href="extension.html#extension-virtualdw-howto">17.2.1. How to Use</a></span></dt><dt><span class="sect2"><a href="extension.html#extension-virtualdw-vdwfactory">17.2.2. Implementing the Factory</a></span></dt><dt><span class="sect2"><a href="extension.html#extension-virtualdw-vdw">17.2.3. Implementing the Virtual Data Window</a></span></dt><dt><span class="sect2"><a href="extension.html#extension-virtualdw-lookup">17.2.4. Implementing the Lookup</a></span></dt></dl></dd><dt><span class="sect1"><a href="extension.html#custom-singlerow-function">17.3. Single-Row Function</a></span></dt><dd><dl><dt><span class="sect2"><a href="extension.html#custom-singlerow-implementing">17.3.1. Implementing a Single-Row Function</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-single-row-config">17.3.2. Configuring the Single-Row Function Name</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-single-row-cache">17.3.3. Value Cache</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-single-filter-optimizable">17.3.4. Single-Row Functions in Filter Predicate Expressions</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-single-eventsparam">17.3.5. Single-Row Functions Taking Events as Parameters</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-single-receivectx">17.3.6. Receiving a Context Object</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-single-rethrowex">17.3.7. Exception Handling</a></span></dt></dl></dd><dt><span class="sect1"><a href="extension.html#custom-views">17.4. Derived-value and Data Window View</a></span></dt><dd><dl><dt><span class="sect2"><a href="extension.html#custom-views-viewfactory">17.4.1. Implementing a View Factory</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-views-view">17.4.2. Implementing a View</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-views-contract">17.4.3. View Contract</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-views-config">17.4.4. Configuring View Namespace and Name</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-views-datawin">17.4.5. Requirement for Data Window Views</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-views-grouped">17.4.6. Requirement for Grouped Views</a></span></dt></dl></dd><dt><span class="sect1"><a href="extension.html#custom-aggregation-function">17.5. Aggregation Function</a></span></dt><dd><dl><dt><span class="sect2"><a href="extension.html#custom-aggregation-single">17.5.1. Aggregation Single-Function Development</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-aggregation-multi">17.5.2. Aggregation Multi-Function Development</a></span></dt></dl></dd><dt><span class="sect1"><a href="extension.html#custom-pattern-guard">17.6. Pattern Guard</a></span></dt><dd><dl><dt><span class="sect2"><a href="extension.html#custom-pattern-guard-factory-implementing">17.6.1. Implementing a Guard Factory</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-pattern-guard-implementing">17.6.2. Implementing a Guard Class</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-pattern-guard-config">17.6.3. Configuring Guard Namespace and Name</a></span></dt></dl></dd><dt><span class="sect1"><a href="extension.html#custom-pattern-observer">17.7. Pattern Observer</a></span></dt><dd><dl><dt><span class="sect2"><a href="extension.html#custom-pattern-observer-factory-implementing">17.7.1. Implementing an Observer Factory</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-pattern-observer-implementing">17.7.2. Implementing an Observer Class</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-pattern-observer-config">17.7.3. Configuring Observer Namespace and Name</a></span></dt></dl></dd><dt><span class="sect1"><a href="extension.html#custom-event-representation">17.8. Event Type And Event Object</a></span></dt><dd><dl><dt><span class="sect2"><a href="extension.html#custom-eventrep-overview">17.8.1. How It Works</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-eventrep-steps">17.8.2. Steps</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-eventrep-uriresolution">17.8.3. URI-based Resolution</a></span></dt><dt><span class="sect2"><a href="extension.html#custom-eventrep-example">17.8.4. Example</a></span></dt></dl></dd></dl></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="extension-overview"/>17.1. Overview</h2></div></div></div><p>
+		  This chapter summarizes integration and describes in detail each of the extension APIs that allow integrating external data and/or extend engine functionality. 
+		</p><p>
+		  For information on input and output adapters that connect to an event transport and perform event transformation for incoming and outgoing on-the-wire event data, for use with streaming data, please see the EsperIO reference documentation. The data flow instances as described in <a class="xref" href="dataflow.html" title="Chapter 13. EPL Reference: Data Flow">Chapter 13, <i>EPL Reference: Data Flow</i></a> are an easy way to plug in operators that perform input and output. 
+		  Data flows allow providing parameters and managing individual flows independent of engine lifecycle.
+		  Also consider using the Plug-in Loader API for creating a new adapter that starts or stops as part of the CEP engine initialization and destroy lifecycle, see <a class="xref" href="api.html#api-plugin" title="14.16. Plug-in Loader">Section 14.16, “Plug-in Loader”</a>.
+		</p><p>
+		  To join data that resides in a relational database and that is accessible via JDBC driver and SQL statement the engine offers a syntax for using SQL within EPL, see <a class="xref" href="epl_clauses.html#histdata_overview" title="5.13. Accessing Relational Data via SQL">Section 5.13, “Accessing Relational Data via SQL”</a>. A relational database input and output adapter for streaming input from and output to a relational database also exists (EsperIO).
+		</p><p>
+		  To join data that resides in a non-relational store the engine offers a two means: First, the virtual data window, as described below, for transparently integrating the external store as a named window. The second mechanism is a special join syntax based on static method invocation, see <a class="xref" href="epl_clauses.html#joining_method" title="5.14. Accessing Non-Relational Data via Method Invocation">Section 5.14, “Accessing Non-Relational Data via Method Invocation”</a>.
+		</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>
+			  For all extension code and similar to listeners and subscribers, to send events into the engine from extension code the <code class="literal">route</code> method should be used (and not <code class="literal">sendEvent</code>) to avoid the possibility of stack overflow due to event-callback looping and ensure correct processing of the current and routed event .
+			</p></div><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>
+			  For all extension code it is not safe to administrate the engine within the extension code. For example, it is not safe to implement a data window view that creates a new statement or destroys an existing statement.
+			</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="extension-virtualdw"/>17.2. Virtual Data Window</h2></div></div></div><p>
+			Use a virtual data window if you have a (large) external data store that you want to access as a named window. The access is transparent: There is no need to use special syntax or join syntax. All regular queries including subqueries, joins, on-merge, on-select, on-insert, on-delete, on-update and fire-and-forget are supported with virtual data windows.
+        </p><p>
+           There is no need to keep any data or events in memory with virtual data windows. The only requirement for virtual data windows is that all data rows returned are <code class="literal">EventBean</code> instances.
+        </p><p>
+			When implementing a virtual data window it is not necessary to send any events into the engine or to use insert-into. The event content is simply assumed to exist and accessible to the engine via the API implementation you provide. 
+        </p><p>
+          The distribution ships with a sample virtual data window in the examples folder under the name <code class="literal">virtualdw</code>. The code snippets below are extracts from the example.
+        </p><p>
+			We use the term <span class="emphasis"><em>store</em></span> here to mean a source set of data that is managed by the virtual data window. We use the term <span class="emphasis"><em>store row</em></span> or just <span class="emphasis"><em>row</em></span> to mean a single data item provided by the store. We use the term <span class="emphasis"><em>lookup</em></span>
+			to mean a read operation against the store returning zero, one or many rows.
+        </p><p>
+           Virtual data windows allow high-performance low-latency lookup by exposing all relevant EPL query access path information. This makes it possible for the virtual data window to choose the desired access method into its store.
+        </p><p>
+			The following steps are required to develop and use a virtual data window: 
+        </p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+					Implement the interface <code class="literal">com.espertech.esper.client.hook.VirtualDataWindowFactory</code>.
+				</p></li><li><p>
+					Implement the interface <code class="literal">com.espertech.esper.client.hook.VirtualDataWindow</code>.
+				</p></li><li><p>
+					Implement the interface <code class="literal">com.espertech.esper.client.hook.VirtualDataWindowLookup</code>.
+				</p></li><li><p>
+					Register the factory class in the engine configuration.
+				</p></li></ol></div><p> 
+			Once you have completed above steps, the virtual data window is ready to use in EPL statements.
+		</p><p>
+		  From a threading perspective, virtual data window implementation classes must be thread-safe if objects are shared between multiple named windows. If no objects are shared between multiple different named windows, thereby each object is only used for the same named window and other named windows receive a separate instance, it is no necessary that the implementation classes are thread-safe.
+		</p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="extension-virtualdw-howto"/>17.2.1. How to Use</h3></div></div></div><p>
+				Your application must first register the virtual data window factory as part of engine configuration:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Configuration config = new Configuration();
+config.addPlugInVirtualDataWindow("sample", "samplevdw", 
+    SampleVirtualDataWindowFactory.class.getName());</pre><p>
+				Your application may then create a named window backed by a virtual data window.
+			</p><p>
+				For example, assume that the <code class="literal">SampleEvent</code> event type is declared as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create schema SampleEvent as (key1 string, key2 string, value1 int, value2 double)</pre><p>
+				The next EPL statement creates a named window <code class="literal">MySampleWindow</code> that provides <code class="literal">SampleEvent</code> events and is backed by a virtual data window provided by <code class="literal">SampleVirtualDataWindowFactory</code> as configured above:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create window MySampleWindow.sample:samplevdw() as SampleEvent</pre><p>
+			    You may then access the named window, same as any other named window, for example by subquery, join, on-action, fire-and-forget query or by consuming its insert and remove stream. While this example uses Map-type events, the example code is the same for POJO or other events.
+			</p><p>
+				Your application may obtain a reference to the virtual data window from the engine context.
+			</p><p>
+			  This code snippet looks up the virtual data window by the named window name:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">try {
+  return (VirtualDataWindow) epService.getContext().lookup("/virtualdw/MySampleWindow");
+}
+catch (NamingException e) {
+  throw new RuntimeException("Failed to look up virtual data window, is it created yet?");
+}</pre><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="extension-virtualdw-howto-access"/>17.2.1.1. Query Access Path</h4></div></div></div><p>
+					When you application registers a subquery, join or on-action query or executes a fire-and-forget query against a virtual data window the engine interacts with the virtual data window. The interaction is a two-step process. 
+				</p><p>
+					At time of EPL statement creation (once), the engine analyzes the EPL where-clause, if present. It then compiles a list of hash-index and binary tree (btree, i.e. sorted) index properties. It passes the property names that are queried as well as the operators (i.e. =, &gt;, range etc.) to the virtual data window. The virtual data window returns a lookup strategy object to the engine.
+				</p><p>
+					At time of EPL statement execution (repeatedly as triggered) , the engine uses that lookup strategy object to execute a lookup. It passes to the lookup all actual key values (hash, btree including ranges) to make fast and efficient lookup achievable.
+				</p><p>
+				    To explain in detail, assume that your application creates an EPL statement with a subquery as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select (select * from MySampleWindow where key1 = 'A1') from OtherEvent</pre><p>
+				  At the time of creation of the EPL query above the engine analyzes the EPL query. It determines that the subquery queries a virtual data window.  It determines from the where-clause that the lookup uses property <code class="literal">key1</code> and hash-equals semantics. The engine then provides this information as part of <code class="literal">VirtualDataWindowLookupContext</code> passed to the <code class="literal">getLookup</code> method. Your application may inspect hash and btree properties and may determine the appropriate store access method to use.
+				</p><p>
+					The hash and btree property lookup information is for informational purposes, to enable fast and performant queries that returns the smallest number of rows possible. Your implementation classes may use some or none of the information provided and may also instead return some or perhaps even all rows, as is practical to your implementation. The <code class="literal">where</code>-clause still remains in effect and gets evaluated on all rows that are returned by the lookup strategy.
+				</p><p>
+				  Following the above example, the sub-query executes once when a <code class="literal">OtherEvent</code> event arrives. At time of execution the engine delivers the string value <code class="literal">A1</code> to the <code class="literal">VirtualDataWindowLookup</code> lookup implementation provided by your application. The lookup object queries the store and returns 
+				  store rows as <code class="literal">EventBean</code> instances.
+				</p><p>
+				    As a second example, consider an EPL join statement as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from MySampleWindow, MyTriggerEvent where key1 = trigger1 and key2 = trigger2</pre><p>
+					The engine analyzes the query and passes to the virtual data window the information that the lookup occurs on properties <code class="literal">key1</code> and <code class="literal">key2</code> under hash-equals semantics. When a <code class="literal">MyTriggerEvent</code> arrives, 
+					it passes the actual value of the <code class="literal">trigger1</code> and <code class="literal">trigger2</code> properties of the current MyTriggerEvent to the lookup.
+				</p><p>
+				    As a last example, consider an EPL fire-and-forget statement as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from MySampleWindow key1 = 'A2' and value1 between 0 and 1000</pre><p>
+					The engine analyzes the query and passes to the virtual data window the lookup information.  The lookup occurs on property <code class="literal">key1</code> under hash-equals semantics and on property <code class="literal">value1</code> under btree-open-range semantics. When you application 
+					executes the fire-and-forget query the engine passes <code class="literal">A2</code> and the range endpoints <code class="literal">0</code> and <code class="literal">1000</code> to the lookup.
+				</p><p>
+					For more information, please consult the JavaDoc API documentation for class <code class="literal">com.espertech.esper.client.hook.VirtualDataWindow</code>, <code class="literal">VirtualDataWindowLookupContext</code> or <code class="literal">VirtualDataWindowLookupFieldDesc</code>.
+				</p></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="extension-virtualdw-vdwfactory"/>17.2.2. Implementing the Factory</h3></div></div></div><p>
+			  For each named window that refers to the virtual data window, the engine instantiates one instance of the factory.
+			</p><p>
+				A virtual data window factory class is responsible for the following functions:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						Implement the <code class="literal">initialize</code> method that accepts a virtual data window factory context object as a parameter.
+					</p></li><li><p>
+						Implement the <code class="literal">create</code> method that accepts a virtual data window context object as a parameter and returns a <code class="literal">VirtualDataWindow</code> implementation.
+					</p></li><li><p>
+						Implement the <code class="literal">destroyAllContextPartitions</code> method that gets called once when the named window is stopped or destroyed.
+					</p></li></ul></div><p>
+			  The engine instantiates a <code class="literal">VirtualDataWindowFactory</code> instance for each named window created via <code class="literal">create window</code>. The engine invokes the <code class="literal">initialize</code> method once in respect to the named window being created passing a <code class="literal">VirtualDataWindowFactoryContext</code> context object.
+			</p><p>
+			  If not using contexts, the engine calls the <code class="literal">create</code> method once after calling the <code class="literal">initialize</code> method. If using contexts, the engine calls the <code class="literal">create</code> method every time it allocates a context partition.
+			  If using contexts and your virtual data window implementation operates thread-safe, you may return the same virtual data window implementation object for each context partition. If using contexts and your implementation object is not thread safe, return a separate thread-safe implementation object for each context partition.
+			</p><p>
+			  The engine invokes the <code class="literal">destroyAllContextPartitions</code> once when the named window is stopped or destroyed. If not using contexts, the engine calls the <code class="literal">destroy</code> method of the virtual data window implementation object before calling
+			  the <code class="literal">destroyAllContextPartitions</code> method on the factory object. If using contexts, the engine calls the <code class="literal">destroy</code> method on each instance associates to a context partition at the time when the associated context partition terminates.
+			</p><p>
+				The sample code shown here can be found among the examples in the distribution under <code class="literal">virtualdw</code>:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class SampleVirtualDataWindowFactory implements VirtualDataWindowFactory {
+
+    public void initialize(VirtualDataWindowFactoryContext factoryContext) {
+		// Can add initialization logic here.
+    }
+
+  public VirtualDataWindow create(VirtualDataWindowContext context) {
+    // This example allocates a new virtual data window (one per context partitions if using contexts).
+    // For sharing the virtual data window instance between context partitions, return the same reference.
+    return new SampleVirtualDataWindow(context);
+  }
+  
+  public void destroyAllContextPartitions() {
+    // Release shared resources here
+  }
+}</pre><p>
+				Your factory class must implement the <code class="literal">create</code> method which receives a <code class="literal">VirtualDataWindowContext</code> object. This method is called once for each EPL that creates a virtual data window (see example <code class="literal">create window</code> above).
+			</p><p>
+				The <code class="literal">VirtualDataWindowContext</code> provides to your application:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">String namedWindowName;	// Name of named window being created.
+Object[] parameters;  // Any optional parameters provided as part of create-window.
+EventType eventType;  // The event type of events.
+EventBeanFactory eventFactory;  // A factory for creating EventBean instances from store rows.
+VirtualDataWindowOutStream outputStream;  // For stream output to consuming statements.
+AgentInstanceContext agentInstanceContext;  // Other EPL statement information in statement context.</pre><p>
+			    When using contexts you can decide whether your factory returns a new virtual data window for each context partition or returns the same virtual data window instance for all context partitions.
+			    Your extension code may refer to the named window name to identify the named window and may refer to the agent instance context that holds the agent instance id which is the id of the context partition. 
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="extension-virtualdw-vdw"/>17.2.3. Implementing the Virtual Data Window</h3></div></div></div><p>
+				A virtual data window implementation is responsible for the following functions:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						Accept the lookup context object as a parameter and return the <code class="literal">VirtualDataWindowLookup</code> implementation.
+					</p></li><li><p>
+						Optionally, post insert and remove stream data.
+					</p></li><li><p>
+						Implement the <code class="literal">destroy</code> method, which the engine calls for each context partition when the named window is stopped or destroyed, or once when a context partition is ended/terminated.
+					</p></li></ul></div><p>
+				The sample code shown here can be found among the examples in the distribution under <code class="literal">virtualdw</code>.
+			</p><p>
+			  The implementation class must implement the <code class="literal">VirtualDataWindow</code> interface like so:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class SampleVirtualDataWindow implements VirtualDataWindow {
+
+  private final VirtualDataWindowContext context;
+  
+  public SampleVirtualDataWindow(VirtualDataWindowContext context) {
+    this.context = context;
+  } ...</pre><p>
+			  When the engine compiles an EPL statement and detects a virtual data window, the engine invokes the <code class="literal">getLookup</code> method indicating hash and btree access path information by passing a <code class="literal">VirtualDataWindowLookupContext</code> context. The lookup method must return a <code class="literal">VirtualDataWindowLookup</code> implementation that the EPL statement
+			  uses for all lookups until the EPL statement is stopped or destroyed.
+			</p><p>
+			  The sample implementation does not use the hash and btree access path information and simply returns a lookup object: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public VirtualDataWindowLookup getLookup(VirtualDataWindowLookupContext desc) {
+
+  // Place any code that interrogates the hash-index and btree-index fields here.
+
+  // Return the lookup strategy.
+  return new SampleVirtualDataWindowLookup(context);
+}</pre><p>
+				If your virtual data window returns null instead of a lookup object, the EPL query creation fails and throws an <code class="literal">EPStatementException</code>.
+			</p><p>
+			 The engine calls the <code class="literal">update</code> method when data changes because of on-merge, on-delete, on-update or insert-into. For example, if you have an on-merge statement that is triggered and that updates the virtual data window, the <code class="literal">newData</code> parameter receives the new (updated) event and the <code class="literal">oldData</code> parameters receives the event prior to the update. Your code may use these events to update the store or delete from the store, if needed.
+			</p><p>
+				If your application plans to consume data from the virtual data window, for example via <code class="literal">select * from MySampleWindow</code>, then the code must implement the <code class="literal">update</code> method to forward insert and remove stream events, as shown below, to receive the events in consuming statements. To post insert and remove stream data, use the <code class="literal">VirtualDataWindowOutStream</code> provided by the context object as follows. 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void update(EventBean[] newData, EventBean[] oldData) {
+  // This sample simply posts into the insert and remove stream what is received.
+  context.getOutputStream().update(newData, oldData);
+}</pre><p>
+				Your application should not use <code class="literal">VirtualDataWindowOutStream</code> to post new events that originate from the store. The object is intended for use with on-action EPL statements. Use insert-into instead for any new events that originate from the store.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="extension-virtualdw-lookup"/>17.2.4. Implementing the Lookup</h3></div></div></div><p>
+				A lookup implementation is responsible for the following functions:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						Accept the lookup values as a parameter and return a set of <code class="literal">EventBean</code> instances.
+					</p></li></ul></div><p>
+				The sample code shown here can be found among the examples in the distribution under <code class="literal">virtualdw</code>.
+			</p><p>
+			  The implementation class must implement the <code class="literal">VirtualDataWindowLookup</code> interface:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class SampleVirtualDataWindowLookup implements VirtualDataWindowLookup {
+
+  private final VirtualDataWindowContext context;
+  
+  public SampleVirtualDataWindowLookup(VirtualDataWindowContext context) {
+    this.context = context;
+  } ...</pre><p>
+			  When an EPL query fires, the engine invokes the lookup and provides the actual lookup values. The lookup values are provided in the same exact order as the access path information that the engine provided when obtaining the lookup.
+			</p><p>
+				Each store row must be wrapped as an <code class="literal">EventBean</code> instance. The context object provides an <code class="literal">EventBeanFactory</code> implementation returned by <code class="literal">getEventFactory()</code> that can be used to wrap rows.
+			</p><p>
+			  The sample implementation does not use the lookup values and simply returns a hardcoded sample event: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public Set&lt;EventBean&gt; lookup(Object[] lookupValues) {
+  // Add code to interogate lookup values here.
+
+  // Create sample event.
+  // This example uses Map events; Other underlying events such as POJO are exactly the same code.
+  Map&lt;String, Object&gt; eventData = new HashMap&lt;String, Object&gt;();
+  eventData.put("key1", "sample1");
+  eventData.put("key2", "sample2");
+  eventData.put("value1", 100);
+  eventData.put("value2", 1.5d);
+  EventBean event = context.getEventFactory().wrap(eventData);
+  return Collections.singleton(event);
+}</pre><p>
+				The <code class="literal">lookupValues</code> object array represents all actual joined property values or expression results if you where-clause criteria are expressions. The code may use these keys to for efficient store access.
+			</p><p>
+				When a key value is a range, the key value is an instance of <code class="literal">VirtualDataWindowKeyRange</code>.
+			</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="custom-singlerow-function"/>17.3. Single-Row Function</h2></div></div></div><a id="d0e37526" class="indexterm"/><a id="d0e37531" class="indexterm"/><p>
+			Single-row functions return a single value. They are not expected to aggregate rows but instead should be stateless functions. These functions can appear in any expressions and can be passed any number of parameters.
+        </p><p>
+			The following steps are required to develop and use a custom single-row function with Esper. 
+        </p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+					Implement a class providing one or more public static methods accepting the number and type of parameters as required.
+				</p></li><li><p>
+					Register the single-row function class and method name with the engine by supplying a function name, via the engine configuration file or the configuration API.
+				</p></li></ol></div><p>
+			You may not override a built-in function with a single-row function provided by you. The single-row function you register must have a different name then any of the built-in functions.
+		</p><p>
+			An example single-row function can also be found in the examples under the runtime configuration example.
+		</p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-singlerow-implementing"/>17.3.1. Implementing a Single-Row Function</h3></div></div></div><p>
+				Single-row function classes have no further requirement then provide a public static method.
+			</p><p>
+				The following sample single-row function simply computes a percentage value based on two number values. 
+			</p><p>
+				This sample class provides a public static method by name <code class="literal">computePercent</code> to return a percentage value:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyUtilityClass {
+  public static double computePercent(double amount, double total) {
+    return amount / total * 100;
+  }
+}</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-single-row-config"/>17.3.2. Configuring the Single-Row Function Name</h3></div></div></div><p>
+				The class name of the class, the method name and the function name of the new single-row function must be added to the engine configuration via the configuration API or using the XML configuration file. The configuration shown below is XML however the same options are available through the runtime and static configuration API:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;esper-configuration
+  &lt;plugin-singlerow-function name="percent" 
+    function-class="mycompany.MyUtilityClass" function-method="computePercent" /&gt;
+&lt;/esper-configuration&gt;</pre><p>
+				Note that the function name and method name need not be the same.
+			</p><p>
+				The new single-row function is now ready to use in a statement:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select percent(fulfilled,total) from MyEvent</pre><p>
+				When selecting from a single stream, you may also pass wildcard to the single-row function and the function receives the underlying event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select percent(*) from MyEvent</pre><p>
+				If the single-row function returns an object that provides further functions, you may chain function calls.
+			</p><p>
+				The following demonstrates a chained single-row function. The example assumes that a single-row function by name <code class="literal">calculator</code> returns an object that provides the <code class="literal">add</code> function which accepts two parameters:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select calculator().add(5, amount) from MyEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-single-row-cache"/>17.3.3. Value Cache</h3></div></div></div><p>
+				When a single-row function receives parameters that are all constant values or expressions that themselves receive only constant values, Esper can pre-evaluate the result of the single-row function at time of statement creation. By default, Esper does not pre-evaluate the single-row function unless you configure
+				the value cache as enabled.
+			</p><p>
+			  The following configuration XML enables the value cache for the single-row function:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;esper-configuration
+  &lt;plugin-singlerow-function name="getDate" 
+    function-class="mycompany.DateUtil" function-method="parseDate"
+    value-cache="enabled" /&gt;
+&lt;/esper-configuration&gt;</pre><p>
+				When the single-row function receives constants as parameters, the engine computes the result once and returns the cached result for each evaluation:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select getDate('2002-05-30T9:00:00.000') from MyEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-single-filter-optimizable"/>17.3.4. Single-Row Functions in Filter Predicate Expressions</h3></div></div></div><p>
+			  Your EPL may use plug-in single row functions among the predicate expressions as part of the filters in a stream or pattern.
+			</p><p>
+			  For example, the EPL below uses the function <code class="literal">computeHash</code> as part of a predicate expression:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from MyEvent(computeHash(field) = 100)</pre><p>
+			   When you have many EPL statements or many context partitions that refer to the same function, event type and parameters in a predicate expression, the engine may optimize evaluation: The function gets evaluated only once per event.
+			</p><p>
+				While the optimization is enabled by default for all plug-in single row functions, you can also disable the optimization for a specific single-row function. By disabling the optimization for a single-row function the engine may use less memory to identify reusable function footprints but may cause the engine to evaluate each function more frequently then necessary.
+			</p><p>
+			  The following configuration XML disables the filter optimization for a single-row function (by default it is enabled):
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;esper-configuration
+  &lt;plugin-singlerow-function name="computeHash" 
+    function-class="mycompany.HashUtil" function-method="computeHash"
+    filter-optimizable="disabled" /&gt;
+&lt;/esper-configuration&gt;</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-single-eventsparam"/>17.3.5. Single-Row Functions Taking Events as Parameters</h3></div></div></div><p>
+			  Esper allows parameters to a single-row function to be events. In this case, declare the method parameter type to either take <code class="literal">EventBean</code>, <code class="literal">Collection&lt;EventBean&gt;</code>
+			  or the underlying class as a parameter.			  
+			</p><p>
+			  Sample method footprints are:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public static double doCompute(EventBean eventBean) {...}
+public static boolean doCheck(MyEvent myEvent, String text) {...}
+public static String doSearch(Collection&lt;EventBean&gt; events) {...}</pre><p>
+			  To pass the event, specify the stream alias, or wildcard <code class="literal">(*)</code> or the tag name when used in a pattern.
+			</p><p>
+			  The EPL below shows example uses:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from MyEvent(doCompute(me) = 100) as me</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from MyEvent where doCompute(*) = 100</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from pattern[a=MyEvent -&gt; MyEvent(doCheck(a, 'sometext'))]</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from MyEvent.win:time(1 min) having doCompute(last(*))]</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from MyEvent.win:time(1 min) having doSearch(window(*))]</pre><p>
+			  Declare the method parameter as <code class="literal">Collection&lt;EventBean&gt;</code> if the method expects 
+			  an expression result that returns multiple events.
+			</p><p>
+			  Declare the method parameter as <code class="literal">EventBean</code> if the method expects 
+			  an expression result that returns a single event.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-single-receivectx"/>17.3.6. Receiving a Context Object</h3></div></div></div><p>
+			  Esper can pass an object containing contextual information such as statement name, function name, engine URI and context partition id to your
+			  method. The container for this information is <code class="literal">EPLMethodInvocationContext</code> in package <code class="literal">com.espertech.esper.client.hook</code>.
+			  Please declare your method to take <code class="literal">EPLMethodInvocationContext</code> as the last parameter. The engine then passes the information along.
+			</p><p> 
+			  A sample method footprint and EPL are shown below:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public static double computeSomething(double number, EPLMethodInvocationContext context) {...}</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select computeSomething(10) from MyEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-single-rethrowex"/>17.3.7. Exception Handling</h3></div></div></div><p>
+			  By default the engine logs any exceptions thrown by the single row function and returns a null value. 
+			  To have exceptions be re-thrown instead, which makes exceptions visible to any registered exception handler,
+			  please configure as discussed herein. 
+			</p><p>
+				Set the <code class="literal">rethrow-exceptions</code> flag in the XML configuration or the <code class="literal">rethrowExceptions</code> flag in the API
+				when registering the single row function to have the engine re-throw any exceptions that the single row function may throw.
+			</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="custom-views"/>17.4. Derived-value and Data Window View</h2></div></div></div><a id="d0e37705" class="indexterm"/><a id="d0e37710" class="indexterm"/><a id="d0e37715" class="indexterm"/><p>
+			Views in Esper are used to derive information from an event stream, and to represent data windows onto an event stream. This chapter describes how to plug-in a new, custom view. 
+        </p><p>
+			The following steps are required to develop and use a custom view with Esper. 
+        </p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+					Implement a view factory class. View factories are classes that accept and check view parameters and instantiate the appropriate view class.
+				</p></li><li><p>
+					Implement a view class. A view class commonly represents a data window or derives new information from a stream.
+				</p></li><li><p>
+					Configure the view factory class supplying a view namespace and name in the engine configuration file.
+				</p></li></ol></div><p>
+			The example view factory and view class that are used in this chapter can be found in the examples source folder in the OHLC (open-high-low-close) example. The class names are <code class="literal">OHLCBarPlugInViewFactory</code> and <code class="literal">OHLCBarPlugInView</code>.
+        </p><p>
+			Views can make use of the following engine services available via <code class="literal">StatementServiceContext</code>:
+        </p><div class="itemizedlist"><ul compact="compact"><li><p>
+					The <code class="literal">SchedulingService</code> interface allows views to schedule timer callbacks to a view
+				</p></li><li><p>
+					The <code class="literal">EventAdapterService</code> interface allows views to create new event types and event instances of a given type. 
+				</p></li><li><p>
+					The <code class="literal">StatementStopService</code> interface allows view to register a callback that the engine invokes to indicate that the view's statement has been stopped
+				</p></li></ul></div><p>
+			<a class="xref" href="extension.html#custom-views-contract" title="17.4.3. View Contract">Section 17.4.3, “View Contract”</a> outlines the requirements for correct behavior of a your custom view within the engine.
+        </p><p>
+			Note that custom views may use engine services and APIs that can be subject to change between major releases. The engine services discussed above and view APIs are considered part of the engine internal public API and are stable. Any changes to such APIs are disclosed through the release change logs and history. Please also consider contributing your custom view to the Esper project team by submitting the view code through the mailing list or via a JIRA issue.
+        </p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-views-viewfactory"/>17.4.1. Implementing a View Factory</h3></div></div></div><p>
+				A view factory class is responsible for the following functions:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						Accept zero, one or more view parameters. View parameters are themselves expressions. The view factory must validate and evaluate these expressions.
+					</p></li><li><p>
+						Instantiate the actual view class.
+					</p></li><li><p>
+						Provide information about the event type of events posted by the view.
+					</p></li></ul></div><p>
+				View factory classes simply subclass <code class="literal">com.espertech.esper.view.ViewFactorySupport</code>:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class OHLCBarPlugInViewFactory extends ViewFactorySupport { ...</pre><p>
+				Your view factory class must implement the <code class="literal">setViewParameters</code> method to accept and parse view parameters. The next code snippet shows an implementation of this method. The code checks the number of parameters and retains the parameters passed to the method:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class OHLCBarPlugInViewFactory extends ViewFactorySupport {
+    private ViewFactoryContext viewFactoryContext;
+    private List&lt;ExprNode&gt; viewParameters;
+    private ExprNode timestampExpression;
+    private ExprNode valueExpression;
+
+    public void setViewParameters(ViewFactoryContext viewFactoryContext, 
+            List&lt;ExprNode&gt; viewParameters) throws ViewParameterException {
+        this.viewFactoryContext = viewFactoryContext;
+        if (viewParameters.size() != 2) {
+            throw new ViewParameterException(
+                "View requires a two parameters: " +
+                "the expression returning timestamps and the expression supplying OHLC data points");
+        }
+        this.viewParameters = viewParameters;
+    }
+  ...</pre><p>
+			After the engine supplied view parameters to the factory, the engine will ask the view to attach to its parent view and validate any parameter expressions against the parent view's event type. If the view will be generating events of a different type then the events generated by the parent view, then the view factory can create the new event type in this method:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void attach(EventType parentEventType, 
+		StatementContext statementContext, 
+		ViewFactory optionalParentFactory, 
+		List&lt;ViewFactory&gt; parentViewFactories) throws ViewParameterException {
+		
+    ExprNode[] validatedNodes = ViewFactorySupport.validate("OHLC view", 
+	      parentEventType, statementContext, viewParameters, false);
+
+    timestampExpression = validatedNodes[0];
+    valueExpression = validatedNodes[1];
+
+    if ((timestampExpression.getExprEvaluator().getType() != long.class) &amp;&amp; 
+        (timestampExpression.getExprEvaluator().getType() != Long.class)) {
+        throw new ViewParameterException(
+            "View requires long-typed timestamp values in parameter 1");
+    }
+    if ((valueExpression.getExprEvaluator().getType() != double.class) &amp;&amp; 
+        (valueExpression.getExprEvaluator().getType() != Double.class)) {
+        throw new ViewParameterException(
+            "View requires double-typed values for in parameter 2");
+    }
+}</pre><p>
+			Finally, the engine asks the view factory to create a view instance, and asks for the type of event generated by the view:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public View makeView(AgentInstanceViewFactoryChainContext agentInstanceViewFactoryContext) {
+    return new OHLCBarPlugInView(agentInstanceViewFactoryContext, timestampExpression, valueExpression);
+}
+
+public EventType getEventType() {
+    return OHLCBarPlugInView.getEventType(viewFactoryContext.getEventAdapterService());
+}</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-views-view"/>17.4.2. Implementing a View</h3></div></div></div><p>
+				A view class is responsible for:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						The <code class="literal">setParent</code> method informs the view of the parent view's event type
+					</p></li><li><p>
+						The <code class="literal">update</code> method receives insert streams and remove stream events from its parent view
+					</p></li><li><p>
+						The <code class="literal">iterator</code> method supplies an (optional) iterator to allow an application to pull or request results from an <code class="literal">EPStatement</code>
+					</p></li><li><p>
+						The <code class="literal">cloneView</code> method must make a configured copy of the view to enable the view to work in a grouping context together with a <code class="literal">std:groupwin</code> parent view
+					</p></li></ul></div><p>
+				View classes simply subclass <code class="literal">com.espertech.esper.view.ViewSupport</code>:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyTrendSpotterView extends ViewSupport { ...</pre><p>
+				Your view's <code class="literal">update</code> method will be processing incoming (insert stream) and outgoing (remove stream) events posted by the parent view (if any), as well as providing incoming and outgoing events to child views. The convention required of your update method implementation is that the view releases any insert stream events (EventBean object references) which the view generates as reference-equal remove stream events (EventBean object references) at a later time. 
+			</p><p>
+				The view implementation must call the <code class="literal">updateChildren</code> method to post outgoing insert and remove stream events. Similar to the <code class="literal">update</code> method, the <code class="literal">updateChildren</code> method takes insert and remove stream events as parameters.
+			</p><p>
+				A sample <code class="literal">update</code> method implementation is provided in the OHLC example.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-views-contract"/>17.4.3. View Contract</h3></div></div></div><p>
+				The <code class="literal">update</code> method must adhere to the following conventions, to prevent memory leaks and to enable correct behavior within the engine:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						A view implementation that posts events to the insert stream must post unique <code class="literal">EventBean</code> object references as insert stream events, and cannot post the same <code class="literal">EventBean</code> object reference multiple times. The underlying event to the <code class="literal">EventBean</code> object reference can be the same object reference, however the <code class="literal">EventBean</code> object reference posted by the view into the insert stream must be a new instance for each insert stream event.
+					</p></li><li><p>
+						If the custom view posts a continuous insert stream, then the views must also post a continuous remove stream (second parameter to the <code class="literal">updateChildren</code> method). If the view does not post remove stream events, it assumes unbound keep-all semantics.
+					</p></li><li><p>
+						<code class="literal">EventBean</code> events posted as remove stream events must be the same object reference as the <code class="literal">EventBean</code> events posted as insert stream by the view. Thus remove stream events posted by the view (the <code class="literal">EventBean</code> instances, does not affect the underlying representation) must be reference-equal to insert stream events posted by the view as part of an earlier invocation of the update method, or the same invocation of the update method.
+					</p></li><li><p>
+						<code class="literal">EventBean</code> events represent a unique observation. The values of the observation can be the same, thus the underlying representation of an <code class="literal">EventBean</code> event can be reused, however event property values must be kept immutable and not be subject to change.
+					</p></li><li><p>
+						Array elements of the insert and remove stream events must not carry null values. Array size must match the number of <code class="literal">EventBean</code> instances posted. It is recommended to use a <code class="literal">null</code> value for no insert or remove stream events rather then an empty zero-size array. 
+					</p></li></ul></div><p>
+				Your view implementation can register a callback indicating when a statement using the view, or a context partition using the view, is stopped or terminated. Your
+				view code must implement, or provide an implementation, of the <code class="literal">com.espertech.esper.util.StopCallback</code> interface. Register the stop callback in order for the engine to invoke the callback:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">agentInstanceContext.getTerminationCallbacks().add(this);</pre><p>
+				Please refer to the sample views for a code sample on how to implement <code class="literal">iterator</code> and <code class="literal">cloneView</code> methods.
+			</p><p>
+				In terms of multiple threads accessing view state, there is no need for your custom view factory or view implementation to perform any synchronization to protect internal state. The iterator of the custom view implementation does also not need to be thread-safe. The engine ensures the custom view executes in the context of a single thread at a time. If your view uses shared external state, such external state must be still considered for synchronization when using multiple threads.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-views-config"/>17.4.4. Configuring View Namespace and Name</h3></div></div></div><p>
+				The view factory class name as well as the view namespace and name for the new view must be added to the engine configuration via the configuration API or using the XML configuration file. The configuration shown below is XML however the same options are available through the configuration API:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;esper-configuration
+  &lt;plugin-view namespace="custom" name="ohlc" 
+      factory-class="com.espertech.esper.example.ohlc.OHLCBarPlugInViewFactory" /&gt; 
+&lt;/esper-configuration&gt;</pre><p>
+				The new view is now ready to use in a statement:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from StockTick.custom:ohlc(timestamp, price)</pre><p>
+				Note that the view must implement additional interfaces if it acts as a data window view, or works in a grouping context, as discussed in detail below.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-views-datawin"/>17.4.5. Requirement for Data Window Views</h3></div></div></div><p>
+				Your custom view may represent an expiry policy and may retain events and thus act as a data window view. In order to allow the engine to validate that your view can be used with named windows, which allow only data window views,
+				this section documents any additional requirement that your classes must fulfill.
+			</p><p>
+				Your view factory class must implement the <code class="literal">com.espertech.esper.view.DataWindowViewFactory</code> interface. This marker interface (no methods required) indicates that your view factory provides only data window views.  
+			</p><p>
+				Your view class must implement the <code class="literal">com.espertech.esper.view.DataWindowView</code> interface. This marker interface indicates that your view is a data window view and therefore eligible to be used in any construct that requires a data window  view.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-views-grouped"/>17.4.6. Requirement for Grouped Views</h3></div></div></div><p>
+				Grouped views are views that operate under the <code class="literal">std:groupwin</code> view. When operating under one or more <code class="literal">std:groupwin</code> views, the engine instantiates a single view instance when the statement starts, and a new view instance per group criteria dynamically as new group criteria become known. 
+			</p><p>
+				The next statement shows EPL for using a view instance per grouping criteria:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from StockTick.std:groupwin(symbol).custom:trendspotter(price)</pre><p>
+				Your view must implement the <code class="literal">com.espertech.esper.view.CloneableView</code> interface to indicate your view may create new views. This code snippet shows a sample implementation of the <code class="literal">cloneView</code> method required by the interface:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public View cloneView() {
+  return new MyPlugInView(...);	// pass any parameters along
+}</pre></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="custom-aggregation-function"/>17.5. Aggregation Function</h2></div></div></div><a id="d0e38006" class="indexterm"/><a id="d0e38011" class="indexterm"/><p>
+		  Aggregation functions are stateful functions that aggregate events, event property values or expression results. Examples for built-in aggregation functions are <code class="literal">count(*)</code>, <code class="literal">sum(price * volume)</code>, <code class="literal">window(*)</code> or <code class="literal">maxby(volume)</code>.
+		</p><p>
+		  Esper allows two different ways for your application to provide aggregation functions. We use the name <span class="emphasis"><em>aggregation single-function</em></span> and <span class="emphasis"><em>aggregation multi-function</em></span> for the two independent extension APIs for aggregation functions.			
+        </p><p>
+			The aggregation single-function API is simple to use however it imposes certain restrictions on how expressions that contain aggregation functions share state and are evaluated.
+		</p><p>
+			The aggregation multi-function API is more powerful and provides control over how expressions that contain aggregation functions share state and are evaluated.
+		</p><p>
+		  The next table compares the two aggregation function extension API's:
+        </p><div class="table"><a id="d0e38044"/><p class="title"><b>Table 17.1. Aggregation Function Extension API's</b></p><div class="table-contents"><table summary="Aggregation Function Extension API's" border="1"><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th> </th><th>Single-Function</th><th>Multi-Function</th><td class="auto-generated"> </td></tr></thead><tbody><tr><td>Return Value</td><td>Can only return a single value or object. Cannot return an <code class="literal">EventBean</code> event, collection of <code class="literal">EventBean</code> events or collection or array of values for use with enumeration methods, for example.</td><td>Can return an <code class="literal">EventBean</code> event, a collection of <code class="literal">EventBean</code> events or a collection or array of objects for use with enumeration methods or to access event properties.</td><td class="auto-generated"> </td></tr><tr><td>Complexity of API</td><td>Simple (consists of 2 interfaces).</td><td>More complex (consists of 6 interfaces).</td><td class="auto-generated"> </td></tr><tr><td>State Sharing</td><td>State and parameter evaluation shared if multiple aggregation functions of the same name in the same statement (and context partition) take the exact same parameter expressions.</td><td>State and parameter evaluation sharable when multiple aggregation functions of a related name (related thru configuration) for the same statement (and context partition) exist, according to a sharing-key provided by your API implementation.</td><td class="auto-generated"> </td></tr><tr><td>Function Name</td><td>Each aggregation function expression receives its own factory object.</td><td>Multiple related aggregation function expressions share a single factory object.</td><td class="auto-generated"> </td></tr><tr><td>Distinct Keyword</td><td>Handled by the engine transparently.</td><td>Indicated to the API implementation only.</td><td class="auto-generated"> </td></tr></tbody></table></div></div><br class="table-break"/><p>
+		  The following sections discuss developing an aggregation single-function first, followed by the subject of developing an aggregation multi-function.
+		</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>
+			  The aggregation multi-function API is a powerful and lower-level API to extend the engine. Any classes that are not part of the <code class="literal">client</code>, <code class="literal">plugin</code> or <code class="literal">agg.access</code> package are subject to change between minor and major releases of the engine.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-aggregation-single"/>17.5.1. Aggregation Single-Function Development</h3></div></div></div><p>
+				This section describes the <span class="emphasis"><em>aggregation single-function</em></span> extension API for providing aggregation functions.
+			</p><p>
+				The following steps are required to develop and use a custom aggregation single-function with Esper. 
+			</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+						Implement an aggregation function factory by implementing the interface <code class="literal">com.espertech.esper.client.hook.AggregationFunctionFactory</code>.
+					</p></li><li><p>
+						Implement an aggregation function by implementing the interface <code class="literal">com.espertech.esper.epl.agg.aggregator.AggregationMethod</code>.
+					</p></li><li><p>
+						Register the aggregation single-function factory class with the engine by supplying a function name, via the engine configuration file or the runtime and static configuration API.
+					</p></li></ol></div><p>
+				The optional keyword <code class="literal">distinct</code> ensures that only distinct (unique) values are aggregated and duplicate values are ignored by the aggregation function. Custom plug-in aggregation single-functions do not need to implement the logic to handle <code class="literal">distinct</code> values. This is because when the engine encounters the <code class="literal">distinct</code> keyword, it eliminates any non-distinct values before passing the value for aggregation to the custom aggregation single-function.
+			</p><p>
+				Custom aggregation functions can also be passed multiple parameters, as further described in <a class="xref" href="extension.html#custom-aggregation-single-multiparam" title="17.5.1.4. Aggregation Single-Function: Accepting Multiple Parameters">Section 17.5.1.4, “Aggregation Single-Function: Accepting Multiple Parameters”</a>. In the example below the aggregation function accepts a single parameter.
+			</p><p>
+				The code for the example aggregation function as shown in this chapter can be found in the runtime configuration example in the package <code class="literal">com.espertech.esper.example.runtimeconfig</code> by the name <code class="literal">MyConcatAggregationFunction</code>. The sample function simply concatenates string-type values.
+			</p><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="custom-aggregation-single-factory"/>17.5.1.1. Implementing an Aggregation Single-Function Factory</h4></div></div></div><p>
+					An aggregation function factory class is responsible for the following functions:
+				</p><div class="itemizedlist"><ul compact="compact"><li><p>
+							Implement a <code class="literal">setFunctionName</code> method that receives the function name assigned to this instance. 
+						</p></li><li><p>
+							Implement a <code class="literal">validate</code> method that validates the value type of the data points that the function must process.
+						</p></li><li><p>
+							Implement a <code class="literal">getValueType</code> method that returns the type of the aggregation value generated by the aggregation function instances. For example, the built-in <code class="literal">count</code> aggregation function returns <code class="literal">Long.class</code> as it generates <code class="literal">long</code> -typed values.
+						</p></li><li><p>
+							Implement a <code class="literal">newAggregator</code> method that instantiates and returns an aggregation function instance. 
+						</p></li></ul></div><p>
+					Aggregation function classes implement the interface <code class="literal">com.espertech.esper.client.hook.AggregationFunctionFactory</code>:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyConcatAggregationFunctionFactory implements AggregationFunctionFactory { ...</pre><p>
+					The engine generally constructs one instance of the aggregation function factory class for each time the function is listed in an EPL statement, however the engine may decide to reduce the number of aggregation class instances if it finds equivalent aggregations.
+				</p><p>
+					The aggregation function factory instance receives the aggregation function name via set <code class="literal">setFunctionName</code> method.
+				</p><p>
+				  The sample concatenation function factory provides an empty <code class="literal">setFunctionName</code> method:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void setFunctionName(String functionName) {
+  // no action taken
+}</pre><p>
+					An aggregation function factory must provide an implementation of the <code class="literal">validate</code> method that is passed a <code class="literal">AggregationValidationContext</code> validation context object. Within the validation context you find the result type of each of the parameters expressions to the aggregation function as well as information about constant values and data window use. Please see the JavaDoc API documentation for a comprehensive list of validation context information.
+				</p><p>
+					Since the example concatenation function requires string types, it implements a type check:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void validate(AggregationValidationContext validationContext) {
+  if ((validationContext.getParameterTypes().length != 1) ||
+    (validationContext.getParameterTypes()[0] != String.class)) {
+    throw new IllegalArgumentException("Concat aggregation requires a single parameter of type String");
+  }
+}</pre><p>
+					In order for the engine to validate the type returned by the aggregation function against the types expected by enclosing expressions, the <code class="literal">getValueType</code> must return the result type of any values produced by the aggregation function:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public Class getValueType() {
+  return String.class;
+}</pre><p>
+					 Finally the factory implementation must provide a <code class="literal">newAggregator</code> method that returns instances of <code class="literal">AggregationMethod</code>. The engine invokes this method for each new aggregation state to be allocated.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public AggregationMethod newAggregator() {
+  return new MyConcatAggregationFunction();
+}</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="custom-aggregation-single implementing"/>17.5.1.2. Implementing an Aggregation Single-Function</h4></div></div></div><p>
+					An aggregation function class is responsible for the following functions:
+				</p><div class="itemizedlist"><ul compact="compact"><li><p>
+							Implement a <code class="literal">getValueType</code> method that returns the type of the aggregation value generated by the function. For example, the built-in <code class="literal">count</code> aggregation function returns <code class="literal">Long.class</code> as it generates <code class="literal">long</code> -typed values.
+						</p></li><li><p>
+							Implement an <code class="literal">enter</code> method that the engine invokes to add a data point into the aggregation, when an event enters a data window
+						</p></li><li><p>
+							Implement a <code class="literal">leave</code> method that the engine invokes to remove a data point from the aggregation, when an event leaves a data window
+						</p></li><li><p>
+							Implement a <code class="literal">getValue</code> method that returns the current value of the aggregation. 
+						</p></li><li><p>
+							Implement a <code class="literal">clear</code> method that resets the current value. 
+						</p></li></ul></div><p>
+					Aggregation function classes implement the interface <code class="literal">AggregationMethod</code>:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyConcatAggregationFunction implements AggregationMethod { ...</pre><p>
+					The class that provides the aggregation and implements <code class="literal">AggregationMethod</code> does not have to be threadsafe.
+				</p><p>
+					The constructor initializes the aggregation function:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyConcatAggregationFunction implements AggregationMethod {
+  private final static char DELIMITER = ' ';
+  private StringBuilder builder;
+  private String delimiter;
+
+  public MyConcatAggregationFunction() {
+    builder = new StringBuilder();
+    delimiter = "";
+  }
+  ...</pre><p>
+					In order for the engine to validate the type returned by the aggregation function against the types expected by enclosing expressions, the <code class="literal">getValueType</code> must return the result type of any values produced by the aggregation function:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public Class getValueType() {
+  return String.class;
+}</pre><p>
+					The <code class="literal">enter</code> method adds a datapoint to the current aggregation value. The example <code class="literal">enter</code> method shown below adds a delimiter and the string value to a string buffer:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void enter(Object value) {
+  if (value != null) {
+    builder.append(delimiter);
+    builder.append(value.toString());
+    delimiter = String.valueOf(DELIMITER);
+  }
+}</pre><p>
+					Conversly, the <code class="literal">leave</code> method removes a datapoint from the current aggregation value. The example <code class="literal">leave</code> method removes from the string buffer:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void leave(Object value) {
+  if (value != null) {
+    builder.delete(0, value.toString().length() + 1);
+  }
+}</pre><p>
+					Finally, the engine obtains the current aggregation value by means of the <code class="literal">getValue</code> method:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public Object getValue() {
+  return builder.toString();
+}</pre><p>
+					For on-demand queries the aggregation function must support resetting its value to empty or start values. Implement the <code class="literal">clear</code> function to reset the value as shown below:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void clear() {
+  builder = new StringBuilder();
+  delimiter = "";
+}</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="custom-aggregation-single-config"/>17.5.1.3. Configuring the Aggregation Single-Function Name</h4></div></div></div><p>
+					The aggregation function class name as well as the function name for the new aggregation function must be added to the engine configuration via the configuration API or using the XML configuration file. The configuration shown below is XML however the same options are available through the configuration API:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;esper-configuration
+  &lt;plugin-aggregation-function name="concat" 
+    factory-class="com.espertech.esper.example.runtimeconfig.MyConcatAggregationFunctionFactory" /&gt;
+&lt;/esper-configuration&gt;</pre><p>
+					The new aggregation function is now ready to use in a statement:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select concat(symbol) from StockTick.win:length(3)</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="custom-aggregation-single-multiparam"/>17.5.1.4. Aggregation Single-Function: Accepting Multiple Parameters</h4></div></div></div><p>
+					Your plug-in aggregation function may accept multiple parameters, simply by casting the Object parameter of the <code class="literal">enter</code> and <code class="literal">leave</code> method to <code class="literal">Object[]</code>.
+				</p><p>
+					For instance, assume an aggregation function <code class="literal">rangeCount</code> that counts all values that fall into a range of values. The EPL that calls this function and provides a lower and upper bounds of 1 and 10 is:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select rangeCount(1, 10, myValue) from MyEvent</pre><p>
+					The <code class="literal">enter</code> method of the plug-in aggregation function may look as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void enter(Object value)  {
+  Object[] params = (Object[]) value;
+  int lower = (Integer) params[0];
+  int upper = (Integer) params[1];
+  int val = (Integer) params[2];
+  if ((val &gt;= lower) &amp;&amp; (val &lt;= upper)) {
+    count++;
+  }
+}</pre><p>
+					Your plug-in aggregation function may want to validate parameter types or may want to know which parameters are constant-value expressions. Constant-value expressions are evaluated only once by the engine and could
+					therefore be cached by your aggregation function for performance reasons. The engine provides constant-value information as part of the <code class="literal">AggregationValidationContext</code> passed to the <code class="literal">validate</code> method.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="custom-aggregation-single-dotmethod"/>17.5.1.5. Aggregation Single-Function: Dot-Operator Use</h4></div></div></div><p>
+					When the custom aggregation function returns an object as a return value, the EPL can use parenthesis and the dot-operator to invoke methods on the return value.
+				</p><p>
+					The following example assumes that the <code class="literal">myAggregation</code> custom aggregation function returns an object that has <code class="literal">getValueOne</code> and <code class="literal">getValueTwo</code> methods:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select (myAggregation(myValue)).getValueOne(),  (myAggregation(myValue)).getValueTwo() from MyEvent</pre><p>
+					Since the above EPL aggregates the same value, the engine internally uses a single aggregation to represent the current value of <code class="literal">myAggregation</code> (and not two instances of the aggregation, even though <code class="literal">myAggregation</code> is listed twice).
+				</p></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-aggregation-multi"/>17.5.2. Aggregation Multi-Function Development</h3></div></div></div><p>
+				This section introduces the aggregation multi-function API. Please refer to the JavaDoc for more complete class and method-level documentation.
+			</p><p>
+				Among the Esper examples we provide an example use of the aggregation multi-function API in the example by name Cycle-Detect. 
+				Cycle-Detect takes incoming transaction events that have from-account and to-account fields.
+				The example detects a cycle in the transactions between accounts in order to detect a possible transaction fraud. 
+				Please note that the graph and cycle detection logic of the example is not part of Esper:
+				The example utilizes the <code class="literal">jgrapht</code> library.
+			</p><p>
+				In the Cycle-Detect example, the vertices of a graph are the account numbers. For example the account numbers <code class="literal">Acct-1</code>, <code class="literal">Acct-2</code> and <code class="literal">Acct-3</code>.
+				In the graph the edges are transaction events that identify a from-account and a to-account. An example edge is <code class="literal">{from:Acct-1, to:Acct-2}</code>.
+				An example cycle is therefore in the three transactions <code class="literal">{from:Acct-1, to:Acct-2}</code>, <code class="literal">{from:Acct-2, to:Acct-3}</code> and <code class="literal">{from:Acct-3, to:Acct-1}</code>.
+			</p><p>
+				The code for the example aggregation multi-function as shown in this chapter can be found in the Cycle-Detect example in the package <code class="literal">com.espertech.esper.example.cycledetect</code>.
+				The example provides two aggregation functions named <code class="literal">cycledetected</code> and <code class="literal">cycleoutput</code>:
+			</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+					  The <code class="literal">cycledetected</code> function returns a boolean value whether a graph cycle is found or not.
+					</p></li><li><p>
+					  The <code class="literal">cycleoutput</code> function outputs the vertices (account numbers) that are part of the graph cycle.
+					</p></li></ol></div><p>
+			  In the Cycle-Detect example, the following statement utilizes the two functions <code class="literal">cycledetected</code> and <code class="literal">cycleoutput</code> that
+			  share the same graph state to detect a cycle among the last 1000 events:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">@Name('CycleDetector') select cycleoutput() as cyclevertices
+from TransactionEvent.win:length(1000)
+having cycledetected(fromAcct, toAcct)</pre><p>
+			  If instead the goal is to run graph cycle detection every 1 second (and not upon arrival of a new event), this sample EPL statement uses a pattern to trigger cycle detection:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">@Name('CycleDetector')
+select (select cycleoutput(fromAcct, toAcct) from TransactionEvent.win:length(1000)) as cyclevertices
+from pattern [every timer:interval(1)]</pre><p>
+				The following steps are required to develop and use a custom aggregation multi-function with Esper. 
+			</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+						Implement an aggregation multi-function factory by implementing the interface <code class="literal">com.espertech.esper.plugin.PlugInAggregationMultiFunctionFactory</code>.
+					</p></li><li><p>
+						Implement one or more handlers for aggregation functions by implementing the interface <code class="literal">com.espertech.esper.plugin.PlugInAggregationMultiFunctionHandler</code>.
+					</p></li><li><p>
+						Implement an aggregation state key by implementing the interface <code class="literal">com.espertech.esper.epl.agg.access.AggregationStateKey</code>.
+					</p></li><li><p>
+						Implement an aggregation state factory by implementing the interface <code class="literal">com.espertech.esper.plugin.PlugInAggregationMultiFunctionStateFactory</code>.
+					</p></li><li><p>
+						Implement an aggregation state holder by implementing the interface <code class="literal">com.espertech.esper.epl.agg.access.AggregationState</code>.
+					</p></li><li><p>
+						Implement a state accessor by implementing the interface <code class="literal">com.espertech.esper.epl.agg.access.AggregationAccessor</code>.
+					</p></li><li><p>
+						Register the aggregation multi-function factory class with the engine by supplying one or more function names, via the engine configuration file or the runtime and static configuration API.
+					</p></li></ol></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="custom-aggregation-multi-factory"/>17.5.2.1. Implementing an Aggregation Multi-Function Factory</h4></div></div></div><p>
+					An aggregation multi-function factory class is responsible for the following functions:
+				</p><div class="itemizedlist"><ul compact="compact"><li><p>
+							Implement the <code class="literal">addAggregationFunction</code> method that receives an invocation for each aggregation function declared in the statement that matches any of the function names provided at configuration time. 
+						</p></li><li><p>
+							Implement the <code class="literal">validateGetHandler</code> method that receives an invocation for each aggregation function to be validated in the statement that matches any of the function names provided at configuration time.
+						</p></li></ul></div><p>
+					Aggregation multi-function factory classes implement the interface <code class="literal">com.espertech.esper.plugin.PlugInAggregationMultiFunctionFactory</code>:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class CycleDetectorAggregationFactory implements PlugInAggregationMultiFunctionFactory { ...</pre><p>
+					The engine constructs a single instance of the aggregation multi-function factory class that is shared for all aggregation function expressions in a statement that have one of the function names provided in the configuration object.
+				</p><p>
+					The engine invokes the <code class="literal">addAggregationFunction</code> method at the time it parses an EPL statement or compiles a statement object model (SODA API).
+					The method receives a declaration-time context object that provides the function name as well as additional information.
+				</p><p>
+				  The sample Cycle-Detect factory class provides an empty <code class="literal">addAggregationFunction</code> method:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void addAggregationFunction(PlugInAggregationMultiFunctionDeclarationContext declarationContext) {
+  // no action taken
+}</pre><p>
+					The engine invokes the <code class="literal">validateGetHandler</code> method at the time of expression validation. It passes 
+					a <code class="literal">PlugInAggregationMultiFunctionValidationContext</code> validation context object that contains actual parameters expressions. 
+					Please see the JavaDoc API documentation for a comprehensive list of validation context information.
+				</p><p>
+					The <code class="literal">validateGetHandler</code> method must return a handler object the implements the <code class="literal">PlugInAggregationMultiFunctionHandler</code> interface.
+					Return a handler object for each aggregation function expression according to the aggregation function name and its parameters that are provided in the validation 
+					context.
+				</p><p>
+					The example <code class="literal">cycledetect</code> function takes two parameters that provide the cycle edge (from-account and to-account):
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public PlugInAggregationMultiFunctionHandler validateGetHandler(PlugInAggregationMultiFunctionValidationContext validationContext) {
+  if (validationContext.getParameterExpressions().length == 2) {
+    fromExpression = validationContext.getParameterExpressions()[0].getExprEvaluator();
+    toExpression = validationContext.getParameterExpressions()[1].getExprEvaluator();
+  }
+  return new CycleDetectorAggregationHandler(this, validationContext);
+}</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="custom-aggregation-multi-handlr"/>17.5.2.2. Implementing an Aggregation Multi-Function Handler</h4></div></div></div><p>
+					An aggregation multi-function handler class must implement the <code class="literal">PlugInAggregationMultiFunctionHandler</code> interface and is responsible for the following functions:
+				</p><div class="itemizedlist"><ul compact="compact"><li><p>
+							Implement the <code class="literal">getAccessor</code> method that returns a reader object for the aggregation state.
+						</p></li><li><p>
+							Implement the <code class="literal">getReturnType</code> method that returns information about the type of return values provided by the accessor reader object.
+						</p></li><li><p>
+							Implement the <code class="literal">getAggregationStateUniqueKey</code> method that provides a key object used by the engine to determine which aggregation functions share state. 
+						</p></li><li><p>
+							Implement the <code class="literal">getStateFactory</code> method that returns a state factory object that the engine invokes, when required, to instantiate aggregation state holders.
+						</p></li></ul></div><p>
+					Typically your API returns a handler instance for each aggregation function in an EPL statement expression.
+				</p><p>
+					In the Cycle-Detect example, the class <code class="literal">CycleDetectorAggregationHandler</code> is the handler for all aggregation functions.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class CycleDetectorAggregationHandler implements PlugInAggregationMultiFunctionHandler { ...</pre><p>
+				  The <code class="literal">getAccessor</code> methods return a reader object according to whether the aggregation function name is <code class="literal">cycledetected</code> or <code class="literal">cycleoutput</code>:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public AggregationAccessor getAccessor() {
+  if (validationContext.getFunctionName().toLowerCase().equals(CycleDetectorConstant.CYCLEOUTPUT_NAME)) {
+    return new CycleDetectorAggregationAccessorOutput();
+  }
+  return new CycleDetectorAggregationAccessorDetect();
+}</pre><p>
+				  The <code class="literal">getReturnType</code> method provided by the handler instructs the engine about the return type of each aggregation accessor.
+				  The class <code class="literal">com.espertech.esper.client.util.ExpressionReturnType</code> holds return type information.
+				</p><p>
+					In the Cycle-Detect example the <code class="literal">cycledetected</code> function returns a single boolean value. The <code class="literal">cycleoutput</code> returns a collection of vertices:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public ExpressionReturnType getReturnType() {
+  if (validationContext.getFunctionName().toLowerCase().equals(CycleDetectorConstant.CYCLEOUTPUT_NAME)) {
+    return ExpressionReturnType.collectionOfSingleValue(factory.getFromExpression().getType());
+  }
+  return ExpressionReturnType.singleValue(Boolean.class) ;
+}</pre><p>
+					The engine invokes the <code class="literal">getAggregationStateUniqueKey</code> method to determine whether multiple aggregation function expressions
+					in the same statement can share the same aggregation state or should receive different aggregation state instances.
+				</p><p>
+					The <code class="literal">getAggregationStateUniqueKey</code> method must return an instance of <code class="literal">AggregationStateKey</code>.
+					The engine uses equals-semantics (the <code class="literal">hashCode</code> and <code class="literal">equals</code> methods) to determine whether multiple aggregation function share the state object.
+					If the key object returned for each aggregation function by the handler is an equal key object then the engine shares aggregation 
+					state between such aggregation functions for the same statement and context partition.
+				</p><p>
+				  In the Cycle-Detect example the state is shared, which it achieves by simply returning the same key instance:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">private static final AggregationStateKey CYCLE_KEY = new AggregationStateKey() {};
+
+public AggregationStateKey getAggregationStateUniqueKey() {
+  return CYCLE_KEY;   // Share the same aggregation state instance
+}</pre><p>
+				  The engine invokes the <code class="literal">getStateFactory</code> method to obtain an instance of <code class="literal">PlugInAggregationMultiFunctionStateFactory</code>. The 
+				  state factory is responsible to instantiating separate aggregation state instances. If you statement does not have a <code class="literal">group by</code> clause,
+				  the engine obtains a single aggregation state from the state factory. If your statement has a <code class="literal">group by</code> clause, the engine obtains
+				  an aggregation state instance for each group when it encounters a new group. 
+				</p><p>
+				  In the Cycle-Detect example the method passes the expression evaluators providing the from-account and to-account expressions to the state factory:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public PlugInAggregationMultiFunctionStateFactory getStateFactory() {
+  return new CycleDetectorAggregationStateFactory(factory.getFromExpression(), factory.getToExpression());
+}</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="custom-aggregation-multi-statefactory"/>17.5.2.3. Implementing an Aggregation Multi-Function State Factory</h4></div></div></div><p>
+					An aggregation multi-function state factory class must implement the <code class="literal">PlugInAggregationMultiFunctionStateFactory</code> interface and is responsible for the following functions:
+				</p><div class="itemizedlist"><ul compact="compact"><li><p>
+							Implement the <code class="literal">makeAggregationState</code> method that returns an aggregation state holder.
+						</p></li></ul></div><p>
+					The engine invokes the <code class="literal">makeAggregationState</code> method to obtain a new aggregation state instance before applying aggregation state. 
+					If using <code class="literal">group by</code> in your statement, the engine invokes the <code class="literal">makeAggregationState</code> method to obtain a state holder for each group.
+				</p><p>
+					In the Cycle-Detect example, the class <code class="literal">CycleDetectorAggregationStateFactory</code> is the state factory for all aggregation functions:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class CycleDetectorAggregationStateFactory implements PlugInAggregationMultiFunctionStateFactory {
+  private final ExprEvaluator fromEvaluator;
+  private final ExprEvaluator toEvaluator;
+
+  public CycleDetectorAggregationStateFactory(ExprEvaluator fromEvaluator, ExprEvaluator toEvaluator) {
+    this.fromEvaluator = fromEvaluator;
+    this.toEvaluator = toEvaluator;
+  }
+
+  public AggregationState makeAggregationState(PlugInAggregationMultiFunctionStateContext stateContext) {
+    return new CycleDetectorAggregationState(this);
+  }
+
+  public ExprEvaluator getFromEvaluator() {
+    return fromEvaluator;
+  }
+
+  public ExprEvaluator getToEvaluator() {
+    return toEvaluator;
+  }
+}</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="custom-aggregation-multi-state"/>17.5.2.4. Implementing an Aggregation Multi-Function State</h4></div></div></div><p>
+					An aggregation multi-function state class must implement the <code class="literal">AggregationState</code> interface and is responsible for the following functions:
+				</p><div class="itemizedlist"><ul compact="compact"><li><p>
+							Implement the <code class="literal">applyEnter</code> method that enters events, event properties or computed values.
+						</p></li><li><p>
+							Optionally implement the <code class="literal">applyLeave</code> method that can remove events or computed values.
+						</p></li><li><p>
+							Implement the <code class="literal">clear</code> method to clear state. 
+						</p></li></ul></div><p>
+					In the Cycle-Detect example, the class <code class="literal">CycleDetectorAggregationState</code> is the state for all aggregation functions.
+					Please review the example for more information.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="custom-aggregation-multi-accessor"/>17.5.2.5. Implementing an Aggregation Multi-Function Accessor</h4></div></div></div><p>
+					An aggregation multi-function accessor class must implement the <code class="literal">AggregationAccessor</code> interface and is responsible for the following functions:
+				</p><div class="itemizedlist"><ul compact="compact"><li><p>
+							Implement the <code class="literal">Object getValue(AggregationState state)</code> method that returns a result object for the aggregation state.
+						</p></li><li><p>
+							Implement the <code class="literal">Collection&lt;EventBean&gt; getEnumerableEvents(AggregationState state)</code> method that returns a collection of events for enumeration,
+							if applicable (or null).
+						</p></li><li><p>
+							Implement the <code class="literal">EventBean getEnumerableEvent(AggregationState state)</code> method that returns an event, if applicable (or null).
+						</p></li></ul></div><p>
+					In the Cycle-Detect example, the class <code class="literal">CycleDetectorAggregationAccessorDetect</code> returns state for the <code class="literal">cycledetected</code> aggregation function
+					and the <code class="literal">CycleDetectorAggregationAccessorOutput</code> returns the state for the <code class="literal">cycleoutput</code> aggregation function.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="custom-aggregation-multi-config"/>17.5.2.6. Configuring the Aggregation Multi-Function Name</h4></div></div></div><p> 
+				  An aggregation multi-function configuration can receive one or multiple function names. You must also set a factory class name.
+				</p><p>
+				  The sample XML snippet below configures an aggregation multi-function that is associated with the function names <code class="literal">func1</code> and <code class="literal">func2</code>.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;esper-configuration
+  &lt;plugin-aggregation-multifunction 
+      function-names="cycledetected,cycleoutput"   // a comma-separated list of function name
+      factory-class="com.espertech.esper.example.cycledetect.CycleDetectorAggregationFactory"/&gt;
+&lt;/esper-configuration&gt;</pre><p>
+				  The next example uses the runtime configuration API to register the same:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">String[] functionNames = new String[] {"cycledetected", "cycleoutput"};
+ConfigurationPlugInAggregationMultiFunction config = new ConfigurationPlugInAggregationMultiFunction(functionNames, CycleDetectorAggregationFactory.class.getName());
+engine.getEPAdministrator().getConfiguration().addPlugInAggregationMultiFunction(config);</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="custom-aggregation-multi-threadsafety"/>17.5.2.7. Aggregation Multi-Function Thread Safety</h4></div></div></div><p>
+					The engine shares an <code class="literal">AggregationAccessor</code> instance between threads. The accessor should be designed stateless and should not use any locking of any kind
+					in the <code class="literal">AggregationAccessor</code> implementation unless your implementation uses other state.
+					Since the engine passes an aggregation state instance to the accessor it is thread-safe as long as it relies only on the aggregation state passed to it.
+				</p><p>
+					The engine does not share an <code class="literal">AggregationState</code> instance between threads. There is no need to use locking of any kind 
+					in the <code class="literal">AggregationState</code> implementation unless your implementation uses other state.
+				</p></div></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="custom-pattern-guard"/>17.6. Pattern Guard</h2></div></div></div><a id="d0e38870" class="indexterm"/><a id="d0e38875" class="indexterm"/><p>
+			Pattern guards are pattern objects that control the lifecycle of the guarded sub-expression, and can filter the events fired by the subexpression. 
+        </p><p>
+			The following steps are required to develop and use a custom guard object with Esper. 
+        </p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+					Implement a guard factory class, responsible for creating guard object instances.
+				</p></li><li><p>
+					Implement a guard class.
+				</p></li><li><p>
+					Register the guard factory class with the engine by supplying a namespace and name, via the engine configuration file or the configuration API.
+				</p></li></ol></div><p>
+			The code for the example guard object as shown in this chapter can be found in the test source folder in the package <code class="literal">com.espertech.esper.regression.client</code> by the name <code class="literal">MyCountToPatternGuardFactory</code>. The sample guard discussed here counts the number of events occurring up to a maximum number of events, and end the sub-expression when that maximum is reached.
+        </p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-pattern-guard-factory-implementing"/>17.6.1. Implementing a Guard Factory</h3></div></div></div><p>
+				A guard factory class is responsible for the following functions:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						Implement a <code class="literal">setGuardParameters</code> method that takes guard parameters, which are themselves expressions.
+					</p></li><li><p>
+						Implement a <code class="literal">makeGuard</code> method that constructs a new guard instance.
+					</p></li></ul></div><p>
+				Guard factory classes subclass <code class="literal">com.espertech.esper.pattern.guard.GuardFactorySupport</code>:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyCountToPatternGuardFactory extends GuardFactorySupport { ...</pre><p>
+				The engine constructs one instance of the guard factory class for each time the guard is listed in a statement. 
+			</p><p>
+				The guard factory class implements the <code class="literal">setGuardParameters</code> method that is passed the parameters to the guard as supplied by the statement. It verifies the guard parameters, similar to the code snippet shown next. Our example counter guard takes a single numeric parameter:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void setGuardParameters(List&lt;ExprNode&gt; guardParameters, 
+			MatchedEventConvertor convertor) throws GuardParameterException {
+    String message = "Count-to guard takes a single integer-value expression as parameter";
+    if (guardParameters.size() != 1) {
+        throw new GuardParameterException(message);
+    }
+
+    if (guardParameters.get(0).getExprEvaluator().getType() != Integer.class) {
+        throw new GuardParameterException(message);
+    }
+
+    this.numCountToExpr = guardParameters.get(0);
+    this.convertor = convertor;
+}</pre><p>
+				The <code class="literal">makeGuard</code> method is called by the engine to create a new guard instance. The example <code class="literal">makeGuard</code> method shown below passes the maximum count of events to the guard instance. It also passes a <code class="literal">Quitable</code> implementation to the guard instance. The guard uses <code class="literal">Quitable</code> to indicate that the sub-expression contained within must stop (quit) listening for events.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public Guard makeGuard(PatternAgentInstanceContext context,
+      MatchedEventMap beginState, 
+      Quitable quitable, 
+      Object stateNodeId, 
+      Object guardState) {
+      
+    Object parameter = PatternExpressionUtil.evaluate("Count-to guard", 
+        beginState, numCountToExpr, convertor);
+    if (parameter == null) {
+        throw new EPException("Count-to guard parameter evaluated to a null value");
+    }
+
+    Integer numCountTo = (Integer) parameter;
+    return new MyCountToPatternGuard(numCountTo, quitable);
+}</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-pattern-guard-implementing"/>17.6.2. Implementing a Guard Class</h3></div></div></div><p>
+				A guard class has the following responsibilities:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						Provides a <code class="literal">startGuard</code> method that initalizes the guard.
+					</p></li><li><p>
+						Provides a <code class="literal">stopGuard</code> method that stops the guard, called by the engine when the whole pattern is stopped, or the sub-expression containing the guard is stopped.
+					</p></li><li><p>
+						Provides an <code class="literal">inspect</code> method that the pattern engine invokes to determine if the guard lets matching events pass for further evaluation by the containing expression.
+					</p></li></ul></div><p>
+				Guard classes subclass <code class="literal">com.espertech.esper.pattern.guard.GuardSupport</code> as shown here:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public abstract class GuardSupport implements Guard { ...</pre><p>
+				The engine invokes the guard factory class to construct an instance of the guard class for each new sub-expression instance within a statement.
+			</p><p>
+				A guard class must provide an implementation of the <code class="literal">startGuard</code> method that the pattern engine invokes to start a guard instance. In our example, the method resets the guard's counter to zero:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void startGuard() {
+  counter = 0;
+}</pre><p>
+				The pattern engine invokes the <code class="literal">inspect</code> method for each time the sub-expression indicates a new event result. Our example guard needs to count the number of events matched, and quit if the maximum number is reached:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public boolean inspect(MatchedEventMap matchEvent) {
+  counter++;
+  if (counter &gt; numCountTo) {
+    quitable.guardQuit();
+    return false;
+  }
+  return true;
+}</pre><p>
+				The <code class="literal">inspect</code> method returns true for events that pass the guard, and false for events that should not pass the guard.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-pattern-guard-config"/>17.6.3. Configuring Guard Namespace and Name</h3></div></div></div><p>
+				The guard factory class name as well as the namespace and name for the new guard must be added to the engine configuration via the configuration API or using the XML configuration file. The configuration shown below is XML however the same options are available through the configuration API:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;esper-configuration
+  &lt;plugin-pattern-guard namespace="myplugin" name="count_to" 
+      factory-class="com.espertech.esper.regression.client.MyCountToPatternGuardFactory"/&gt;
+&lt;/esper-configuration&gt;</pre><p>
+				The new guard is now ready to use in a statement. The next pattern statement detects the first 10 MyEvent events:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from pattern [(every MyEvent) where myplugin:count_to(10)]</pre><p>
+				Note that the <code class="literal">every</code> keyword was placed within parentheses to ensure the guard controls the repeated matching of events.
+			</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="custom-pattern-observer"/>17.7. Pattern Observer</h2></div></div></div><a id="d0e39023" class="indexterm"/><a id="d0e39028" class="indexterm"/><p>
+			Pattern observers are pattern objects that are executed as part of a pattern expression and can observe events or test conditions. Examples for built-in observers are <code class="literal">timer:at</code> and <code class="literal">timer:interval</code>. Some suggested uses of observer objects are: 
+        </p><div class="itemizedlist"><ul compact="compact"><li><p>
+					Implement custom scheduling logic using the engine's own scheduling and timer services
+				</p></li><li><p>
+					Test conditions related to prior events matching an expression
+				</p></li></ul></div><p>
+			The following steps are required to develop and use a custom observer object within pattern statements: 
+        </p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+					Implement an observer factory class, responsible for creating observer object instances.
+				</p></li><li><p>
+					Implement an observer class.
+				</p></li><li><p>
+					Register an observer factory class with the engine by supplying a namespace and name, via the engine configuration file or the configuration API.
+				</p></li></ol></div><p>
+			The code for the example observer object as shown in this chapter can be found in the test source folder in package <code class="literal">com.espertech.esper.regression.client</code> by the name <code class="literal">MyFileExistsObserver</code>. The sample observer discussed here very simply checks if a file exists, using the filename supplied by the pattern statement, and via the <code class="literal">java.io.File</code> class.
+        </p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-pattern-observer-factory-implementing"/>17.7.1. Implementing an Observer Factory</h3></div></div></div><p>
+				An observer factory class is responsible for the following functions:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						Implement a <code class="literal">setObserverParameters</code> method that takes observer parameters, which are themselves expressions.
+					</p></li><li><p>
+						Implement a <code class="literal">makeObserver</code> method that constructs a new observer instance.
+					</p></li></ul></div><p>
+				Observer factory classes subclass <code class="literal">com.espertech.esper.pattern.observer.ObserverFactorySupport</code>:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyFileExistsObserverFactory extends ObserverFactorySupport { ...</pre><p>
+				The engine constructs one instance of the observer factory class for each time the observer is listed in a statement. 
+			</p><p>
+				The observer factory class implements the <code class="literal">setObserverParameters</code> method that is passed the parameters to the observer as supplied by the statement. It verifies the observer parameters, similar to the code snippet shown next. Our example file-exists observer takes a single string parameter:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void setObserverParameters(List&lt;ExprNode&gt; expressionParameters, 
+			MatchedEventConvertor convertor) throws ObserverParameterException {
+    String message = "File exists observer takes a single string filename parameter";
+    if (expressionParameters.size() != 1) {
+	    throw new ObserverParameterException(message);
+    }
+    if (!(expressionParameters.get(0).getExprEvaluator().getType() == String.class)) {
+	    throw new ObserverParameterException(message);
+    }
+
+    this.filenameExpression = expressionParameters.get(0);
+    this.convertor = convertor;
+}</pre><p>
+				The pattern engine calls the <code class="literal">makeObserver</code> method to create a new observer instance. The example <code class="literal">makeObserver</code> method shown below passes parameters to the observer instance:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public EventObserver makeObserver(PatternAgentInstanceContext context,
+			MatchedEventMap beginState, 
+			ObserverEventEvaluator observerEventEvaluator, 
+			Object stateNodeId, 
+			Object observerState) {
+    Object filename = PatternExpressionUtil.evaluate("File-exists observer ", beginState, filenameExpression, convertor);
+    if (filename == null) {
+	    throw new EPException("Filename evaluated to null");
+    }
+
+    return new MyFileExistsObserver(beginState, observerEventEvaluator, filename.toString());
+}</pre><p>
+				The <code class="literal">ObserverEventEvaluator</code> parameter allows an observer to indicate events, and to indicate change of truth value to permanently false. Use this interface to indicate when your observer has received or witnessed an event, or changed it's truth value to true or permanently false.
+			</p><p>
+				The <code class="literal">MatchedEventMap</code> parameter provides a Map of all matching events for the expression prior to the observer's start. For example, consider a pattern as below:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">a=MyEvent -&gt; myplugin:my_observer(...)</pre><p>
+				The above pattern tagged the MyEvent instance with the tag "a". The pattern engine starts an instance of <code class="literal">my_observer</code> when it receives the first MyEvent. The observer can query the <code class="literal">MatchedEventMap</code> using  "a" as a key and obtain the tagged event.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-pattern-observer-implementing"/>17.7.2. Implementing an Observer Class</h3></div></div></div><p>
+				An observer class has the following responsibilities:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						Provides a <code class="literal">startObserve</code> method that starts the observer.
+					</p></li><li><p>
+						Provides a <code class="literal">stopObserve</code> method that stops the observer, called by the engine when the whole pattern is stopped, or the sub-expression containing the observer is stopped.
+					</p></li></ul></div><p>
+				Observer classes subclass <code class="literal">com.espertech.esper.pattern.observer.ObserverSupport</code> as shown here:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyFileExistsObserver implements EventObserver { ...</pre><p>
+				The engine invokes the observer factory class to construct an instance of the observer class for each new sub-expression instance within a statement.
+			</p><p>
+				An observer class must provide an implementation of the <code class="literal">startObserve</code> method that the pattern engine invokes to start an observer instance. In our example, the observer checks for the presence of a file and indicates the truth value to the remainder of the expression:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public void startObserve() {
+  File file = new File(filename);
+  if (file.exists()) {
+    observerEventEvaluator.observerEvaluateTrue(beginState);
+  } 
+  else {
+    observerEventEvaluator.observerEvaluateFalse(); 
+  }
+}</pre><p>
+				Note the observer passes the <code class="literal">ObserverEventEvaluator</code> an instance of <code class="literal">MatchedEventMap</code>. The observer can also create one or more new events and pass these events through the Map to the remaining expressions in the pattern.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-pattern-observer-config"/>17.7.3. Configuring Observer Namespace and Name</h3></div></div></div><p>
+				The observer factory class name as well as the namespace and name for the new observer must be added to the engine configuration via the configuration API or using the XML configuration file. The configuration shown below is XML however the same options are available through the configuration API:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;esper-configuration
+  &lt;plugin-pattern-observer namespace="myplugin" name="file_exists" 
+    factory-class="com.espertech.esper.regression.client.MyFileExistsObserverFactory" /&gt;
+&lt;/esper-configuration&gt;</pre><p>
+				The new observer is now ready to use in a statement. The next pattern statement checks every 10 seconds if the given file exists, and indicates to the listener when the file is found.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from pattern [every timer:interval(10 sec) -&gt; myplugin:file_exists("myfile.txt")]</pre></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="custom-event-representation"/>17.8. Event Type And Event Object</h2></div></div></div><a id="d0e39191" class="indexterm"/><a id="d0e39196" class="indexterm"/><p>
+			Creating a plug-in event representation can be useful under any of these conditions:
+		</p><div class="itemizedlist"><ul compact="compact"><li><p>
+					Your application has existing Java classes that carry event metadata and event property values and your application does not want to (or cannot) extract or transform such event metadata and event data into one of the built-in event representations (POJO Java objects, Map or XML DOM).
+				</p></li><li><p>
+					Your application wants to provide a faster or short-cut access path to event data, for example to access XML event data through a Streaming API for XML (StAX).
+				</p></li><li><p>
+					Your application must perform a network lookup or other dynamic resolution of event type and events.
+				</p></li></ul></div><p>
+			Note that the classes to plug-in custom event representations are held stable between minor releases, but can be subject to change between major releases. 
+		</p><p>
+			Currently, EsperIO provides the following additional event representations:
+		</p><div class="itemizedlist"><ul compact="compact"><li><p>
+					Apache Axiom provides access to XML event data on top of the fast Streaming API for XML (StAX). 
+				</p></li></ul></div><p>
+			The source code is available for these and they are therefore excellent examples for how to implement a plug-in event representation.
+			Please see the EsperIO documentation for usage details.
+		</p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-eventrep-overview"/>17.8.1. How It Works</h3></div></div></div><p>
+				Your application provides a plug-in event representation as an implementation of the <code class="literal">com.espertech.esper.plugin.PlugInEventRepresentation</code> interface. It registers the implementation class in the
+				<code class="literal">Configuration</code> and at the same time provides a unique URI. This URI is called the root event representation URI. An example value for a root URI is <code class="literal">type://xml/apacheaxiom/OMNode</code>. 
+			</p><p>
+				One can register multiple plug-in event representations. Each representation has a root URI. The root URI serves to divide the overall space of different event representations and plays a role in resolving event types and event objects.
+			</p><p>
+				There are two situations in an Esper engine instance asks an event representation for an event type:
+			</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+						When an application registers a new event type using the method <code class="literal">addPlugInEventType</code> on <code class="literal">ConfigurationOperations</code>, either at runtime or at configuration time.
+					</p></li><li><p>
+						When an EPL statement is created with a new event type name (a name not seen before) and the URIs for resolving such names are set beforehand via <code class="literal">setPlugInEventTypeNameResolutionURIs</code> on <code class="literal">ConfigurationOperations</code>.
+					</p></li></ol></div><p>
+				The implementation of the <code class="literal">PlugInEventRepresentation</code> interface must provide implementations for two key interfaces: <code class="literal">com.espertech.esper.client.EventType</code> and <code class="literal">EventBean</code>. It must also implement several other related interfaces as described below.
+			</p><p>
+				The <code class="literal">EventType</code> methods provide event metadata including property names and property types. They also provide instances of <code class="literal">EventPropertyGetter</code> for retrieving event property values. Each instance of <code class="literal">EventType</code> represents a distinct type of event.
+			</p><p>
+				The <code class="literal">EventBean</code> implementation is the event itself and encapsulates the underlying event object.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-eventrep-steps"/>17.8.2. Steps</h3></div></div></div><p>
+				Follow the steps outlined below to process event objects for your event types:
+			</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+						Implement the <code class="literal">EventType</code>, <code class="literal">EventPropertyGetter</code> and <code class="literal">EventBean</code> interfaces.
+					</p></li><li><p>
+						Implement the <code class="literal">PlugInEventRepresentation</code> interface, the <code class="literal">PlugInEventTypeHandler</code> and <code class="literal">PlugInEventBeanFactory</code> interfaces, then add the <code class="literal">PlugInEventRepresentation</code> class name to configuration.
+					</p></li><li><p>
+						Register plug-in event types, and/or set the event type name resolution URIs, via configuration.
+					</p></li><li><p>
+						Obtain an <code class="literal">EventSender</code> from <code class="literal">EPRuntime</code> via the <code class="literal">getEventSender(URI[])</code> method and use that to send in your event objects.
+					</p></li></ol></div><p>
+				Please consult the JavaDoc for further information on each of the interfaces and their respective methods. The Apache Axiom event representation is an example implementation that can be found in the 
+				EsperIO packages.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-eventrep-uriresolution"/>17.8.3. URI-based Resolution</h3></div></div></div><p>
+				Assume you have registered event representations using the following URIs:
+			</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+						type://myFormat/myProject/myName
+					</p></li><li><p>
+						type://myFormat/myProject
+					</p></li><li><p>
+						type://myFormat/myOtherProject
+					</p></li></ol></div><p>
+				When providing an array of child URIs for resolution, the engine compares each child URI to each of the event representation root URIs, in the order provided. Any event representation root URIs that 
+				spans the child URI space becomes a candidate event representation. If multiple root URIs match, the order is defined by the more specific root URI first, to the least specific root URI last.
+			</p><p>
+				During event type resolution and event sender resolution you provide a child URI. Assuming the child URI provided is <code class="literal">type://myFormat/myProject/myName/myEvent?param1=abc&amp;param2=true</code>. In this example both root URIs #1 (the more specific) and #1 (the less specific) match, while root URI #3 is not a match. Thus at the time of type resolution the engine invokes the <code class="literal">acceptType</code> method on event presentation for URI #1 first (the more specific), before asking #2 (the less specific) to resolve the type.
+			</p><p>			    
+				The <code class="literal">EventSender</code> returned by the <code class="literal">getEventSender(URI[])</code> method follows the same scheme. The event sender instance asks each matching event representation for each URI to resolve the event object in the order of most specific to least specific root URI, and the first event representation to return an instance of <code class="literal">EventBean</code> ends the resolution process for event objects.
+			</p><p>
+				The <code class="literal">type://</code> part of the URI is an optional convention for the scheme part of an URI that your application may follow. URIs can also be simple names and can include parameters, as the Java software JavaDoc documents for class <code class="literal">java.net.URI</code>.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="custom-eventrep-example"/>17.8.4. Example</h3></div></div></div><p>
+					This section implements a minimal sample plug-in event representation. For the sake of keeping the example easy to understand, the event representation is rather straightforward: an event is a <code class="literal">java.util.Properties</code> object that consists of key-values pairs of type string.
+				</p><p>
+					The code shown next does not document method footprints. Please consult the JavaDoc API documentation for method details.
+				</p><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="custom-eventrep-example-eventtype"/>17.8.4.1. Sample Event Type</h4></div></div></div><p>
+					First, the sample shows how to implement the <code class="literal">EventType</code> interface. The event type provides information about property names and types, as well as supertypes of the event type.
+				</p><p>
+					Our <code class="literal">EventType</code> takes a set of valid property names:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyPlugInPropertiesEventType implements EventType {
+  private final Set&lt;String&gt; properties;
+
+  public MyPlugInPropertiesEventType(Set&lt;String&gt; properties) {
+    this.properties = properties;
+  }
+
+  public Class getPropertyType(String property) {
+    if (!isProperty(property)) {
+      return null;
+    }
+    return String.class;
+  }
+
+  public Class getUnderlyingType() {
+    return Properties.class;
+  }
+  
+  //... further methods below
+}</pre><p>
+					An <code class="literal">EventType</code> is responsible for providing implementations of <code class="literal">EventPropertyGetter</code> to query actual events. The getter simply
+					queries the <code class="literal">Properties </code> object underlying each event:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">  public EventPropertyGetter getGetter(String property) {
+    final String propertyName = property;
+    
+    return new EventPropertyGetter() {
+      public Object get(EventBean eventBean) throws PropertyAccessException {
+        MyPlugInPropertiesEventBean propBean = (MyPlugInPropertiesEventBean) eventBean;
+        return propBean.getProperties().getProperty(propertyName);
+      }
+      
+      public boolean isExistsProperty(EventBean eventBean) {
+        MyPlugInPropertiesEventBean propBean = (MyPlugInPropertiesEventBean) eventBean;
+        return propBean.getProperties().getProperty(propertyName) != null;
+      }
+      
+      public Object getFragment(EventBean eventBean) {
+	    return null;	// The property is not a fragment
+      }
+    };
+  }</pre><p>
+				  Our sample <code class="literal">EventType</code> does not have supertypes. Supertypes represent an extends-relationship between event types, and subtypes are expected to exhibit the same event property names and types as each of their supertypes combined:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">  public EventType[] getSuperTypes() {
+    return null;	// no supertype for this example
+  }
+
+  public Iterator&lt;EventType&gt; getDeepSuperTypes() {
+    return null;
+  }
+  
+  public String getName() {
+    return name;
+  }
+
+  public EventPropertyDescriptor[] getPropertyDescriptors() {
+    Collection&lt;EventPropertyDescriptor&gt; descriptorColl = descriptors.values();
+    return descriptorColl.toArray(new EventPropertyDescriptor[descriptors.size()]);
+  }
+
+  public EventPropertyDescriptor getPropertyDescriptor(String propertyName) {
+    return descriptors.get(propertyName);
+  }
+
+  public FragmentEventType getFragmentType(String property) {
+    return null;  // sample does not provide any fragments
+  }</pre><p>
+			The example event type as above does not provide fragments, which are properties of the event that can themselves be represented as an event, to keep the example simple.
+		  </p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="custom-eventrep-example-eventbean"/>17.8.4.2. Sample Event Bean</h4></div></div></div><p>
+					Each <code class="literal">EventBean</code> instance represents an event. The interface is straightforward to implement. In this example an event is backed by a <code class="literal">Properties</code> object:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyPlugInPropertiesEventBean implements EventBean {
+  private final MyPlugInPropertiesEventType eventType;
+  private final Properties properties;
+
+  public MyPlugInPropertiesEventBean(MyPlugInPropertiesEventType eventType, 
+        Properties properties) {
+    this.eventType = eventType;
+    this.properties = properties;
+  }
+
+  public EventType getEventType() {
+    return eventType;
+  }
+
+  public Object get(String property) throws PropertyAccessException {
+    EventPropertyGetter getter = eventType.getGetter(property);
+    return getter.get(this);
+  }
+
+  public Object getFragment(String property) {
+    EventPropertyGetter getter = eventType.getGetter(property);
+    if (getter != null) {
+      return getter.getFragment(this);
+    }
+    return null;
+  }
+
+  public Object getUnderlying() {
+    return properties;
+  }
+
+  protected Properties getProperties() {
+    return properties;
+  }    
+}</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="custom-eventrep-example-eventrep"/>17.8.4.3. Sample Event Representation</h4></div></div></div><p>
+					A <code class="literal">PlugInEventRepresentation</code> serves to create <code class="literal">EventType</code> and <code class="literal">EventBean</code> instances through its related interfaces.
+				</p><p>
+					The sample event representation creates <code class="literal">MyPlugInPropertiesEventType</code> and <code class="literal">MyPlugInPropertiesEventBean</code> instances. 
+					The <code class="literal">PlugInEventTypeHandler</code> returns the <code class="literal">EventType</code> instance and an <code class="literal">EventSender</code> instance.
+				</p><p>
+					Our sample event representation accepts all requests for event types by returning boolean true on the <code class="literal">acceptType</code> method.  When asked for the <code class="literal">PlugInEventTypeHandler</code>, it constructs a new <code class="literal">EventType</code>. The list of property names for the new type is passed as an initialization value provided through the configuration API or XML, as a comma-separated list of property names:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyPlugInEventRepresentation implements PlugInEventRepresentation {
+
+  private List&lt;MyPlugInPropertiesEventType&gt; types;
+
+  public void init(PlugInEventRepresentationContext context) {
+    types = new ArrayList&lt;MyPlugInPropertiesEventType&gt;();
+  }
+
+  public boolean acceptsType(PlugInEventTypeHandlerContext context) {
+    return true;
+  }
+
+  public PlugInEventTypeHandler getTypeHandler(PlugInEventTypeHandlerContext eventTypeContext) {
+    String proplist = (String) eventTypeContext.getTypeInitializer();
+    String[] propertyList = proplist.split(",");
+
+    Set&lt;String&gt; typeProps = new HashSet&lt;String&gt;(Arrays.asList(propertyList));
+
+    MyPlugInPropertiesEventType eventType = new MyPlugInPropertiesEventType(typeProps);
+    types.add(eventType);
+
+    return new MyPlugInPropertiesEventTypeHandler(eventType);
+  }
+  // ... more methods below
+}</pre><p>
+					The <code class="literal">PlugInEventTypeHandler</code> simply returns the <code class="literal">EventType</code> as well as an implementation of <code class="literal">EventSender</code> for processing same-type events:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyPlugInPropertiesEventTypeHandler implements PlugInEventTypeHandler {
+  private final MyPlugInPropertiesEventType eventType;
+
+  public MyPlugInPropertiesEventTypeHandler(MyPlugInPropertiesEventType eventType) {
+    this.eventType = eventType;
+  }
+
+  public EventSender getSender(EPRuntimeEventSender runtimeEventSender) {
+    return new MyPlugInPropertiesEventSender(eventType, runtimeEventSender);
+  }
+
+  public EventType getType() {
+    return eventType;
+  }
+}</pre><p>
+					The <code class="literal">EventSender</code> returned by <code class="literal">PlugInEventTypeHandler</code> is expected process events of the same type or any subtype:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyPlugInPropertiesEventSender implements EventSender {
+  private final MyPlugInPropertiesEventType type;
+  private final EPRuntimeEventSender runtimeSender;
+
+  public MyPlugInPropertiesEventSender(MyPlugInPropertiesEventType type, 
+        EPRuntimeEventSender runtimeSender) {
+    this.type = type;
+    this.runtimeSender = runtimeSender;
+  }
+
+  public void sendEvent(Object event) {
+    if (!(event instanceof Properties)) {
+       throw new EPException("Sender expects a properties event");
+    }
+    EventBean eventBean = new MyPlugInPropertiesEventBean(type, (Properties) event);
+    runtimeSender.processWrappedEvent(eventBean);
+  }
+}</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="custom-eventrep-example-eventbeanfac"/>17.8.4.4. Sample Event Bean Factory</h4></div></div></div><p>
+					The plug-in event representation may optionally provide an implementation of <code class="literal">PlugInEventBeanFactory</code>. A <code class="literal">PlugInEventBeanFactory</code> may inspect event objects and assign an event type dynamically based on resolution URIs and event properties.
+				</p><p>
+					Our sample event representation accepts all URIs and returns a <code class="literal">MyPlugInPropertiesBeanFactory</code>:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyPlugInEventRepresentation implements PlugInEventRepresentation {
+
+  // ... methods as seen earlier
+  public boolean acceptsEventBeanResolution(
+        PlugInEventBeanReflectorContext eventBeanContext) {
+    return true;
+  }
+
+  public PlugInEventBeanFactory getEventBeanFactory(
+        PlugInEventBeanReflectorContext eventBeanContext) {
+    return new MyPlugInPropertiesBeanFactory(types);
+   }
+}</pre><p>
+			  Last, the sample <code class="literal">MyPlugInPropertiesBeanFactory</code> implements the <code class="literal">PlugInEventBeanFactory</code> interface. It inspects incoming events and determines
+			  an event type based on whether all properties for that event type are present:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyPlugInPropertiesBeanFactory implements PlugInEventBeanFactory {
+  private final List&lt;MyPlugInPropertiesEventType&gt; knownTypes;
+
+  public MyPlugInPropertiesBeanFactory(List&lt;MyPlugInPropertiesEventType&gt; types) {
+    knownTypes = types;
+  }
+
+  public EventBean create(Object event, URI resolutionURI) {
+    Properties properties = (Properties) event;
+
+    // use the known types to determine the type of the object
+    for (MyPlugInPropertiesEventType type : knownTypes) {
+      // if there is one property the event does not contain, then its not the right type
+      boolean hasAllProperties = true;
+      for (String prop : type.getPropertyNames()) {
+        if (!properties.containsKey(prop)) {
+          hasAllProperties = false;
+          break;
+        }
+      }
+
+      if (hasAllProperties) {
+        return new MyPlugInPropertiesEventBean(type, properties);
+      }
+    }
+    return null; // none match, unknown event
+  }
+}</pre></div></div></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="devlifecycle.html"><strong>Prev</strong>Chapter 16. Development Lifecycle</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="script.html"><strong>Next</strong>Chapter 18. Script Support</a></li></ul></body></html>

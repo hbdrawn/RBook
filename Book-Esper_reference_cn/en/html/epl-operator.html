@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 8. EPL Reference: Operators</title><link rel="stylesheet" href="css/espertech.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Esper Reference"/><link rel="up" href="index.html" title="Esper Reference"/><link rel="prev" href="match-recognize.html" title="Chapter 7. EPL Reference: Match Recognize"/><link rel="next" href="functionreference.html" title="Chapter 9. EPL Reference: Functions"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.espertech.com" class="site_href"><strong>esper.codehaus.org and espertech.com</strong></a><a href="http://esper.codehaus.org/esper/documentation/documentation.html" class="doc_href"><strong>Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="match-recognize.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="functionreference.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-operator"/>Chapter 8. EPL Reference: Operators</h2></div></div></div><div class="toc"><dl><dt><span class="sect1"><a href="epl-operator.html#epl-operator-ref-arithmetic">8.1. Arithmetic Operators</a></span></dt><dt><span class="sect1"><a href="epl-operator.html#epl-operator-ref-logical">8.2. Logical And Comparison Operators</a></span></dt><dd><dl><dt><span class="sect2"><a href="epl-operator.html#epl-operator-ref-logical-null">8.2.1. Null-Value Comparison Operators</a></span></dt></dl></dd><dt><span class="sect1"><a href="epl-operator.html#epl-operator-ref-string">8.3. Concatenation Operators</a></span></dt><dt><span class="sect1"><a href="epl-operator.html#epl-operator-ref-binary">8.4. Binary Operators</a></span></dt><dt><span class="sect1"><a href="epl-operator.html#epl-operator-ref-array">8.5. Array Definition Operator</a></span></dt><dt><span class="sect1"><a href="epl-operator.html#epl-operator-ref-dot">8.6. Dot Operator</a></span></dt><dd><dl><dt><span class="sect2"><a href="epl-operator.html#epl-operator-ref-dot-duck">8.6.1. Duck Typing</a></span></dt></dl></dd><dt><span class="sect1"><a href="epl-operator.html#epl-operator-ref-keyword-in">8.7. The 'in' Keyword</a></span></dt><dd><dl><dt><span class="sect2"><a href="epl-operator.html#epl-operator-ref-keyword-in-range">8.7.1. 'in' for Range Selection</a></span></dt></dl></dd><dt><span class="sect1"><a href="epl-operator.html#epl-operator-ref-keyword-between">8.8. The 'between' Keyword</a></span></dt><dt><span class="sect1"><a href="epl-operator.html#epl-operator-ref-keyword-like">8.9. The 'like' Keyword</a></span></dt><dt><span class="sect1"><a href="epl-operator.html#epl-operator-ref-keyword-regexp">8.10. The 'regexp' Keyword</a></span></dt><dt><span class="sect1"><a href="epl-operator.html#epl-operator-anysome">8.11. The 'any' and 'some' Keywords</a></span></dt><dt><span class="sect1"><a href="epl-operator.html#epl-operator-all">8.12. The 'all' Keyword</a></span></dt><dt><span class="sect1"><a href="epl-operator.html#epl-operator-new">8.13. The 'new' Keyword</a></span></dt></dl></div><p>
+			Esper arithmetic and logical operator precedence follows Java standard arithmetic and logical operator precedence.
+		</p><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-operator-ref-arithmetic"/>8.1. Arithmetic Operators</h2></div></div></div><a id="d0e18518" class="indexterm"/><a id="d0e18521" class="indexterm"/><p>
+				The below table outlines the arithmetic operators available.
+			</p><div class="table"><a id="epl-arith-operators"/><p class="title"><b>Table 8.1. Syntax and results of arithmetic operators</b></p><div class="table-contents"><table summary="Syntax and results of arithmetic operators" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Operator</th><th>Description</th></tr></thead><tbody><tr><td>+, -</td><td>
+								<p>As unary operators they denote a positive or negative expression. As binary operators they add or subtract.</p>
+							</td></tr><tr><td>*, /</td><td>
+								<p>Multiplication and division are binary operators.</p>
+							</td></tr><tr><td>%</td><td>
+								<p>Modulo binary operator.</p>
+							</td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-operator-ref-logical"/>8.2. Logical And Comparison Operators</h2></div></div></div><a id="d0e18568" class="indexterm"/><a id="d0e18571" class="indexterm"/><p>
+				The below table outlines the logical and comparison operators available.
+			</p><div class="table"><a id="epl-log-operators"/><p class="title"><b>Table 8.2. Syntax and results of logical and comparison operators</b></p><div class="table-contents"><table summary="Syntax and results of logical and comparison operators" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Operator</th><th>Description</th></tr></thead><tbody><tr><td>NOT</td><td>
+								<p>Returns true if the following condition is false, returns false if it is true.</p>
+							</td></tr><tr><td>OR</td><td>
+								<p>Returns true if either component condition is true, returns false if both are false.</p>
+							</td></tr><tr><td>AND</td><td>
+								<p>Returns true if both component conditions are true, returns false if either is false.</p>
+							</td></tr><tr><td>=, !=, &lt;, &gt; &lt;=, &gt;=, is, is not</td><td>
+								<p>Comparison.</p>
+							</td></tr></tbody></table></div></div><br class="table-break"/><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-operator-ref-logical-null"/>8.2.1. Null-Value Comparison Operators</h3></div></div></div><p>
+					The <code class="literal">null</code> value is a special value, see <a class="link" href="http://en.wikipedia.org/wiki/Null_%28SQL%29" target="">http://en.wikipedia.org/wiki/Null_(SQL)</a> (source:Wikipedia) for more information.
+				</p><p>
+				  Thereby the following expressions all return <code class="literal">null</code>:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">2 != null</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">null = null</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">2 != null or 1 = 2</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">2 != null and 2 = 2</pre><p>
+				  Use the <code class="literal">is</code> and <code class="literal">is not</code> operators for comparing values that can be null.
+				</p><p>
+				  The following expressions all return <code class="literal">true</code>:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">2 is not null</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">null is not 2</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">null is null</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">2 is 2</pre><p>
+					The engine allows <code class="literal">is</code> and <code class="literal">is not</code> with any expression, not only in connection with the <code class="literal">null</code> constant.
+				</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-operator-ref-string"/>8.3. Concatenation Operators</h2></div></div></div><a id="d0e18682" class="indexterm"/><a id="d0e18685" class="indexterm"/><p>
+				The below table outlines the concatenation operators available.
+			</p><div class="table"><a id="epl-concat-operators"/><p class="title"><b>Table 8.3. Syntax and results of concatenation operators</b></p><div class="table-contents"><table summary="Syntax and results of concatenation operators" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Operator</th><th>Description</th></tr></thead><tbody><tr><td>||</td><td>
+								<p>Concatenates character strings</p>
+							</td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-operator-ref-binary"/>8.4. Binary Operators</h2></div></div></div><a id="d0e18716" class="indexterm"/><a id="d0e18719" class="indexterm"/><p>
+				The below table outlines the binary operators available.
+			</p><div class="table"><a id="epl-binary-operators"/><p class="title"><b>Table 8.4. Syntax and results of binary operators</b></p><div class="table-contents"><table summary="Syntax and results of binary operators" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Operator</th><th>Description</th></tr></thead><tbody><tr><td>&amp;</td><td>
+								<p>Bitwise AND if both operands are numbers; conditional AND if both operands are boolean.</p>
+							</td></tr><tr><td>|</td><td>
+								<p>Bitwise OR if both operands are numbers; conditional OR if both operands are boolean.</p>
+							</td></tr><tr><td>^</td><td>
+								<p>Bitwise exclusive OR (XOR).</p>
+							</td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-operator-ref-array"/>8.5. Array Definition Operator</h2></div></div></div><a id="d0e18766" class="indexterm"/><a id="d0e18769" class="indexterm"/><p>
+				The <code class="literal">{</code> and <code class="literal">}</code> curly braces are array definition operators following the Java array initialization syntax. Arrays can be useful to pass to user-defined functions or to select array data in a select clause.
+			</p><p>
+				Array definitions consist of zero or more expressions within curly braces. Any type of expression is allowed within array definitions including constants, arithmetic expressions or event properties. This is the syntax of an array definition:
+			</p><pre class="synopsis"><span class="emphasis"><em>{</em></span> [<span class="emphasis"><em>expression</em></span> [,<span class="emphasis"><em>expression</em></span>...]] }</pre><p>
+				Consider the next statement that returns an event property named <code class="literal">actions</code>. The engine populates the <code class="literal">actions</code> property as an array of <code class="literal">java.lang.String</code> values with a length of 2 elements. The first element of the array contains the <code class="literal">observation</code> property value and the second element the <code class="literal">command</code> property value of <code class="literal">RFIDEvent</code> events.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select {observation, command} as actions from RFIDEvent</pre><p>
+				The engine determines the array type based on the types returned by the expressions in the array definiton. For example, if all expressions in the array definition return integer values then the type of the array is <code class="literal">java.lang.Integer[]</code>. If the types returned by all expressions are compatible number types, such as integer and double values, the engine coerces the array element values and returns a suitable type, <code class="literal">java.lang.Double[]</code> in this example.
+				The type of the array returned is <code class="literal">Object[]</code> if the types of expressions cannot be coerced or return object values. Null values can also be used in an array definition.
+			</p><p>
+				Arrays can come in handy for use as parameters to user-defined functions:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from RFIDEvent where Filter.myFilter(zone, {1,2,3})</pre></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-operator-ref-dot"/>8.6. Dot Operator</h2></div></div></div><a id="d0e18834" class="indexterm"/><a id="d0e18837" class="indexterm"/><a id="d0e18842" class="indexterm"/><p>
+				You can use the dot operator to invoke a method on the result of an expression. The dot operator uses the dot (<code class="literal">.</code>) or period character.
+			</p><p>
+				The dot-operator is relevant with enumeration methods: Enumeration methods perform tasks such as transformation, filtering, aggregation, sequence-matching, sorting and others on subquery results, named windows, event properties or inputs that are or can be projected to a collection of events, scalar values or objects. See <a class="xref" href="enumerationreference.html" title="Chapter 10. EPL Reference: Enumeration Methods">Chapter 10, <i>EPL Reference: Enumeration Methods</i></a>
+			</p><p>
+				Further the dot-operator is relevant to date-time methods. Date-time methods work on date-time values to add or subtract time periods, set or round calendar fields or query fields, among other tasks. See <a class="xref" href="datetimereference.html" title="Chapter 11. EPL Reference: Date-Time Methods">Chapter 11, <i>EPL Reference: Date-Time Methods</i></a>.
+			</p><p>
+				This section only describes the dot-operator in relation to property instance methods, the special <code class="literal">get</code> and <code class="literal">size</code> indexed-property methods and duck typing.
+			</p><p>
+				The synopsis for the dot operator is as follows
+			</p><pre class="synopsis"><span class="emphasis"><em>expression</em></span>.<span class="emphasis"><em>method</em></span>([<span class="emphasis"><em>parameter</em></span> [,...]])[.<span class="emphasis"><em>method</em></span>(...)][...]</pre><p>
+				The expression to evaluate by the dot operator is in parenthesis. After the dot character follows the method name and method parameters in parenthesis.
+			</p><p>
+				You may use the dot operator when your expression returns an object that you want to invoke a method on. The dot operator allows duck typing and convenient array and collection access methods.
+			</p><p>
+				This example statement invokes the <code class="literal">getZones</code> method of the RFID event class by referring to the stream name assigned in the <code class="literal">from</code>-clause:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select rfid.getZones() from RFIDEvent as rfid</pre><p>
+				The <code class="literal">size()</code> method can be used to return the array length or collection size. Use the <code class="literal">get</code> method to return the value at a given index for an array or collection.
+			</p><p>
+			  The next statement selects array size and returns the last array element:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select arrayproperty.size() as arraySize, 
+  arrayproperty.get((arrayproperty).size - 1) as lastInArray 
+  from ProductEvent</pre><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-operator-ref-dot-duck"/>8.6.1. Duck Typing</h3></div></div></div><p>
+				   Duck typing is when the engine checks at runtime for the existence of a method regardless of object class inheritance hierarchies. This can be useful, for example, when a dynamic property returns an object which may or may not provide a method to return the desired value.
+				</p><p>
+				  Duck typing is disabled in the default configuration to consistently enforce strong typing. Please enable duck typing via engine expression settings as described in <a class="xref" href="configuration.html#config-engine-expression" title="15.4.21. Engine Settings related to Expression Evaluation">Section 15.4.21, “Engine Settings related to Expression Evaluation”</a>.
+				</p><p>
+				  The statement below selects a dynamic property by name <code class="literal">productDesc</code> and invokes the <code class="literal">getCounter()</code> method if that method exists on the property value, or returns the null value if the method does not exist for the dynamic property value of if the dynamic property value itself is null:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select (productDesc?).getCounter() as arraySize from ProductEvent</pre></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-operator-ref-keyword-in"/>8.7. The '<code class="literal">in</code>' Keyword</h2></div></div></div><a id="d0e18932" class="indexterm"/><a id="d0e18937" class="indexterm"/><p>
+				The <code class="literal">in</code> keyword determines if a given value matches any value in a list. The syntax of the keyword is:	
+			</p><pre class="synopsis"><span class="emphasis"><em>test_expression</em></span> [not] in (<span class="emphasis"><em>expression</em></span> [,<span class="emphasis"><em>expression</em></span>...] )</pre><p>
+				The <span class="emphasis"><em>test_expression</em></span> is any valid expression. The keyword is followed by a list of expressions to test for a match. The optional <code class="literal">not</code> keyword specifies that the result of the predicate be negated.
+			</p><p>
+				The result of an <code class="literal">in</code> expression is of type <code class="literal">Boolean</code>. If the value of <span class="emphasis"><em>test_expression</em></span> is equal to any expression from the comma-separated list, the result value is <code class="literal">true</code>. Otherwise, the result value is <code class="literal">false</code>. 
+			</p><p>
+				The next example shows how the <code class="literal">in</code> keyword can be applied to select certain command types of RFID events:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from RFIDEvent where command in ('OBSERVATION', 'SIGNAL')</pre><p>
+				The statement is equivalent to:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from RFIDEvent where command = 'OBSERVATION' or command = 'SIGNAL'</pre><p>
+				<span class="emphasis"><em>Expression</em></span> may also return an array, a <code class="literal">java.util.Collection</code> or a <code class="literal">java.util.Map</code>. Thus event properties that are lists, sets or maps may provide values to compare against <span class="emphasis"><em>test_expression</em></span>.
+			</p><p>
+				All expressions must be of the same type or a compatible type to <span class="emphasis"><em>test_expression</em></span>. The <code class="literal">in</code> keyword may coerce number values to compatible types. If <span class="emphasis"><em>expression</em></span> returns an array, then the component type of the array must be compatible, unless the component type of the array is <code class="literal">Object</code>.
+			</p><p>
+				If <span class="emphasis"><em>expression</em></span> returns an array of component type <code class="literal">Object</code>, the operation compares each element of the array, applying <code class="literal">equals</code> semantics.
+			</p><p>
+				If <span class="emphasis"><em>expression</em></span> returns a <code class="literal">Collection</code>, the operation determines if the collection contains the value returned by <span class="emphasis"><em>test_expression</em></span>,  applying <code class="literal">contains</code> semantics. 
+			</p><p>
+				If <span class="emphasis"><em>expression</em></span> returns a <code class="literal">Map</code>, the operation determines if the map contains the key value returned by <span class="emphasis"><em>test_expression</em></span>, applying <code class="literal">containsKey</code> semantics.
+			</p><p>
+				 Constants, arrays, <code class="literal">Collection</code> and <code class="literal">Map</code> expressions or event properties can be used combined.
+			</p><p>
+				 For example, and assuming a property named 'mySpecialCmdList'  exists that contains a list of command strings:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from RFIDEvent where command in ( 'OBSERVATION', 'SIGNAL', mySpecialCmdList)</pre><p>
+				 When using prepared statements and substitution parameters with the <code class="literal">in</code> keyword, make sure to retain the parenthesis. Substitution values may also be arrays, <code class="literal">Collection</code> and <code class="literal">Map</code> values:
+			</p><pre class="synopsis"><span class="emphasis"><em>test_expression</em></span> [not] in (? [,?...] )</pre><p>
+				Note that if there are no successes and at least one right-hand row yields null for the operator's result, the result of the any construct will be null, not false. This is in accordance with SQL's normal rules for Boolean combinations of null values.
+			</p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-operator-ref-keyword-in-range"/>8.7.1. '<code class="literal">in</code>' for Range Selection</h3></div></div></div><p>
+					The <code class="literal">in</code> keyword can be used to specify ranges, including open, half-closed, half-open and inverted ranges.
+				</p><p>
+					Ranges come in the following 4 varieties. The round <code class="literal">()</code> or square <code class="literal">[]</code> bracket indicate whether an endpoint is included or excluded. The low point and the high-point of the range are separated by the colon <code class="literal">:</code> character.
+				 </p><div class="itemizedlist"><ul compact="compact"><li><p>
+							Open ranges that contain neither endpoint <code class="literal">(low:high)</code>
+						</p></li><li><p>
+							Closed ranges that contain both endpoints <code class="literal">[low:high]</code>. The equivalent 'between' keyword also defines a closed range.
+						</p></li><li><p>
+							Half-open ranges that contain the low endpoint but not the high endpoint <code class="literal">[low:high)</code>
+						</p></li><li><p>
+							Half-closed ranges that contain the high endpoint but not the low endpoint <code class="literal">(low:high]</code>
+						</p></li></ul></div><p>
+					The following statement two statements are equivalent: Both statements select orders where the price is in the range of zero and 10000 (endpoints inclusive):
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from OrderEvent where price in [0:10000]</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from OrderEvent where price between 0 and 10000</pre><p>
+					The next statement selects order events where the price is greater then 100 and less-or-equal to 2000:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from OrderEvent where price in (100:2000]</pre><p>
+					Use the <code class="literal">not in</code> keywords to specify an inverted range.
+				</p><p>
+					The following statement selects an inverted range by selecting all order events where the price is less then zero or the price is greater or equal to 10000:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from OrderEvent where price not in (0:10000]</pre><p>
+					In case the value of low endpoint is less then the value of high endpoint the <code class="literal">in</code> operator reverses the range.
+				</p><p>
+					The following two statements are also equivalent:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from OrderEvent where price in [10000:0]</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from OrderEvent where price &gt;= 0 and price &lt;= 1000</pre></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-operator-ref-keyword-between"/>8.8. The '<code class="literal">between</code>' Keyword</h2></div></div></div><a id="d0e19173" class="indexterm"/><a id="d0e19178" class="indexterm"/><p>
+				The <code class="literal">between</code> keyword specifies a range to test. The syntax of the keyword is:	
+			</p><pre class="synopsis"><span class="emphasis"><em>test_expression</em></span> [not] between <span class="emphasis"><em>begin_expression</em></span> and <span class="emphasis"><em>end_expression</em></span></pre><p>
+				The <span class="emphasis"><em>test_expression</em></span> is any valid expression and is the expression to test for in the range defined by <span class="emphasis"><em>begin_expression</em></span> and <span class="emphasis"><em>end_expression</em></span>. The <code class="literal">not</code> keyword specifies that the result of the predicate be negated. 
+			</p><p>
+				The result of a <code class="literal">between</code> expression is of type <code class="literal">Boolean</code>. If the value of <span class="emphasis"><em>test_expression</em></span> is greater then or equal to the value of <span class="emphasis"><em>begin_expression</em></span> and less than or equal to the value of <span class="emphasis"><em>end_expression</em></span>, the result is <code class="literal">true</code>. 
+			</p><p>
+				The next example shows how the <code class="literal">between</code> keyword can be used to select events with a price between 55 and 60 (endpoints inclusive).
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from StockTickEvent where price between 55 and 60</pre><p>
+				The equivalent expression without <code class="literal">between</code> is:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from StockTickEvent where price &gt;= 55 and price &lt;= 60</pre><p>
+				And also equivalent to:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from StockTickEvent where price between 60 and 55</pre><p>
+				While the <code class="literal">between</code> keyword always includes the endpoints of the range, the <code class="literal">in</code> operator allows finer control of endpoint inclusion.
+			</p><p>
+				In case the value of <span class="emphasis"><em>begin_expression</em></span> is less then the value of <span class="emphasis"><em>end_expression</em></span> the <code class="literal">between</code> operator reverses the range.
+			</p><p>
+				The following two statements are also equivalent:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from StockTickEvent where price between 60 and 55</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from StockTickEvent where price &gt;= 55 and price &lt;= 60</pre></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-operator-ref-keyword-like"/>8.9. The '<code class="literal">like</code>' Keyword</h2></div></div></div><a id="d0e19281" class="indexterm"/><a id="d0e19286" class="indexterm"/><p>
+				The <code class="literal">like</code> keyword provides standard SQL pattern matching. SQL pattern matching allows you to use <code class="literal">'_'</code> to match any single character and <code class="literal">'%'</code> to match an arbitrary number of characters (including zero characters). In Esper, SQL patterns are case-sensitive by default. The syntax of <code class="literal">like</code> is:	
+			</p><pre class="synopsis"><span class="emphasis"><em>test_expression</em></span> [not] like <span class="emphasis"><em>pattern_expression</em></span> [escape <span class="emphasis"><em>string_literal</em></span>]</pre><p>
+				The <span class="emphasis"><em>test_expression</em></span> is any valid expression yielding a String-type or a numeric result. The optional <code class="literal">not</code> keyword specifies that the result of the predicate be negated. The <code class="literal">like</code> keyword is followed by any valid standard SQL <span class="emphasis"><em>pattern_expression</em></span> yielding a String-typed result. The optional <code class="literal">escape</code> keyword signals the escape character to escape <code class="literal">'_'</code> and <code class="literal">'%'</code> values in the pattern.
+			</p><p>
+				The result of a <code class="literal">like</code> expression is of type <code class="literal">Boolean</code>. If the value of <span class="emphasis"><em>test_expression</em></span> matches the <span class="emphasis"><em>pattern_expression</em></span>, the result value is <code class="literal">true</code>. Otherwise, the result value is <code class="literal">false</code>.
+			</p><p>
+				An example for the <code class="literal">like</code> keyword is below.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from PersonLocationEvent where name like '%Jack%'</pre><p>
+				The escape character can be defined as follows. In this example the where-clause matches events where the suffix property is a single <code class="literal">'_'</code> character.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from PersonLocationEvent where suffix like '!_' escape '!'</pre></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-operator-ref-keyword-regexp"/>8.10. The '<code class="literal">regexp</code>' Keyword</h2></div></div></div><a id="d0e19379" class="indexterm"/><a id="d0e19384" class="indexterm"/><p>
+				The <code class="literal">regexp</code> keyword is a form of pattern matching based on regular expressions implemented through the Java <code class="literal">java.util.regex</code> package. The syntax of <code class="literal">regexp</code> is:	
+			</p><pre class="synopsis"><span class="emphasis"><em>test_expression</em></span> [not] regexp <span class="emphasis"><em>pattern_expression</em></span></pre><p>
+				The <span class="emphasis"><em>test_expression</em></span> is any valid expression yielding a String-type or a numeric result. The optional <code class="literal">not</code> keyword specifies that the result of the predicate be negated. The <code class="literal">regexp</code> keyword is followed by any valid regular expression <span class="emphasis"><em>pattern_expression</em></span> yielding a String-typed result.
+			</p><p>
+				The result of a <code class="literal">regexp</code> expression is of type <code class="literal">Boolean</code>. If the value of <span class="emphasis"><em>test_expression</em></span> matches the regular expression <span class="emphasis"><em>pattern_expression</em></span>, the result value is <code class="literal">true</code>. Otherwise, the result value is <code class="literal">false</code>.
+			</p><p>
+				An example for the <code class="literal">regexp</code> keyword is below.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from PersonLocationEvent where name regexp '.*Jack.*'</pre><p>
+			  The <code class="literal">rexexp</code> function matches the entire region against the pattern via <code class="literal">java.util.regex.Matcher.matches()</code> method. Please consult the Java API documentation for more information or refer to <a class="ulink" href="http://www.regular-expressions.info/refflavors.html">Regular Expression Flavors</a>.
+			 </p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-operator-anysome"/>8.11. The '<code class="literal">any</code>' and '<code class="literal">some</code>' Keywords</h2></div></div></div><p>
+				The <code class="literal">any</code> operator is true if the expression returns true for one or more of the values returned by a list of expressions including array, <code class="literal">Collection</code> and <code class="literal">Map</code> values.
+			</p><p>
+				The synopsis for the <code class="literal">any</code> keyword is as follows:
+			</p><pre class="synopsis"><span class="emphasis"><em>expression</em></span> <span class="emphasis"><em>operator</em></span> any (<span class="emphasis"><em>expression</em></span> [,<span class="emphasis"><em>expression</em></span>...] )</pre><p>
+				The left-hand expression is evaluated and compared to each expression result using the given operator, which must yield a Boolean result. The result of <code class="literal">any</code> is "true" if any true result is obtained. The result is "false" if no true result is found (including the special case where the expressions are collections that return no rows). 
+			</p><p>
+				The <span class="emphasis"><em>operator</em></span> can be any of the following values: <code class="literal">=, !=, &lt;&gt;, &lt;, &lt;=, &gt;, &gt;=</code>.
+			</p><p>
+				The <code class="literal">some</code> keyword is a synonym for <code class="literal">any</code>. The <code class="literal">in</code> construct is equivalent to <code class="literal">= any</code>.
+			</p><p>
+				<span class="emphasis"><em>Expression</em></span> may also return an array, a <code class="literal">java.util.Collection</code> or a <code class="literal">java.util.Map</code>. Thus event properties that are lists, sets or maps may provide values to compare against.
+			</p><p>
+				All expressions must be of the same type or a compatible type. The <code class="literal">any</code> keyword coerces number values to compatible types. If <span class="emphasis"><em>expression</em></span> returns an array, then the component type of the array must be compatible, unless the component type of the array is <code class="literal">Object</code>.
+			</p><p>
+				If <span class="emphasis"><em>expression</em></span> returns an array, the operation compares each element of the array.
+			</p><p>
+				If <span class="emphasis"><em>expression</em></span> returns a <code class="literal">Collection</code>, the operation determines if the collection contains the value returned by the left-hand expression,  applying <code class="literal">contains</code> semantics. 
+				When using relationship operators <code class="literal">&lt;, &lt;=, &gt;, &gt;=</code> the operator applies to each element in the collection, and non-numeric elements are ignored.
+			</p><p>
+				If <span class="emphasis"><em>expression</em></span> returns a <code class="literal">Map</code>, the operation determines if the map contains the key value returned by the left-hand expression, applying <code class="literal">containsKey</code> semantics.
+				When using relationship operators <code class="literal">&lt;, &lt;=, &gt;, &gt;=</code> the operator applies to each key in the map, and non-numeric map keys are ignored.
+			</p><p>
+				 Constants, arrays, <code class="literal">Collection</code> and <code class="literal">Map</code> expressions or event properties can be used combined.
+			</p><p>
+				The next statement demonstrates the use of the <code class="literal">any</code> operator: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from ProductOrder where category != any (categoryArray)</pre><p>
+				The above query selects ProductOrder event that have a category field and a category array, and returns only those events in which the category value is not in the array.
+			</p><p>
+				Note that if there are no successes and at least one right-hand row yields null for the operator's result, the result of the <code class="literal">any</code> construct will be null, not false. This is in accordance with SQL's normal rules for Boolean combinations of null values. 
+			</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-operator-all"/>8.12. The '<code class="literal">all</code>' Keyword</h2></div></div></div><p>
+				The <code class="literal">all</code> operator is true if the expression returns true for all of the values returned by a list of expressions including array, <code class="literal">Collection</code> and <code class="literal">Map</code> values.
+			</p><p>
+				The synopsis for the <code class="literal">all</code> keyword is as follows:
+			</p><pre class="synopsis"><span class="emphasis"><em>expression</em></span> <span class="emphasis"><em>operator</em></span> all (<span class="emphasis"><em>expression</em></span> [,<span class="emphasis"><em>expression</em></span>...] )</pre><p>
+				The left-hand expression is evaluated and compared to each expression result using the given operator, which must yield a Boolean result. The result of <code class="literal">all</code> is "true" if all rows yield true (including the special case where the expressions are collections that returns no rows). The result is "false" if any false result is found. The result is <code class="literal">null</code> if the comparison does not return false for any row, and it returns <code class="literal">null</code> for at least one row.
+			</p><p>
+				The <span class="emphasis"><em>operator</em></span> can be any of the following values: <code class="literal">=, !=, &lt;&gt;, &lt;, &lt;=, &gt;, &gt;=</code>.
+			</p><p>
+				The <code class="literal">not in</code> construct is equivalent to <code class="literal">!= all</code>.
+			</p><p>
+				<span class="emphasis"><em>Expression</em></span> may also return an array, a <code class="literal">java.util.Collection</code> or a <code class="literal">java.util.Map</code>. Thus event properties that are lists, sets or maps may provide values to compare against.
+			</p><p>
+				All expressions must be of the same type or a compatible type. The <code class="literal">all</code> keyword coerces number values to compatible types. If <span class="emphasis"><em>expression</em></span> returns an array, then the component type of the array must be compatible, unless the component type of the array is <code class="literal">Object</code>.
+			</p><p>
+				If <span class="emphasis"><em>expression</em></span> returns an array, the operation compares each element of the array.
+			</p><p>
+				If <span class="emphasis"><em>expression</em></span> returns a <code class="literal">Collection</code>, the operation determines if the collection contains the value returned by the left-hand expression,  applying <code class="literal">contains</code> semantics. 
+				When using relationship operators <code class="literal">&lt;, &lt;=, &gt;, &gt;=</code> the operator applies to each element in the collection, and non-numeric elements are ignored.
+			</p><p>
+				If <span class="emphasis"><em>expression</em></span> returns a <code class="literal">Map</code>, the operation determines if the map contains the key value returned by the left-hand expression, applying <code class="literal">containsKey</code> semantics.
+				When using relationship operators <code class="literal">&lt;, &lt;=, &gt;, &gt;=</code> the operator applies to each key in the map, and non-numeric map keys are ignored.
+			</p><p>
+				 Constants, arrays, <code class="literal">Collection</code> and <code class="literal">Map</code> expressions or event properties can be used combined.
+			</p><p>
+				The next statement demonstrates the use of the <code class="literal">all</code> operator: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from ProductOrder where category = all (categoryArray)</pre><p>
+				The above query selects ProductOrder event that have a category field and a category array, and returns only those events in which the category value matches all values in the array.
+			</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-operator-new"/>8.13. The '<code class="literal">new</code>' Keyword</h2></div></div></div><a id="d0e19741" class="indexterm"/><a id="d0e19744" class="indexterm"/><p>
+				The <code class="literal">new</code> operator populates a new data structure by evaluating column names and assignment expressions. This is useful when an expression should return multiple results, for performing a transformation or inside enumeration method lambda expressions. 
+			</p><p>
+				The synopsis for the <code class="literal">new</code> keyword is as follows:
+			</p><pre class="synopsis"><span class="emphasis"><em>new</em></span> { <span class="emphasis"><em>column_name</em></span> = [<span class="emphasis"><em>assignment_expression</em></span>] [,<span class="emphasis"><em>column_name</em></span>...] }</pre><p>
+				The result of the new-operator is a map data structure that contains <span class="emphasis"><em>column_name</em></span> keys and values. If an assignment expression is provided for a column, the operator evaluates the expression and assigns the result to the column name. If no assignment expression is provided, the column name is assumed to be an event property name and the value is the event property value.
+			</p><p>
+				The next statement demonstrates the use of the <code class="literal">new</code> operator: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select new {category, price = 2*price} as priceInfo from ProductOrder</pre><p>
+				The above query returns a single property <code class="literal">priceInfo</code> for each arriving ProductOrder event. The property value is itself a map that contains two entries: For the key name <code class="literal">category</code> the value of the category property and for the key name <code class="literal">price</code> the value of the price property multiplied by two. 
+			</p><p>
+				The next EPL is an example of the <code class="literal">new</code> operator within an expression definition and a <code class="literal">case</code>-statement (one EPL statement not multiple):
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">expression calcPrice {
+  productOrder =&gt; case
+    when category = 'fish' then new { sterialize = 'XRAY', priceFactor = 1.01 }
+    when category = 'meat' then new { sterialize = 'UVL', priceFactor = 1 }
+  end
+}  
+
+select calcPrice(po) as priceDetail from ProductOrder po</pre><p>
+				In above example the expression <code class="literal">calcPrice</code> returns both a <code class="literal">sterialize</code> string value and a <code class="literal">priceFactor</code> double value. The expression is evaluated as part of the <code class="literal">select</code>-clause and the map-type result placed in the <code class="literal">priceDetail</code> property pf output events.
+			</p><p>
+				When used within the <code class="literal">case</code> operator, the operator validates that the data structure is compatible between each case-when result in terms of column names and types. The default value for <code class="literal">else</code> in <code class="literal">case</code> is <code class="literal">null</code>.
+			</p></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="match-recognize.html"><strong>Prev</strong>Chapter 7. EPL Reference: Match Recognize</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="functionreference.html"><strong>Next</strong>Chapter 9. EPL Reference: Functions</a></li></ul></body></html>

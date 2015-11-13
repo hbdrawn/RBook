@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 7. EPL Reference: Match Recognize</title><link rel="stylesheet" href="css/espertech.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Esper Reference"/><link rel="up" href="index.html" title="Esper Reference"/><link rel="prev" href="event_patterns.html" title="Chapter 6. EPL Reference: Patterns"/><link rel="next" href="epl-operator.html" title="Chapter 8. EPL Reference: Operators"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.espertech.com" class="site_href"><strong>esper.codehaus.org and espertech.com</strong></a><a href="http://esper.codehaus.org/esper/documentation/documentation.html" class="doc_href"><strong>Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="event_patterns.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="epl-operator.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="match-recognize"/>Chapter 7. EPL Reference: Match Recognize</h2></div></div></div><div class="toc"><dl><dt><span class="sect1"><a href="match-recognize.html#match-recognize-intro">7.1. Overview</a></span></dt><dt><span class="sect1"><a href="match-recognize.html#match-recognize-compare-pattern">7.2. Comparison of Match Recognize and EPL Patterns</a></span></dt><dt><span class="sect1"><a href="match-recognize.html#match-recognize-syntax">7.3. Syntax</a></span></dt><dd><dl><dt><span class="sect2"><a href="match-recognize.html#match-recognize-syntax-example">7.3.1. Syntax Example</a></span></dt></dl></dd><dt><span class="sect1"><a href="match-recognize.html#match-recognize-patternops">7.4. Pattern and Pattern Operators</a></span></dt><dd><dl><dt><span class="sect2"><a href="match-recognize.html#match-recognize-patternops-precedence">7.4.1. Operator Precedence</a></span></dt><dt><span class="sect2"><a href="match-recognize.html#match-recognize-patternops-concatenation">7.4.2. Concatenation</a></span></dt><dt><span class="sect2"><a href="match-recognize.html#match-recognize-patternops-alternation">7.4.3. Alternation</a></span></dt><dt><span class="sect2"><a href="match-recognize.html#match-recognize-patternops-quantifiers">7.4.4. Quantifiers Overview</a></span></dt><dt><span class="sect2"><a href="match-recognize.html#match-recognize-patternops-singletonvars">7.4.5. Variables Can be Singleton or Group</a></span></dt><dt><span class="sect2"><a href="match-recognize.html#match-recognize-patternops-iterator">7.4.6. Eliminating Duplicate Matches</a></span></dt><dt><span class="sect2"><a href="match-recognize.html#match-recognize-patternops-quantifiers-reluctant">7.4.7. Greedy Or Reluctant</a></span></dt><dt><span class="sect2"><a href="match-recognize.html#match-recognize-patternops-quantifiers-oneormore">7.4.8. Quantifier - One Or More (+ and +?)</a></span></dt><dt><span class="sect2"><a href="match-recognize.html#match-recognize-patternops-quantifiers-zeroormore">7.4.9. Quantifier - Zero Or More (* and *?)</a></span></dt><dt><span class="sect2"><a href="match-recognize.html#match-recognize-patternops-quantifiers-zeroorone">7.4.10. Quantifier - Zero Or One (? and ??)</a></span></dt></dl></dd><dt><span class="sect1"><a href="match-recognize.html#match-recognize-define">7.5. Define Clause</a></span></dt><dd><dl><dt><span class="sect2"><a href="match-recognize.html#match-recognize-define-prev">7.5.1. The Prev Operator</a></span></dt></dl></dd><dt><span class="sect1"><a href="match-recognize.html#match-recognize-measure">7.6. Measure Clause</a></span></dt><dt><span class="sect1"><a href="match-recognize.html#match-recognize-datawindow">7.7. Datawindow-Bound</a></span></dt><dt><span class="sect1"><a href="match-recognize.html#match-recognize-interval">7.8. Interval</a></span></dt><dt><span class="sect1"><a href="match-recognize.html#match-recognize-variant">7.9. Use with Different Event Types</a></span></dt><dt><span class="sect1"><a href="match-recognize.html#match-recognize-limitations">7.10. Limitations</a></span></dt></dl></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="match-recognize-intro"/>7.1. Overview</h2></div></div></div><a id="d0e17029" class="indexterm"/><p>
+			Using <span class="emphasis"><em>match recognize</em></span> patterns are defined in the familiar syntax of regular expressions. 
+		</p><p>
+			The match recognize syntax presents an alternative way to specify pattern detection as compared to the EPL pattern language described in the previous chapter. A comparison of match recognize and EPL patterns is below.
+		</p><p>
+			The match recognize syntax is a proposal for incorporation into the SQL standard. It is thus subject to change as the standard evolves and finalizes (it has not finalized yet). Please consult <a class="link" href="http://dist.codehaus.org/esper//row-pattern-recogniton-11-public.pdf" target="">row-pattern-recogniton-11-public</a> for further information.
+		</p><p>
+			You may be familiar with regular expressions in the context of finding text of interest in a string, such as particular characters, words, or patterns of characters. Instead of matching characters, match recognize matches sequences of events of interest.
+		</p><p>
+			Esper can apply match-recognize patterns in real-time upon arrival of new events in a stream of events (also termed incrementally,  streaming or continuous). Esper can also match patterns on-demand via the <code class="literal">iterator</code> pull-API, if specifying a named window or data window on a stream.
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="match-recognize-compare-pattern"/>7.2. Comparison of Match Recognize and EPL Patterns</h2></div></div></div><a id="d0e17056" class="indexterm"/><p>
+			This section compares pattern detection via match recognize and via the EPL pattern language.
+         </p><div class="table"><a id="d0e17063"/><p class="title"><b>Table 7.1. Comparison Match Recognize to EPL Patterns</b></p><div class="table-contents"><table summary="Comparison Match Recognize to EPL Patterns" border="1"><colgroup><col/><col/><col/></colgroup><thead><tr><th>Category</th><th>EPL Patterns</th><th>Match Recognize</th></tr></thead><tbody><tr><td>Purpose</td><td>Pattern detection in sequences of events.</td><td>Same.</td></tr><tr><td>Standards</td><td>Not standardized, similar to Rapide pattern language.</td><td>Proposal for incorporation into the SQL standard.</td></tr><tr><td>Real-time Processing</td><td>Yes.</td><td>Yes.</td></tr><tr><td>On-Demand query via Iterator</td><td>No.</td><td>Yes.</td></tr><tr><td>Language</td><td>Nestable expressions consisting of boolean <code class="literal">AND</code>, <code class="literal">OR</code>, <code class="literal">NOT</code> and time or arrival-based constructs such as <code class="literal">-&gt;</code> (followed-by), <code class="literal">timer:within</code> and <code class="literal">timer:interval</code>.</td><td>Regular expression consisting of variables each representing conditions on events.</td></tr><tr><td>Event Types</td><td>An EPL pattern may react to multiple different types of events.</td><td>The input is a single type of event (unless used with variant streams).</td></tr><tr><td>Data Window Interaction</td><td>Disconnected, i.e. an event leaving a data window does not change pattern state.</td><td>Connected, i.e. an event leaving a data window removes the event from match selection.</td></tr><tr><td>Semantic Evaluation</td><td>Truth-value based: A EPL pattern such as <code class="literal">(A and B) </code> can fire when a single event arrives that satisfies both A and B conditions.</td><td>Sequence-based: A regular expression <code class="literal">(A B)</code> requires at least two events to match.</td></tr><tr><td>Time Relationship Between Events</td><td>The <code class="literal">timer:within</code>, <code class="literal">timer:interval</code> and <code class="literal">NOT</code> operator can expressively search for absence of events or other more complex timing relationships.</td><td>Some support for detecting absence of events using the <code class="literal">interval</code> clause.</td></tr><tr><td>Extensibility</td><td>Custom pattern objects, user-defined functions.</td><td>User-defined functions, custom aggregation functions.</td></tr><tr><td>Memory Use</td><td>Likely between 500 bytes to 2k per open sequence, depends on pattern.</td><td>Likely between 100 bytes to 1k per open sequence, depends on pattern.</td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="match-recognize-syntax"/>7.3. Syntax</h2></div></div></div><p>
+			The synopsis is as follows:
+        </p><pre class="synopsis">match_recognize (
+  [ partition by <span class="emphasis"><em>partition_expression</em></span> [, <span class="emphasis"><em>partition_expression</em></span>] [,...]  ]
+  measures  <span class="emphasis"><em>measure_expression</em></span> <code class="literal">as</code> <span class="emphasis"><em>col_name</em></span> [, <span class="emphasis"><em>measure_expression</em></span> <code class="literal">as</code> <span class="emphasis"><em>col_name</em></span> ] [,...]
+  [ all matches ]
+  [ after match skip (past last row | to next row | to current row) ]
+  pattern ( <span class="emphasis"><em>variable_regular_expr</em></span> [, <span class="emphasis"><em>variable_regular_expr</em></span>] [,...] )
+  [ interval <span class="emphasis"><em>time_period</em></span> ]
+  define  <span class="emphasis"><em>variable</em></span> as <span class="emphasis"><em>variable_condition</em></span> [, <span class="emphasis"><em>variable</em></span> as <span class="emphasis"><em>variable_condition]</em></span>  [,...] 
+)</pre><p>
+			The <code class="literal">match_recognize</code> keyword starts the match recognize definition and occurs right after the <code class="literal">from</code> clause in an EPL <code class="literal">select</code> statement. It is followed by parenthesis that surround the match recognize definition.
+        </p><p>
+			<code class="literal">Partition by</code> is optional and may be used to specify that events are to be partitioned by one or more event properties or expressions. If there is no <code class="literal">Partition by</code> then all rows of the table constitute a single partition. The regular expression applies to events in the same partition and not across partitions.
+        </p><p>
+			The <code class="literal">measures</code> clause defines columns that contain expressions over the pattern variables. The expressions can reference partition columns, singleton variables, aggregates as well as indexed properties on the group variables. Each <span class="emphasis"><em>measure_expression</em></span> expression must be followed by the <code class="literal">as</code> keyword and a <span class="emphasis"><em>col_name</em></span> column name.
+		</p><p>
+			The <code class="literal">all matches</code> keywords are optional and instructs the engine to find all possible matches. By default matches are ranked and the engine returns a single match following an algorithm to eliminate duplicate matches, as described below. When specifying <code class="literal">all matches</code>, matches may overlap and may start at the same row.
+		</p><p>
+			The <code class="literal">after match skip</code> keywords are optional and serve to determine the resumption point of pattern matching after a match has been found. By default the behavior is <code class="literal">after match skip past last row</code>. This means that after eliminating duplicate matches, the logic skips to resume pattern matching at the next event after the last event of the current match.
+		</p><p>
+			The <code class="literal">pattern</code> component is used to specify a regular expression. The regular expression is built from variable names, and may use the operators such as <code class="literal">*</code>, <code class="literal">+</code>, <code class="literal">?</code>, <code class="literal">*?</code>, <code class="literal">+?</code>, <code class="literal">??</code> quantifiers and <code class="literal">|</code> alteration (concatenation is indicated by the absence of any operator sign between two successive items in a pattern).
+		</p><p>
+			With the optional <code class="literal">interval</code> keyword and time period you can control how long the engine should wait for further events to arrive that may be part of a matching event sequence, before indicating a match (or matches) (not applicable to on-demand pattern matching).
+		</p><p>
+			<code class="literal">Define</code> is a mandatory component, used to specify the boolean condition that defines a variable name that is declared in the pattern. A variable name does not require a definition and if there is no definition, the default is a predicate that is always true. Such a variable name can be used to match any row.
+		</p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="match-recognize-syntax-example"/>7.3.1. Syntax Example</h3></div></div></div><p>
+				For illustration, the examples in this chapter use the <code class="literal">TemperatureSensorEvent</code> event. Each event has 3 properties: the <code class="literal">id</code> property is a unique event id, the <code class="literal">device</code> is a sensor device number and the <code class="literal">temp</code> property is a temperature reading. An event described as <code class="literal">"id=E1, device=1, temp=100"</code> is a <code class="literal">TemperatureSensorEvent</code> event with id "E1" for device 1 with a reading of 100.
+			</p><p>
+				This example statement looks for two <code class="literal">TemperatureSensorEvent</code> events from the same device, directly following each other, that indicate a jump in temperature of 10 or more between the two events:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from TemperatureSensorEvent
+match_recognize (
+  partition by device
+  measures A.id as a_id, B.id as b_id, A.temp as a_temp, B.temp as b_temp
+  pattern (A B)
+  define 
+    B as Math.abs(B.temp - A.temp) &gt;= 10
+)</pre><p>
+			  The <code class="literal">partition by</code> ensures that the regular expression applies to sequences of events from the same device.
+			</p><p>
+			  The <code class="literal">measures</code> clause provides a list of properties or expressions to be selected from matching events. Each property name must be prefixed by the variable name.
+			</p><p>
+			  In the <code class="literal">pattern</code> component the statement declares two variables: <code class="literal">A</code> and <code class="literal">B</code>. As a matter of convention, variable names are uppercase characters.
+			</p><p>
+			  The <code class="literal">define</code> clause specifies no condition for variable A. This means that A defaults to true and any event matches A. Therefore, the pattern can start at any event.
+			</p><p>
+			  The pattern <code class="literal">A B</code> indicates to look for a pattern in which an event that fulfills the condition for variable A is immediately followed by an event that fulfills the condition for variable B.
+			  A pattern thus defines the sequence (or sequences) of conditions that must be met for the pattern to fire.
+			</p><p>
+			  Below table is an example sequence of events and output of the pattern:
+			</p><div class="table"><a id="d0e17392"/><p class="title"><b>Table 7.2. Example</b></p><div class="table-contents"><table summary="Example" border="1"><colgroup><col/><col/><col/></colgroup><thead><tr><th>Arrival Time</th><th>Tuple</th><th>Output Event (if any)</th></tr></thead><tbody><tr><td>1000</td><td>id=E1, device=1, temp=50</td><td> </td></tr><tr><td>2000</td><td>id=E2, device=1, temp=55</td><td> </td></tr><tr><td>3000</td><td>id=E3, device=1, temp=60</td><td> </td></tr><tr><td>4000</td><td>id=E4, device=1, temp=70</td><td>a_id = E3, b_id = E4, a_temp = 60, b_temp = 70</td></tr><tr><td>5000</td><td>id=E5, device=1, temp=85</td><td> </td></tr><tr><td>6000</td><td>id=E6, device=1, temp=85</td><td> </td></tr><tr><td>7000</td><td>id=E7, device=2, temp=100</td><td> </td></tr></tbody></table></div></div><br class="table-break"/><p>
+				At time 4000 when event with id <code class="literal">E4</code> (or event E4 or just E4 for short) arrives the pattern matches and produces an output event. Matching then skips past the last event of the current match (E4) and begins at event E5 (the default skip clause is past last row). Therefore events E4 and E5 do not constitute a match.
+			</p><p>
+				At time 3000, events E1 and E3 do not constitute a match as E3 does not immediately follow E, since there is E2 in between.
+			</p><p>
+				At time 7000, event E7 does not constitute a match as it is from device 2 and thereby not in the same partition as prior events.
+			</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="match-recognize-patternops"/>7.4. Pattern and Pattern Operators</h2></div></div></div><p>
+			The <code class="literal">pattern</code> specifies the pattern to be recognized in the ordered sequence of events in a partition using regular expression syntax. Each variable name in a pattern corresponds to a boolean condition, which is specified later
+			using the <code class="literal">define</code> component of the syntax. Thus the <code class="literal">pattern</code>  can be regarded as implicitly declaring one or more variable names; the definition of those variable names appears later in the
+			syntax. If a variable is not defined the variable defaults to true.
+		</p><p>
+			It is permitted for a variable name to occur more than once in a pattern, for example <code class="literal">pattern (A B A)</code>.					
+		</p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="match-recognize-patternops-precedence"/>7.4.1. Operator Precedence</h3></div></div></div><a id="d0e17482" class="indexterm"/><p>
+				The operators at the top of this table take precedence over operators lower on the table. 
+			</p><div class="table"><a id="d0e17489"/><p class="title"><b>Table 7.3. Match Recognize Regular Expression Operator Precedence</b></p><div class="table-contents"><table summary="Match Recognize Regular Expression Operator Precedence" border="1"><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th>Precedence</th><th>Operator</th><th>Description</th><th>Example</th></tr></thead><tbody><tr><td>1</td><td>Grouping</td><td><code class="literal">()</code></td><td><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">(A B)</pre></td></tr><tr><td>2</td><td>Single-character duplication</td><td><code class="literal">* + ?</code></td><td><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">A* B+ C?</pre></td></tr><tr><td>3</td><td>Concatenation</td><td>(no operator)</td><td><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">A B</pre></td></tr><tr><td>4</td><td>Alternation</td><td><code class="literal">|</code></td><td><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">A | B</pre></td></tr></tbody></table></div></div><br class="table-break"/><p>
+				If you are not sure about the precedence, please consider placing parenthesis <code class="literal">()</code> around your groups. Parenthesis can also help make
+				expressions easier to read and understand.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="match-recognize-patternops-concatenation"/>7.4.2. Concatenation</h3></div></div></div><p>
+				The concatenation is indicated by the absence of any operator sign between two successive items in a pattern.
+			</p><p>
+				In below pattern the two items A and B have no operator between them. The pattern matches for any event immediately followed by an event from the same device that indicates a jump in temperature over 10:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from TemperatureSensorEvent
+match_recognize (
+  partition by device
+  measures A.id as a_id, B.id as b_id, A.temp as a_temp, B.temp as b_temp
+  pattern (A B)
+  define 
+    B as Math.abs(B.temp - A.temp) &gt;= 10
+)</pre><p>
+				Please see the <a class="xref" href="match-recognize.html#match-recognize-syntax-example" title="7.3.1. Syntax Example">Section 7.3.1, “Syntax Example”</a> for a sample event sequence.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="match-recognize-patternops-alternation"/>7.4.3. Alternation</h3></div></div></div><p>
+				The alternation operator is a vertical bar (<code class="literal"> | </code>).
+			</p><p>
+				The alternation operator has the lowest precedence of all operators. It tells the engine to match either everything to the left of the vertical bar, or everything to the right of the vertical bar. If you want to limit the reach of the alternation, you will need to use round brackets for grouping.
+			</p><p>
+				This example pattern looks for a sequence of an event with a temperature over 50 followed immediately by either an event with a temperature less then 45 or an event that indicates the temperature jumped by 10 (all for the same device):
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from TemperatureSensorEvent
+match_recognize (
+  partition by device
+  measures A.id as a_id, B.id as b_id, C.id as c.id
+  pattern (A (B | C))
+  define 
+    A as A.temp &gt;= 50,
+    B as B.temp &lt;= 45,
+    C as Math.abs(C.temp - A.temp) &gt;= 10)</pre><p>
+			  Below table is an example sequence of events and output of the pattern:
+			</p><div class="table"><a id="d0e17585"/><p class="title"><b>Table 7.4. Example</b></p><div class="table-contents"><table summary="Example" border="1"><colgroup><col/><col/><col/></colgroup><thead><tr><th>Arrival Time</th><th>Tuple</th><th>Output Event (if any)</th></tr></thead><tbody><tr><td>1000</td><td>id=E1, device=1, temp=50</td><td> </td></tr><tr><td>2000</td><td>id=E2, device=1, temp=45</td><td>a_id=E1, b_id=E2, c_id=null</td></tr><tr><td>3000</td><td>id=E3, device=1, temp=46</td><td> </td></tr><tr><td>4000</td><td>id=E4, device=1, temp=48</td><td> </td></tr><tr><td>5000</td><td>id=E5, device=1, temp=50</td><td> </td></tr><tr><td>6000</td><td>id=E6, device=1, temp=60</td><td>a_id = E5, b_id = null, c_id=E6</td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="match-recognize-patternops-quantifiers"/>7.4.4. Quantifiers Overview</h3></div></div></div><p>
+				Quantifiers are postfix operators with the following choices:
+			</p><div class="table"><a id="d0e17644"/><p class="title"><b>Table 7.5. Quantifiers</b></p><div class="table-contents"><table summary="Quantifiers" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Quantifier</th><th>Meaning</th></tr></thead><tbody><tr><td>*</td><td>Zero or more matches (greedy).</td></tr><tr><td>+</td><td>One or more matches (greedy).</td></tr><tr><td>?</td><td>Zero or one match (greedy).</td></tr><tr><td>*?</td><td>Zero or more matches (reluctant).</td></tr><tr><td>+?</td><td>One or more matches (reluctant).</td></tr><tr><td>??</td><td>Zero or one match (reluctant).</td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="match-recognize-patternops-singletonvars"/>7.4.5. Variables Can be Singleton or Group</h3></div></div></div><p>
+				A <span class="emphasis"><em>singleton variable</em></span> is a variable in a pattern that does not have a quantifier or has a zero-or-one quantifier (<code class="literal">?</code> or <code class="literal">??</code>) and occurs only once in the pattern (except with alteration).
+				In the <code class="literal">measures</code> clause a singleton variable can be selected as: 
+			</p><pre class="synopsis">variableName.propertyName</pre><p>
+				Variables with a zero-or-more or one-or-more quantifier, or variables that occur multiple places in a pattern (except when using alteration), may match multiple events and are <span class="emphasis"><em>group variables</em></span>.
+				In the <code class="literal">measures</code> clause a group variable must be selected either by providing an index or via any of the aggregation functions, such as <code class="literal">first</code>, <code class="literal">last</code>, <code class="literal">count</code> and <code class="literal">sum</code>:
+			</p><pre class="synopsis">variableName[<span class="emphasis"><em>index</em></span>].propertyName</pre><pre class="synopsis">last(variableName.propertyName)</pre><p>
+				Please find examples of singleton and group variables and example <code class="literal">measures</code> clauses below.
+			</p><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="match-recognize-patternops-singletonvars-aggfunc"/>7.4.5.1. Additional Aggregation Functions</h4></div></div></div><p>
+						For group variables all existing aggregation functions can be used and in addition the following aggregation functions may be used:
+					</p><div class="table"><a id="match-recognize-patternops-singletonvars-aggfunc-table"/><p class="title"><b>Table 7.6. Syntax and results of aggregate functions</b></p><div class="table-contents"><table summary="Syntax and results of aggregate functions" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Aggregate Function</th><th>Result</th></tr></thead><tbody><tr><td>first([all|distinct] <span class="emphasis"><em>expression</em></span>)</td><td>
+										<p>
+											Returns the first value.
+										</p>
+									</td></tr><tr><td>last([all|distinct] <span class="emphasis"><em>expression</em></span>)</td><td>
+										<p>
+											Returns the last value.
+										</p>
+									</td></tr></tbody></table></div></div><br class="table-break"/></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="match-recognize-patternops-iterator"/>7.4.6. Eliminating Duplicate Matches</h3></div></div></div><p>
+				The execution of match recognize is continuous and real-time by default. This means that every arriving event, or batch of events if using batching, evaluates against the pattern and matches are immediately indicated. Elimination of duplicate matches occurs between all matches of the arriving events (or batch of events) at a given time.
+			</p><p>
+				As an alternative, and if your application does not require continuous pattern evaluation, you may use the <code class="literal">iterator</code> API to perform on-demand matching of the pattern. For the purpose of indicating to the engine to not
+				generate continuous results, specify the <code class="literal">@Hint('iterate_only')</code> hint.
+			</p><p>
+				When using one-or-more, zero-or-more or zero-or-one quantifiers (<code class="literal">?, +, *, ??, +?, *?</code>), the output of the real-time continuous query can differ from the output of the on-demand <code class="literal">iterator</code> execution: The continuous query will output a match (or multiple matches) as soon as matches are detected at a given time upon arrival of events (not knowing what further events may arrive). The on-demand execution, since it knows all possible events in advance, can determine the longest match(es). Thus elimination of duplicate matches can lead to different results between real-time and on-demand use.
+			</p><p>
+				If the <code class="literal">all matches</code> keywords are specified, then all matches are returned as the result and no elimination of duplicate matches as below occurs.
+			</p><p>
+				Otherwise matches to a pattern in a partition are ordered by preferment. Preferment is given to matches based on the following priorities:
+			</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+						A match that begins at an earlier row is preferred over a match that begins at a later row.
+					</p></li><li><p>
+						Of two matches matching a greedy quantifier, the longer match is preferred.
+					</p></li><li><p>
+						Of two matches matching a reluctant quantifier, the shorter match is preferred.
+					</p></li></ol></div><p>
+				After ranking matches by preferment, matches are chosen as follows:
+			</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+						The first match by preferment is taken.
+					</p></li><li><p>
+						The pool of matches is reduced as follows based on the SKIP TO clause: If SKIP PAST LAST ROW is specified, all matches that overlap the first match are discarded from the pool. If SKIP TO NEXT ROW is specified, then all matches that overlap the first row
+of the first match are discarded. If SKIP TO CURRENT ROW is specified, then no matches are discarded.
+					</p></li><li><p>
+						The first match by preferment of the ones remaining is taken.
+					</p></li><li><p>
+						Step 2 is repeated to remove more matches from the pool.
+					</p></li><li><p>
+						Steps 3 and 4 are repeated until there are no remaining matches in the pool.
+					</p></li></ol></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="match-recognize-patternops-quantifiers-reluctant"/>7.4.7. Greedy Or Reluctant</h3></div></div></div><p>
+				Reluctant quantifiers are indicated by an additional question mark (<code class="literal">*?, +?, ??,</code>). Reluctant quantifiers try to match as few rows as possible, whereas non-reluctant quantifiers are greedy and try to match as many rows
+as possible.
+			</p><p>
+				Greedy and reluctant come into play only for match selection among multiple possible matches. When specifying <code class="literal">all matches</code> there is no difference between greedy and reluctant quantifiers.
+			</p><p>
+				Consider the below example. The conditions may overlap: an event with a temperature reading of 105 and over matches both A and B conditions:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from TemperatureSensorEvent
+match_recognize (
+  partition by device
+  measures A.id as a_id, B.id as b_id
+  pattern (A?? B?)
+  define 
+    A as A.temp &gt;= 100
+    B as B.temp &gt;= 105)</pre><p>
+				A sample sequence of events and pattern matches:
+			</p><div class="table"><a id="d0e17853"/><p class="title"><b>Table 7.7. Example</b></p><div class="table-contents"><table summary="Example" border="1"><colgroup><col/><col/><col/></colgroup><thead><tr><th>Arrival Time</th><th>Tuple</th><th>Output Event (if any)</th></tr></thead><tbody><tr><td>1000</td><td>id=E1, device=1, temp=99</td><td> </td></tr><tr><td>2000</td><td>id=E2, device=2, temp=106</td><td>a_id=null, b_id=E2</td></tr><tr><td>3000</td><td>id=E3, device=1, temp=100</td><td>a_id=E3, b_id=null</td></tr></tbody></table></div></div><br class="table-break"/><p>
+				As the <code class="literal">?</code> qualifier on condition B is greedy, event E2 matches the pattern and is indicated as a B event by the <code class="literal">measure</code> clause (and not as an A event therefore <code class="literal">a_id</code> is null).
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="match-recognize-patternops-quantifiers-oneormore"/>7.4.8. Quantifier - One Or More (+ and +?)</h3></div></div></div><p>
+				The one-or-more quantifier (+) must be matched one or more times by events. The operator is greedy and the reluctant version is <code class="literal">+?</code>.
+			</p><p>
+				In the below example with <code class="literal">pattern (A+ B+)</code> the pattern consists of two variable names, A and B, each of which is quantified with <code class="literal">+</code>, indicating that they must be matched one or more times.
+			</p><p>
+				The pattern looks for one or more events in which the temperature is over 100 followed by one or more events indicating a higher temperature:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from TemperatureSensorEvent
+match_recognize (
+  partition by device
+  measures first(A.id) as first_a, last(A.id) as last_a, B[0].id as b0_id, B[1].id as b1_id
+  pattern (A+ B+)
+  define 
+	A as A.temp &gt;= 100,
+	B as B.temp &gt; A.temp)</pre><p>
+				An example sequence of events that matches the pattern above is:
+			</p><div class="table"><a id="d0e17922"/><p class="title"><b>Table 7.8. Example</b></p><div class="table-contents"><table summary="Example" border="1"><colgroup><col/><col/><col/></colgroup><thead><tr><th>Arrival Time</th><th>Tuple</th><th>Output Event (if any)</th></tr></thead><tbody><tr><td>1000</td><td>id=E1, device=1, temp=99</td><td> </td></tr><tr><td>2000</td><td>id=E2, device=1, temp=100</td><td> </td></tr><tr><td>3000</td><td>id=E3, device=1, temp=100</td><td> </td></tr><tr><td>4000</td><td>id=E4, device=1, temp=101</td><td>first_a = E2, last_a = E3, b0_id = E4, b1_id = null</td></tr><tr><td>5000</td><td>id=E5, device=1, temp=102</td><td> </td></tr></tbody></table></div></div><br class="table-break"/><p>
+				Note that for continuous queries, there is no match that includes event E5 since after the pattern matches for E4 the pattern skips to start fresh at E5 (by default skip clause). When performing on-demand matching via <code class="literal">iterator</code>, event E5 gets included in the match 
+				and the output is <code class="literal">first_a = E2, last_a = E3, b0_id = E4, b1_id = E5</code>.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="match-recognize-patternops-quantifiers-zeroormore"/>7.4.9. Quantifier - Zero Or More (* and *?)</h3></div></div></div><p>
+				The zero-or-more quantifier (*) must be matched zero or more times by events. The operator is greedy and the reluctant version is <code class="literal">*?</code>.
+			</p><p>
+				The pattern looks for a sequence of events in which the temperature starts out below 50 and then stays between 50 and 60 and finally comes over 60:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from TemperatureSensorEvent
+match_recognize (
+  partition by device
+  measures A.id as a_id, count(B.id) as count_b, C.id as c_id
+  pattern (A B* C)
+  define 
+	A as A.temp &lt; 50,
+	B as B.temp between 50 and 60,
+	C as C.temp &gt; 60)</pre><p>
+				An example sequence of events that matches the pattern above is:
+			</p><div class="table"><a id="d0e17991"/><p class="title"><b>Table 7.9. Example</b></p><div class="table-contents"><table summary="Example" border="1"><colgroup><col/><col/><col/></colgroup><thead><tr><th>Arrival Time</th><th>Tuple</th><th>Output Event (if any)</th></tr></thead><tbody><tr><td>1000</td><td>id=E1, device=1, temp=55</td><td> </td></tr><tr><td>2000</td><td>id=E2, device=1, temp=52</td><td> </td></tr><tr><td>3000</td><td>id=E3, device=1, temp=49</td><td> </td></tr><tr><td>4000</td><td>id=E4, device=1, temp=51</td><td> </td></tr><tr><td>5000</td><td>id=E5, device=1, temp=55</td><td> </td></tr><tr><td>6000</td><td>id=E5, device=1, temp=61</td><td>a_id=E3, count_b=2, c_id=E6</td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="match-recognize-patternops-quantifiers-zeroorone"/>7.4.10. Quantifier - Zero Or One (? and ??)</h3></div></div></div><p>
+				The zero-or-one quantifier (?) must be matched zero or one time by events. The operator is greedy and the reluctant version is <code class="literal">??</code>.
+			</p><p>
+				The pattern looks for a sequence of events in which the temperature is below 50 and then dips to over 50 and then to under 50 before indicating a value over 55:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from TemperatureSensorEvent
+match_recognize (
+  partition by device
+  measures A.id as a_id, B.id as b_id, C.id as c_id, D.id as d_id
+  pattern (A B? C? D)
+  define 
+	A as A.temp &lt; 50,
+	B as B.temp &gt; 50,
+	C as C.temp &lt; 50,
+	D as D.temp &gt; 55)</pre><p>
+				An example sequence of events that matches the pattern above is:
+			</p><div class="table"><a id="d0e18058"/><p class="title"><b>Table 7.10. Example</b></p><div class="table-contents"><table summary="Example" border="1"><colgroup><col/><col/><col/></colgroup><thead><tr><th>Arrival Time</th><th>Tuple</th><th>Output Event (if any)</th></tr></thead><tbody><tr><td>1000</td><td>id=E1, device=1, temp=44</td><td> </td></tr><tr><td>2000</td><td>id=E2, device=1, temp=49</td><td> </td></tr><tr><td>3000</td><td>id=E3, device=1, temp=51</td><td> </td></tr><tr><td>4000</td><td>id=E4, device=1, temp=49</td><td> </td></tr><tr><td>5000</td><td>id=E5, device=1, temp=56</td><td>a_id=E2, b_id=E3, c_id=E4, d_id=E5</td></tr><tr><td>6000</td><td>id=E5, device=1, temp=61</td><td> </td></tr></tbody></table></div></div><br class="table-break"/></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="match-recognize-define"/>7.5. <code class="literal">Define</code> Clause</h2></div></div></div><p>
+			Within <code class="literal">define</code> are listed the boolean conditions that defines a variable name that is declared in the pattern. 
+		</p><p>
+			A variable name does not require a definition and if there is no definition, the default is a predicate
+			that is always true. Such a variable name can be used to match any row.
+		</p><p>
+			The definitions of variable names may reference the same or other variable names as prior examples have shown. 
+		</p><p>
+			If a variable in your condition expression is a singleton variable, then only individual columns may be referenced. If the variable is not matched by an event, a <code class="literal">null</code> value is returned.
+        </p><p>
+			If a variable in your condition expression is a group variable, then only indexed columns may be referenced. If the variable is not matched by an event, a <code class="literal">null</code> value is returned.
+        </p><p>
+			Aggregation functions are not allowed within expressions of the <code class="literal">define</code> clause.
+        </p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="match-recognize-define-prev"/>7.5.1. The <code class="literal">Prev</code> Operator</h3></div></div></div><p>
+				The <code class="literal">prev</code> function may be used in a <code class="literal">define</code> expression to access columns of the previous row of a variable name. If there is no previous row, the null value is returned. 
+			</p><p>
+				The <code class="literal">prev</code> function can accept an optional non-negative integer argument indicating the offset to the previous rows. That argument must be a constant. In this case, the engine returns the property from the
+N-th row preceding the current row, and if the row doesn’t exist, it returns <code class="literal">null</code>.
+			</p><p>
+				This function can access variables currently defined, for example:				
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Y as Y.price &lt; prev(Y.price, 2)</pre><p>
+				It is not legal to use <code class="literal">prev</code> with another variable then the one being defined:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// not allowed
+Y as Y.price &lt; prev(X.price, 2)</pre><p>
+				The <code class="literal">prev</code> function returns properties of events in the same partition. Also, it returns properties of events according to event order-of-arrival. When using data windows or deleting events from a named window, the remove stream does not remove events from the <code class="literal">prev</code> function.
+			</p><p>
+				The pattern looks for an event in which the temperature is greater or equal 100 and that, relative to that event, has an event preceding it by 2 events that also had a temperature greater or equal 100:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from TemperatureSensorEvent
+match_recognize (
+  partition by device
+  measures A.id as a_id
+  pattern (A)
+  define 
+	A as A.temp &gt; 100 and prev(A.temp, 2) &gt; 100)</pre><p>
+				An example sequence of events that matches the pattern above is:
+			</p><div class="table"><a id="d0e18187"/><p class="title"><b>Table 7.11. Example</b></p><div class="table-contents"><table summary="Example" border="1"><colgroup><col/><col/><col/></colgroup><thead><tr><th>Arrival Time</th><th>Tuple</th><th>Output Event (if any)</th></tr></thead><tbody><tr><td>1000</td><td>id=E1, device=1, temp=98</td><td> </td></tr><tr><td>2000</td><td>id=E2, device=1, temp=101</td><td> </td></tr><tr><td>3000</td><td>id=E3, device=1, temp=101</td><td> </td></tr><tr><td>4000</td><td>id=E4, device=1, temp=99</td><td> </td></tr><tr><td>5000</td><td>id=E5, device=1, temp=101</td><td>a_id=E5</td></tr></tbody></table></div></div><br class="table-break"/></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="match-recognize-measure"/>7.6. <code class="literal">Measure</code> Clause</h2></div></div></div><p>
+			The <code class="literal">measures</code> clause defines exported columns that contain expressions over the pattern variables. The expressions can reference partition columns, singleton variables and
+			any aggregation functions including <code class="literal">last</code> and <code class="literal">first</code> on the group variables. 
+        </p><p>
+			Expressions in the <code class="literal">measures</code> clause must use the <code class="literal">as</code> keyword to assign a column name.
+        </p><p>
+			If a variable is a singleton variable then only individual columns may be referenced, not aggregates. If the variable is not matched by an event, a <code class="literal">null</code> value is returned.
+        </p><p>
+			If a variable is a group variable and used in an aggregate, then the aggregate is performed over all  rows that have matched the variable. If a group variable is not in an aggregate function, its variable name must be post-fixed with an index. 
+			See <a class="xref" href="match-recognize.html#match-recognize-patternops-singletonvars" title="7.4.5. Variables Can be Singleton or Group">Section 7.4.5, “Variables Can be Singleton or Group”</a> for more information.
+        </p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="match-recognize-datawindow"/>7.7. Datawindow-Bound</h2></div></div></div><p>
+			When using match recognize with a named window or stream bound by a data window, all events removed from the named window or data window also removed the match-in-progress that includes the event(s) removed.
+        </p><p>
+			The next example looks for four sensor events from the same device immediately following each other and indicating a rising temperature, but only events that arrived in the last 10 seconds are considered:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from TemperatureSensorEvent.win:time(10 sec)
+match_recognize (
+partition by device
+measures A.id as a_id
+pattern (A B C D)
+define 
+B as B.temp &gt; A.temp,
+C as C.temp &gt; B.temp,
+D as D.temp &gt; C.temp)</pre><p>
+			An example sequence of events that matches the pattern above is:
+		</p><div class="table"><a id="d0e18278"/><p class="title"><b>Table 7.12. Example</b></p><div class="table-contents"><table summary="Example" border="1"><colgroup><col/><col/><col/></colgroup><thead><tr><th>Arrival Time</th><th>Tuple</th><th>Output Event (if any)</th></tr></thead><tbody><tr><td>1000</td><td>id=E1, device=1, temp=80</td><td> </td></tr><tr><td>2000</td><td>id=E2, device=1, temp=81</td><td> </td></tr><tr><td>3000</td><td>id=E3, device=1, temp=82</td><td> </td></tr><tr><td>4000</td><td>id=E4, device=1, temp=81</td><td> </td></tr><tr><td>7000</td><td>id=E5, device=1, temp=82</td><td> </td></tr><tr><td>9000</td><td>id=E6, device=1, temp=83</td><td> </td></tr><tr><td>13000</td><td>id=E7, device=1, temp=84</td><td>a_id=E4, a_id=E5, a_id=E6, a_id=E7</td></tr><tr><td>15000</td><td>id=E8, device=1, temp=84</td><td> </td></tr><tr><td>20000</td><td>id=E9, device=1, temp=85</td><td> </td></tr><tr><td>21000</td><td>id=E10, device=1, temp=86</td><td> </td></tr><tr><td>26000</td><td>id=E11, device=1, temp=87</td><td> </td></tr></tbody></table></div></div><br class="table-break"/><p>
+			Note that E8, E9, E10 and E11 doe not constitute a match since E8 leaves the data window at 25000.
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="match-recognize-interval"/>7.8. Interval</h2></div></div></div><p>
+			With the optional <code class="literal">interval</code> keyword and time period you can control how long the engine should wait for further events to arrive that may be part of a matching event sequence, before indicating a match (or matches). This is not applicable to on-demand pattern matching.
+		</p><p>
+			The interval timer starts are the arrival of the first event matching a sequence for a partition. When the time interval passes and an event sequence matches, duplicate matches are eliminated and output occurs. 
+        </p><p>
+			The next example looks for sensor events indicating a temperature of over 100 waiting for any number of additional events with a temperature of over 100 for 10 seconds before indicating a match:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from TemperatureSensorEvent
+match_recognize (
+partition by device
+measures A.id as a_id, count(B.id) as count_b, first(B.id) as first_b, last(B.id) as last_b
+pattern (A B*)
+interval 5 seconds
+define 
+  A as A.temp &gt; 100,
+  B as B.temp &gt; 100)</pre><p>
+			An example sequence of events that matches the pattern above is:
+		</p><div class="table"><a id="d0e18379"/><p class="title"><b>Table 7.13. Example</b></p><div class="table-contents"><table summary="Example" border="1"><colgroup><col/><col/><col/></colgroup><thead><tr><th>Arrival Time</th><th>Tuple</th><th>Output Event (if any)</th></tr></thead><tbody><tr><td>1000</td><td>id=E1, device=1, temp=98</td><td> </td></tr><tr><td>2000</td><td>id=E2, device=1, temp=101</td><td> </td></tr><tr><td>3000</td><td>id=E3, device=1, temp=102</td><td> </td></tr><tr><td>4000</td><td>id=E4, device=1, temp=104</td><td> </td></tr><tr><td>5000</td><td>id=E5, device=1, temp=104</td><td> </td></tr><tr><td>7000</td><td> </td><td>a_id=E2, count_b=3, first_b=E3, last_b=E5</td></tr></tbody></table></div></div><br class="table-break"/><p>
+			Notice that the engine waits 5 seconds (5000 milliseconds) after the arrival time of the first event E2 of the match at 2000, to indicate the match at 7000.
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="match-recognize-variant"/>7.9. Use with Different Event Types</h2></div></div></div><p>
+			You may match different types of events using match-recognize by following any of these strategies:
+		</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+                    Declare a variant stream.
+                </p></li><li><p>
+                    Declare a supertype for your event types in the <code class="literal">create schema</code> syntax.
+                </p></li><li><p>
+                    Have you event classes implement a common interface or extend a common base class. 
+                </p></li></ol></div><p>
+			 A short example that demonstrates variant streams and match-recognize is listed below:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Declare one sample type
+create schema S0 as (col string)</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Declare second sample type
+create schema S1 as (col string)</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Declare variant stream holding either type
+create variant schema MyVariantStream as S0, S1</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Populate variant stream
+insert into MyVariantStream select * from S0</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Populate variant stream
+insert into MyVariantStream select * from S1</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Simple pattern to match S0 S1 pairs
+select * from MyVariantType.win:time(1 min)
+match_recognize (
+  measures A.id? as a, B.id? as b
+  pattern (A B)
+  define
+    A as typeof(A) = 'S0',
+    B as typeof(B) = 'S1'
+)</pre></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="match-recognize-limitations"/>7.10. Limitations</h2></div></div></div><p>
+			Please note the following limitations:
+		</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>
+					Subqueries are not allowed in expressions within <code class="literal">match_recognize</code>.
+				</p></li><li><p>
+					Joins and outer joins are not allowed in the same statement as <code class="literal">match_recognize</code>.
+				</p></li><li><p>
+					<code class="literal">match_recognize</code> may not be used within <code class="literal">on-select</code> or <code class="literal">on-insert</code> statements.
+				</p></li><li><p>
+					When using <code class="literal">match_recognize</code> on unbound streams (no data window provided) the <code class="literal">iterator</code> pull API returns no rows.
+				</p></li><li><p>
+					A Statement Object Model API for <code class="literal">match_recognize</code> is not yet available.
+				</p></li></ol></div></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="event_patterns.html"><strong>Prev</strong>Chapter 6. EPL Reference: Patterns</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="epl-operator.html"><strong>Next</strong>Chapter 8. EPL Reference: Operators</a></li></ul></body></html>

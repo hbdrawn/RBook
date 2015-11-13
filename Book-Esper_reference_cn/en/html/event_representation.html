@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 2. Event Representations</title><link rel="stylesheet" href="css/espertech.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Esper Reference"/><link rel="up" href="index.html" title="Esper Reference"/><link rel="prev" href="technology_overview.html" title="Chapter 1. Technology Overview"/><link rel="next" href="processingmodel.html" title="Chapter 3. Processing Model"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.espertech.com" class="site_href"><strong>esper.codehaus.org and espertech.com</strong></a><a href="http://esper.codehaus.org/esper/documentation/documentation.html" class="doc_href"><strong>Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="technology_overview.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="processingmodel.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="event_representation"/>Chapter 2. Event Representations</h2></div></div></div><div class="toc"><dl><dt><span class="sect1"><a href="event_representation.html#eventrep_intro">2.1. Event Underlying Java Objects</a></span></dt><dt><span class="sect1"><a href="event_representation.html#eventrep-properties">2.2. Event Properties</a></span></dt><dd><dl><dt><span class="sect2"><a href="event_representation.html#eventrep-properties-escaping">2.2.1. Escape Characters</a></span></dt><dt><span class="sect2"><a href="event_representation.html#eventrep-properties-expression">2.2.2. Expression as Key or Index Value</a></span></dt></dl></dd><dt><span class="sect1"><a href="event_representation.html#eventrep-dyncproperties">2.3. Dynamic Event Properties</a></span></dt><dt><span class="sect1"><a href="event_representation.html#eventrep-fragment">2.4. Fragment and Fragment Type</a></span></dt><dt><span class="sect1"><a href="event_representation.html#eventrep-javabean">2.5. Plain-Old Java Object Events</a></span></dt><dd><dl><dt><span class="sect2"><a href="event_representation.html#event-properties">2.5.1. Java Object Event Properties</a></span></dt><dt><span class="sect2"><a href="event_representation.html#event-properties-names">2.5.2. Property Names</a></span></dt><dt><span class="sect2"><a href="event_representation.html#event-properties-parameterized">2.5.3. Parameterized Types</a></span></dt><dt><span class="sect2"><a href="event_representation.html#event-properties-indexedmappedsetter">2.5.4. Setter Methods for Indexed and Mapped Properties</a></span></dt><dt><span class="sect2"><a href="event_representation.html#event-properties-knownlimit">2.5.5. Known Limitations</a></span></dt></dl></dd><dt><span class="sect1"><a href="event_representation.html#eventrep-java-util-map">2.6. java.util.Map Events</a></span></dt><dd><dl><dt><span class="sect2"><a href="event_representation.html#eventrep-map-overview">2.6.1. Overview</a></span></dt><dt><span class="sect2"><a href="event_representation.html#eventrep-map-properties">2.6.2. Map Properties</a></span></dt><dt><span class="sect2"><a href="event_representation.html#eventrep-map-supertype">2.6.3. Map Supertypes</a></span></dt><dt><span class="sect2"><a href="event_representation.html#eventrep-map-advanced">2.6.4. Advanced Map Property Types</a></span></dt></dl></dd><dt><span class="sect1"><a href="event_representation.html#eventrep-objectarray">2.7. Object-array (Object[]) Events</a></span></dt><dd><dl><dt><span class="sect2"><a href="event_representation.html#eventrep-objectarray-overview">2.7.1. Overview</a></span></dt><dt><span class="sect2"><a href="event_representation.html#eventrep-objectarray-properties">2.7.2. Object-Array Properties</a></span></dt><dt><span class="sect2"><a href="event_representation.html#eventrep-objectarray-supertype">2.7.3. Object-Array Supertype</a></span></dt><dt><span class="sect2"><a href="event_representation.html#eventrep-objectarray-advanced">2.7.4. Advanced Object-Array Property Types</a></span></dt></dl></dd><dt><span class="sect1"><a href="event_representation.html#eventrep-xml-dom">2.8. org.w3c.dom.Node XML Events</a></span></dt><dd><dl><dt><span class="sect2"><a href="event_representation.html#eventrep-xml-dom-schema">2.8.1. Schema-Provided XML Events</a></span></dt><dt><span class="sect2"><a href="event_representation.html#eventrep-xml-dom-noschema">2.8.2. No-Schema-Provided XML Events</a></span></dt><dt><span class="sect2"><a href="event_representation.html#eventrep-xml-dom-explicit">2.8.3. Explicitly-Configured Properties</a></span></dt></dl></dd><dt><span class="sect1"><a href="event_representation.html#eventrep-plug-in">2.9. Additional Event Representations</a></span></dt><dt><span class="sect1"><a href="event_representation.html#eventrep-update">2.10. Updating, Merging and Versioning Events</a></span></dt><dt><span class="sect1"><a href="event_representation.html#eventrep-coarse">2.11. Coarse-Grained Events</a></span></dt><dt><span class="sect1"><a href="event_representation.html#eventrep-insertinto">2.12. Event Objects Instantiated and Populated by Insert Into</a></span></dt><dt><span class="sect1"><a href="event_representation.html#eventrep_comparing">2.13. Comparing Event Representations</a></span></dt></dl></div><p>
+		This section outlines the different means to model and represent events.
+    </p><p>
+		Esper uses the term <span class="emphasis"><em>event type</em></span> to describe the type information available for an event representation.
+	</p><p>
+	    Your application may configure predefined event types at startup time or dynamically add event types at runtime via API or EPL syntax. See <a class="xref" href="configuration.html#configuration-items" title="15.4. Configuration Items">Section 15.4, “Configuration Items”</a> for startup-time configuration and <a class="xref" href="api.html#api-admin-runtime-config" title="14.3.7. Runtime Configuration">Section 14.3.7, “Runtime Configuration”</a> for the runtime configuration API.
+	</p><p>
+	    The EPL <code class="literal">create schema</code> syntax allows declaring an event type at runtime using EPL, see <a class="xref" href="epl_clauses.html#epl_createschema" title="5.16. Declaring an Event Type: Create Schema">Section 5.16, “Declaring an Event Type: Create Schema”</a>.
+	</p><p>
+		In <a class="xref" href="api.html#api-event" title="14.5. Event and Event Type">Section 14.5, “Event and Event Type”</a> we explain how an event type becomes visible in EPL statements and output events delivered by the engine.
+    </p><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="eventrep_intro"/>2.1. Event Underlying Java Objects</h2></div></div></div><a id="d0e201" class="indexterm"/><p>
+			An event is an immutable record of a past occurrence of an action or state change. Event properties capture the state information for an event.
+        </p><p>
+			In Esper, an event can be represented by any of the following underlying Java objects:
+        </p><div class="table"><a id="d0e210"/><p class="title"><b>Table 2.1. Event Underlying Java Objects</b></p><div class="table-contents"><table summary="Event Underlying Java Objects" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Java Class</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">java.lang.Object</code></td><td>Any Java POJO (plain-old java object) with getter methods following JavaBean conventions;  Legacy Java classes not following JavaBean conventions can also serve as events .</td></tr><tr><td><code class="literal">java.util.Map</code></td><td>Map events are implementations of the <code class="literal">java.util.Map</code> interface where each map entry is a propery value.</td></tr><tr><td><code class="literal">Object[] (array of object)</code></td><td>Object-array events are arrays of objects (type <code class="literal">Object[]</code>) where each array element is a property value.</td></tr><tr><td><code class="literal">org.w3c.dom.Node</code></td><td>XML document object model (DOM).</td></tr><tr><td><code class="literal">org.apache.axiom.om.OMDocument or OMElement</code></td><td>XML - Streaming API for XML (StAX) - Apache Axiom (provided by EsperIO package).</td></tr><tr><td>Application classes</td><td>Plug-in event representation via the extension API.</td></tr></tbody></table></div></div><br class="table-break"/><p>
+			Esper provides multiple choices for representing an event. There is no absolute need for you to create new Java classes to represent an event.
+		</p><p>
+			Event representations have the following in common:
+		</p><div class="itemizedlist"><ul compact="compact"><li><p>
+					All event representations support nested, indexed and mapped properties (aka. property expression), as explained in more detail below. There is no limitation to the nesting level.
+				</p></li><li><p>
+					All event representations provide event type metadata. This includes type metadata for nested properties.
+				</p></li><li><p>
+					All event representations allow transposing the event itself and parts of all of its property graph into new events. The term transposing refers to selecting the event itself or event properties that are themselves nestable property graphs, and then querying the event's properties or nested property graphs in further statements. The Apache Axiom event representation is an exception and does not currently allow transposing event properties but does allow transposing the event itself.
+				</p></li><li><p>
+					The Java object, Map and Object-array representations allow supertypes.
+				</p></li></ul></div><p>
+			The API behavior for all event representations is the same, with minor exceptions noted in this chapter. 
+		</p><p>
+			The benefits of multiple event representations are:
+		</p><div class="itemizedlist"><ul compact="compact"><li><p>
+					For applications that already have events in one of the supported representations, there is no need to transform events into a Java object before processing.
+				</p></li><li><p>
+					Event representations are exchangeable, reducing or eliminating the need to change statements when the event representation changes. 
+				</p></li><li><p>
+					Event representations are interoperable, allowing all event representations to interoperate in same or different statements.
+				</p></li><li><p>
+					The choice makes its possible to consciously trade-off performance, ease-of-use, the ability to evolve and effort needed to import or externalize events and use existing event type metadata. 
+				</p></li></ul></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="eventrep-properties"/>2.2. Event Properties</h2></div></div></div><a id="d0e301" class="indexterm"/><p>
+			 Event properties capture the state information for an event. Event properties be simple as well as indexed, mapped and nested event properties. The table below outlines the different types of properties and their syntax in an event expression. This syntax allows statements to query deep JavaBean objects graphs, XML structures and Map events. 
+		</p><div class="table"><a id="d0e308"/><p class="title"><b>Table 2.2. Types of Event Properties</b></p><div class="table-contents"><table summary="Types of Event Properties" border="1"><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th>Type</th><th>Description</th><th>Syntax</th><th>Example</th></tr></thead><tbody><tr><td>Simple</td><td>A property that has a single value that may be retrieved.</td><td><pre class="synopsis">name</pre></td><td><pre class="synopsis">sensorId</pre></td></tr><tr><td>Indexed</td><td>An indexed property stores an ordered collection of objects (all of the same type) that can be individually accessed by an integer-valued, non-negative index (or subscript).</td><td><pre class="synopsis">name[<span class="emphasis"><em>index</em></span>]</pre></td><td><pre class="synopsis">sensor[0]</pre></td></tr><tr><td>Mapped</td><td>A mapped property stores a keyed collection of objects (all of the same type).</td><td><pre class="synopsis">name('<span class="emphasis"><em>key</em></span>')</pre></td><td><pre class="synopsis">sensor('light')</pre></td></tr><tr><td>Nested</td><td>A nested property is a property that lives within another property of an event.</td><td><pre class="synopsis">name.nestedname</pre></td><td><pre class="synopsis">sensor.value</pre></td></tr></tbody></table></div></div><br class="table-break"/><p>
+			Combinations are also possible. For example, a valid combination could be <code class="literal">person.address('home').street[0]</code>.
+		</p><p>
+			You may use any expression as a mapped property key or indexed property index by putting the expression within parenthesis after the mapped or index property name. Please find examples below.
+		</p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="eventrep-properties-escaping"/>2.2.1. Escape Characters</h3></div></div></div><p>
+				If your application uses <code class="literal">java.util.Map</code>, <code class="literal">Object[]</code> (object-array) or XML to represent events, then event property names may themselves contain the dot ('.') character. The backslash ('\') character can be used to escape dot characters in property names, allowing a property name to contain dot characters. 
+			</p><p>
+				For example, the EPL as shown below expects a property by name <code class="literal">part1.part2</code> to exist on event type <code class="literal">MyEvent</code>:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select part1\.part2 from MyEvent</pre><p>
+				Sometimes your event properties may overlap with EPL language keywords or contain spaces or other special characters. In this case you may use the backwards apostrophe <code class="literal">`</code> (aka. back tick) character to escape the property name.
+			</p><p>
+				The next example assumes a <code class="literal">Quote</code> event that has a property by name <code class="literal">order</code>, while <code class="literal">order</code> is also a reserved keyword:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select `order`, price as `price.for.goods` from Quote</pre><p>
+				When escaping mapped or indexed properties, make sure the back tick character appears outside of the map key or index.
+			</p><p>
+				The next EPL selects event properties that have names that contain spaces (e.g. <code class="literal">candidate book</code>), have the tick special character  (e.g. <code class="literal">children's books</code>), are an indexed property (e.g. <code class="literal">children's books[0]</code>) and a mapped property 
+				that has a reserved keyword as part of the property name (e.g. <code class="literal">book select('isbn')</code>):
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select `candidate book` , `children's books`[0], `book select`('isbn') from MyEventType</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="eventrep-properties-expression"/>2.2.2. Expression as Key or Index Value</h3></div></div></div><p>
+				The key or index expression must be placed in parenthesis.  When using an expression as key for a mapped property, the expression must return a <code class="literal">String</code>-typed value. When using an expression as index for an indexed property, the expression must return an <code class="literal">int</code>-typed value.				
+			</p><p>
+				This example below uses Java classes to illustrate;The same principles apply to all event representations.
+			</p><p>
+				Assume a class declares these properties (getters not shown for brevity):
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyEventType {
+  String myMapKey;
+  int myIndexValue;
+  int myInnerIndexValue;
+  Map&lt;String, InnerType&gt; innerTypesMap;	// mapped property
+  InnerType[] innerTypesArray; // indexed property
+}
+
+public class InnerType {
+  String name;
+  int[] ids;
+}</pre><p>
+				A sample EPL statement demonstrating expressions as map keys or indexes is:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select innerTypesMap('somekey'),  // returns map value for 'somekey'
+  innerTypesMap(myMapKey),        // returns map value for myMapKey value (an expression)
+  innerTypesArray[1],             // returns array value at index 1
+  innerTypesArray(myIndexValue)   // returns array value at index myIndexValue (an expression)
+  from MyEventType</pre><p>
+				The dot-operator can be used to access methods on the value objects returned by the mapped or indexed properties. By using the dot-operator the syntax follows the chained method invocation described at <a class="xref" href="epl-operator.html#epl-operator-ref-dot" title="8.6. Dot Operator">Section 8.6, “Dot Operator”</a>.
+			</p><p>
+				A sample EPL statement demonstrating the dot-operator as well as expressions as map keys or indexes is:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class=""> select innerTypesMap('somekey').ids[1],
+  innerTypesMap(myMapKey).getIds(myIndexValue),
+  innerTypesArray[1].ids[2],
+  innerTypesArray(myIndexValue).getIds(myInnerIndexValue)
+  from MyEventType</pre><p>
+				Please note the following limitations:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						The square brackets-syntax for indexed properties does now allow expressions and requires a constant index value.
+					</p></li><li><p>
+						When using the dot-operator with mapped or indexed properties that have expressions as map keys or indexes you must follow the chained method invocation syntax.
+					</p></li></ul></div></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="eventrep-dyncproperties"/>2.3. Dynamic Event Properties</h2></div></div></div><a id="d0e482" class="indexterm"/><a id="d0e485" class="indexterm"/><p>
+			Dynamic (unchecked) properties are event properties that need not be known at statement compilation time. Such properties are resolved during runtime: they provide duck typing functionality.
+		</p><p>
+			The idea behind dynamic properties is that for a given underlying event representation we don't always know all properties in advance. An underlying event may have additional properties that are not known at statement compilation time, that we want to query on. The concept is especially useful for events that represent rich, object-oriented domain models.
+		</p><p>
+			The syntax of dynamic properties consists of the property name and a question mark. Indexed, mapped and nested properties can also be dynamic properties:
+		</p><div class="table"><a id="d0e496"/><p class="title"><b>Table 2.3. Types of Event Properties</b></p><div class="table-contents"><table summary="Types of Event Properties" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Type</th><th>Syntax</th></tr></thead><tbody><tr><td>Dynamic Simple</td><td><pre class="synopsis">name?</pre></td></tr><tr><td>Dynamic Indexed</td><td><pre class="synopsis">name[<span class="emphasis"><em>index</em></span>]?</pre></td></tr><tr><td>Dynamic Mapped</td><td><pre class="synopsis">name('<span class="emphasis"><em>key</em></span>')?</pre></td></tr><tr><td>Dynamic Nested</td><td><pre class="synopsis">name?.nestedPropertyName</pre></td></tr></tbody></table></div></div><br class="table-break"/><p>
+			 Dynamic properties always return the <code class="literal">java.lang.Object</code> type. Also, dynamic properties return a <code class="literal">null</code> value if the dynamic property does not exist on events processed at runtime. 
+		</p><p>
+			As an example, consider an OrderEvent event that provides an "item" property. The "item" property is of type <code class="literal">Object</code> and holds a reference to an instance of either a Service or Product. 
+		</p><p>
+			Assume that both Service and Product classes provide a property named "price". Via a dynamic property we can specify a query that obtains the price property from either object (Service or Product):
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select item.price? from OrderEvent</pre><p>
+			 As a second example, assume that the Service class contains a "serviceName" property that the Product class does not possess. The following query returns the value of the "serviceName" property for Service objects. It returns a <code class="literal">null</code>-value for Product objects that do not have the "serviceName" property:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select item.serviceName? from OrderEvent</pre><p>
+			Consider the case where OrderEvent has multiple implementation classes, some of which have a "timestamp" property. The next query returns the timestamp property of those implementations of the OrderEvent interface that feature the property:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select timestamp? from OrderEvent</pre><p>
+			The query as above returns a single column named "timestamp?" of type <code class="literal">Object</code>. 			
+		</p><p>
+			When dynamic properties are nested, then all properties under the dynamic property are also considered dynamic properties. In the below example the query asks for the "direction" property of the object returned by the "detail" dynamic property:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select detail?.direction from OrderEvent</pre><p>
+			Above is equivalent to:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select detail?.direction? from OrderEvent</pre><p>
+			The functions that are often useful in conjunction with dynamic properties are:
+		</p><div class="itemizedlist"><ul><li><p>
+                    The <code class="literal">cast</code> function casts the value of a dynamic property (or the value of an expression) to a given type.
+                </p></li><li><p>
+                    The <code class="literal">exists</code> function checks whether a dynamic property exists. It returns <code class="literal">true</code> if the event has a property of that name, or false if the property does not exist on that event.
+                </p></li><li><p>
+                    The <code class="literal">instanceof</code> function checks whether the value of a dynamic property (or the value of an expression) is of any of the given types.
+                </p></li><li><p>
+                    The <code class="literal">typeof</code> function returns the string type name of a dynamic property.
+                </p></li></ul></div><p>
+			Dynamic event properties work with all event representations outlined next: Java objects, Map-based, Object-array-based and XML DOM-based events.
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="eventrep-fragment"/>2.4. Fragment and Fragment Type</h2></div></div></div><p>
+			Sometimes an event can have properties that are itself events. Esper uses the term <span class="emphasis"><em>fragment</em></span> and <span class="emphasis"><em>fragment type</em></span> for such event pieces. The best example is a pattern
+			that matches two or more events and the output event contains the matching events as fragments. In other words, output events can be a composite event that consists of further events, the fragments.
+		</p><p>
+			Fragments have the same metadata available as their enclosing composite events. The metadata for enclosing composite events contains information about which properties are fragments, or have a property value that can be 
+			represented as a fragment and therefore as an event itself.
+		</p><p>
+			Fragments and type metadata can allow your application to navigate composite events without the need for using the Java reflection API and reducing the coupling to the underlying event representation.
+			The API is further described in <a class="xref" href="api.html#api-event" title="14.5. Event and Event Type">Section 14.5, “Event and Event Type”</a>.
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="eventrep-javabean"/>2.5. Plain-Old Java Object Events</h2></div></div></div><a id="d0e632" class="indexterm"/><p>
+			Plain-old Java object events are object instances that expose event properties through JavaBeans-style getter methods. Events classes or interfaces do not have to be fully compliant to the JavaBean specification; however for the Esper engine to obtain event properties, the required JavaBean getter methods must be present or an accessor-style and accessor-methods may be defined via configuration.
+		</p><p>
+			Esper supports JavaBeans-style event classes that extend a superclass or implement one or more interfaces. Also, Esper event pattern and EPL statements can refer to Java interface classes and abstract classes. 
+		</p><p>
+			Classes that represent events should be made immutable. As events are recordings of a state change or action that occurred in the past, the relevant event properties should not be changeable. However this is not a hard requirement and the Esper engine accepts events that are mutable as well.
+		</p><p>
+			The <code class="literal">hashCode</code> and <code class="literal">equals</code> methods do not need to be implemented. The implementation of these methods by a Java event class does not affect the behavior of the engine in any way.
+		</p><p>
+			Please see <a class="xref" href="configuration.html" title="Chapter 15. Configuration">Chapter 15, <i>Configuration</i></a> on options for naming event types represented by Java object event classes.
+			Java classes that do not follow JavaBean conventions, such as legacy Java classes that expose public fields, or methods not following naming conventions, require additional configuration. Via configuration it is also possible to control case sensitivity in property name resolution. The relevant section in the chapter on configuration is <a class="xref" href="configuration.html#config-java-legacy" title="15.4.1.3. Non-JavaBean and Legacy Java Event Classes">Section 15.4.1.3, “Non-JavaBean and Legacy Java Event Classes”</a>.
+		</p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="event-properties"/>2.5.1. Java Object Event Properties</h3></div></div></div><p>
+				As outlined earlier, the different property types are supported by the standard JavaBeans specification, and some of which are uniquely supported by Esper:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						<span class="emphasis"><em>Simple</em></span> properties have a single value that may be retrieved. The underlying property type might be a Java language primitive (such as int, a simple object (such as a java.lang.String), or a more complex object whose class is defined either by the Java language, by the application, or by a class library included with the application.
+					</p></li><li><p>
+						<span class="emphasis"><em>Indexed</em></span> - An indexed property stores an ordered collection of objects (all of the same type) that can be individually accessed by an integer-valued, non-negative index (or subscript). 
+					</p></li><li><p>
+						<span class="emphasis"><em>Mapped</em></span> - As an extension to standard JavaBeans APIs, Esper considers any property that accepts a String-valued key a mapped property. 
+					</p></li><li><p>
+						<span class="emphasis"><em>Nested</em></span> - A nested property is a property that lives within another Java object which itself is a property of an event. 
+					</p></li></ul></div><p>
+				Assume there is an <code class="literal">NewEmployeeEvent</code> event class as shown below. The mapped and indexed properties in this example return Java objects but could also return Java language primitive types (such as int or String). The <code class="literal">Address</code> object and <code class="literal">Employee</code> can themselves have properties that are nested within them, such as a street name in the <code class="literal">Address</code> object or a name of the employee in the <code class="literal">Employee</code> object.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class NewEmployeeEvent {
+	public String getFirstName();
+	public Address getAddress(String type);
+	public Employee getSubordinate(int index);
+	public Employee[] getAllSubordinates();
+}
+</pre><p>
+					<span class="emphasis"><em>Simple</em></span> event properties require a getter-method that returns the property value. In this example, the <code class="literal">getFirstName</code> getter method returns the <code class="literal">firstName</code> event property of type String.
+				</p><p>
+					<span class="emphasis"><em>Indexed</em></span> event properties require either one of the following getter-methods. A method that takes an integer-type key value and returns the property value, such as the <code class="literal">getSubordinate</code> method, or a method that returns an array-type, or a class that implements <code class="literal">Iterable</code>. An example is the <code class="literal">getAllSubordinates</code> getter method, which returns an array of Employee but could also return an <code class="literal">Iterable</code>. In an EPL or event pattern statement, indexed properties are accessed via the <code class="literal">property[index]</code> syntax.
+				</p><p>
+					<span class="emphasis"><em>Mapped</em></span> event properties require a getter-method that takes a String-typed key value and returns the property value, such as the <code class="literal">getAddress</code> method. In an EPL or event pattern statement, mapped properties are accessed via the <code class="literal">property('key')</code> syntax.
+				</p><p>
+					<span class="emphasis"><em>Nested</em></span> event properties require a getter-method that returns the nesting object. The <code class="literal">getAddress</code> and <code class="literal">getSubordinate</code> methods are mapped and indexed properties that return a nesting object. In an EPL or event pattern statement, nested properties are accessed via the <code class="literal">property.nestedProperty</code> syntax.
+				</p><p>
+					All event pattern and EPL statements allow the use of indexed, mapped and nested properties (or a combination of these) anywhere where one or more event property names are expected. The below example shows different combinations of indexed, mapped and nested properties in filters of event pattern expressions (each line is a separate EPL statement):
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">every NewEmployeeEvent(firstName='myName')
+every NewEmployeeEvent(address('home').streetName='Park Avenue')
+every NewEmployeeEvent(subordinate[0].name='anotherName')
+every NewEmployeeEvent(allSubordinates[1].name='thatName')
+every NewEmployeeEvent(subordinate[0].address('home').streetName='Water Street')</pre><p>
+					Similarly, the syntax can be used in EPL statements in all places where an event property name is expected, such as in select lists, where-clauses or join criteria.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select firstName, address('work'), subordinate[0].name, subordinate[1].name
+from NewEmployeeEvent
+where address('work').streetName = 'Park Ave'</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="event-properties-names"/>2.5.2. Property Names</h3></div></div></div><p>
+					Property names follows Java standards: the class <code class="literal">java.beans.Introspector</code> and method <code class="literal">getBeanInfo</code> returns the property names as derived from the name of getter methods. In addition, Esper configuration provides a flag to turn off case-sensitive property names. A sample list of getter methods and property names is: 
+				</p><div class="table"><a id="d0e781"/><p class="title"><b>Table 2.4. JavaBeans-style Getter Methods and Property Names</b></p><div class="table-contents"><table summary="JavaBeans-style Getter Methods and Property Names" border="1"><colgroup><col/><col/><col/></colgroup><thead><tr><th>Method</th><th>Property Name</th><th>Example</th></tr></thead><tbody><tr><td><code class="literal">getPrice()</code></td><td>price</td><td><pre class="synopsis">select price from MyEvent</pre></td></tr><tr><td><code class="literal">getNAME()</code></td><td>NAME</td><td><pre class="synopsis">select NAME from MyEvent</pre></td></tr><tr><td><code class="literal">getItemDesc()</code></td><td>itemDesc</td><td><pre class="synopsis">select itemDesc from MyEvent</pre></td></tr><tr><td><code class="literal">getQ()</code></td><td>q</td><td><pre class="synopsis">select q from MyEvent</pre></td></tr><tr><td><code class="literal">getQN()</code></td><td>QN</td><td><pre class="synopsis">select QN from MyEvent</pre></td></tr><tr><td><code class="literal">getqn()</code></td><td>qn</td><td><pre class="synopsis">select qn from MyEvent</pre></td></tr><tr><td><code class="literal">gets()</code></td><td>s</td><td><pre class="synopsis">select s from MyEvent</pre></td></tr></tbody></table></div></div><br class="table-break"/></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="event-properties-parameterized"/>2.5.3. Parameterized Types</h3></div></div></div><p>
+				When your getter methods or accessor fields return a parameterized type, for example <code class="literal">Iterable&lt;MyEventData&gt;</code> for an indexed property or <code class="literal">Map&lt;String, MyEventData&gt;</code> for a mapped property, then property expressions may refer to the properties available through the class that is the type parameter.
+			</p><p>
+				An example event that has properties that are parameterized types is:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class NewEmployeeEvent {
+  public String getName();
+  public Iterable&lt;EducationHistory&gt; getEducation();
+  public Map&lt;String, Address&gt; getAddresses();
+}</pre><p>
+				A sample of valid property expressions for this event is shown next:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select name, education, education[0].date, addresses('home').street
+from NewEmployeeEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="event-properties-indexedmappedsetter"/>2.5.4. Setter Methods for Indexed and Mapped Properties</h3></div></div></div><p>
+				An EPL statement may update indexed or mapped properties of an event, provided the event class exposes the required setter method. 
+			</p><p>
+				The setter method for indexed properties must be named <code class="literal">set</code><span class="emphasis"><em>PropertyName</em></span> and must take two parameters: the <code class="literal">int</code>-type index and the <code class="literal">Object</code> type new value.
+			</p><p>
+				The setter method for mapped properties must be named <code class="literal">set</code><span class="emphasis"><em>PropertyName</em></span> and must take two parameters: the <code class="literal">String</code>-type map key and the <code class="literal">Object</code> type new map value.
+			</p><p>
+			  The following is an example event that features a setter method for the <code class="literal">props</code> mapped property and for the <code class="literal">array</code> indexed property:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public class MyEvent {
+  private Map props = new HashMap();
+  private Object[] array = new Object[10];
+
+  public void setProps(String name, Object value) {
+    props.put(name, value);
+  }
+
+  public void setArray(int index, Object value) {
+    array[index] = value;
+  }
+  // ... also provide regular JavaBean getters and setters for all properties</pre><p>
+			  This sample statement updates mapped and indexed property values:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">update istream MyEventStream set props('key') = 'abc', array[2] = 100</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="event-properties-knownlimit"/>2.5.5. Known Limitations</h3></div></div></div><p>
+				Esper employs byte code generation for fast access to event properties. When byte code generation is unsuccessful, the engine logs a warning and uses Java reflection to obtain property values instead.
+			</p><p>
+				A known limitation is that when an interface has an attribute of a particular type and the actual event bean class returns a subclass of that attribute, the engine logs a warning and uses reflection for that property.
+			</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="eventrep-java-util-map"/>2.6. <code class="literal">java.util.Map</code> Events</h2></div></div></div><a id="d0e936" class="indexterm"/><a id="d0e939" class="indexterm"/><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="eventrep-map-overview"/>2.6.1. Overview</h3></div></div></div><p>
+				Events can also be represented by objects that implement the <code class="literal">java.util.Map</code> interface. 
+				Event properties of <code class="literal">Map</code> events are the values in the map accessible through the <code class="literal">get</code> method exposed by the <code class="literal">java.util.Map</code> interface.
+			</p><p>
+				Similar to the Object-array event type, the Map event type takes part in the comprehensive type system that can eliminate the need to use Java classes as event types, thereby making it easier to change types at runtime or generate type information from another source.
+			</p><p>
+				A given Map event type can have one or more supertypes that must also be Map event types. All properties available on any of the Map supertypes are available on the type itself. In addition, anywhere within EPL that an event type name of a Map supertype is used, any of its Map subtypes and their subtypes match that expression.
+			</p><p>
+				Your application can add properties to an existing Map event type during runtime using the configuration operation <code class="literal">updateMapEventType</code>. Properties may not be updated or deleted - properties can only be added, and nested properties can be added as well. The runtime configuration also allows removing Map event types and adding them back with new type information.
+			</p><p>
+				After your application configures a Map event type by providing a type name, the type name can be used when defining further Map or Object-array event types by specifying the type name as a property type or an array property type.
+			</p><p>
+				One-to-Many relationships in Map event types are represented via arrays. A property in a Map event type may be an array of primitive, an array of Java object, an array of Map or an an array of Object-array.
+			</p><p>
+				The engine can process <code class="literal">java.util.Map</code> events via the <code class="literal">sendEvent(Map map, String eventTypeName)</code> method on the <code class="literal">EPRuntime</code> interface. Entries in the Map represent event properties. Keys must be of type <code class="literal">java.util.String</code> for the engine to be able to look up event property names specified by pattern or EPL statements. 
+			</p><p>
+				The engine does not validate Map event property names or values. Your application should ensure that objects passed in as event properties match the <code class="literal">create schema</code> property names and types, or the configured event type information when using runtime or static configuration.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="eventrep-map-properties"/>2.6.2. Map Properties</h3></div></div></div><p>
+				Map event properties can be of any type. Map event properties that are Java application objects or that are of type <code class="literal">java.util.Map</code> (or arrays thereof) or that are of type <code class="literal">Object[]</code> (object-array) (or arrays thereof) offer additional power:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						Properties that are Java application objects can be queried via the nested, indexed, mapped and dynamic property syntax as outlined earlier. 
+					</p></li><li><p>
+						Properties that are of type <code class="literal">Map</code> allow Maps to be nested arbitrarily deep and thus can be used to represent complex domain information. The nested, indexed, mapped and dynamic property syntax can be used to query Maps within Maps and arrays of Maps within Maps. 					
+					</p></li><li><p>
+						Properties that are of type <code class="literal">Object[]</code> (object-array) allow object-arrays to be nested arbitrarily deep. The nested, indexed, mapped and dynamic property syntax can be used to query nested Maps and object-arrays alike.
+					</p></li></ul></div><p>
+				In order to use <code class="literal">Map</code> events, the event type name and property names and types must be made known to the engine via Configuration or <code class="literal">create schema</code> EPL syntax. Please see examples in <a class="xref" href="epl_clauses.html#epl_createschema" title="5.16. Declaring an Event Type: Create Schema">Section 5.16, “Declaring an Event Type: Create Schema”</a> and <a class="xref" href="configuration.html#config-java-util-map" title="15.4.2. Events represented by java.util.Map">Section 15.4.2, “Events represented by java.util.Map”</a>.
+			</p><p>
+				The code snippet below defines a Map event type, creates a Map event and sends the event into the engine. The sample defines the <code class="literal">CarLocUpdateEvent</code> event type via runtime configuration interface (<code class="literal">create schema</code> or static configuration could have been used instead).
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Define CarLocUpdateEvent event type (example for runtime-configuration interface)
+Map&lt;String, Object&gt; def = new HashMap&lt;String, Object&gt;;
+def.put("carId", String.class);
+def.put("direction", int.class);
+
+epService.getEPAdministrator().getConfiguration().
+  addEventType("CarLocUpdateEvent", def);</pre><p>
+				The <code class="literal">CarLocUpdateEvent</code> can now be used in a statement:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select carId from CarLocUpdateEvent.win:time(1 min) where direction = 1</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Create a CarLocUpdateEvent event and send it into the engine for processing
+Map&lt;String, Object&gt; event = new HashMap&lt;String, Object&gt;();
+event.put("carId", carId);
+event.put("direction", direction);
+
+epRuntime.sendEvent(event, "CarLocUpdateEvent");</pre><p>
+				The engine can also query Java objects as values in a <code class="literal">Map</code> event via the nested property syntax. Thus <code class="literal">Map</code> events can be used to 
+				aggregate multiple data structures into a single event and query the composite information in a convenient way. The example below demonstrates a <code class="literal">Map</code> event with a transaction and an account object.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Map event = new HashMap();
+event.put("txn", txn);
+event.put("account", account);
+epRuntime.sendEvent(event, "TxnEvent");</pre><p>
+				An example statement could look as follows.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select account.id, account.rate * txn.amount 
+from TxnEvent.win:time(60 sec) 
+group by account.id</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="eventrep-map-supertype"/>2.6.3. Map Supertypes</h3></div></div></div><p>
+			   Your <code class="literal">Map</code> event type may declare one or more supertypes when configuring the type at engine initialization time or at runtime through the administrative interface. 
+		   </p><p>
+			   Supertypes of a <code class="literal">Map</code> event type must also be Map event types. All property names and types of a supertype are also available on a subtype and override such same-name properties of the subtype. In addition, anywhere within EPL that an event type name of a Map supertype is used, any of its Map subtypes also matches that expression (similar to the concept of interface in Java).
+		   </p><p>
+			   This example assumes that the <code class="literal">BaseUpdate</code> event type has been declared and acts as a supertype to the <code class="literal">AccountUpdate</code> event type (both Map event types): 
+		   </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">epService.getEPAdministrator().getConfiguration().
+    addEventType("AccountUpdate", accountUpdateDef, 
+    new String[] {"BaseUpdate"});</pre><p>
+			   Your application EPL statements may select <code class="literal">BaseUpdate</code> events and receive both <code class="literal">BaseUpdate</code> and <code class="literal">AccountUpdate</code> events, as well as any other subtypes of <code class="literal">BaseUpdate</code> and their subtypes.
+		   </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Receive BaseUpdate and any subtypes including subtypes of subtypes
+select * from BaseUpdate</pre><p>
+			   Your application Map event type may have multiple supertypes. The multiple inheritance hierarchy between Maps can be arbitrarily deep, however cyclic dependencies are not allowed. If using runtime configuration, supertypes must exist before a subtype to a supertype can be added.
+		   </p><p>
+			   See <a class="xref" href="configuration.html#config-java-util-map" title="15.4.2. Events represented by java.util.Map">Section 15.4.2, “Events represented by java.util.Map”</a> for more information on configuring Map event types.
+		   </p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="eventrep-map-advanced"/>2.6.4. Advanced Map Property Types</h3></div></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="eventrep-map-nested"/>2.6.4.1. Nested Properties</h4></div></div></div><p>
+				   Strongly-typed nested <code class="literal">Map</code>-within-<code class="literal">Map</code> events can be used to build rich, type-safe event types on the fly. Use the <code class="literal">addEventType</code> method on <code class="literal">Configuration</code> or <code class="literal">ConfigurationOperations</code> for initialization-time and runtime-time type definition, or the <code class="literal">create schema</code> EPL syntax.
+			   </p><p>
+				   Noteworthy points are:
+			   </p><div class="itemizedlist"><ul compact="compact"><li><p>
+							JavaBean (POJO) objects can appear as properties in <code class="literal">Map</code> event types. 
+						</p></li><li><p>
+							One may represent Map-within-Map and Map-Array within Map (same for object-array) using the name of a previously registered Map (or object-array) event type.
+						</p></li><li><p>
+							There is no limit to the number of nesting levels.
+						</p></li><li><p>
+							Dynamic properties can be used to query <code class="literal">Map</code>-within-<code class="literal">Map</code> keys that may not be known in advance. 
+						</p></li><li><p>
+							The engine returns a <code class="literal">null</code> value for properties for which the access path into the nested structure cannot be followed where map entries do not exist.
+						</p></li></ul></div><p>
+				   For demonstration, in this example our top-level event type is an <code class="literal">AccountUpdate</code> event, which has an <code class="literal">UpdatedFieldType</code> structure as a property. Inside the <code class="literal">UpdatedFieldType</code> structure the example defines various fields, as well as a property by name 'history' that holds a JavaBean class <code class="literal">UpdateHistory</code> to represent the update history for the account. The code snippet to define the event type is thus:
+			   </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Map&lt;String, Object&gt; updatedFieldDef = new HashMap&lt;String, Object&gt;();
+updatedFieldDef.put("name", String.class);
+updatedFieldDef.put("addressLine1", String.class);
+updatedFieldDef.put("history", UpdateHistory.class);
+epService.getEPAdministrator().getConfiguration().
+    addEventType("UpdatedFieldType", updatedFieldDef);
+
+Map&lt;String, Object&gt; accountUpdateDef = new HashMap&lt;String, Object&gt;();
+accountUpdateDef.put("accountId", long.class);
+accountUpdateDef.put("fields", "UpdatedFieldType");	
+// the latter can also be:  accountUpdateDef.put("fields", updatedFieldDef);
+
+epService.getEPAdministrator().getConfiguration().
+    addEventType("AccountUpdate", accountUpdateDef);</pre><p>
+				   The next code snippet populates a sample event and sends the event into the engine:
+			   </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Map&lt;String, Object&gt; updatedField = new HashMap&lt;String, Object&gt;();
+updatedField.put("name", "Joe Doe");
+updatedField.put("addressLine1", "40 Popular Street");
+updatedField.put("history", new UpdateHistory());
+
+Map&lt;String, Object&gt; accountUpdate = new HashMap&lt;String, Object&gt;();
+accountUpdate.put("accountId", 10009901);
+accountUpdate.put("fields", updatedField);
+
+epService.getEPRuntime().sendEvent(accountUpdate, "AccountUpdate");</pre><p>
+				   Last, a sample query to interrogate <code class="literal">AccountUpdate</code> events is as follows:
+			   </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select accountId, fields.name, fields.addressLine1, fields.history.lastUpdate
+from AccountUpdate</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="eventrep-map-array"/>2.6.4.2. One-to-Many Relationships</h4></div></div></div><p>
+				   To model repeated properties within a Map, you may use arrays as properties in a Map. You may use an array of primitive types or an array of JavaBean objects or an array of a previously declared Map or object-array event type.
+			   </p><p>
+				   When using a previously declared Map event type as an array property, the literal <code class="literal">[]</code> must be appended after the event type name.
+			   </p><p>
+				   This following example defines a Map event type by name <code class="literal">Sale</code> to hold array properties of the various types. It assumes a <code class="literal">SalesPerson</code> Java class exists and a Map event type by name <code class="literal">OrderItem</code> was declared:
+			   </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Map&lt;String, Object&gt; sale = new HashMap&lt;String, Object&gt;();
+sale.put("userids", int[].class);
+sale.put("salesPersons", SalesPerson[].class);
+sale.put("items", "OrderItem[]");	 // The property type is the name itself appended by []
+
+epService.getEPAdministrator().getConfiguration().
+    addEventType("SaleEvent", sale);</pre><p>
+				   The three properties that the above example declares are:
+			   </p><div class="itemizedlist"><ul><li><p>
+						 An integer array of user ids.
+					   </p></li><li><p>
+						 An array of <code class="literal">SalesPerson</code> Java objects.
+					   </p></li><li><p>
+						 An array of Maps for order items.
+					   </p></li></ul></div><p>
+				   The next EPL statement is a sample query asking for property values held by arrays:
+			   </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select userids[0], salesPersons[1].name, 
+    items[1], items[1].price.amount from SaleEvent</pre></div></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="eventrep-objectarray"/>2.7. Object-array (<code class="literal">Object[]</code>) Events</h2></div></div></div><a id="d0e1244" class="indexterm"/><a id="d0e1247" class="indexterm"/><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="eventrep-objectarray-overview"/>2.7.1. Overview</h3></div></div></div><p>
+				An event can also be represented by an array of objects. Event properties of <code class="literal">Object[]</code> events are the array element values. 
+			</p><p>
+				Similar to the Map event type, the object-array event type takes part in the comprehensive type system that can eliminate the need to use Java classes as event types, thereby making it easier to change types at runtime or generate type information from another source.
+			</p><p>
+				A given Object-array event type can have only a single supertype that must also be an Object-array event type. All properties available on the Object-array supertype is also available on the type itself. In addition, anywhere within EPL that an event type name of an Object-array supertype is used, any of its Object-array subtypes and their subtypes match that expression.
+			</p><p>
+				Your application can add properties to an existing Object-array event type during runtime using the configuration operation <code class="literal">updateObjectArrayEventType</code>. Properties may not be updated or deleted - properties can only be added, and nested properties can be added as well. The runtime configuration also allows removing Object-array event types and adding them back with new type information.
+			</p><p>
+				After your application configures an Object-array event type by providing a type name, the type name can be used when defining further Object-array or Map event types by specifying the type name as a property type or an array property type.
+			</p><p>
+				One-to-Many relationships in Object-array event types are represented via arrays. A property in an Object-array event type may be an array of primitive, an array of Java object, an array of Map or an array of Object-array.
+			</p><p>
+				The engine can process <code class="literal">Object[]</code> events via the <code class="literal">sendEvent(Object[] array, String eventTypeName)</code> method on the <code class="literal">EPRuntime</code> interface. Entries in the Object array represent event properties.
+			</p><p>
+				The engine does not validate Object array length or value types. Your application must ensure that Object array values match the declaration of the event type: The type and position of property values must match property names and types in the same exact order and object array length must match the number of properties declared via <code class="literal">create schema</code> or the static or runtime configuration.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="eventrep-objectarray-properties"/>2.7.2. Object-Array Properties</h3></div></div></div><p>
+				Object-array event properties can be of any type. Object-array event properties that are Java application objects or that are of type <code class="literal">java.util.Map</code> (or arrays thereof)  or that are of type <code class="literal">Object-array</code> (or arrays thereof) offer additional power:
+			</p><div class="itemizedlist"><ul compact="compact"><li><p>
+						Properties that are Java application objects can be queried via the nested, indexed, mapped and dynamic property syntax as outlined earlier. 
+					</p></li><li><p>
+						Properties that are of type <code class="literal">Object[]</code> allow object-arrays to be nested arbitrarily deep and thus can be used to represent complex domain information. The nested, indexed, mapped and dynamic property syntax can be used to query object-array within object-arrays and arrays of object-arrays within object-arrays. 					
+					</p></li><li><p>
+						Properties that are of type <code class="literal">Map</code> allow Maps to be nested in object-array events and arbitrarily deep. The nested, indexed, mapped and dynamic property syntax can be used to query nested Maps and object-arrays alike.
+					</p></li></ul></div><p>
+				In order to use <code class="literal">Object[]</code> (object-array) events, the event type name and property names and types, in a well-defined order that must match object-array event properties, must be made known to the engine via configuration or <code class="literal">create schema</code> EPL syntax. Please see examples in <a class="xref" href="epl_clauses.html#epl_createschema" title="5.16. Declaring an Event Type: Create Schema">Section 5.16, “Declaring an Event Type: Create Schema”</a> and <a class="xref" href="configuration.html#config-objectarray" title="15.4.3. Events represented by Object[] (Object-array)">Section 15.4.3, “Events represented by Object[] (Object-array)”</a>.
+			</p><p>
+				The code snippet below defines an Object-array event type, creates an Object-array event and sends the event into the engine. The sample defines the <code class="literal">CarLocUpdateEvent</code> event type via the runtime configuration interface (<code class="literal">create schema</code> or static configuration could have been used instead).
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Define CarLocUpdateEvent event type (example for runtime-configuration interface)
+String[] propertyNames = {"carId", "direction"};   // order is important
+Object[] propertyTypes = {String.class, int.class};  // type order matches name order
+
+epService.getEPAdministrator().getConfiguration().
+  addEventType("CarLocUpdateEvent", propertyNames, propertyTypes);</pre><p>
+				The <code class="literal">CarLocUpdateEvent</code> can now be used in a statement:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select carId from CarLocUpdateEvent.win:time(1 min) where direction = 1</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// Send an event
+Object[] event = {carId, direction};
+epRuntime.sendEvent(event, "CarLocUpdateEvent");</pre><p>
+				The engine can also query Java objects as values in an <code class="literal">Object[]</code> event via the nested property syntax. Thus <code class="literal">Object[]</code> events can be used to 
+				aggregate multiple data structures into a single event and query the composite information in a convenient way. The example below demonstrates a <code class="literal">Object[]</code> event with a transaction and an account object.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">epRuntime.sendEvent(new Object[] {txn, account}, "TxnEvent");</pre><p>
+				An example statement could look as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select account.id, account.rate * txn.amount 
+from TxnEvent.win:time(60 sec) 
+group by account.id</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="eventrep-objectarray-supertype"/>2.7.3. Object-Array Supertype</h3></div></div></div><p>
+			   Your <code class="literal">Object[]</code> (object-array) event type may declare one supertype when configuring the type at engine initialization time or at runtime through the administrative interface. 
+		   </p><p>
+			   The supertype of a <code class="literal">Object[]</code> event type must also be an object-array event type. All property names and types of a supertype are also available on a subtype and override such same-name properties of the subtype. In addition, anywhere within EPL that an event type name of an Object-array supertype is used, any of its Object-array subtypes also matches that expression (similar to the concept of interface or superclass).
+		   </p><p>
+		     The properties provided by the top-most supertype must occur first in the object array. Subtypes each append to the object array. The number of values appended must match the 
+		     number of properties declared by the subtype.
+		   </p><p>
+			  For example, assume your application declares the following two types:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create objectarray schema SuperType (p0 string)</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create objectarray schema SubType (p1 string) inherits SuperType</pre><p>
+			  The object array event objects that your application can send into the engine are shown by the next code snippet:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">epRuntime.sendEvent(new Object[] {"p0_value", "p1_value"}, "SubType");
+epRuntime.sendEvent(new Object[] {"p0_value"}, "SuperType");</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="eventrep-objectarray-advanced"/>2.7.4. Advanced Object-Array Property Types</h3></div></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="eventrep-object-array-nested"/>2.7.4.1. Nested Properties</h4></div></div></div><p>
+				   Strongly-typed nested <code class="literal">Object[]</code>-within-<code class="literal">Object[]</code> events can be used to build rich, type-safe event types on the fly. Use the <code class="literal">addEventType</code> method on <code class="literal">Configuration</code> or <code class="literal">ConfigurationOperations</code> for initialization-time and runtime-time type definition, or the <code class="literal">create schema</code> EPL syntax.
+			   </p><p>
+				   Noteworthy points are:
+			   </p><div class="itemizedlist"><ul compact="compact"><li><p>
+							JavaBean (POJO) objects can appear as properties in <code class="literal">Object[]</code> event types. 
+						</p></li><li><p>
+							One may represent Object-array within Object-array and Object-Array-Array within Object-array (same for Map event types) using the name of a previously registered Object-array (or Map) event type.
+						</p></li><li><p>
+							There is no limit to the number of nesting levels.
+						</p></li><li><p>
+							Dynamic properties can be used to query <code class="literal">Object[]</code>-within-<code class="literal">Object[]</code> values that may not be known in advance. 
+						</p></li><li><p>
+							The engine returns a <code class="literal">null</code> value for properties for which the access path into the nested structure cannot be followed where entries do not exist.
+						</p></li></ul></div><p>
+				   For demonstration, in this example our top-level event type is an <code class="literal">AccountUpdate</code> event, which has an <code class="literal">UpdatedFieldType</code> structure as a property. Inside the <code class="literal">UpdatedFieldType</code> structure the example defines various fields, as well as a property by name 'history' that holds a JavaBean class <code class="literal">UpdateHistory</code> to represent the update history for the account. The code snippet to define the event type is thus:
+			   </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">String[] propertyNamesUpdField = {"name", "addressLine1", "history"};
+Object[] propertyTypesUpdField = {String.class, String.class, UpdateHistory.class};
+epService.getEPAdministrator().getConfiguration().
+    addEventType("UpdatedFieldType", propertyNamesUpdField, propertyTypesUpdField);
+
+String[] propertyNamesAccountUpdate = {"accountId", "fields"};
+Object[] propertyTypesAccountUpdate = {long.class, "UpdatedFieldType"};
+epService.getEPAdministrator().getConfiguration().
+    addEventType("AccountUpdate", propertyNamesAccountUpdate, propertyTypesAccountUpdate);</pre><p>
+				   The next code snippet populates a sample event and sends the event into the engine:
+			   </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">Object[] updatedField = {"Joe Doe", "40 Popular Street", new UpdateHistory()};
+Object[] accountUpdate = {10009901, updatedField};
+
+epService.getEPRuntime().sendEvent(accountUpdate, "AccountUpdate");</pre><p>
+				   Last, a sample query to interrogate <code class="literal">AccountUpdate</code> events is as follows:
+			   </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select accountId, fields.name, fields.addressLine1, fields.history.lastUpdate
+from AccountUpdate</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="eventrep-objectarray-array"/>2.7.4.2. One-to-Many Relationships</h4></div></div></div><p>
+				   To model repeated properties within an Object-array, you may use arrays as properties in an Object-array. You may use an array of primitive types or an array of JavaBean objects or an array of a previously declared Object-array or Map event type.
+			   </p><p>
+				   When using a previously declared Object-array event type as an array property, the literal <code class="literal">[]</code> must be appended after the event type name.
+			   </p><p>
+				   This following example defines an Object-array event type by name <code class="literal">Sale</code> to hold array properties of the various types. It assumes a <code class="literal">SalesPerson</code> Java class exists and an Object-array event type by name <code class="literal">OrderItem</code> was declared:
+			   </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">String[] propertyNames = {"userids", "salesPersons", "items"};
+Object[] propertyTypes = {int[].class, SalesPerson[].class, "OrderItem[]");
+
+epService.getEPAdministrator().getConfiguration().
+    addEventType("SaleEvent", propertyNames, propertyTypes);</pre><p>
+				   The three properties that the above example declares are:
+			   </p><div class="itemizedlist"><ul><li><p>
+						 An integer array of user ids.
+					   </p></li><li><p>
+						 An array of <code class="literal">SalesPerson</code> Java objects.
+					   </p></li><li><p>
+						 An array of Object-array for order items.
+					   </p></li></ul></div><p>
+				   The next EPL statement is a sample query asking for property values held by arrays:
+			   </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select userids[0], salesPersons[1].name, 
+    items[1], items[1].price.amount from SaleEvent</pre></div></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="eventrep-xml-dom"/>2.8. <code class="literal">org.w3c.dom.Node</code> XML Events</h2></div></div></div><a id="d0e1519" class="indexterm"/><a id="d0e1522" class="indexterm"/><p>
+			Events can be represented as <code class="literal">org.w3c.dom.Node</code> instances and send into the engine via the <code class="literal">sendEvent</code> method on <code class="literal">EPRuntime</code> or via <code class="literal">EventSender</code>. Please note that configuration is required so the event type name and root element name is known. See <a class="xref" href="configuration.html" title="Chapter 15. Configuration">Chapter 15, <i>Configuration</i></a>.
+		</p><p>
+			If a XML schema document (XSD file) can be made available as part of the configuration, then Esper can read the schema and appropriately present event type metadata and validate statements that use the event type and its properties. See <a class="xref" href="event_representation.html#eventrep-xml-dom-schema" title="2.8.1. Schema-Provided XML Events">Section 2.8.1, “Schema-Provided XML Events”</a>.
+		</p><p>
+			When no XML schema document is provided, XML events can still be queried, however the return type and return values of property expressions are string-only and no event type metadata is available other then for explicitly configured properties. See <a class="xref" href="event_representation.html#eventrep-xml-dom-noschema" title="2.8.2. No-Schema-Provided XML Events">Section 2.8.2, “No-Schema-Provided XML Events”</a>.
+		</p><p>
+			In all cases Esper allows you to configure explicit XPath expressions as event properties. You can specify arbitrary XPath functions or expressions and provide a property name and type by which result values will be available for use in EPL statements. See <a class="xref" href="event_representation.html#eventrep-xml-dom-explicit" title="2.8.3. Explicitly-Configured Properties">Section 2.8.3, “Explicitly-Configured Properties”</a>.
+		</p><p>
+			Nested, mapped and indexed event properties are also supported in expressions against <code class="literal">org.w3c.dom.Node</code> events. Thus XML trees can conveniently be interrogated via the property expression syntax.
+		</p><p>
+			Only one event type per root element name may be configured. The engine recognizes each event by its root element name or you may use <code class="literal">EventSender</code> to send events.
+		</p><p>
+			This section uses the following XML document as an example:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;Sensor xmlns="SensorSchema"&gt;
+  &lt;ID&gt;urn:epc:1:4.16.36&lt;/ID&gt;
+  &lt;Observation Command="READ_PALLET_TAGS_ONLY"&gt;
+    &lt;ID&gt;00000001&lt;/ID&gt;
+    &lt;Tag&gt;
+      &lt;ID&gt;urn:epc:1:2.24.400&lt;/ID&gt;
+    &lt;/Tag&gt;
+    &lt;Tag&gt;
+      &lt;ID&gt;urn:epc:1:2.24.401&lt;/ID&gt;
+    &lt;/Tag&gt;
+  &lt;/Observation&gt;
+&lt;/Sensor&gt;</pre><p>
+			The schema for the example is:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+
+  &lt;xs:element name="Sensor"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="ID" type="xs:string"/&gt;
+        &lt;xs:element ref="Observation" /&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+
+  &lt;xs:element name="Observation"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="ID" type="xs:string"/&gt;
+        &lt;xs:element ref="Tag" maxOccurs="unbounded" /&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name="Command" type="xs:string" use="required" /&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+
+  &lt;xs:element name="Tag"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="ID" type="xs:string"/&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</pre><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="eventrep-xml-dom-schema"/>2.8.1. Schema-Provided XML Events</h3></div></div></div><p>
+			   If you have a XSD schema document available for your XML events, Esper can interrogate the schema. The benefits are:
+		   </p><div class="itemizedlist"><ul compact="compact"><li><p>
+						New EPL statements that refer to event properties are validated against the types provided in the schema.
+					</p></li><li><p>
+						Event type metadata becomes available for retrieval as part of the <code class="literal">EventType</code> interface.
+					</p></li></ul></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="eventrep-xml-dom-schema-start"/>2.8.1.1. Getting Started</h4></div></div></div><p>
+					The engine reads a XSD schema file from an URL you provide. Make sure files imported by the XSD schema file can also be resolved.
+				</p><p>
+					The configuration accepts a schema URL. This is a sample code snippet to determine a schema URL from a file in classpath:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">URL schemaURL = this.getClass().getClassLoader().getResource("sensor.xsd");</pre><p>
+					Here is a sample use of the runtime configuration API, please see <a class="xref" href="configuration.html" title="Chapter 15. Configuration">Chapter 15, <i>Configuration</i></a> for further examples.
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">epService = EPServiceProviderManager.getDefaultProvider();
+ConfigurationEventTypeXMLDOM sensorcfg = new ConfigurationEventTypeXMLDOM();
+sensorcfg.setRootElementName("Sensor");
+sensorcfg.setSchemaResource(schemaURL.toString());
+epService.getEPAdministrator().getConfiguration()
+    .addEventType("SensorEvent", sensorcfg);</pre><p>
+					You must provide a root element name. This name is used to look up the event type for the <code class="literal">sendEvent(org.w3c.Node node)</code> method. An <code class="literal">EventSender</code> is a useful alternative method
+					for sending events if the type lookup based on the root or document element name is not desired.
+				</p><p>
+					After adding the event type, you may create statements and send events. Next is a sample statement:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select ID, Observation.Command, Observation.ID, 
+  Observation.Tag[0].ID, Observation.Tag[1].ID
+from SensorEvent</pre><p>
+					As you can see from the example above, property expressions can query property values held in the XML document's elements and attributes.
+				</p><p>
+					There are multiple ways to obtain a XML DOM document instance from a XML string. The next code snippet shows how to obtain a XML DOM <code class="literal">org.w3c.Document</code> instance:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">InputSource source = new InputSource(new StringReader(xml));
+DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+builderFactory.setNamespaceAware(true);
+Document doc = builderFactory.newDocumentBuilder().parse(source);</pre><p>
+					Send the <code class="literal">org.w3c.Node</code> or <code class="literal">Document</code> object into the engine for processing:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">epService.getEPRuntime().sendEvent(doc);</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="eventrep-xml-dom-schema-propertyexpr"/>2.8.1.2. Property Expressions and Namespaces</h4></div></div></div><p>
+					By default, property expressions such as <code class="literal">Observation.Tag[0].ID</code> are evaluated by a fast DOM-walker implementation provided by Esper. This DOM-walker implementation is not namespace-aware.
+				</p><p>
+					Should you require namespace-aware traversal of the DOM document, you must set the <code class="literal">xpath-property-expr</code> configuration option to true (default is false). This flag causes Esper to generate namespace-aware XPath
+					expressions from each property expression instead of the DOM-walker, as described next. Setting the <code class="literal">xpath-property-expr</code> option to true requires that you also configure namespace prefixes as described below.
+				</p><p>
+					When matching up the property names with the XSD schema information, the engine determines whether the attribute or element provides values. The algorithm checks attribute names first followed by element names. It takes the first match to the specified property name.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="eventrep-xml-dom-schema-propertyexpr-xpath"/>2.8.1.3. Property Expression to XPath Rewrite</h4></div></div></div><p>
+					By setting the <code class="literal">xpath-property-expr</code> option the engine rewrites each property expression as an XPath expression, effectively handing the evaluation over to the underlying XPath implementation
+					available from classpath. Most JVM have a built-in XPath implementation and there are also optimized, fast implementations such as Jaxen that can be used as well.
+				</p><p>
+					Set the <code class="literal">xpath-property-expr</code> option if you need namespace-aware document traversal, such as when your schema mixes several namespaces and element names are overlapping.
+				</p><p>
+					The below table samples several property expressions and the XPath expression generated for each, without namespace prefixes to keep the example simple:
+				</p><div class="table"><a id="d0e1667"/><p class="title"><b>Table 2.5. Property Expression to XPath Expression</b></p><div class="table-contents"><table summary="Property Expression to XPath Expression" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Property Expression</th><th>Equivalent XPath</th></tr></thead><tbody><tr><td><code class="literal">Observeration.ID</code></td><td><code class="literal">/Sensor/Observation/ID</code></td></tr><tr><td><code class="literal">Observeration.Command</code></td><td><code class="literal">/Sensor/Observation/@Command</code></td></tr><tr><td><code class="literal">Observeration.Tag[0].ID</code></td><td><code class="literal">/Sensor/Observation/Tag[position() = 1]/ID</code></td></tr></tbody></table></div></div><br class="table-break"/><p> 
+					For mapped properties that are specified via the syntax <code class="literal">name('key')</code>, the algorithm looks for an attribute by name <code class="literal">id</code> and generates a XPath expression as <code class="literal">mapped[@id='key']</code>.
+				</p><p> 
+					Finally, here is an example that includes all different types of properties and their XPath expression equivalent in one property expression:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select nested.mapped('key').indexed[1].attribute from MyEvent</pre><p> 
+					The equivalent XPath expression follows, this time including <code class="literal">n0</code> as a sample namespace prefix:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">/n0:rootelement/n0:nested/n0:mapped[@id='key']/n0:indexed[position() = 2]/@attribute</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="eventrep-xml-dom-schema-propertyarray"/>2.8.1.4. Array Properties</h4></div></div></div><p>
+					All elements that are unbound or have max occurs greater then 1 in the XSD schema are represented as indexed properties and require an index for resolution.
+				</p><p>
+					For example, the following is not a valid property expression in the sample Sensor document: <code class="literal">Observeration.Tag.ID</code>. As no index is provided for <code class="literal">Tag</code>, the property expression is not valid.
+				</p><p>
+					Repeated elements within a parent element in which the repeated element is a simple type also are represented as an array.
+				</p><p>
+					Consider the next XML document:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&lt;item&gt;
+  &lt;book sku="8800090"&gt;
+    &lt;author&gt;Isaac Asimov&lt;/author&gt;
+    &lt;author&gt;Robert A Heinlein&lt;/author&gt;
+  &lt;/book&gt;
+&lt;/item&gt;</pre><p>
+					Here, the result of the expression <code class="literal">book.author</code> is an array of type String and the result of <code class="literal">book.author[0]</code> is a String value.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="eventrep-xml-dom-schema-propertydynamic"/>2.8.1.5. Dynamic Properties</h4></div></div></div><p>
+					  Dynamic properties are not validated against the XSD schema information and their result value is always <code class="literal">org.w3c.Node</code>. You may use a user-defined function to process dynamic properties returning <code class="literal">Node</code>. As an alternative consider using an explicit property.
+				</p><p>
+					An example dynamic property is <code class="literal">Origin?.ID</code> which will look for an element by name <code class="literal">Origin</code> that contains an element or attribute node by name <code class="literal">LocationCode</code>:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select Origin?.LocationCode from SensorEvent</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="eventrep-xml-dom-schema-propertytranspose"/>2.8.1.6. Transposing Properties</h4></div></div></div><p>
+					When providing a XSD document, the default configuration allows to transpose property values that are themselves complex elements, as defined in the XSD schema, into a new stream. This behavior can be controlled via the flag <code class="literal">auto-fragment</code>.
+				</p><p>
+					For example, consider the next query:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">insert into ObservationStream
+select ID, Observation from SensorEvent</pre><p>
+					The <code class="literal">Observation</code> as a property of the <code class="literal">SensorEvent</code> gets itself inserted into a new stream by name <code class="literal">ObservationStream</code>. The <code class="literal">ObservationStream</code>
+					thus consists of a string-typed <code class="literal">ID</code> property and a complex-typed property named <code class="literal">Observation</code>, as described in the schema.
+				</p><p>
+					A further statement can use this stream to query:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select Observation.Command, Observation.Tag[0].ID from ObservationStream</pre><p>
+					Before continuing the discussion, here is an alternative syntax using the wildcard-select, that is also useful:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">insert into TagListStream
+select ID as sensorId, Observation.* from SensorEvent</pre><p>
+					The new <code class="literal">TagListStream</code> has a string-typed <code class="literal">ID</code> and <code class="literal">Command</code> property as well as an array of <code class="literal">Tag</code> properties that are complex types themselves as defined in the schema.
+				</p><p>
+					Next is a sample statement to query the new stream:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select sensorId, Command, Tag[0].ID from TagListStream</pre><p>
+					Please note the following limitations:
+				</p><div class="itemizedlist"><ul compact="compact"><li><p>
+							The XPath standard prescribes that XPath expressions against <code class="literal">org.w3c.Node</code> are evaluated against the owner document of the <code class="literal">Node</code>. Therefore XPath is not relative to the current node but absolute against each node's owner document. Since Esper does not create new document instances for transposed nodes, transposing properties is not possible when the <code class="literal">xpath-property-expr</code> flag is set.
+						</p></li><li><p>
+							Complex elements that have both simple element values and complex child elements are not transposed. This is to ensure their property value is not hidden. Use an explicit XPath expression to transpose such properties.
+						</p></li></ul></div><p>
+					Esper automatically registers a new event type for transposed properties. It generates the type name of the new XML event type from the XML event type name and the property names used in the expression. The synposis is <span class="emphasis"><em>type_name.property_name[.property_name...]</em></span>. The type name can be looked up, for example for use with <code class="literal">EventSender</code> or can be created in advance.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="eventrep-xml-dom-eventsender"/>2.8.1.7. Event Sender</h4></div></div></div><p>
+					An <code class="literal">EventSender</code> sends events into the engine for a given type, saving a type lookup based on element name.
+				</p><p>
+					This brief example sends an event via <code class="literal">EventSender</code>:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">EventSender sender = epRuntime.getEventSender("SensorEvent");
+sender.sendEvent(node);</pre><p>
+					The XML DOM event sender checks the root element name before processing the event. Use the <code class="literal">event-sender-validates-root</code> setting to disable validation. This forces the engine to process XML documents according to any predefined type without validation of the root element name.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="eventrep-xml-dom-limitations"/>2.8.1.8. Limitations</h4></div></div></div><p>
+				   The engine schema interrogation is based on the Xerces distribution packaged into Sun Java runtimes. Your application may not replace the JRE's Xerces version and use XML schemas, unless your application sets the DOM implementation registry as shown below before loading the engine configuration:
+			   </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">System.setProperty(DOMImplementationRegistry.PROPERTY, 
+  "com.sun.org.apache.xerces.internal.dom.DOMXSImplementationSourceImpl");</pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="eventrep-xml-dom-noschema"/>2.8.2. No-Schema-Provided XML Events</h3></div></div></div><p>
+			   Without a schema document a XML event may still be queried. However there are important differences in the metadata available without a schema document and therefore the property expression results. These differences are outlined below.
+		   </p><p>
+				All property expressions against a XML type without schema are assumed valid. There is no validation of the property expression other then syntax validation. At runtime, property expressions return string-type values or <code class="literal">null</code> if the expression did not
+				yield a matching element or attribute result.
+			</p><p>
+				When asked for property names or property metadata, a no-schema type returns empty array.
+			</p><p>
+				In all other aspects the type behaves the same as the schema-provided type described earlier.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="eventrep-xml-dom-explicit"/>2.8.3. Explicitly-Configured Properties</h3></div></div></div><p>
+		     Regardless of whether or not you provide a XSD schema for the XML event type, you can always fall back to configuring explicit properties that are backed by XPath expressions.
+		   </p><p>
+		     For further documentation on XPath, please consult the XPath standard or other online material. Consider using Jaxen or Apache Axiom, for example, to provide faster XPath evaluation then your Java VM built-in XPath provider may offer.
+		   </p><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="eventrep-xml-dom-explicit-simple"/>2.8.3.1. Simple Explicit Property</h4></div></div></div><p>
+					Shown below is an example configuration that adds an explicit property backed by a XPath expression and that defines namespace prefixes:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">epService = EPServiceProviderManager.getDefaultProvider();
+ConfigurationEventTypeXMLDOM sensorcfg = new ConfigurationEventTypeXMLDOM();
+sensorcfg.addXPathProperty("countTags", "count(/ss:Sensor/ss:Observation/ss:Tag)", 
+    XPathConstants.NUMBER);
+sensorcfg.addNamespacePrefix("ss", "SensorSchema");
+sensorcfg.setRootElementName("Sensor");
+epService.getEPAdministrator().getConfiguration()
+    .addEventType("SensorEvent", sensorcfg);</pre><p>
+					The <code class="literal">countTags</code> property is now available for querying:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select countTags from SensorEvent</pre><p>
+					The XPath expression <code class="literal">count(...)</code> is a XPath built-in function that counts the number of nodes, for the example document the result is <code class="literal">2</code>.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="eventrep-xml-dom-explicit-casted"/>2.8.3.2. Explicit Property Casting and Parsing</h4></div></div></div><p>
+					Esper can parse or cast the result of your XPath expression to the desired type. Your property configuration provides the type to cast to, like this:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">sensorcfg.addXPathProperty("countTags", "count(/ss:Sensor/ss:Observation/ss:Tag)", 
+    XPathConstants.NUMBER, "int");</pre><p>
+					The type supplied to the property configuration must be one of the built-in types. Arrays of built-in type are also possible, requiring the <code class="literal">XPathConstants.NODESET</code> type returned by your XPath expression, as follows:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">sensorcfg.addXPathProperty("idarray", "//ss:Tag/ss:ID", 
+    XPathConstants.NODESET, "String[]");</pre><p>
+					The XPath expression <code class="literal">//ss:Tag/ss:ID</code> returns all ID nodes under a Tag node, regardless of where in the node tree the element is located. For the example document the result is <code class="literal">2</code> array elements <code class="literal">urn:epc:1:2.24.400</code> and <code class="literal">urn:epc:1:2.24.40</code>.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="eventrep-xml-dom-explicit-node"/>2.8.3.3. Node and Nodeset Explicit Property</h4></div></div></div><p>
+					An explicit property may return <code class="literal">XPathConstants.NODE</code> or <code class="literal">XPathConstants.NODESET</code> and can provide the event type name of a pre-configured event type for the property. The method name to add such properties is <code class="literal">addXPathPropertyFragment</code>.
+				</p><p>
+					This code snippet adds two explicit properties and assigns an event type name for each property:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">sensorcfg.addXPathPropertyFragment("tagOne", "//ss:Tag[position() = 1]", 
+    XPathConstants.NODE, "TagEvent");
+sensorcfg.addXPathPropertyFragment("tagArray", "//ss:Tag", 
+    XPathConstants.NODESET, "TagEvent");</pre><p>
+					The configuration above references the <code class="literal">TagEvent</code> event type. This type must also be configured. Prefix the root element name with "//" to cause the lookup to search the nested schema elements for the definition of the type:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">ConfigurationEventTypeXMLDOM tagcfg = new ConfigurationEventTypeXMLDOM();
+tagcfg.setRootElementName("//Tag");
+tagcfg.setSchemaResource(schemaURL);
+epAdministrator.getConfiguration()
+    .addEventType("TagEvent", tagcfg);</pre><p>
+					The <code class="literal">tagOne</code> and <code class="literal">tagArray</code> properties are now ready for selection and transposing to further streams:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">insert into TagOneStream select tagOne.* from SensorEvent</pre><p>
+					Select from the new stream:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select ID from TagOneStream</pre><p>
+					An example with indexed properties is shown next:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">insert into TagArrayStream select tagArray as mytags from SensorEvent</pre><p>
+					Select from the new stream:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select mytags[0].ID from TagArrayStream</pre></div></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="eventrep-plug-in"/>2.9. Additional Event Representations</h2></div></div></div><a id="d0e2006" class="indexterm"/><p>
+		    Part of the extension and plug-in features of Esper is an event representation API. This set of classes allow an application to create new event types and event instances based on information available elsewhere, statically or dynamically at runtime when EPL statements are created. Please see <a class="xref" href="extension.html#custom-event-representation" title="17.8. Event Type And Event Object">Section 17.8, “Event Type And Event Object”</a> for details.
+		</p><p>
+			Creating a plug-in event representation can be useful when your application has existing Java classes that carry event metadata and event property values and your application does not want to (or cannot) extract or transform
+such event metadata and event data into one of the built-in event representations (POJO Java objects, Map, Object-array or XML DOM).
+		</p><p>
+			Further use of a plug-in event representation is to provide a faster or short-cut access path to event data. For example, access to event data stored in a XML format through the Streaming API for XML (StAX) is known to be very efficient. A plug-in event representation can also provide network lookup and dynamic resolution of event type and dynamic sourcing of event instances.
+		</p><p>
+			Currently, EsperIO provides the following additional event representations:
+		</p><div class="itemizedlist"><ul compact="compact"><li><p>
+					Apache Axiom: Streaming API for XML (StAX) implementation
+				</p></li></ul></div><p>
+			Please see the EsperIO documentation for details on the above.
+		</p><p>
+			The chapter on <a class="xref" href="extension.html#custom-event-representation" title="17.8. Event Type And Event Object">Section 17.8, “Event Type And Event Object”</a> explains how to create your own custom event representation.
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="eventrep-update"/>2.10. Updating, Merging and Versioning Events</h2></div></div></div><a id="d0e2034" class="indexterm"/><a id="d0e2039" class="indexterm"/><p>
+			To summarize, an event is an immutable record of a past occurrence of an action or state change, and event properties contain useful information about an event.
+        </p><p>
+			The length of time an event is of interest to the event processing engine (retention time) depends on your EPL statements, and especially the data window, pattern and output rate 
+			limiting clauses of your statements.
+        </p><p>
+			During the retention time of an event more information about the event may become available, such as additional properties or changes to existing properties. 
+			Esper provides three concepts for handling updates to events.
+        </p><p>
+			  The first means to handle updating events is the <code class="literal">update istream</code> clause as further described in <a class="xref" href="epl_clauses.html#epl-update" title="5.21. Updating an Insert Stream: the Update IStream Clause">Section 5.21, “Updating an Insert Stream: the Update IStream Clause”</a>. It is useful when you need to update events as they enter a stream, before events are evaluated by any particular 
+			  consuming statement to that stream.
+        </p><p>
+			  The second means to update events is the <code class="literal">on-merge</code> and <code class="literal">on-update</code> clauses, for use with named windows only, as further described in <a class="xref" href="epl_clauses.html#named_upsert" title="5.15.11. Triggered Upsert using the On-Merge Clause">Section 5.15.11, “Triggered Upsert using the On-Merge Clause”</a> and <a class="xref" href="epl_clauses.html#named_update" title="5.15.7. Updating Named Windows: the On Update clause">Section 5.15.7, “Updating Named Windows: the On Update clause”</a>. On-merge
+			  is similar to the SQL <code class="literal">merge</code> clause and provides what is known as an "Upsert" operation: Update existing events or if no existing event(s) are found then insert a new event, all in one atomic operation provided by a single EPL statement. 
+			  On-update can be used to update individual properties of events held in a named window.
+        </p><p>
+			  The third means to handle updating events is the revision event types, for use with named windows only, as further described in <a class="xref" href="epl_clauses.html#named_versioning" title="5.15.13. Versioning and Revision Event Type Use with Named Windows">Section 5.15.13, “Versioning and Revision Event Type Use with Named Windows”</a>. With revision event types one can declare, via configuration only, multiple different event types and then
+			  have the engine present a merged event type that contains a superset of properties of all merged types, and have the engine merge events as they arrive without additional EPL statements.
+        </p><p>
+			Note that patterns do not reflect changes to past events. For the temporal nature of patterns, any changes to events that were observed in the past do not reflect upon current pattern state.
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="eventrep-coarse"/>2.11. Coarse-Grained Events</h2></div></div></div><a id="d0e2081" class="indexterm"/><a id="d0e2086" class="indexterm"/><p>
+			Your application events may consist of fairly comprehensive, coarse-grained structures or documents. For example in business-to-business integration scenarios, XML documents or other event objects can be rich deeply-nested graphs of event properties.
+        </p><p>
+			To extract information from a coarse-grained event or to perform bulk operations on the rows of the property graph in an event, Esper provides a convenient syntax: 
+			When specifying a filter expression in a pattern or in a <code class="literal">select</code> clause, it may contain a contained-event selection syntax, as further described in <a class="xref" href="epl_clauses.html#epl-containedeventselect" title="5.20. Contained-Event Selection">Section 5.20, “Contained-Event Selection”</a>.
+		</p></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="eventrep-insertinto"/>2.12. Event Objects Instantiated and Populated by <code class="literal">Insert Into</code></h2></div></div></div><a id="d0e2105" class="indexterm"/><p>
+			The <code class="literal">insert into</code> clause can populate instantiate new instances of Java object events, <code class="literal">java.util.Map</code> events and <code class="literal">Object[]</code> (object array) events directly from the results of <code class="literal">select</code> clause expressions and populate such instances. Simply use the event type name as the stream name in the <code class="literal">insert into</code> clause as described in <a class="xref" href="epl_clauses.html#epl-insert-into" title="5.10. Merging Streams and Continuous Insertion: the Insert Into Clause">Section 5.10, “Merging Streams and Continuous Insertion: the Insert Into Clause”</a>.
+        </p><p>
+           If instead you have an existing instance of a Java object returned by an expression, such as a single-row function or static method invocation for example, you can transpose that expression result object to a stream. This is described further in <a class="xref" href="epl_clauses.html#insert-into-expression" title="5.10.7. Transposing an Expression Result">Section 5.10.7, “Transposing an Expression Result”</a> and <a class="xref" href="functionreference.html#functionreference-transpose" title="9.4. Select-Clause transpose Function">Section 9.4, “Select-Clause transpose Function”</a>.
+        </p><p>
+			The column names specified in the <code class="literal">select</code> and <code class="literal">insert into</code> clause must match available writable properties in the event object to be populated (the target event type). The expression result types of any expressions in the <code class="literal">select</code> clause must also be compatible with the property types of the target event type.
+		</p><p>
+			If populating a POJO-based event type and the class provides a matching constructor, the expression result types of expressions in the <code class="literal">select</code> clause must be compatible with the constructor parameters in the order listed by the constructor. The <code class="literal">insert into</code> clause column names are not relevant in this case.
+		</p><p>
+			Consider the following example statement:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">insert into com.mycompany.NewEmployeeEvent 
+select fname as firstName, lname as lastName from HRSystemEvent</pre><p>
+			The above example specifies the fully-qualified class name of <code class="literal">NewEmployeeEvent</code>. The engine instantianes <code class="literal">NewEmployeeEvent</code> for each result row and populates the <code class="literal">firstName</code> and <code class="literal">lastName</code> properties of each instance from the result of <code class="literal">select</code> clause expressions. The <code class="literal">HRSystemEvent</code> in the example is assumed to have <code class="literal">lname</code> and <code class="literal">fname</code> properties, and either setter-methods and a default constructor, or a matching constructor.
+		</p><p>
+			Note how the example uses the <code class="literal">as</code>-keyword to assign column names that match the property names of the <code class="literal">NewEmployeeEvent</code> target event. If the property names of the source and target events are the same, the <code class="literal">as</code>-keyword is not required.
+		</p><p>
+			The next example is an alternate form and specifies property names within the <code class="literal">insert into</code> clause instead. The example also assumes that <code class="literal">NewEmployeeEvent</code> has been defined or imported via configuration since it does not specify the event class package name:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">insert into NewEmployeeEvent(firstName, lastName) 
+select fname, lname from HRSystemEvent</pre><p>
+			Finally, this example populates <code class="literal">HRSystemEvent</code> events. The example populates the value of a <code class="literal">type</code> property where the event has the value 'NEW' and populates a new event object with the value 'HIRED', copying the <code class="literal">fname</code> and <code class="literal">lname</code> property values to the new event object:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">insert into HRSystemEvent 
+select fname, lname, 'HIRED' as type from HRSystemEvent(type='NEW')</pre><p>
+          The matching of the <code class="literal">select</code> or <code class="literal">insert into</code>-clause column names to target event type's property names is case-sensitive. It is allowed to only populate a subset of all available columns in the target event type. Wildcard (<code class="literal">*</code>) is also allowed and copies all fields of the events or multiple events in a join.
+		</p><p>
+			For Java object events, your event class must provide setter-methods according to JavaBean conventions or, alternatively, a matching constructor. If the event class provides setter methods the class should also provide a default constructor taking no parameters. If the event class provides a matching constructor there is no need for setter-methods. If your event class does not have a default constructor and setter methods, or a matching constructor, your application may configure a factory method via <code class="literal">ConfigurationEventTypeLegacy</code>. 
+		</p><p>
+			The engine follows Java standards in terms of widening, performing widening automatically in cases where widening type conversion is allowed without loss of precision, for both boxed and primitive types and including BigInteger and BigDecimal.
+		</p><p>
+			When inserting array-typed properties into a Java, Map-type or Object-array underlying event the event definition should declare the target property as an array.
+		</p><p>
+		    Please note the following limitations: 
+		</p><div class="itemizedlist"><ul compact="compact"><li><p>
+					Event types that utilize XML <code class="literal">org.w3c.dom.Node</code> underlying event objects cannot be target of an <code class="literal">insert into</code> clause.
+				</p></li></ul></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="eventrep_comparing"/>2.13. Comparing Event Representations</h2></div></div></div><p>
+			Each of the event representations of Java object, Map and XML document has advantages and disadvantages that are summarized in the table below:
+        </p><div class="table"><a id="d0e2258"/><p class="title"><b>Table 2.6. Comparing Event Representations</b></p><div class="table-contents"><table summary="Comparing Event Representations" border="1"><colgroup><col/><col/><col/><col/><col/></colgroup><thead><tr><th> </th><th>Java Object (POJO/Bean or other)</th><th>Map</th><th>Object-array</th><th>XML Document</th></tr></thead><tbody><tr><td>Performance</td><td>Good</td><td>Good</td><td>Very Good</td><td>Not comparable and depending on use of XPath</td></tr><tr><td>Memory Use</td><td>Small</td><td>Medium</td><td>Small</td><td>Depends on DOM and XPath implementation used, can be large</td></tr><tr><td>Call Method on Event</td><td>Yes</td><td>Yes, if contains Object(s)</td><td>Yes, if contains Object(s)</td><td>No</td></tr><tr><td>Nested, Indexed, Mapped and Dynamic Properties</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr><tr><td>Course-grained event syntax</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr><tr><td>Insert-into that Representation</td><td>Yes</td><td>Yes</td><td>Yes</td><td>No</td></tr><tr><td>Runtime Type Change</td><td>Reload class, yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr><tr><td>Create-schema Syntax</td><td>Yes</td><td>Yes</td><td>Yes</td><td>No, runtime and static configuration</td></tr><tr><td>Object is Self-Descriptive</td><td>Yes</td><td>Yes</td><td>No</td><td>Yes</td></tr><tr><td>Supertypes</td><td>Multiple</td><td>Multiple</td><td>Single</td><td>No</td></tr></tbody></table></div></div><br class="table-break"/></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="technology_overview.html"><strong>Prev</strong>Chapter 1. Technology Overview</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="processingmodel.html"><strong>Next</strong>Chapter 3. Processing Model</a></li></ul></body></html>

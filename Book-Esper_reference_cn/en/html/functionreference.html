@@ -1,0 +1,895 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 9. EPL Reference: Functions</title><link rel="stylesheet" href="css/espertech.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Esper Reference"/><link rel="up" href="index.html" title="Esper Reference"/><link rel="prev" href="epl-operator.html" title="Chapter 8. EPL Reference: Operators"/><link rel="next" href="enumerationreference.html" title="Chapter 10. EPL Reference: Enumeration Methods"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.espertech.com" class="site_href"><strong>esper.codehaus.org and espertech.com</strong></a><a href="http://esper.codehaus.org/esper/documentation/documentation.html" class="doc_href"><strong>Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="epl-operator.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="enumerationreference.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="functionreference"/>Chapter 9. EPL Reference: Functions</h2></div></div></div><div class="toc"><dl><dt><span class="sect1"><a href="functionreference.html#epl-single-row-function-ref">9.1. Single-row Function Reference</a></span></dt><dd><dl><dt><span class="sect2"><a href="functionreference.html#epl-single-row-function-ref-case">9.1.1. The Case Control Flow Function</a></span></dt><dt><span class="sect2"><a href="functionreference.html#epl-single-row-function-cast">9.1.2. The Cast Function</a></span></dt><dt><span class="sect2"><a href="functionreference.html#epl-single-row-function-ref-coalesce">9.1.3. The Coalesce Function</a></span></dt><dt><span class="sect2"><a href="functionreference.html#epl-single-row-function-ref-currenttime">9.1.4. The Current_Timestamp Function</a></span></dt><dt><span class="sect2"><a href="functionreference.html#epl-single-row-function-exists">9.1.5. The Exists Function</a></span></dt><dt><span class="sect2"><a href="functionreference.html#epl-single-row-function-instanceof">9.1.6. The Instance-Of Function</a></span></dt><dt><span class="sect2"><a href="functionreference.html#epl-single-row-function-istream">9.1.7. The Istream Function</a></span></dt><dt><span class="sect2"><a href="functionreference.html#epl-single-row-function-ref-minmax">9.1.8. The Min and Max Functions</a></span></dt><dt><span class="sect2"><a href="functionreference.html#epl-single-row-function-ref-previous">9.1.9. The Previous Function</a></span></dt><dt><span class="sect2"><a href="functionreference.html#epl-single-row-function-ref-previoustail">9.1.10. The Previous-Tail Function</a></span></dt><dt><span class="sect2"><a href="functionreference.html#epl-single-row-function-ref-previouswindow">9.1.11. The Previous-Window Function</a></span></dt><dt><span class="sect2"><a href="functionreference.html#epl-single-row-function-ref-previouscount">9.1.12. The Previous-Count Function</a></span></dt><dt><span class="sect2"><a href="functionreference.html#epl-single-row-function-ref-prior">9.1.13. The Prior Function</a></span></dt><dt><span class="sect2"><a href="functionreference.html#epl-single-row-function-typeof">9.1.14. The Type-Of Function</a></span></dt></dl></dd><dt><span class="sect1"><a href="functionreference.html#epl-function-aggregation">9.2. Aggregation Functions</a></span></dt><dd><dl><dt><span class="sect2"><a href="functionreference.html#epl-function-aggregation-std">9.2.1. SQL-Standard Functions</a></span></dt><dt><span class="sect2"><a href="functionreference.html#epl-function-aggregation-event">9.2.2. Event Aggregation Functions</a></span></dt><dt><span class="sect2"><a href="functionreference.html#epl-function-aggregation-add">9.2.3. Additional Aggregation Functions</a></span></dt></dl></dd><dt><span class="sect1"><a href="functionreference.html#epl-function-user-defined">9.3. User-Defined Functions</a></span></dt><dt><span class="sect1"><a href="functionreference.html#functionreference-transpose">9.4. Select-Clause transpose Function</a></span></dt><dd><dl><dt><span class="sect2"><a href="functionreference.html#functionreference-transpose-insert-into">9.4.1. Transpose with Insert-Into</a></span></dt></dl></dd></dl></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-single-row-function-ref"/>9.1. Single-row Function Reference</h2></div></div></div><p>
+			Single-row functions return a single value for every single result row generated by your statement. These functions can appear anywhere where expressions are allowed.
+		</p><a id="d0e19844" class="indexterm"/><a id="d0e19847" class="indexterm"/><a id="d0e19852" class="indexterm"/><p>
+			Esper allows static Java library methods as single-row functions, and also features built-in single-row functions. In addition, Esper allows instance method invocations on named streams.
+		</p><p>
+			You may also register your own single-row function name with the engine so that your EPL statements become less cluttered. This is described in detail in <a class="xref" href="extension.html#custom-singlerow-function" title="17.3. Single-Row Function">Section 17.3, “Single-Row Function”</a>. Single-row functions that return an object can be chained.
+		</p><p>
+			Esper auto-imports the following Java library packages:
+		</p><div class="itemizedlist"><ul compact="compact"><li><p>
+					java.lang.*
+				</p></li><li><p>
+					java.math.*
+				</p></li><li><p>
+					java.text.*
+				</p></li><li><p>
+					java.util.*
+				</p></li></ul></div><p>
+			Thus Java static library methods can be used in all expressions as shown in below example:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select symbol, Math.round(volume/1000)
+from StockTickEvent.win:time(30 sec)</pre><p>
+			In general, arbitrary Java class names have to be fully qualified (e.g. java.lang.Math) but Esper provides a mechanism 
+for user-controlled imports of classes and packages as outlined in <a class="xref" href="configuration.html#config-class--package-imports" title="15.4.6. Class and package imports">Section 15.4.6, “Class and package imports”</a>.
+		</p><p>
+			The below table outlines the built-in single-row functions available.
+		</p><div class="table"><a id="epl-single-row-func"/><p class="title"><b>Table 9.1. Syntax and results of single-row functions</b></p><div class="table-contents"><table summary="Syntax and results of single-row functions" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Single-row Function</th><th>Result</th></tr></thead><tbody><tr><td><pre class="synopsis">case <span class="emphasis"><em>value</em></span> 
+  when <span class="emphasis"><em>compare_value</em></span> then <span class="emphasis"><em>result</em></span>
+  [when <span class="emphasis"><em>compare_value</em></span> then <span class="emphasis"><em>result</em></span> ...] 
+  [else <span class="emphasis"><em>result</em></span>] 
+  end </pre></td><td>
+							<p>
+								Returns <code class="literal">result</code> where the first <code class="literal">value</code> equals <code class="literal">compare_value</code>. 
+							</p>
+						</td></tr><tr><td><pre class="synopsis">case 
+  when <span class="emphasis"><em>condition</em></span> then <span class="emphasis"><em>result</em></span>
+  [when <span class="emphasis"><em>condition</em></span> then <span class="emphasis"><em>result</em></span> ...] 
+  [else <span class="emphasis"><em>result</em></span>] 
+  end</pre></td><td>
+							<p>
+								Returns the <code class="literal">result</code> for the first condition that is true.
+							</p>
+						</td></tr><tr><td><pre class="synopsis">cast(<span class="emphasis"><em>expression</em></span>, <span class="emphasis"><em>type_name</em></span>)</pre></td><td>
+							<p>
+								Casts the result of an expression to the given type. 
+							</p>
+						</td></tr><tr><td><pre class="synopsis">coalesce(<span class="emphasis"><em>expression</em></span>, <span class="emphasis"><em>expression</em></span> [, <span class="emphasis"><em>expression</em></span> ...])</pre></td><td>
+							<p>
+								Returns the first non-<code class="literal">null</code> value in the list, or <code class="literal">null</code> if there are no non-<code class="literal">null</code> values.
+							</p>
+						</td></tr><tr><td><pre class="synopsis">current_timestamp[()]</pre></td><td>
+							<p>
+								Returns the current engine time as a <code class="literal">long</code> millisecond value. Reserved keyword with optional parenthesis.
+							</p>
+						</td></tr><tr><td><pre class="synopsis">exists(<span class="emphasis"><em>dynamic_property_name</em></span>)</pre></td><td>
+							<p>
+								Returns true if the dynamic property exists for the event, or false if the property does not exist.
+							</p>
+						</td></tr><tr><td><pre class="synopsis">instanceof(<span class="emphasis"><em>expression</em></span>, <span class="emphasis"><em>type_name</em></span> [, <span class="emphasis"><em>type_name</em></span> ...])</pre></td><td>
+							<p>
+								Returns true if the expression returns an object whose type is one of the types listed.
+							</p>
+						</td></tr><tr><td><pre class="synopsis">istream()</pre></td><td>
+							<p>
+								Returns true if the event is part of the insert stream and false if the event is part of the remove stream.
+							</p>
+						</td></tr><tr><td><pre class="synopsis">max(<span class="emphasis"><em>expression</em></span>, <span class="emphasis"><em>expression</em></span> [, <span class="emphasis"><em>expression</em></span> ...])</pre></td><td>
+							<p>
+								Returns the highest numeric value among the 2 or more comma-separated expressions.
+							</p>
+						</td></tr><tr><td><pre class="synopsis">min(<span class="emphasis"><em>expression</em></span>, <span class="emphasis"><em>expression</em></span> [, <span class="emphasis"><em>expression</em></span> ...])</pre></td><td>
+							<p>
+								Returns the lowest numeric value among the 2 or more comma-separated expressions.
+							</p>
+						</td></tr><tr><td><pre class="synopsis">prev(<span class="emphasis"><em>expression</em></span>, <span class="emphasis"><em>event_property)</em></span></pre></td><td>
+							<p>
+								Returns a property value or all properties of a previous event, relative to the event order within a data window, or according to an optional index parameter (N) the positional Nth-from-last value.
+							</p>
+						</td></tr><tr><td><pre class="synopsis">prevtail(<span class="emphasis"><em>expression</em></span>, <span class="emphasis"><em>event_property)</em></span></pre></td><td>
+							<p>
+								Returns a property value or all properties of the first event in a data window relative to the event order within a data window, or according to an optional index parameter (N) the positional Nth-from-first value.
+							</p>
+						</td></tr><tr><td><pre class="synopsis">prevwindow(<span class="emphasis"><em>event_property</em></span>)</pre></td><td>
+							<p>
+								Returns a single property value of all events or all properties of all events in a data window in the order that reflects the sort order of the data window.
+							</p>
+						</td></tr><tr><td><pre class="synopsis">prevcount(<span class="emphasis"><em>event_property</em></span>)</pre></td><td>
+							<p>
+								Returns the count of events (number of data points) in a data window.
+							</p>
+						</td></tr><tr><td><pre class="synopsis">prior(<span class="emphasis"><em>integer</em></span>, <span class="emphasis"><em>event_property)</em></span></pre></td><td>
+							<p>
+								Returns a property value of a prior event, relative to the natural order of arrival of events
+							</p>
+						</td></tr><tr><td><pre class="synopsis">typeof(<span class="emphasis"><em>expression</em></span>)</pre></td><td>
+							<p>
+								If expression is a stream name, returns the event type name of the evaluated event, often used with variant streams. 
+								If expression is a property name or expression, returns the name of the expression result type.
+							</p>
+						</td></tr></tbody></table></div></div><br class="table-break"/><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-single-row-function-ref-case"/>9.1.1. The <code class="literal">Case</code> Control Flow Function</h3></div></div></div><a id="d0e20175" class="indexterm"/><a id="d0e20178" class="indexterm"/><p>
+				The <code class="literal">case</code> control flow function has two versions. The first version takes a value and a list of compare values to compare against, and returns the result where the first value equals the compare value. The second version takes a list of conditions and returns the result for the first condition that is true.
+			</p><p>
+				The return type of a <code class="literal">case</code> expression is the compatible aggregated type of all return values.
+			</p><p>
+				The <code class="literal">case</code> expression is sometimes used with the <code class="literal">new</code> operator to return multiple results, see <a class="xref" href="epl-operator.html#epl-operator-new" title="8.13. The 'new' Keyword">Section 8.13, “The 'new' Keyword”</a>.
+			</p><p>
+				The example below shows the first version of a <code class="literal">case</code> statement. It has a <code class="literal">String</code> return type and returns the value 'one'.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select case myexpression when 1 then 'one' when 2 then 'two' else 'more' end from ...</pre><p>
+				The second version of the <code class="literal">case</code> function takes a list of conditions. The next example has a <code class="literal">Boolean</code> return type and returns the boolean value true.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select case when 1&gt;0 then true else false end from ...</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-single-row-function-cast"/>9.1.2. The <code class="literal">Cast</code> Function</h3></div></div></div><a id="d0e20229" class="indexterm"/><a id="d0e20232" class="indexterm"/><p>
+				The <code class="literal">cast</code> function casts the return type of an expression to a designated type. The function accepts two parameters: The first parameter is the property name or expression that returns the 
+				value to be casted. The second parameter is the type to cast to.
+			</p><p>
+				Valid parameters for the second (type) parameter are:
+			</p><div class="itemizedlist"><ul><li><p>
+						Any of the Java built-in types: <code class="literal">int, long, byte, short, char, double, float, string, BigInteger, BigDecimal</code>, where <code class="literal">string</code>  is a short notation for <code class="literal">java.lang.String</code> and <code class="literal">BigInteger</code> as well as <code class="literal">BigDecimal</code> are the classes in <code class="literal">java.math</code>. The type name is not case-sensitive. For example:
+						</p><pre class="synopsis">cast(price, double)</pre><p>
+					</p></li><li><p>
+						The fully-qualified class name of the class to cast to, for example: </p><pre class="synopsis">cast(product, org.myproducer.Product)</pre><p>
+					</p></li></ul></div><p>
+				The <code class="literal">cast</code> function is often used to provide a type for dynamic (unchecked) properties. Dynamic properties are properties whose type is not known at compile type. 
+				These properties are always of type <code class="literal">java.lang.Object</code>. 
+			</p><p>
+				The <code class="literal">cast</code> function as shown in the next statement casts the dynamic "price" property of an "item" in the OrderEvent to a double value.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select cast(item.price?, double) from OrderEvent</pre><p>
+				The <code class="literal">cast</code> function returns a <code class="literal">null</code> value if the expression result cannot be casted to the desired type, or if the expression result itself is <code class="literal">null</code>.
+			</p><p>
+				The <code class="literal">cast</code> function adheres to the following type conversion rules:
+			</p><div class="itemizedlist"><ul><li><p>
+						For all numeric types, the <code class="literal">cast</code> function utilitzes <code class="literal">java.lang.Number</code> to convert numeric types, if required. 
+					</p></li><li><p>
+						For casts to <code class="literal">string</code> or <code class="literal">java.lang.String</code>, the function calls <code class="literal">toString</code> on the expression result.
+					</p></li><li><p>
+						For casts to other objects including application objects, the <code class="literal">cast</code> function considers a Java class's superclasses as well as all directly or indirectly-implemented interfaces by superclasses .
+					</p></li></ul></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-single-row-function-ref-coalesce"/>9.1.3. The <code class="literal">Coalesce</code> Function</h3></div></div></div><a id="d0e20340" class="indexterm"/><a id="d0e20343" class="indexterm"/><p>
+				The result of the <code class="literal">coalesce</code> function is the first expression in a list of expressions that returns a non-null value. The return type is the compatible aggregated type of all return values.
+			</p><p>
+				This example returns a String-typed result of value 'foo':
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select coalesce(null, 'foo') from ...</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-single-row-function-ref-currenttime"/>9.1.4. The <code class="literal">Current_Timestamp</code> Function</h3></div></div></div><a id="d0e20363" class="indexterm"/><a id="d0e20366" class="indexterm"/><p>
+				The <code class="literal">current_timestamp</code> function is a reserved keyword and requires no parameters. The result of the <code class="literal">current_timestamp</code> function is the <code class="literal">long</code>-type millisecond value of the current engine system time.
+			</p><p>
+				The function returns the current engine timestamp at the time of expression evaluation. When using external-timer events, the function provides the last value of the externally-supplied time at the time of expression evaluation.
+			</p><p>
+				This example selects the current engine time:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select current_timestamp from MyEvent
+// equivalent to
+select current_timestamp() from MyEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-single-row-function-exists"/>9.1.5. The <code class="literal">Exists</code> Function</h3></div></div></div><a id="d0e20394" class="indexterm"/><a id="d0e20397" class="indexterm"/><p>
+				The <code class="literal">exists</code> function returns a boolean value indicating whether the dynamic property, provided as a parameter to the function, exists on the event. The <code class="literal">exists</code> function accepts a single dynamic property name as its only parameter. 
+			</p><p>
+				The <code class="literal">exists</code> function is for use with dynamic (unchecked) properties. Dynamic properties are properties whose type is not known at compile type. Dynamic properties return a null value
+				if the dynamic property does not exists on an event, or if the dynamic property exists but the value of the dynamic property is null. 
+			</p><p>
+				The <code class="literal">exists</code> function as shown next returns true if the "item" property contains an object that has a "serviceName" property. It returns false if the "item" property is null, or if the "item" property does not 
+				contain an object that has a property named "serviceName" :
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select exists(item.serviceName?) from OrderEvent</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-single-row-function-instanceof"/>9.1.6. The <code class="literal">Instance-Of</code> Function</h3></div></div></div><a id="d0e20428" class="indexterm"/><a id="d0e20431" class="indexterm"/><p>
+				The <code class="literal">instanceof</code> function returns a boolean value indicating whether the type of value returned by the expression is one of the given types. The first parameter to the <code class="literal">instanceof</code> function is an expression to evaluate. The second and subsequent parameters are Java type names.
+			</p><p>
+				The function determines the return type of the expression at runtime by evaluating the expression, and compares the type of object returned by the expression to the defined types. 
+				If the type of object returned by the expression matches any of the given types, the function returns <code class="literal">true</code>. If the expression returned <code class="literal">null</code> or a type that does not
+				match any of the given types, the function returns <code class="literal">false</code>.
+			</p><p>
+				The <code class="literal">instanceof</code> function is often used in conjunction with dynamic (unchecked) properties. Dynamic properties are properties whose type is not known at compile type. 
+			</p><p>
+				This example uses the <code class="literal">instanceof</code> function to select different properties based on the type:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select case when instanceof(item, com.mycompany.Service) then serviceName?
+  when instanceof(item, com.mycompany.Product) then productName? end 
+  from OrderEvent</pre><p>
+				The <code class="literal">instanceof</code> function returns <code class="literal">false</code> if the expression tested by instanceof returned null.
+			</p><p>
+				Valid parameters for the type parameter list are:
+			</p><div class="itemizedlist"><ul><li><p>
+						Any of the Java built-in types: <code class="literal">int, long, byte, short, char, double, float, string</code>, where <code class="literal">string</code>  is a short notation for <code class="literal">java.lang.String</code>. The type name is not case-sensitive. For example, the next function tests if the dynamic "price" property is either of type float or type double:
+						</p><pre class="synopsis">instanceof(price?, double, float)</pre><p>
+					</p></li><li><p>
+						The fully-qualified class name of the class to cast to, for example: </p><pre class="synopsis">instanceof(product, org.myproducer.Product)</pre><p>
+					</p></li></ul></div><p>
+				The function considers an event class's superclasses as well as all the directly or indirectly-implemented interfaces by superclasses.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-single-row-function-istream"/>9.1.7. The <code class="literal">Istream</code> Function</h3></div></div></div><a id="d0e20507" class="indexterm"/><a id="d0e20510" class="indexterm"/><p>
+				The <code class="literal">istream</code> function returns a boolean value indicating whether within the context of expression evaluation the current event or set of events (joins) are part of the insert stream (true) or part of the remove stream (false). The function takes no parameters.
+			</p><p>
+				Use the <code class="literal">istream</code> function with data windows and <code class="literal">select irstream</code> and <code class="literal">insert irstream into</code>. 
+			</p><p>
+				In the following example the <code class="literal">istream</code> function always returns boolean true since no data window is declared:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream *, istream() from OrderEvent</pre><p>
+				The next example declares a data window. For newly arriving events the function returns boolean true, for events that expire after 10 seconds the function returns boolean false:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select irstream *, istream() from OrderEvent.win:time(10 sec)</pre><p>
+			   The <code class="literal">istream</code> function returns true for all cases where insert or remove stream does not apply, such as when used in parameter expressions to data windows
+			   or in stream filter expressions.
+			</p></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-single-row-function-ref-minmax"/>9.1.8. The <code class="literal">Min</code> and <code class="literal">Max</code> Functions</h3></div></div></div><a id="d0e20556" class="indexterm"/><a id="d0e20559" class="indexterm"/><a id="d0e20564" class="indexterm"/><a id="d0e20567" class="indexterm"/><p>
+				The <code class="literal">min</code> and <code class="literal">max</code> function take two or more parameters that itself can be expressions. The <code class="literal">min</code> function returns the lowest numeric value among the 2 or more comma-separated expressions, while the <code class="literal">max</code> function returns the highest numeric value.
+				The return type is the compatible aggregated type of all return values.
+			</p><p>
+				The next example shows the <code class="literal">max</code> function that has a <code class="literal">Double</code> return type and returns the value 1.1.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select max(1, 1.1, 2 * 0.5) from ...</pre><p>
+				The <code class="literal">min</code> function returns the lowest value. The statement below uses the function to determine the smaller of two timestamp values.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select symbol, min(ticks.timestamp, news.timestamp) as minT
+	from StockTickEvent.win:time(30 sec) as ticks, NewsEvent.win:time(30 sec) as news
+	where ticks.symbol = news.symbol</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-single-row-function-ref-previous"/>9.1.9. The <code class="literal">Previous</code> Function</h3></div></div></div><a id="d0e20609" class="indexterm"/><a id="d0e20612" class="indexterm"/><p>
+				The <code class="literal">prev</code> function returns the property value or all event properties of a previous event. For data windows that introduce a sort order other then the order of arrival, such as the sorted data window and the time order data window,  the function returns the event at the specified position.
+			</p><p>
+				The <code class="literal">prev</code> function is not an aggregation function and therefore does not return results per group when used with <code class="literal">group by</code>. Please consider the <code class="literal">last</code>, <code class="literal">lastever</code> or <code class="literal">first</code> aggregation functions instead as described in <a class="xref" href="functionreference.html#epl-function-aggregation-event" title="9.2.2. Event Aggregation Functions">Section 9.2.2, “Event Aggregation Functions”</a>. You must use an aggregation function instead of <code class="literal">prev</code> when querying a named window.
+			</p><p>
+				The first parameter to the <code class="literal">prev</code> function is an index parameter and denotes the i-th previous event, in the order established by the data window. If no index is provided, the default index is 1 and the function returns the previous event.
+				The second parameter is a property name or stream name. If specifying a property name, the function returns the value for the previous event property value. If specifying a stream name, the function returns the previous event underlying object.
+			</p><p>
+				This example selects the value of the <code class="literal">price</code> property of the 2nd-previous event from the current Trade event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prev(2, price) from Trade.win:length(10)</pre><p>
+				By using the stream alias in the <code class="literal">previous</code> function, the next example selects the trade event itself that is immediately previous to the current Trade event
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prev(1, trade) from Trade.win:length(10) as trade</pre><p>
+				Since the <code class="literal">prev</code> function takes the order established by the data window into account, the function works well with sorted windows.
+			</p><p>
+				In the following example the statement selects the symbol of the 3 Trade events that had the largest, second-largest and third-largest volume.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prev(0, symbol), prev(1, symbol), prev(2, symbol)
+  from Trade.ext:sort(3, volume desc)</pre><p>
+				The i-th previous event parameter can also be an expression returning an Integer-type value. The next statement joins the Trade data window with an <code class="literal">RankSelectionEvent</code> event that provides a <code class="literal">rank</code> property used to look up a certain position in the sorted Trade data window:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prev(rank, symbol) from Trade.ext:sort(10, volume desc), RankSelectionEvent unidirectional</pre><p>
+				Use the <code class="literal">prev</code> function in combination with a grouped data window to access a previous event per grouping criteria.
+			</p><p>
+				The example below returns the price of the previous Trade event for the same symbol, or <code class="literal">null</code> if for that symbol there is no previous Trade event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prev(1, price) from Trade.std:groupwin(symbol).win:length(2)</pre><p>
+				The <code class="literal">prev</code> function returns a <code class="literal">null</code> value if the data window does not currently hold the i-th previous event. The example below illustrates this using a time batch window. Here the <code class="literal">prev</code>  
+				function returns a null value for any events in which the previous event is not in the same batch of events. Note that the <code class="literal">prior</code> function as discussed below can be used if a null value is not the desired result.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prev(1, symbol) from Trade.win:time_batch(1 min)</pre><p>
+				An alternative form of the <code class="literal">prev</code> function allows the index to not appear or appear after the property name if the index value is a constant and not an expression:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prev(1, symbol) from Trade
+// ... equivalent to ...
+select prev(symbol) from Trade
+// ... and ...
+select prev(symbol, 1) from Trade</pre><p>
+				The combination of the <code class="literal">prev</code> function and <code class="literal">std:groupwin</code> view returns the property value for a previous event in the given data window group. 
+			</p><p>
+				The following example returns for each event the current smallest price per symbol:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select symbol, prev(0, price) as topPricePerSymbol 
+from Trade.std:groupwin(symbol).ext:sort(1, price asc)</pre><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-single-row-function-ref-prev-restrictions"/>9.1.9.1. Restrictions</h4></div></div></div><p>
+						The following restrictions apply to the <code class="literal">prev</code> functions and its results:
+				</p><div class="itemizedlist"><ul compact="compact"><li><p>
+							The function always returns a <code class="literal">null</code> value for remove stream (old data) events.
+						</p></li><li><p>
+							The function requires a data window view, or a <code class="literal">std:groupwin</code> and data window view, without any additional sub-views. See <a class="xref" href="epl-views.html#win-views" title="12.2. Data Window Views">Section 12.2, “Data Window Views”</a> for built-in data window views.
+						</p></li></ul></div></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-single-row-function-ref-prev-prior"/>9.1.9.2. Comparison to the <code class="literal">prior</code> Function</h4></div></div></div><p>
+					The <code class="literal">prev</code> function is similar to the <code class="literal">prior</code> function. The key differences between the two functions are as follows:				 
+				</p><div class="itemizedlist"><ul compact="compact"><li><p>
+							The <code class="literal">prev</code> function returns previous events in the order provided by the data window, while the <code class="literal">prior</code> function returns prior events in the order of arrival as posted by a stream's declared views.
+						</p></li><li><p>
+							The <code class="literal">prev</code> function requires a data window view while the <code class="literal">prior</code> function does not have any view requirements.
+						</p></li><li><p>
+							The <code class="literal">prev</code> function returns the previous event grouped by a criteria by combining the <code class="literal">std:groupwin</code> view and a data window. The <code class="literal">prior</code> function returns prior events posted by the last view regardless of data window grouping.
+						</p></li><li><p>
+							The <code class="literal">prev</code> function returns a <code class="literal">null</code> value for remove stream events, i.e. for events leaving a data window. 
+							The <code class="literal">prior</code> function does not have this restriction.
+						</p></li></ul></div></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-single-row-function-ref-previoustail"/>9.1.10. The <code class="literal">Previous-Tail</code> Function</h3></div></div></div><a id="d0e20815" class="indexterm"/><a id="d0e20818" class="indexterm"/><p>
+				The <code class="literal">prevtail</code> function returns the property value or all event properties of the positional-first event in a data window. For data windows that introduce a sort order other then the order of arrival, such as the sorted data window and the time order data window, the function returns the first event at the specified position.
+			</p><p>
+				The <code class="literal">prevtail</code> function is not an aggregation function and therefore does not return results per group when used with <code class="literal">group by</code>. Please consider the <code class="literal">first</code>, <code class="literal">firstever</code> or <code class="literal">window</code> aggregation functions instead as described in <a class="xref" href="functionreference.html#epl-function-aggregation-event" title="9.2.2. Event Aggregation Functions">Section 9.2.2, “Event Aggregation Functions”</a>. You must use an aggregation function instead of <code class="literal">prevtail</code> when querying a named window.
+			</p><p>
+				The first parameter is an index parameter and denotes the i-th from-first event in the order established by the data window. If no index is provided the default is zero and the function returns the first event in the data window.
+				The second parameter is a property name or stream name. If specifying a property name, the function returns the value for the previous event property value. If specifying a stream name, the function returns the previous event underlying object.
+			</p><p>
+				This example selects the value of the <code class="literal">price</code> property of the first (oldest) event held in the length window:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prevtail(price) from Trade.win:length(10)</pre><p>
+				By using the stream alias in the <code class="literal">prevtail</code> function, the next example selects the trade event itself that is the second event held in the length window:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prevtail(1, trade) from Trade.win:length(10) as trade</pre><p>
+				Since the <code class="literal">prevtail</code> function takes the order established by the data window into account, the function works well with sorted windows.
+			</p><p>
+				In the following example the statement selects the symbol of the 3 Trade events that had the smallest, second-smallest and third-smallest volume.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prevtail(0, symbol), prevtail(1, symbol), prevtail(2, symbol)
+  from Trade.ext:sort(3, volume asc)</pre><p>
+				The i-th previous event parameter can also be an expression returning an Integer-type value. The next statement joins the Trade data window with an <code class="literal">RankSelectionEvent</code> event that provides a <code class="literal">rank</code> property used to look up a certain position in the sorted Trade data window:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prevtail(rank, symbol) from Trade.ext:sort(10, volume asc), RankSelectionEvent unidirectional</pre><p>
+				The <code class="literal">prev</code> function returns a <code class="literal">null</code> value if the data window does not currently holds positional-first or the Nth-from-first event. For batch data windows the value returned is relative to the current batch.
+			</p><p>
+				The following example returns the first and second symbol value in the batch:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prevtail(0, symbol), prevtail(1, symbol) from Trade.win:time_batch(1 min)</pre><p>
+				An alternative form of the <code class="literal">prevtail</code> function allows the index to not appear or appear after the property name if the index value is a constant and not an expression:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prevtail(1, symbol) from Trade
+// ... equivalent to ...
+select prevtail(symbol) from Trade
+// ... and ...
+select prevtail(symbol, 1) from Trade</pre><p>
+				The combination of the <code class="literal">prevtail</code> function and <code class="literal">std:groupwin</code> view returns the property value for a positional first event in the given data window group. 
+			</p><p>
+				Let's look at an example. This statement outputs the oldest price per symbol retaining the last 10 prices per symbol:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select symbol, prevtail(0, price) as oldestPrice
+from Trade.std:groupwin(symbol).win:length(10)</pre><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-single-row-function-ref-prevtail-restrictions"/>9.1.10.1. Restrictions</h4></div></div></div><p>
+						The following restrictions apply to the <code class="literal">prev</code> functions and its results:
+				</p><div class="itemizedlist"><ul compact="compact"><li><p>
+							The function always returns a <code class="literal">null</code> value for remove stream (old data) events.
+						</p></li><li><p>
+							The function requires a data window view, or a <code class="literal">std:groupwin</code> and data window view, without any additional sub-views. See <a class="xref" href="epl-views.html#win-views" title="12.2. Data Window Views">Section 12.2, “Data Window Views”</a> for built-in data window views.
+						</p></li></ul></div></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-single-row-function-ref-previouswindow"/>9.1.11. The <code class="literal">Previous-Window</code> Function</h3></div></div></div><a id="d0e20945" class="indexterm"/><a id="d0e20948" class="indexterm"/><p>
+				The <code class="literal">prevwindow</code> function returns property values or all event properties for all events in a data window. For data windows that introduce a sort order other then the order of arrival, such as the sorted data window and the time order data window, the function returns the event data sorted in that order, otherwise it returns the events sorted by order of arrival with the newest arriving event first.
+			</p><p>
+				The <code class="literal">prevwindow</code> function is not an aggregation function and therefore does not return results per group when used with <code class="literal">group by</code>. Please consider the <code class="literal">window</code> aggregation function instead as described in <a class="xref" href="functionreference.html#epl-function-aggregation-event" title="9.2.2. Event Aggregation Functions">Section 9.2.2, “Event Aggregation Functions”</a>. You must use an aggregation function instead of <code class="literal">prevwindow</code> when querying a named window.
+			</p><p>
+				The single parameter is a property name or stream name. If specifying a property name, the function returns the value of the event property for all events held by the data window. If specifying a stream name, the function returns the event underlying object for all events held by the data window.
+			</p><p>
+				This example selects the value of the <code class="literal">price</code> property of all events held in the length window:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prevwindow(price) from Trade.win:length(10)</pre><p>
+				By using the stream alias in the <code class="literal">prevwindow</code> function, the next example selects all trade events held in the length window:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prevwindow(trade) from Trade.win:length(10) as trade</pre><p>
+				When used with a data window that introduces a certain sort order, the <code class="literal">prevwindow</code> function returns events sorted according to that sort order.
+			</p><p>
+			  The next statement outputs for every arriving event the current 10 underying trade event objects that have the largest volume:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prevwindow(trade) from Trade.ext:sort(10, volume desc) as trade</pre><p>
+				The <code class="literal">prevwindow</code> function returns a <code class="literal">null</code> value if the data window does not currently hold any events.
+			</p><p>
+				The combination of the <code class="literal">prevwindow</code> function and <code class="literal">std:groupwin</code> view returns the property value(s) for all events in the given data window group. 
+			</p><p>
+				This example statement outputs all prices per symbol retaining the last 10 prices per symbol:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select symbol, prevwindow(price) from Trade.std:groupwin(symbol).win:length(10)</pre><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-single-row-function-ref-prevwindow-restrictions"/>9.1.11.1. Restrictions</h4></div></div></div><p>
+					The following restrictions apply to the <code class="literal">prev</code> functions and its results:
+				</p><div class="itemizedlist"><ul compact="compact"><li><p>
+							The function always returns a <code class="literal">null</code> value for remove stream (old data) events.
+						</p></li><li><p>
+							The function requires a data window view, or a <code class="literal">std:groupwin</code> and data window view, without any additional sub-views. See <a class="xref" href="epl-views.html#win-views" title="12.2. Data Window Views">Section 12.2, “Data Window Views”</a> for built-in data window views.
+						</p></li></ul></div></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-single-row-function-ref-previouscount"/>9.1.12. The <code class="literal">Previous-Count</code> Function</h3></div></div></div><a id="d0e21048" class="indexterm"/><a id="d0e21051" class="indexterm"/><p>
+				The <code class="literal">prevcount</code> function returns the number of events held in a data window.
+			</p><p>
+				The <code class="literal">prevcount</code> function is not an aggregation function and therefore does not return results per group when used with <code class="literal">group by</code>. Please consider the <code class="literal">count(*)</code> aggregation function instead as described in <a class="xref" href="functionreference.html#epl-function-aggregation" title="9.2. Aggregation Functions">Section 9.2, “Aggregation Functions”</a>. You must use an aggregation function instead of <code class="literal">prevcount</code> when querying a named window.
+			</p><p>
+				The single parameter is a property name or stream name of the data window to return the count for.
+			</p><p>
+				This example selects the number of data points for the <code class="literal">price</code> property held in the length window:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prevcount(price) from Trade.win:length(10)</pre><p>
+				By using the stream alias in the <code class="literal">prevcount</code> function the next example selects the count of trade events held in the length window:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prevcount(trade) from Trade.win:length(10) as trade</pre><p>
+				The combination of the <code class="literal">prevcount</code> function and <code class="literal">std:groupwin</code> view returns the count of events in the given data window group. 
+			</p><p>
+				This example statement outputs the number of events retaining the last 10 events per symbol:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select symbol, prevcount(price) from Trade.std:groupwin(symbol).win:length(10)</pre><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-single-row-function-ref-prevcount-restrictions"/>9.1.12.1. Restrictions</h4></div></div></div><p>
+					The following restrictions apply to the <code class="literal">prev</code> functions and its results:
+				</p><div class="itemizedlist"><ul compact="compact"><li><p>
+							The function always returns a <code class="literal">null</code> value for remove stream (old data) events.
+						</p></li><li><p>
+							The function requires a data window view, or a <code class="literal">std:groupwin</code> and data window view, without any additional sub-views. See <a class="xref" href="epl-views.html#win-views" title="12.2. Data Window Views">Section 12.2, “Data Window Views”</a> for built-in data window views.
+						</p></li></ul></div></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-single-row-function-ref-prior"/>9.1.13. The <code class="literal">Prior</code> Function</h3></div></div></div><a id="d0e21134" class="indexterm"/><a id="d0e21137" class="indexterm"/><p>
+				The <code class="literal">prior</code> function returns the property value of a prior event. The first parameter is an integer value that denotes the i-th prior event in the natural order of arrival. 
+				The second parameter is a property name for which the function returns the value for the prior event.
+				The second parameter is a property name or stream name. If specifying a property name, the function returns the property value for the prior event. If specifying a stream name, the function returns the prior event underlying object.
+			</p><p>
+				This example selects the value of the <code class="literal">price</code> property of the 2nd-prior event to the current Trade event.
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prior(2, price) from Trade</pre><p>
+				By using the stream alias in the <code class="literal">prior</code> function, the next example selects the trade event itself that is immediately prior to the current Trade event
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select prior(1, trade) from Trade as trade</pre><p>
+				The <code class="literal">prior</code> function can be used on any event stream or view and does not have any specific view requirements.  The function operates on the order of arrival of events by the event stream or view that provides the events.
+			</p><p>
+				The next statement uses a time batch window to compute an average volume for 1 minute of Trade events, posting results every minute. The select-clause 
+				employs the <code class="literal">prior</code> function to select the current average and the average before the current average:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select average, prior(1, average) 
+    from TradeAverages.win:time_batch(1 min).stat:uni(volume)</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-single-row-function-typeof"/>9.1.14. The <code class="literal">Type-Of</code> Function</h3></div></div></div><a id="d0e21179" class="indexterm"/><a id="d0e21182" class="indexterm"/><p>
+				The <code class="literal">typeof</code> function, when parameterized by a stream name, returns the event type name of the evaluated event which can be useful with variant streams. When parameterized by an expression or property name, the function returns the type name of the expression result or <code class="literal">null</code> if the expression result is null.
+			</p><p>
+				In summary, the function determines the return type of the expression at runtime by evaluating the expression and returns the type name of the expression result.
+			</p><p>
+				The <code class="literal">typeof</code> function is often used in conjunction with variant streams. A variant stream is a predefined stream into which events of multiple disparate event types can be inserted. The <code class="literal">typeof</code> function, when passed a stream name alias, returns the name of the event type of each event in the stream.
+			</p><p>
+			    The following example elaborates on the use of variant streams with <code class="literal">typeof</code>. The first statement declares a variant stream <code class="literal">SequencePatternStream</code>:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create variant schema SequencePatternStream as *</pre><p>
+			    The next statement inserts all order events and is followed by a statement to insert all product events: 
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">insert into SequencePatternStream select * from OrderEvent;</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">insert into SequencePatternStream select * from PriceEvent;</pre><p>
+				This example statement returns the event type name for each event in the variant stream:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select typeof(sps) from SequencePatternStream as sps</pre><p>
+				The next example statement detects a pattern by utilizing the <code class="literal">typeof</code> function to find pairs of order event immediately followed by product event:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from SequencePatternStream match_recognize(
+  measures A as a, B as b
+  pattern (A B)
+  define A as typeof(A) = "OrderEvent",
+         B as typeof(B) = "ProductEvent"
+  )</pre><p>
+				When passing a property name to the <code class="literal">typeof</code> function, the function evaluates whether the property type is event type (a fragment event type). If the property type is event type, the function returns the type name of the event in the property value or <code class="literal">null</code> if not provided. 
+				If the property type is not event type, the function returns the simple class name of the property value.
+			</p><p>
+				When passing an expression to the <code class="literal">typeof</code> function, the function evaluates the expression and returns the simple class name of the expression result value or <code class="literal">null</code> if the expression result value is null.
+			</p><p>
+				This example statement returns the simple class name of the value of the dynamic property <code class="literal">prop</code> of events in stream <code class="literal">MyStream</code>, or a <code class="literal">null</code> value if the property is not found for an event or the property value itself is <code class="literal">null</code>:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select typeof(prop?) from MyStream</pre><p>
+			    When using subclasses or interface implementations as event classes or when using Map-event type inheritance, the function returns the event type name provided when the class or Map-type event was registered, or if the event type was not registered, the function returns the fully-qualified class name.
+			</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-function-aggregation"/>9.2. Aggregation Functions</h2></div></div></div><a id="d0e21269" class="indexterm"/><p>
+			Aggregation functions are stateful and consider sets of events or value points. The <code class="literal">group by</code> clause is often used in conjunction with aggregation functions to group the result-set by one or more columns.
+		</p><p>
+			The EPL language extends the standard SQL aggregation functions by allowing filters and by further useful aggregation functions that can track a data window or compute event rates, for example. Your application may also add its own aggregation function as <a class="xref" href="extension.html#custom-aggregation-function" title="17.5. Aggregation Function">Section 17.5, “Aggregation Function”</a> describes.
+		</p><p>
+			Aggregation values are always computed incrementally: Insert and remove streams result in aggregation value changes. The exceptions are on-demand queries and joins when using the <code class="literal">unidirectional</code> keyword. Aggregation functions are optimized to retain the minimal
+				information necessary to compute the aggregated result, and to share aggregation state between eligible other aggregation functions in the same statement so that same-kind aggregation state is
+				never held multiple times unless required.
+		</p><p>
+			Most aggregation functions can also be used with unbound streams when no data window is specified. A few aggregation functions require a data window or named window as documented below.
+		</p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-function-aggregation-std"/>9.2.1. SQL-Standard Functions</h3></div></div></div><p>
+				The SQL-standard aggregation functions are shown in below table.
+			</p><div class="table"><a id="epl-grouping-aggregate-func-table-SQL"/><p class="title"><b>Table 9.2. Syntax and results of SQL-standard aggregation functions</b></p><div class="table-contents"><table summary="Syntax and results of SQL-standard aggregation functions" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Aggregate Function</th><th>Result</th></tr></thead><tbody><tr><td>avedev([all|distinct] <span class="emphasis"><em>expression</em></span> [, <span class="emphasis"><em>filter_expr</em></span>])</td><td>
+								<p>
+									Mean deviation of the (distinct) values in the expression, returning a value of <code class="literal">double</code> type.
+								</p>
+								<p>
+									The optional filter expression limits the values considered for computing the mean deviation.
+								</p>
+							</td></tr><tr><td>avg([all|distinct] <span class="emphasis"><em>expression</em></span> [, <span class="emphasis"><em>filter_expr</em></span>])</td><td>
+								<p>
+									Average of the (distinct) values in the expression, returning a value of <code class="literal">double</code> type.
+								</p>
+								<p>
+									The optional filter expression limits the values considered for computing the average.
+								</p>
+							</td></tr><tr><td>count([all|distinct] <span class="emphasis"><em>expression</em></span> [, <span class="emphasis"><em>filter_expr</em></span>])</td><td>
+								<p>
+									Number of the (distinct) non-null values in the expression, returning a value of <code class="literal">long</code> type.
+								</p>
+								<p>
+									The optional filter expression limits the values considered for the count.
+								</p>
+							</td></tr><tr><td>count(* [, <span class="emphasis"><em>filter_expr</em></span>])</td><td>
+								<p>
+									Number of events, returning a value of <code class="literal">long</code> type.
+								</p>
+								<p>
+									The optional filter expression limits the values considered for the count.
+								</p>
+							</td></tr><tr><td>
+								<p>
+									max([all|distinct] <span class="emphasis"><em>expression</em></span>)
+								</p>
+								<p>
+									fmax([all|distinct] <span class="emphasis"><em>expression</em></span>, <span class="emphasis"><em>filter_expr</em></span>)
+								</p>
+							</td><td>
+								<p>
+									Highest (distinct) value in the expression, returning a value of the same type as the expression itself returns.
+								</p>
+								<p>
+									Use <code class="literal">fmax</code> to provide a filter expression that limits the values considered for computing the maximum.
+								</p>
+								<p>
+								    Consider using <code class="literal">maxby</code> instead if return values must include additional properties.
+								</p>
+							</td></tr><tr><td>median([all|distinct] <span class="emphasis"><em>expression</em></span> [, <span class="emphasis"><em>filter_expr</em></span>])</td><td>
+								<p>
+									Median (distinct) value in the expression, returning a value of <code class="literal">double</code> type. Double Not-a-Number (NaN) values are ignored in the median computation.
+								</p>
+								<p>
+									The optional filter expression limits the values considered for computing the median.
+								</p>
+							</td></tr><tr><td>
+								<p>
+									min([all|distinct] <span class="emphasis"><em>expression</em></span>)
+								</p>
+								<p>
+									fmin([all|distinct] <span class="emphasis"><em>expression</em></span>, <span class="emphasis"><em>filter_expr</em></span>)
+								</p>
+								<p>
+								    Consider using <code class="literal">minby</code> instead if return values must include additional properties.
+								</p>
+							</td><td>
+								<p>
+									Lowest (distinct) value in the expression, returning a value of the same type as the expression itself returns.
+								</p>
+								<p>
+									Use <code class="literal">fmin</code> to provide a filter expression that limits the values considered for computing the maximum.
+								</p>
+							</td></tr><tr><td>stddev([all|distinct] <span class="emphasis"><em>expression</em></span> [, <span class="emphasis"><em>filter_expr</em></span>])</td><td>
+								<p>
+									Standard deviation of the (distinct) values in the expression, returning a value of <code class="literal">double</code> type.
+								</p>
+								<p>
+									The optional filter expression limits the values considered for computing the standard deviation.
+								</p>
+							</td></tr><tr><td>sum([all|distinct] <span class="emphasis"><em>expression</em></span> [, <span class="emphasis"><em>filter_expr</em></span>])</td><td>
+								<p>
+									Totals the (distinct) values in the expression, returning a value of <code class="literal">long, double, float or integer</code> type depending on the expression.
+								</p>
+								<p>
+									The optional filter expression limits the values considered for computing the total.
+								</p>
+							</td></tr></tbody></table></div></div><br class="table-break"/><p>
+				If your application provides double-type values to an aggregation function, avoid using Not-a-Number (NaN) and infinity. Also when using double-type values, round-off errors (or rounding errors) may occur due to double-type precision. Consider rounding your result value to the desired precision.
+			</p><p>
+			  Each of the aggregation functions above takes an optional filter expression as a parameter. The filter expression must return a boolean-type value and applies to the events considered for the aggregation. 
+			  If a filter expression is provided, then only if the filter expression returns a value of true does the engine update the aggregation for that event or combination of events. 
+			</p><p>
+			  Consider the following example, which computes the quantity fraction of buy orders among all orders:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select sum(quantity, side='buy') / sum(quantity) as buy_fraction from Orders</pre><p>
+				Use the <code class="literal">fmin</code> and <code class="literal">fmax</code> aggregation functions instead of the <code class="literal">min</code> and <code class="literal">max</code> aggregation functions when providing a filter expression (the <code class="literal">min</code> and <code class="literal">max</code> functions are also single-row functions).
+			</p><p>
+			  The next example computes the minimum quantity for buy orders and a separate minimum quantity for sell orders:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select fmin(quantity, side='buy'), fmin(quantity, side = 'sell') from Orders</pre></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-function-aggregation-event"/>9.2.2. Event Aggregation Functions</h3></div></div></div><p>
+				The event aggregation functions return one or more events or event properties. When used with <code class="literal">group by</code> the event aggregation functions 
+				return one or more events or event properties per group.
+			</p><p>
+			  The <code class="literal">sorted</code> and the <code class="literal">window</code> event aggregation functions require that a data window or named window is declared for the applicable stream.
+			  They cannot be used on unbound streams.
+			</p><p>
+				The below table summarizes the event aggregation functions available:
+			</p><div class="table"><a id="event_aggregation_func_table"/><p class="title"><b>Table 9.3. Event Aggregation Functions</b></p><div class="table-contents"><table summary="Event Aggregation Functions" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Function</th><th>Result</th></tr></thead><tbody><tr><td>first(...)</td><td>
+								<p>
+									Returns the first event or an event property value of the first event.
+								</p>
+								<p>
+									<a class="xref" href="functionreference.html#epl-function-aggregation-event-first" title="9.2.2.1. First Aggregation Function">Section 9.2.2.1, “First Aggregation Function”</a>.
+								</p>
+							</td></tr><tr><td>last(...)</td><td>
+								<p>
+									Returns the last event or an event property value of the last event.
+								</p>
+								<p>
+									<a class="xref" href="functionreference.html#epl-function-aggregation-event-last" title="9.2.2.2. Last Aggregation Function">Section 9.2.2.2, “Last Aggregation Function”</a>.
+								</p>
+							</td></tr><tr><td>maxby(criteria)</td><td>
+								<p>
+									Returns the event with the highest sorted value according to criteria expressions.
+								</p>
+								<p>
+									<a class="xref" href="functionreference.html#epl-function-aggregation-event-maxby" title="9.2.2.3. Maxby Aggregation Function">Section 9.2.2.3, “Maxby Aggregation Function”</a>.
+								</p>
+							</td></tr><tr><td>maxbyever(criteria)</td><td>
+								<p>
+									Returns the event with the highest sorted value, ever, according to criteria expressions.
+								</p>
+								<p>
+									<a class="xref" href="functionreference.html#epl-function-aggregation-event-maxbyever" title="9.2.2.4. Maxbyever Aggregation Function">Section 9.2.2.4, “Maxbyever Aggregation Function”</a>.
+								</p>
+							</td></tr><tr><td>minby(criteria)</td><td>
+								<p>
+									Returns the event with the lowest sorted value according to criteria expressions.
+								</p>
+								<p>
+									<a class="xref" href="functionreference.html#epl-function-aggregation-event-minby" title="9.2.2.5. Minby Aggregation Function">Section 9.2.2.5, “Minby Aggregation Function”</a>.
+								</p>
+							</td></tr><tr><td>minbyever(criteria)</td><td>
+								<p>
+									Returns the event with the lowest sorted value, ever, according to criteria expressions.
+								</p>
+								<p>
+									<a class="xref" href="functionreference.html#epl-function-aggregation-event-minbyever" title="9.2.2.6. Minbyever Aggregation Function">Section 9.2.2.6, “Minbyever Aggregation Function”</a>.
+								</p>
+							</td></tr><tr><td>sorted(criteria)</td><td>
+								<p>
+									Returns events sorted according to criteria expressions.
+								</p>
+								<p>
+									<a class="xref" href="functionreference.html#epl-function-aggregation-event-sorted" title="9.2.2.7. Sorted Aggregation Function">Section 9.2.2.7, “Sorted Aggregation Function”</a>.
+								</p>
+							</td></tr><tr><td>window(...)</td><td>
+								<p>
+									Returns all events or all event's property values.
+								</p>
+								<p>
+									<a class="xref" href="functionreference.html#epl-function-aggregation-event-window" title="9.2.2.8. Window Aggregation Function">Section 9.2.2.8, “Window Aggregation Function”</a>.
+								</p>
+							</td></tr></tbody></table></div></div><br class="table-break"/><p>
+				   In connection with named windows, event aggregation functions can also be used in <code class="literal">on-select</code>, 
+				   selects with named window in the <code class="literal">from</code> clause, subqueries against named windows and on-demand fire-and-forget queries.
+				</p><p>
+				   The event aggregation functions are often useful in connection with enumeration methods and they can provide input events for enumeration. Please see <a class="xref" href="enumerationreference.html" title="Chapter 10. EPL Reference: Enumeration Methods">Chapter 10, <i>EPL Reference: Enumeration Methods</i></a> for more information. 
+				</p><p>
+					When comparing the <code class="literal">last</code> aggregation function to the <code class="literal">prev</code> function, the differences are as follows. The <code class="literal">prev</code> function is not an aggregation function and thereby not sensitive to the presence of <code class="literal">group by</code>. The <code class="literal">prev</code> function accesses data window contents directly and respects the sort order of the data window. The <code class="literal">last</code> aggregation function returns results based on arrival order and tracks data window contents in a separate shared data structure.
+				</p><p>
+					When comparing the <code class="literal">first</code> aggregation function to the <code class="literal">prevtail</code> function, the differences are as follows. The <code class="literal">prevtail</code> function is not an aggregation function and thereby not sensitive to the presence of <code class="literal">group by</code>. The <code class="literal">prevtail</code> function accesses data window contents directly and respects the sort order of the data window. The <code class="literal">first</code> aggregation function returns results based on arrival order and tracks data window contents in a separate shared data structure.
+				</p><p>
+					When comparing the <code class="literal">window</code> aggregation function to the <code class="literal">prevwindow</code> function, the differences are as follows. The <code class="literal">prevwindow</code> function is not an aggregation function and thereby not sensitive to the presence of <code class="literal">group by</code>. The <code class="literal">prevwindow</code> function accesses data window contents directly and respects the sort order of the data window. The <code class="literal">window</code> aggregation function returns results based on arrival order and tracks data window contents in a separate shared data structure.
+				</p><p>
+					When comparing the <code class="literal">count</code> aggregation function to the <code class="literal">prevcount</code> function, the differences are as follows. The <code class="literal">prevcount</code> function is not an aggregation function and thereby not sensitive to the presence of <code class="literal">group by</code>.
+				</p><p>
+					When comparing the <code class="literal">last</code> aggregation function to the <code class="literal">nth</code> aggregation function, the differences  are as follows. The <code class="literal">nth</code> aggregation function does not consider out-of-order deletes (for example with on-delete and sorted windows) and does not revert to the prior expression value when the last event or nth-event was deleted from a data window. The <code class="literal">last</code> aggregation function tracks the data window and reflects out-of-order deletes.
+				</p><p>
+					From an implementation perspective, the <code class="literal">first</code>, <code class="literal">last</code> and <code class="literal">window</code> aggregation functions share a common data structure for each stream. 
+					The <code class="literal">sorted</code>, <code class="literal">minby</code> and <code class="literal">maxby</code> aggregation functions share a common data structure for each stream. 
+				</p><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-function-aggregation-event-first"/>9.2.2.1. <code class="literal">First</code> Aggregation Function</h4></div></div></div><p>
+					The synopsis for the <code class="literal">first</code> aggregation function is:
+				</p><pre class="synopsis"><code class="literal">first(</code>*|<span class="emphasis"><em>stream</em></span>.*|<span class="emphasis"><em>value_expression</em></span> [, <span class="emphasis"><em>index_expression</em></span>])</pre><p>
+					The <code class="literal">first</code> aggregation function returns properties of the very first event. When used with <code class="literal">group by</code>, it returns properties of the first event for each group. When specifying an index expression, the function returns properties of the Nth-subsequent event to the first event, all according to order of arrival.
+				</p><p>
+					The first parameter to the function is required and defines the event properties or expression result to return. The second parameter is an optional <span class="emphasis"><em>index_expression</em></span> that must return an integer value used as an index to evaluate the Nth-subsequent event to the first event.
+				</p><p>
+					You may specify the wildcard (<code class="literal">*</code>) character in which case the function returns the underlying event of the single selected stream. When selecting a single stream you may specify no parameter instead of wildcard. For joins and subqueries you must use the stream wildcard syntax below.
+				</p><p>
+					You may specify the stream name and wildcard (<code class="literal">*</code>) character in the <span class="emphasis"><em>stream</em></span><code class="literal">.*</code> syntax. This returns the underlying event for the specified stream.
+				</p><p>
+					You may specify a <span class="emphasis"><em>value_expression</em></span> to evaluate for the first event. The value expression may not select properties from multiple streams.
+				</p><p>
+				    The <span class="emphasis"><em>index_expression</em></span> is optional. If no index expression is provided, the function returns the first event. If present, the function evaluates the index expression to determine the value for N, and evaluates the Nth-subsequent event to the first event. A value of zero returns the first event and a value of 1 returns 
+				    the event subsequent to the first event. You may not specify event properties in the index expression.
+				</p><p>
+					The function returns <code class="literal">null</code> if there are no events or when the index is larger than the number of events held. When used with <code class="literal">group by</code>, it returns <code class="literal">null</code> if there are no events for that group or when the index is larger than the number of events held for that group.
+				</p><p>
+					To explain, consider the statement below which selects the underlying event of the first sensor event held by the length window of 2 events.  
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select first(*) from SensorEvent.win:length(2) </pre><p>
+				   Assume event E1, event E2 and event E3 are of type SensorEvent. When event E1 arrives the statement outputs the underlying event E1. When event E2 arrives the statement again outputs the underlying event E1. When event E3 arrives the statement outputs the underlying event E2, since 
+				   event E1 has left the data window.
+				</p><p>
+					The stream wildcard syntax is useful for joins and subqueries. This example demonstrates a subquery that returns the first SensorEvent when a DoorEvent arrives:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select (select first(se.*) from SensorEvent.win:length(2) as se) from DoorEvent </pre><p>
+					The following example shows the use of an index expression. The output value for <code class="literal">f1</code> is the temperature property value of the first event, the value for <code class="literal">f2</code> is the temperature property value of the second event:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select first(temperature, 0) as f1, first(temperature, 1) as f2
+from SensorEvent.win:time(10 sec)</pre><p>
+					You may use dot-syntax to invoke a method on the first event. You may also append a property name using dot-syntax.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-function-aggregation-event-last"/>9.2.2.2. <code class="literal">Last</code> Aggregation Function</h4></div></div></div><p>
+					The synopsis for the <code class="literal">last</code> aggregation function is:
+				</p><pre class="synopsis"><code class="literal">last(</code>*|<span class="emphasis"><em>stream</em></span>.*|<span class="emphasis"><em>value_expression</em></span> [, <span class="emphasis"><em>index_expression</em></span>])</pre><p>
+					The <code class="literal">last</code> aggregation function returns properties of the very last event. When used with <code class="literal">group by</code>, it returns properties of the last event for each group. When specifying an index expression, the function returns properties of the Nth-prior event to the last event, all according to order of arrival.
+				</p><p>
+					Similar to the <code class="literal">first</code> aggregation function described above, you may specify the wildcard (<code class="literal">*</code>) character, no parameter or stream name and wildcard (<code class="literal">*</code>) character or a <span class="emphasis"><em>value_expression</em></span> to evaluate for the last event.
+				</p><p>
+				    The <span class="emphasis"><em>index_expression</em></span> is optional. If no index expression is provided, the function returns the last event. If present, the function evaluates the index expression to determine the value for N, and evaluates the Nth-prior event to the last event.  A value of zero returns the last event and a value of 1 returns 
+				    the event prior to  the last event.
+				    You may not specify event properties in the index expression.
+				</p><p>
+					The function returns <code class="literal">null</code> if there are no events or when the index is larger than the number of events held. When used with <code class="literal">group by</code>, it returns <code class="literal">null</code> if there are no events for that group or when the index is larger than the number of events held for that group.
+				</p><p>
+					The next statement selects the underlying event of the first and last sensor event held by the time window of 10 seconds:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select first(*), last(*) from SensorEvent.win:time(10 sec) </pre><p>
+					The statement shown next selects the last temperature (<code class="literal">f1</code>) and the prior-to-last temperature (<code class="literal">f1</code>) of sensor events in the last 10 seconds:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select last(temperature, 0) as f1, select last(temperature, 1) as f2
+from SensorEvent.win:time(10 sec)</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-function-aggregation-event-maxby"/>9.2.2.3. <code class="literal">Maxby</code> Aggregation Function</h4></div></div></div><a id="d0e21976" class="indexterm"/><p>
+					The synopsis for the <code class="literal">maxby</code> aggregation function is:
+				</p><pre class="synopsis"><code class="literal">maxby</code>(<span class="emphasis"><em>sort_criteria_expression</em></span> [asc/desc][, <span class="emphasis"><em>sort_criteria_expression</em></span> [asc/desc]...])</pre><p>
+					The <code class="literal">maxby</code> aggregation function returns the greatest of all events, compared by using criteria expressions.
+					When used with <code class="literal">group by</code>, it returns the greatest of all events per group.
+				</p><p>
+					This example statement returns the sensor id and the temperature of the sensor event that had the highest temperature among all sensor events:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select maxby(temperature).sensorId, maxby(temperature).temperature from SensorEvent</pre><p>
+					The next EPL returns the sensor event that had the highest temperature and the sensor event that had the lowest temperature, per zone, among the last 10 seconds of sensor events:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select maxby(temperature), minby(temperature) from SensorEvent.win:time(10 sec) group by zone</pre><p>
+					Your EPL may specify multiple criteria expressions. If the sort criteria expression is descending please append the <code class="literal">desc</code> keyword.
+				</p><p>
+					The following EPL returns the sensor event with the highest temperature and if there are multiple sensor events with the highest temperature the query
+					returns the sensor event that has the newest timestamp value:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select maxby(temperature asc, timestamp desc) from SensorEvent</pre><p>
+				  Event properties that are listed in criteria expressions must refer to the same event stream and cannot originate from different event streams.
+				</p><p>
+				  If your query does not define a data window and does not refer to a named window, the semantics of <code class="literal">maxby</code> are the same as <code class="literal">maxbyever</code>.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-function-aggregation-event-maxbyever"/>9.2.2.4. <code class="literal">Maxbyever</code> Aggregation Function</h4></div></div></div><p>
+					The synopsis for the <code class="literal">maxbyever</code> aggregation function is:
+				</p><pre class="synopsis"><code class="literal">maxbyever</code>(<span class="emphasis"><em>sort_criteria_expression</em></span> [asc/desc][, <span class="emphasis"><em>sort_criteria_expression</em></span> [asc/desc]...])</pre><p>
+					The <code class="literal">maxbyever</code> aggregation function returns the greatest of all events that ever occurred, compared by using criteria expressions.
+					When used with <code class="literal">group by</code>, it returns the greatest of all events that ever occurred per group.
+				</p><p>
+					Compared to the <code class="literal">maxby</code> aggregation function the <code class="literal">maxbyever</code> does not consider the data window or named window contents
+					and instead considers all arriving events.
+				</p><p>
+					The next EPL computes the difference, per zone, between the maximum temperature considering all events and the maximum temperature considering
+					only the events in the last 10 seconds:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select maxby(temperature).temperature - maxbyever(temperature).temperature 
+from SensorEvent.win:time(10) group by zone</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-function-aggregation-event-minby"/>9.2.2.5. <code class="literal">Minby</code> Aggregation Function</h4></div></div></div><a id="d0e22074" class="indexterm"/><p>
+					The synopsis for the <code class="literal">minby</code> aggregation function is:
+				</p><pre class="synopsis"><code class="literal">minby</code>(<span class="emphasis"><em>sort_criteria_expression</em></span> [asc/desc][, <span class="emphasis"><em>sort_criteria_expression</em></span> [asc/desc]...])</pre><p>
+					Similar to the <code class="literal">maxby</code> aggregation function, the <code class="literal">minby</code> aggregation function returns the lowest of all events, compared by using criteria expressions.
+					When used with <code class="literal">group by</code>, it returns the lowest of all events per group.
+				</p><p>
+					Please review the section on <code class="literal">maxby</code> for more information.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-function-aggregation-event-minbyever"/>9.2.2.6. <code class="literal">Minbyever</code> Aggregation Function</h4></div></div></div><p>
+					Similar to the <code class="literal">maxbyever</code> aggregation function, the <code class="literal">minbyever</code> aggregation function returns the lowest of all events that ever occurred, compared by using criteria expressions.
+					When used with <code class="literal">group by</code>, it returns the lowest of all events per group that ever occured.
+				</p><p>
+					Please review the section on <code class="literal">maxbyever</code> for more information.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-function-aggregation-event-sorted"/>9.2.2.7. <code class="literal">Sorted</code> Aggregation Function</h4></div></div></div><a id="d0e22134" class="indexterm"/><a id="d0e22137" class="indexterm"/><p>
+					The synopsis for the <code class="literal">sorted</code> aggregation function is:
+				</p><pre class="synopsis"><code class="literal">sorted</code>(<span class="emphasis"><em>sort_criteria_expression</em></span> [asc/desc][, <span class="emphasis"><em>sort_criteria_expression</em></span> [asc/desc]...])</pre><p>
+					The <code class="literal">sorted</code> aggregation function maintains a list of events sorted according to criteria expressions.
+					When used with <code class="literal">group by</code>, it maintains a list of events sorted according to criteria expressions per group.
+				</p><p>
+					The sample EPL listed next returns events sorted according to temperature ascending for the same zone:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select sorted(temperature) from SensorEvent group by zone</pre><p>
+					Your EPL may specify multiple criteria expressions. If the sort criteria expression is descending please append the <code class="literal">desc</code> keyword.
+				</p><p>
+					Enumeration methods can be useful in connection with <code class="literal">sorted</code> as the function provides the sorted events as input.
+				</p><p>
+				    This EPL statement finds the sensor event that when sorted according to temperature is the first sensor event for a Friday timestamp among sensor events for the same zone:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select sorted(temperature).first(v =&gt; timestamp.getDayOfWeek()=6)
+from SensorEvent</pre><p>
+				  Event properties that are listed in criteria expressions must refer to the same event stream and cannot originate from different event streams.
+				</p><p>
+				  The use of <code class="literal">sorted</code> requires that your EPL defines a data window for the stream or utilizes a named window.
+				</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-function-aggregation-event-window"/>9.2.2.8. <code class="literal">Window</code> Aggregation Function</h4></div></div></div><p>
+					The synopsis for the <code class="literal">window</code> aggregation function is:
+				</p><pre class="synopsis"><code class="literal">window(</code>*|<span class="emphasis"><em>stream</em></span>.*|<span class="emphasis"><em>value_expression</em></span>)</pre><p>
+					The <code class="literal">window</code> aggregation function returns properties of all events in the data window or named window. When used with <code class="literal">group by</code>, it returns properties of all events in the data window or named window for each group.
+				</p><p>
+					Similar to the <code class="literal">first</code> aggregation function described above, you may specify the wildcard (<code class="literal">*</code>) character or stream name and wildcard (<code class="literal">*</code>) character or a <span class="emphasis"><em>value_expression</em></span> to evaluate for all events.
+				</p><p>
+					The function returns <code class="literal">null</code> if there are no events. When used with <code class="literal">group by</code>, it returns <code class="literal">null</code> if there are no events for that group.
+				</p><p>
+					The next statement selects the underlying event of all events held by the time window of 10 seconds:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select window(*) from SensorEvent.win:time(10 sec) </pre><p>
+					The <code class="literal">window</code> aggregation function requires that your stream is bound by a data window or a named window. You may not use the <code class="literal">window</code> aggregation function on unbound streams with the exception of on-demand queries.
+				</p><p>
+					This example statement assumes that the <code class="literal">OrderWindow</code> named window exists. For each event entering or leaving the <code class="literal">OrderWindow</code> named window
+					it outputs the total amount removing negative amounts:
+				</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select window(*).where(v =&gt; v.amount &gt; 0).aggregate(0d, (r, v) =&gt; r + v.amount) from OrderWindow </pre></div></div><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="epl-function-aggregation-add"/>9.2.3. Additional Aggregation Functions</h3></div></div></div><p>
+				Esper provides the following additional aggregation functions beyond those in the SQL standard:
+			</p><div class="table"><a id="epl-grouping-aggregate-func-table-ext"/><p class="title"><b>Table 9.4. Syntax and results of EPL aggregation functions</b></p><div class="table-contents"><table summary="Syntax and results of EPL aggregation functions" border="1"><colgroup><col/><col/></colgroup><thead><tr><th>Aggregate Function</th><th>Result</th></tr></thead><tbody><tr><td>firstever(<span class="emphasis"><em>expression</em></span> [, <span class="emphasis"><em>filter_expr</em></span>])</td><td>
+								<p>
+									The <code class="literal">firstever</code> aggregation function returns the very first value ever. When used with <code class="literal">group by</code> it returns the first value ever for that group.
+								</p>				
+								<p>
+									When used with a data window, the result of the function does not change as data points leave a data window. Use the <code class="literal">first</code> or <code class="literal">prevtail</code> function to return values relative to a data window.
+								</p>
+								<p>
+									The optional filter expression limits the values considered for retaining the first-ever value.
+								</p>
+								<p>
+									The next example statement outputs the first price ever for sell orders:
+								</p>
+								<pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select firstever(price, side='sell') from Order</pre>
+							</td></tr><tr><td>lastever(<span class="emphasis"><em>expression</em></span> [, <span class="emphasis"><em>filter_expr</em></span>])</td><td>
+								<p>
+									Returns the last value or last value per group, when used with <code class="literal">group by</code>.
+								</p>
+								<p>
+									This sample statement outputs the total price, the first price and the last price per symbol for the last 30 seconds of events and every 5 seconds:
+								</p>
+								<pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select symbol, sum(price), lastever(price), firstever(price)
+from StockTickEvent.win:time(30 sec) 
+group by symbol
+output every 5 sec</pre>
+								<p>
+									When used with a data window, the result of the function does not change as data points leave a data window (for example when all data points leave the data window). Use the <code class="literal">last</code> or <code class="literal">prev</code> function to return values relative to a data window.
+								</p>
+								<p>
+									The optional filter expression limits the values considered for retaining the last-ever value.
+								</p>
+								<p>
+									The next example statement outputs the last price (ever) for sell orders:
+								</p>
+								<pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select lastever(price, side='sell') from Order</pre>
+							</td></tr><tr><td>leaving()</td><td>
+								<p>
+									Returns true when any remove stream data has passed, for use in the <code class="literal">having</code> clause to output only when a data window has filled.
+								</p>
+								<p>
+									The <code class="literal">leaving</code> aggregation function is useful when you want to trigger output after a data window has a remove stream data point. Use the <code class="literal">output after</code> syntax as an alternative to output after a time interval.
+								</p>
+								<p>
+									This sample statement uses <code class="literal">leaving()</code> to output after the first data point leaves the data window, ignoring the first datapoint:
+								</p>
+								<pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select symbol, sum(price) 
+from StockTickEvent.win:time(30 sec) 
+having leaving()</pre>
+							</td></tr><tr><td>nth(<span class="emphasis"><em>expression</em></span>, <span class="emphasis"><em>N_index</em></span>)</td><td>
+								<p>
+									Returns the Nth oldest element; If N=0 returns the most recent value. If N=1 returns the value before the most recent value. If N is larger than the events held in the data window for this group, returns null.
+								</p>
+								<p>
+									A maximum N historical values are stored, so it can be safely used to compare
+									recent values in large views without incurring excessive overhead.
+								</p>
+								<p>
+									As compared to the <code class="literal">prev</code> row function, this aggregation function works within the current <code class="literal">group by</code> group, see <a class="xref" href="processingmodel.html#processingmodel_aggregation_output" title="3.7.2. Output for Aggregation and Group-By">Section 3.7.2, “Output for Aggregation and Group-By”</a>.
+								</p>
+								<p>
+									This statement outputs every 2 seconds the groups that have new data and their last price and the previous-to-last price:
+								</p>
+								<pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select symbol, nth(price, 1), last(price) 
+from StockTickEvent 
+group by symbol
+output last every 2 sec</pre>
+							</td></tr><tr><td>
+								<p>
+									rate(<span class="emphasis"><em>number_of_seconds</em></span>)
+								</p>
+							</td><td>
+								<p>
+									Returns an event arrival rate per second over the provided number of seconds, computed based on engine time.								
+								</p>
+								<p>
+									Returns null until events fill the number of seconds. Useful with <code class="literal">output snapshot</code> to output a current rate. This function footprint is for use without a data window onto the stream(s).
+								</p>
+								<p>
+									A sample statement to output, every 2 seconds, the arrival rate per second considering the last 10 seconds of events is shown here:
+								</p>
+								<pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select rate(10) from StockTickEvent
+output snapshot every 2 sec</pre>
+								<p>
+									The aggregation function retains an engine timestamp value for each arriving event.
+								</p>
+							</td></tr><tr><td>
+								<p>
+									rate(<span class="emphasis"><em>timestamp_property</em></span>[, <span class="emphasis"><em>accumulator</em></span>])
+								</p>
+							</td><td>
+								<p>
+									Returns an event arrival rate over the data window including the last remove stream event. The <span class="emphasis"><em>timestamp_property</em></span>
+									is the name of a long-type property of the event that provides a timestamp value.
+								</p>
+								<p>
+									The first parameter is a property name or expression providing millisecond timestamp values.
+								</p>
+								<p>
+									The optional second parameter is a property or expression for computing an accumulation rate: If a value is provided as a second parameter then the accumulation rate for that quantity is returned (e.g. turnover in dollars per second).
+								</p>
+								<p>
+									This footprint is designed for use with a data window and requires a data window declared onto the stream. Returns null until events start leaving the window.
+								</p>
+								<p>
+									This sample statement outputs event rate for each group (symbol) with fixed sample size of four events 
+									(and considering the last event that left). The <code class="literal">timestamp</code> event property must be part of the event for this to work.
+								</p>
+								<pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select colour, rate(timestamp) as rate 
+from StockTickEvent.std:groupwin(symbol).win:length(4) 
+group by symbol</pre>
+							</td></tr></tbody></table></div></div><br class="table-break"/><p>
+				Built-in aggregation functions can be disabled via configuration (see <a class="xref" href="configuration.html#config-engine-expression-extendedagg" title="15.4.21.4. Extended Built-in Aggregation Functions">Section 15.4.21.4, “Extended Built-in Aggregation Functions”</a>). A custom aggregation function of the same name as a built-on function may be registered to override the built-in function.
+			</p></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="epl-function-user-defined"/>9.3. User-Defined Functions</h2></div></div></div><a id="d0e22497" class="indexterm"/><a id="d0e22500" class="indexterm"/><a id="d0e22505" class="indexterm"/><p>
+			 A user-defined function (UDF) is a single-row function that can be invoked anywhere as an expression itself or within an expresson. The function must simply be a public static method
+			 that the classloader can resolve at statement creation time. The engine resolves the function reference at statement creation time and verifies parameter types.
+		 </p><p>
+			You may register your own function name for the user-defined function. Please see the instructions in <a class="xref" href="extension.html#custom-singlerow-function" title="17.3. Single-Row Function">Section 17.3, “Single-Row Function”</a> for registering a function name for a user-defined single-row function.
+		</p><p>
+			A single-row function that has been registered with a function name can simply be referenced as <span class="emphasis"><em>function_name</em></span><code class="literal">(</code><span class="emphasis"><em>parameters</em></span><code class="literal">)</code> thus EPL statements can be less cluttered as no class name is required. 
+			The engine also optimizes evaluation of such registered single-row functions when used in filter predicate expressions as described in <a class="xref" href="extension.html#custom-single-filter-optimizable" title="17.3.4. Single-Row Functions in Filter Predicate Expressions">Section 17.3.4, “Single-Row Functions in Filter Predicate Expressions”</a>.
+		</p><p>
+			An example EPL statement that utilizes the <code class="literal">discount</code> function is shown next (assuming that function has been registered).
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select discount(quantity, price) from OrderEvent</pre><p>
+			When selecting from a single stream, use the wildcard <code class="literal">(*)</code> character to pass the underlying event:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select discount(*) from OrderEvent</pre><p>
+			Alternatively use the stream alias or EPL pattern tag to pass an event:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select discount(oe) from OrderEvent as oe</pre><p>
+			 User-defined functions can be also be invoked on instances of an event: Please see <a class="xref" href="epl_clauses.html#epl-from-clause-stream-name" title="5.4.5. Using the Stream Name">Section 5.4.5, “Using the Stream Name”</a> to invoke event instance methods on a named stream.
+		 </p><p>
+			 Note that user-defined functions (not single-row functions) are candidate for caching their return result if the parameters passed are constants and they are not used chained. Please see below for details and configuration.
+		 </p><p>
+			 The example below assumes a class <code class="literal">MyClass</code> that exposes a public static method <code class="literal">myFunction</code> accepting 2 parameters, and
+			 returing a numeric type such as <code class="literal">double</code>.
+		 </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select 3 * com.mycompany.MyClass.myFunction(price, volume) as myValue 
+from StockTick.win:time(30 sec)</pre><p>
+			 User-defined functions also take array parameters as this example shows. The section on <a class="xref" href="epl-operator.html#epl-operator-ref-array" title="8.5. Array Definition Operator">Section 8.5, “Array Definition Operator”</a> outlines in more detail the types of arrays produced.
+		 </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from RFIDEvent where com.mycompany.rfid.MyChecker.isInZone(zone, {10, 20, 30})</pre><p>
+			Java class names have to be fully qualified (e.g. java.lang.Math) but Esper provides a mechanism for user-controlled imports of classes and packages as outlined in <a class="xref" href="configuration.html#config-class--package-imports" title="15.4.6. Class and package imports">Section 15.4.6, “Class and package imports”</a>.
+		</p><p>
+			 User-defined functions can return any value including <code class="literal">null</code>, Java objects or arrays. Therefore user-defined functions can serve to transform, convert or map events, or to extract information and assemble further events.
+		 </p><p>
+			 The following statement is a simple pattern that looks for events of type E1 that are followed by events of type E2. It assigns the tags "e1" and "e2" that the function can use to assemble a final event for output:
+		 </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select MyLib.mapEvents(e1, e2) from pattern [every e1=E1 -&gt; e2=E2]</pre><p>
+			 User-defined functions may also be chained: If a user-defined function returns an object then the object can itself be the target of the next function call and so on.
+		 </p><p>
+			 Assume that there is a <code class="literal">calculator</code> function in the <code class="literal">MyLib</code> class that returns a class which provides the <code class="literal">search</code> method taking two parameters. The EPL
+			 that takes the result of the <code class="literal">calculator</code> function and that calls the <code class="literal">search</code> method on the result and returns its return value is shown below:
+		 </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select MyLib.calculator().search(zonevariable, zone) from RFIDEvent]</pre><p>
+			 A user-defined function should be implemented thread-safe. 
+		 </p><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-function-user-defined-converting"/>9.3.1. Event Type Conversion via User-Defined Function</h4></div></div></div><p>
+				 A function that converts from one event type to another event type is shown in the next example. The first statement declares a stream that consists of MyEvent events. The second statement employs a conversion function to convert MyOtherEvent events to events of type MyEvent:
+			 </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">insert into MyStream select * from MyEvent
+	insert into MyStream select MyLib.convert(other) from MyOtherEvent as other</pre><p>
+				 In the example above, assuming the event classes MyEvent and MyOtherEvent are Java classes, the static method should have the following footprint:
+			 </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public static MyEvent convert(MyOtherEvent otherEvent)</pre></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-function-user-defined-cached"/>9.3.2. User-Defined Function Result Cache</h4></div></div></div><p>
+				 For user-defined functions that take no parameters or only constants as parameters the engine automatically caches the return result of the function, and invokes the function only once. This is beneficial to performance 
+				 if your function indeed returns the same result for the same input parameters.
+			</p><p>
+				 You may disable caching of return values of user-defined functions via configuration as described in <a class="xref" href="configuration.html#config-engine-expression-udfcache" title="15.4.21.3. User-Defined Function or Static Method Cache">Section 15.4.21.3, “User-Defined Function or Static Method Cache”</a>.
+			</p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-function-user-defined-matching"/>9.3.3. Parameter Matching</h4></div></div></div><p>
+				 EPL follows Java standards in terms of widening, performing widening automatically in cases where widening type conversion is allowed without loss of precision, for both boxed and primitive types.				 
+			 </p><p>
+				 When user-defined functions are overloaded, the function with the best match is selected based on how well the arguments to a function can match up with the parameters, giving preference to the function that requires the least number of widening conversions.
+			 </p><p>
+				 Boxing and unboxing of arrays is not supported in UDF as it is not supported in Java. For example, an array of <code class="literal">Integer</code> and an array of <code class="literal">int</code> are not compatible types.
+			 </p><p>
+			  When passing the event or underlying event to your method, either declare the parameter to take <code class="literal">EventBean</code> (i.e. <code class="literal">myfunc(EventBean event)</code>) 
+			  or as the underlying event type (i.e. <code class="literal">myfunc(OrderEvent event)</code>).
+			</p><p>
+				 When using <code class="literal">{}</code> array syntax in EPL, the resulting type is always a boxed type: <code class="literal">"{1, 2}"</code> is an array of <code class="literal">Integer</code> (and not <code class="literal">int</code> since it may contain null values), <code class="literal">"{1.0, 2d}"</code> is an array of <code class="literal">Double</code> and <code class="literal">"{'A', "B"}"</code> is an array of <code class="literal">String</code>, while <code class="literal">"{1, "B", 2.0}"</code> is an array of <code class="literal">Object</code> (<code class="literal">Object[]</code>).
+			 </p></div><div class="sect3" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="epl-function-user-defined-receivectx"/>9.3.4. Receiving a Context Object</h4></div></div></div><p>
+			  Esper can pass an object containing contextual information such as statement name, function name, engine URI and context partition id to your
+			  method. The container for this information is <code class="literal">EPLMethodInvocationContext</code> in package <code class="literal">com.espertech.esper.client.hook</code>.
+			  Please declare your method to take <code class="literal">EPLMethodInvocationContext</code> as the last parameter. The engine then passes the information along.
+			</p><p> 
+			  A sample method footprint and EPL are shown below:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">public static double computeSomething(double number, EPLMethodInvocationContext context) {...}</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select MyLib.computeSomething(10) from MyEvent</pre></div></div><div class="sect1" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="functionreference-transpose"/>9.4. Select-Clause <code class="literal">transpose</code> Function</h2></div></div></div><p>
+		  The <code class="literal">transpose</code> function is only valid in the select-clause and indicates that the result of the parameter expression should become the underlying event object of the output event.
+		</p><p>
+		  The <code class="literal">transpose</code> function takes a single expression as a parameter. The result object of the parameter expression is subject to transposing as described below.
+		</p><p>
+		  The function can be useful with <code class="literal">insert into</code> to allow an object returned by an expression to become the event itself in the output stream.
+		</p><p>
+		  Any expression returning a Java object can be used with the <code class="literal">transpose</code> function. Typical examples for expressions are a static method invocation, the result of an enumeration method, a plug-in single row function or a subquery. 
+		</p><p>
+		  The examples herein assume that a single-row function by name <code class="literal">makeEvent</code> returns an <code class="literal">OrderEvent</code> instance (a POJO object, not shown).
+		</p><p>
+		  The following EPL takes the result object of the invocation of the <code class="literal">makeEvent</code> method (assumed to be an OrderEvent instance) and returns the OrderEvent instance as the underlying event of the output event:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select transpose(makeEvent(oi)) from OrderIndication oi</pre><p>
+		  Your select-clause can select additional properties or expressions. In this case the output event underlying object is a pair of the expression result object and the additional properties.
+		</p><p>
+		  The next EPL also selects the <code class="literal">origin</code> property of the order indication event. The output event is a pair of the OrderEvent instance and a map containing the property name and value of origin:
+		</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select origin, transpose(makeEvent(oi)) from OrderIndication oi</pre><p>
+		  If the <code class="literal">transpose</code> function is not a top-level function, i.e. if it occurs within another expression or within any other clause then the select-clause, the function simple returns the expression result of the parameter expression.
+		</p><div class="sect2" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="functionreference-transpose-insert-into"/>9.4.1. Transpose with Insert-Into</h3></div></div></div><p>
+				  You may insert transposed output events into another stream.
+			</p><p>
+				  If the stream name in the insert-into clause is already associated to an event type, the engine checks whether the event type associated to the stream name provided in the insert-into clause matches the event type associated to the object returned by the expression. If the stream name in the insert-into clause is not already associated to an existing event type the engine associates a new event type using the stream name provided in the insert-into clause.
+			</p><p>
+				For example, the next statement associates the stream name <code class="literal">OrderEvent</code> with the class. Alternatively this association can be achieved via static or runtime configuration API:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">create schema OrderEvent as com.mycompany.OrderEvent</pre><p>
+				An EPL statement can insert into the <code class="literal">OrderEvent</code> stream the <code class="literal">OrderEvent</code> instance returned by the <code class="literal">makeEvent</code> method, as follows:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">insert into OrderEvent select transpose(makeEvent(oi)) from OrderIndication oi</pre><p>
+				It is not valid to select additional properties or expressions in this case, as they would not be part of the output event. The following is not valid:
+			</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">// not valid
+insert into OrderEvent select origin, transpose(makeEvent(oi)) from OrderIndication oi</pre></div></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="epl-operator.html"><strong>Prev</strong>Chapter 8. EPL Reference: Operators</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="enumerationreference.html"><strong>Next</strong>Chapter 10. EPL Reference: Enumeration Methods</a></li></ul></body></html>
