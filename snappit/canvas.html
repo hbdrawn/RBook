@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+	<title>canvas</title>
+	<meta charset="utf-8">
+	<script>
+		function init(){
+			var canvas = document.getElementById('canvas');
+			var context = canvas.getContext('2d');
+			context.fillStyle='#EEEEFF';
+			context.fillRect(0,0,500,500);
+			for(var i=0;i<10;i++){
+				context.beginPath();
+				context.arc(i*25,i*25,i*10,0,Math.PI * 2,true);
+				context.closePath();
+				context.fillStyle = 'rgba(255,0,0,0.25)';
+				context.fill();
+			}	
+		}
+		
+	</script>
+	<body onload='init()'>
+		<section>
+			<h1>canvas画园</h1>
+			<canvas id='canvas' width='1000px' height='1000px'></canvas>
+		</section>
+
+	</body>
+</html>

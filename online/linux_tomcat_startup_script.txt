@@ -1,0 +1,5 @@
+#!/bin/bash
+su - tcpServer << !
+/home/tcpServer/tomcat759/bin/startup.sh
+echo 'tomcat start up suc'
+exit
