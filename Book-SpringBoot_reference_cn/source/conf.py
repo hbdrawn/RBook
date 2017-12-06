@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Book-Esper_reference_cn documentation build configuration file, created by
+# Book-SpringBoot_reference_cn documentation build configuration file, created by
 # sphinx-quickstart on Sun Apr 14 17:30:51 2013.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Book-Esper_reference_cn'
+project = u'Book-SpringBoot_reference_cn'
 copyright = u'2013, hbdrawn'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -167,7 +167,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Book-Esper_reference_cndoc'
+htmlhelp_basename = 'Book-SpringBoot_reference_cndoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -186,7 +186,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'Book-Esper_reference_cn.tex', u'Book-Esper\\_reference\\_cn Documentation',
+  ('index', 'Book-SpringBoot_reference_cn.tex', u'Book-SpringBoot\\_reference\\_cn Documentation',
    u'hbdrawn', 'manual'),
 ]
 
@@ -216,7 +216,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'book-esper_reference_cn', u'Book-Esper_reference_cn Documentation',
+    ('index', 'book-SpringBoot_reference_cn', u'Book-SpringBoot_reference_cn Documentation',
      [u'hbdrawn'], 1)
 ]
 
@@ -230,8 +230,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'Book-Esper_reference_cn', u'Book-Esper_reference_cn Documentation',
-   u'hbdrawn', 'Book-Esper_reference_cn', 'One line description of project.',
+  ('index', 'Book-SpringBoot_reference_cn', u'Book-SpringBoot_reference_cn Documentation',
+   u'hbdrawn', 'Book-SpringBoot_reference_cn', 'One line description of project.',
    'Miscellaneous'),
 ]
 
@@ -251,7 +251,7 @@ texinfo_documents = [
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'Book-Esper_reference_cn'
+epub_title = u'Book-SpringBoot_reference_cn'
 epub_author = u'hbdrawn'
 epub_publisher = u'hbdrawn'
 epub_copyright = u'2013, hbdrawn'
